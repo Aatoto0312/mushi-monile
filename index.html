@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="robots" content="noindex,nofollow">
+  <title>蟲神器 プロトタイプ 0.1</title>
+  <link rel="stylesheet" href="css/battle.css">
+</head>
+<body class="battle-screen">
+  <div class="test-build-indicator">TEST BUILD / v0.2-test</div>
+  <div class="mobile-frame">
+
+    <!-- トップバー -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <span id="turn-text">TURN 1</span>
+        <span id="phase-text">ドローフェイズ</span>
+        <span id="cpu-thinking" style="display:none; color: yellow; margin-left: 10px;">CPU思考中...</span>
+      </div>
+      <div class="topbar-right">
+        <button id="btn-new-game" class="mini-btn" type="button">NEW</button>
+      </div>
+    </header>
+
+    <div id="cpu-action-log" style="display:none; background: rgba(0,0,0,0.7); color: white; padding: 4px; text-align: center; font-size: 12px; position: absolute; top: 40px; width: 100%; z-index: 10;"></div>
+
+    <!-- ===== 相手側 (上) ===== -->
+    <section class="zone zone-top" id="zone-top">
+      <!-- 相手プレイヤー情報 -->
+      <div class="player-info opponent-info">
+        <span id="opp-player-label" class="pname">相手 P2</span>
+      </div>
+
+      <!-- 山札 -->
+      <div class="zone-group">
+        <div class="zone-label">山札</div>
+        <div id="opp-deck-zone" class="deck-zone"></div>
+      </div>
+
+      <!-- 手札 -->
+      <div class="zone-group">
+        <div class="zone-label">手札</div>
+        <div id="opp-hand-zone" class="hand-zone"></div>
+      </div>
+
+      <!-- エサ -->
+      <div class="zone-group">
+        <div class="zone-label">エサ</div>
+        <div id="opp-food-zone" class="food-zone"></div>
+      </div>
+
+      <!-- 捨て場 -->
+      <div class="zone-group">
+        <div class="zone-label">捨て場</div>
+        <div id="opp-discard-zone" class="discard-zone"></div>
+      </div>
+
+      <!-- 縄張り -->
+      <div class="zone-group">
+        <div class="zone-label">縄張り</div>
+        <div id="opp-territory-zone" class="territory-zone"></div>
+      </div>
+
+      <!-- 場 -->
+      <div class="zone-group">
+        <div class="zone-label">場</div>
+        <div id="opp-field-zone" class="field-zone"></div>
+      </div>
+
+      <!-- コスト表示 -->
+      <div class="zone-group cost-display">
+        <span id="opp-cost">使用可能コスト: 0 / 0</span>
+      </div>
+    </section>
+
+    <!-- ===== 中央操作域 ===== -->
+    <div class="control-bar">
+      <div id="status-text" class="status-text"></div>
+      <div class="btn-row">
+        <button id="btn-draw" class="action-btn-wide draw-btn" type="button" style="display:none;">1枚ドロー</button>
+        <button id="btn-to-set" class="action-btn-wide" type="button">セットフェイズへ</button>
+        <button id="btn-to-main" class="action-btn-wide" type="button">メインフェイズへ</button>
+        <button id="btn-end-turn" class="action-btn-wide" type="button">ターン終了</button>
+        <button id="btn-direct-attack" class="action-btn-wide attack-btn" type="button" style="display:none;">本体へ攻撃</button>
+        <button id="btn-cancel-attack" class="action-btn-wide cancel-btn" type="button" style="display:none;">キャンセル</button>
+      </div>
+      <div id="skill-select-row" class="skill-select-row" style="display:none;"></div>
+    </div>
+
+    <!-- ===== 自分側 (下) ===== -->
+    <section class="zone zone-bottom" id="zone-bottom">
+      <!-- 場 -->
+      <div class="zone-group">
+        <div class="zone-label">場</div>
+        <div id="self-field-zone" class="field-zone"></div>
+      </div>
+
+      <!-- 縄張り -->
+      <div class="zone-group">
+        <div class="zone-label">縄張り</div>
+        <div id="self-territory-zone" class="territory-zone"></div>
+      </div>
+
+      <!-- 捨て場 -->
+      <div class="zone-group">
+        <div class="zone-label">捨て場</div>
+        <div id="self-discard-zone" class="discard-zone"></div>
+      </div>
+
+      <!-- エサ -->
+      <div class="zone-group">
+        <div class="zone-label">エサ</div>
+        <div id="self-food-zone" class="food-zone"></div>
+      </div>
+
+      <!-- 手札 -->
+      <div class="zone-group">
+        <div class="zone-label">手札</div>
+        <div id="self-hand-zone" class="hand-zone"></div>
+      </div>
+
+      <!-- 山札 -->
+      <div class="zone-group">
+        <div class="zone-label">山札</div>
+        <div id="self-deck-zone" class="deck-zone"></div>
+      </div>
+
+      <!-- 自分プレイヤー情報 + コスト -->
+      <div class="player-info self-info">
+        <span id="self-player-label" class="pname">自分 P1</span>
+        <span id="self-cost" class="cost-text">使用可能コスト: 0 / 0</span>
+      </div>
+    </section>
+
+    <!-- バトルログ -->
+    <section class="log-section">
+      <div class="log-title">バトルログ</div>
+      <div id="battle-log" class="battle-log"></div>
+    </section>
+
+  </div>
+
+  <!-- モード選択 -->
+  <div id="mode-select-overlay" class="overlay" style="display:flex;">
+    <div class="pass-box">
+      <p>対戦形式を選択してください</p>
+      <button id="btn-vs-human" class="action-btn-wide" type="button">対人戦</button>
+      <button id="btn-vs-cpu" class="action-btn-wide" type="button">CPU戦</button>
+    </div>
+  </div>
+
+  <!-- カード詳細モーダル -->
+  <div id="card-detail-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="card-detail-title">カード詳細</span>
+        <button id="card-detail-close" class="modal-close" type="button">×</button>
+      </div>
+      <div id="card-detail-content" class="modal-body"></div>
+      <div id="card-detail-actions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <!-- ターン交代受け渡しオーバーレイ -->
+  <div id="pass-overlay" class="overlay" style="display:none;">
+    <div class="pass-box">
+      <p id="pass-message">P1 のターンです</p>
+      <button id="btn-pass-ok" class="action-btn-wide" type="button">OK</button>
+    </div>
+  </div>
+
+  <!-- ゲームオーバー -->
+  <div id="game-over" class="overlay" style="display:none;">
+    <div class="pass-box">
+      <p id="winner-text">勝利！</p>
+      <button id="btn-new-game-2" class="action-btn-wide" type="button">もう一度対戦</button>
+    </div>
+  </div>
+
+  <!-- デッキ選択 -->
+  <div id="deck-select-overlay" class="overlay" style="display:none;">
+    <div class="pass-box deck-select-box">
+      <p id="deck-select-title">デッキを選択してください</p>
+      <div class="deck-select-row">
+        <span id="deck-p1-label" class="deck-side-label">あなた（P1）</span>
+        <button id="btn-deck-p1-kabuto" class="deck-choice-btn" type="button">カブトムシデッキ</button>
+        <button id="btn-deck-p1-okama" class="deck-choice-btn" type="button">オオカマキリデッキ</button>
+      </div>
+      <div class="deck-select-row">
+        <span id="deck-p2-label" class="deck-side-label">相手（P2）</span>
+        <button id="btn-deck-p2-kabuto" class="deck-choice-btn" type="button">カブトムシデッキ</button>
+        <button id="btn-deck-p2-okama" class="deck-choice-btn" type="button">オオカマキリデッキ</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/cards/card-definition.js"></script>
+  <script src="js/cards/card-instance.js"></script>
+  <script src="js/cards/card-registry.js"></script>
+  <script src="js/cards/test-cards.js"></script>
+  <script src="js/cards/starter-cards.js"></script>
+  <script src="js/engine/game-state.js"></script>
+  <script src="js/engine/rules.js"></script>
+  <script src="js/engine/stat-modifier.js"></script>
+  <script src="js/engine/zone-engine.js"></script>
+  <script src="js/engine/battle-engine.js"></script>
+  <script src="js/engine/turn-engine.js"></script>
+  <script src="js/engine/game-engine.js"></script>
+  <script src="js/engine/cpu-agent.js"></script>
+  <script src="js/engine/cpu-runner.js"></script>
+  <script src="js/ui/battle-log-ui.js"></script>
+  <script src="js/ui/card-ui.js"></script>
+  <script src="js/ui/battle-ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
