@@ -1,0 +1,990 @@
+{
+  "snapshotVersion": "legacy-starter-card-registry/1.0",
+  "cardCount": 24,
+  "cards": [
+    {
+      "id": "ginyanma",
+      "officialNumber": "6/130",
+      "name": "ギンヤンマ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "RED",
+      "cost": 5,
+      "baseHp": 1100,
+      "skills": [
+        {
+          "id": "tobikakaru",
+          "name": "とびかかる",
+          "baseAp": 700,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "okamakiri",
+      "officialNumber": "7/130",
+      "name": "オオカマキリ",
+      "set": "STARTER",
+      "rarity": "SR",
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "RED",
+      "cost": 4,
+      "baseHp": 800,
+      "skills": [
+        {
+          "id": "tomogui",
+          "name": "共食い",
+          "baseAp": 800,
+          "additionalCost": [
+            {
+              "type": "SACRIFICE_OWN_INSECT",
+              "amount": 1
+            }
+          ],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "kama_renshoku",
+          "name": "カマ連撃",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [
+            {
+              "type": "CONTINUOUS_ATTACK",
+              "maxCount": 2,
+              "immediate": true,
+              "requiresOpponentFieldInsect": true
+            }
+          ],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "continuous-attack",
+        "sacrifice-cost"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 7/130、赤、cost4、HP800、共食い800、カマ連撃200",
+        "公式Q&A: カマ連撃は攻撃後、相手場に虫がいればもう1度使用可能(最大2回)",
+        "公式Q&A: 共食いは使用時にこの虫以外の自虫1体を選んで破壊"
+      ],
+      "verificationNotes": "スターター虫。通常攻撃「共食い」AP800(自虫1体破壊コスト)。「カマ連撃」AP200は攻撃後、相手場に虫がいれば連続攻撃最大2回。"
+    },
+    {
+      "id": "kooniyanma",
+      "officialNumber": "11/130",
+      "name": "コオニヤンマ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "RED",
+      "cost": 4,
+      "baseHp": 800,
+      "skills": [
+        {
+          "id": "tobikakaru",
+          "name": "とびかかる",
+          "baseAp": 500,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "seakakogegumo",
+      "officialNumber": "22/130",
+      "name": "セアカゴケグモ",
+      "set": "STARTER",
+      "rarity": "R",
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "RED",
+      "cost": 2,
+      "baseHp": 400,
+      "skills": [
+        {
+          "id": "kamu",
+          "name": "かむ",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "dokubari",
+          "name": "毒針",
+          "baseAp": 400,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": "ONCE_PER_FIELD_STAY",
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "usage-limit"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 22/130、赤、cost2、HP400、かむ100、毒針400"
+      ],
+      "verificationNotes": "スターター虫。通常攻撃「かむ」AP100。特殊攻撃「毒針」AP400は場にいる間1回のみ使用可。"
+    },
+    {
+      "id": "akiakane",
+      "officialNumber": "24/130",
+      "name": "アキアカネ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "RED",
+      "cost": 2,
+      "baseHp": 500,
+      "skills": [
+        {
+          "id": "tobikakaru",
+          "name": "とびかかる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "namitentou",
+      "officialNumber": "30/130",
+      "name": "ナミテントウ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "RED",
+      "cost": 1,
+      "baseHp": 300,
+      "skills": [
+        {
+          "id": "kamitsubusu",
+          "name": "かみつぶす",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "kabutomushi",
+      "officialNumber": "40/130",
+      "name": "カブトムシ",
+      "set": "STARTER",
+      "rarity": "SR",
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "BLUE",
+      "cost": 4,
+      "baseHp": 800,
+      "skills": [
+        {
+          "id": "tsuno_tosshin",
+          "name": "ツノ突進",
+          "baseAp": 500,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "sukoinage",
+          "name": "すくい投げ",
+          "baseAp": 0,
+          "additionalCost": [],
+          "effects": [
+            {
+              "type": "TURN_FACE_DOWN",
+              "target": "DEFENDER",
+              "duration": "UNTIL_END_OF_TURN"
+            }
+          ],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "face-down-effect"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 40/130、青、cost4、HP800、ツノ突進500、すくい投げ0",
+        "公式Q&A: すくい投げで裏返された虫は場にいない扱い、攻撃・効果対象不可、強化も裏返る、ターン終了時に表戻り"
+      ],
+      "verificationNotes": "スターター虫。通常攻撃「ツノ突進」AP500。「すくい投げ」AP0で相手虫1体をターン終了時まで裏返し。裏向き虫は場にいない扱い(攻撃・効果対象不可)、強化も裏返り、ターン終了時に表向きへ戻る。"
+    },
+    {
+      "id": "namiageha",
+      "officialNumber": "44/130",
+      "name": "ナミアゲハ",
+      "set": "STARTER",
+      "rarity": "R",
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "BLUE",
+      "cost": 4,
+      "baseHp": 1100,
+      "skills": [
+        {
+          "id": "suitsukusu",
+          "name": "すいつくす",
+          "baseAp": 300,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "rinpun",
+          "name": "＜りんぷん＞",
+          "baseAp": null,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": "FORCE_ATTACK_TO_SELF_GROUP",
+          "timing": "PASSIVE"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "force-attack-to-self"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "実カード画像照合: 44/130、青、cost4、HP1100、すいつくす300",
+        "蟲神器公式 第1弾Q&A・公式Q&A: ＜りんぷん＞は相手の攻撃対象を自分(この虫)のみに限定する"
+      ],
+      "verificationNotes": "スターター虫。通常攻撃「すいつくす」AP300。特殊能力「＜りんぷん＞」は相手がこの虫以外を攻撃対象にできない。"
+    },
+    {
+      "id": "minminzemi",
+      "officialNumber": "47/130",
+      "name": "ミンミンゼミ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "BLUE",
+      "cost": 3,
+      "baseHp": 500,
+      "skills": [
+        {
+          "id": "shiboritoru",
+          "name": "しぼりとる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "tobidasu",
+          "name": "＜とびだす＞",
+          "baseAp": null,
+          "optional": true,
+          "timing": "TERRITORY_DRAW",
+          "effects": [
+            {
+              "type": "OFFER_SELF_TO_FIELD",
+              "condition": {
+                "type": "NO_OWN_FIELD_SKILL",
+                "skillId": "tobidasu"
+              }
+            }
+          ]
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "tobidasu"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式 遊び方: ＜とびだす＞は縄張りから引かれた時に発揮",
+        "公式 ゲームルールQ&A: 裏返った虫は場にいない扱いなので＜とびだす＞可能",
+        "公式 第1弾Q&A: 複数縄張りドローは1枚ずつ処理し、＜とびだす＞使用可否を毎回判断",
+        "実カード／カードデータ照合: 47/130、青、cost3、HP500、しぼりとる200"
+      ],
+      "verificationNotes": "スターター基本虫。通常攻撃「しぼりとる」AP200。特殊技「＜とびだす＞」は縄張りドロー時に任意発動。コスト不要、自分の場に有効な＜とびだす＞持ちがいなければ使用可。"
+    },
+    {
+      "id": "kanabun",
+      "officialNumber": "63/130",
+      "name": "カナブン",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "BLUE",
+      "cost": 1,
+      "baseHp": 300,
+      "skills": [
+        {
+          "id": "taiatari",
+          "name": "たいあたり",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "higurashi",
+      "officialNumber": "64/130",
+      "name": "ヒグラシ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "BLUE",
+      "cost": 2,
+      "baseHp": 200,
+      "skills": [
+        {
+          "id": "shiboritoru",
+          "name": "しぼりとる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "tonosamabatta",
+      "officialNumber": "71/130",
+      "name": "トノサマバッタ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "GREEN",
+      "cost": 5,
+      "baseHp": 1200,
+      "skills": [
+        {
+          "id": "kuraitsuku",
+          "name": "くらいつく",
+          "baseAp": 700,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "namiageha_larva",
+      "officialNumber": "79/130",
+      "name": "ナミアゲハ（幼虫）",
+      "set": "STARTER",
+      "rarity": "R",
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "GREEN",
+      "cost": 3,
+      "baseHp": 700,
+      "skills": [
+        {
+          "id": "kajiru",
+          "name": "かじる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "kusai_tsuno",
+          "name": "くさいツノ",
+          "baseAp": 0,
+          "additionalCost": [],
+          "effects": [
+            {
+              "type": "APPLY_STAT_MODIFIER",
+              "id": "kusai_tsuno_ap_down",
+              "stat": "AP",
+              "amount": -400,
+              "startTurnOffset": 1,
+              "endTurnOffset": 1
+            }
+          ],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "stat-modifier",
+        "ap-reduction"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "実カード画像照合: 79/130、緑、cost3、HP700、かじる200、くさいツノ0",
+        "公式裁定: くさいツノは次のターン、対象虫の攻撃力を400下げる。対象が場を離れればmodifier消失"
+      ],
+      "verificationNotes": "スターター虫。通常攻撃「かじる」AP200。効果付き攻撃「くさいツノ」AP0、次のターン対象虫AP-400。擬態中の虫には不可。"
+    },
+    {
+      "id": "nanafushimodoki",
+      "officialNumber": "80/130",
+      "name": "ナナフシモドキ",
+      "set": "STARTER",
+      "rarity": "R",
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "GREEN",
+      "cost": 3,
+      "baseHp": 400,
+      "skills": [
+        {
+          "id": "kaburitsuku",
+          "name": "かぶりつく",
+          "baseAp": 400,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "gitai",
+          "name": "＜擬態＞",
+          "baseAp": null,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ENTER_FIELD",
+          "gitai": true
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "gitai"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "実カード画像・カードデータ照合: 80/130、緑、cost3、HP400、かぶりつく400",
+        "蟲神器公式Q&A: ＜擬態＞は場に出た次の相手のターンに攻撃を受けない",
+        "2026年1月15日 公式裁定変更: 現在はカードテキスト通り「この虫から見て、場に出た次の相手のターン」に攻撃を受けない"
+      ],
+      "verificationNotes": "スターター虫。通常攻撃「かぶりつく」AP400。特殊能力「＜擬態＞」は場に出た次の相手のターンのみ攻撃対象にならず、他に攻撃対象とならない虫がいなければ直接攻撃を許す。"
+    },
+    {
+      "id": "nijuuyaahoshitentou",
+      "officialNumber": "91/130",
+      "name": "ニジュウヤホシテントウ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "KABUTOMUSHI",
+      "type": "INSECT",
+      "color": "GREEN",
+      "cost": 2,
+      "baseHp": 300,
+      "skills": [
+        {
+          "id": "kamitsubusu",
+          "name": "かみつぶす",
+          "baseAp": 300,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "wataaburamushi",
+      "officialNumber": "95/130",
+      "name": "ワタアブラムシ",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "OKAMAKIRI",
+      "type": "INSECT",
+      "color": "GREEN",
+      "cost": 1,
+      "baseHp": 300,
+      "skills": [
+        {
+          "id": "suu",
+          "name": "すう",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": null,
+      "tags": [
+        "starter"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ],
+      "verificationNotes": "スターター基本虫。追加効果なし。"
+    },
+    {
+      "id": "tamamushiiro_no_uka",
+      "officialNumber": "101/130",
+      "name": "玉虫色の羽化",
+      "set": "STARTER",
+      "rarity": "R",
+      "starterDeck": "OKAMAKIRI",
+      "type": "ENHANCEMENT",
+      "color": null,
+      "cost": 2,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": [
+        {
+          "type": "COLOR_OVERRIDE",
+          "colors": [
+            "RED",
+            "BLUE",
+            "GREEN"
+          ]
+        }
+      ],
+      "tags": [
+        "starter",
+        "enhancement",
+        "color-override"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 101/130、強化、R、cost2",
+        "公式カードデータ: 効果「この虫の色を赤か青か緑に変える。」"
+      ],
+      "verificationNotes": "スターター強化。装着虫の色を赤/青/緑から選択して変更。色変更は装着中持続。虫が場を離れれば強化カードもDISCARDへ行き色は戻る。エンジンはgetEffectiveColor()でattachmentのCOLOR_OVERRIDEを参照。"
+    },
+    {
+      "id": "hariganemushi_no_michizure",
+      "officialNumber": "106/130",
+      "name": "針金虫の道連れ",
+      "set": "STARTER",
+      "rarity": "N",
+      "starterDeck": "OKAMAKIRI",
+      "type": "ENHANCEMENT",
+      "color": null,
+      "cost": 0,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [
+        {
+          "id": "michizure",
+          "name": "道連れ",
+          "timing": "ON_DESTROYED",
+          "condition": {
+            "type": "DESTROYED_BY_OPPONENT_ATTACK"
+          },
+          "effects": [
+            {
+              "type": "DESTROY_SOURCE"
+            }
+          ]
+        }
+      ],
+      "cardEffects": [],
+      "enhancementEffects": [],
+      "tags": [
+        "starter",
+        "enhancement",
+        "death-trigger"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 106/130、強化、cost0",
+        "公式Q&A: 装着虫が相手虫の攻撃で破壊された時、死亡誘発として相手虫を破壊",
+        "公式Q&A: 攻撃破壊と術/能力/共食い破壊を区別、同時死亡誘発はプレイヤー選択"
+      ],
+      "verificationNotes": "スターター強化。装着虫が相手攻撃で破壊された時、攻撃元の虫を道連れ破壊。destruction cause判定が必要。"
+    },
+    {
+      "id": "kamikiri_no_daigaku",
+      "officialNumber": "107/130",
+      "name": "天牛の大顎",
+      "set": "STARTER",
+      "rarity": "N",
+      "starterDeck": "OKAMAKIRI",
+      "type": "ENHANCEMENT",
+      "color": null,
+      "cost": 0,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": [
+        {
+          "stat": "AP",
+          "amount": 300
+        }
+      ],
+      "tags": [
+        "starter",
+        "enhancement",
+        "ap-buff"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 107/130、強化、cost0、AP+300",
+        "公式Q&A: オオカマキリのカマ連撃では1回目・2回目とも+300適用"
+      ],
+      "verificationNotes": "スターター強化。装着虫のAP+300。attachment/enhancementEffects基盤で実装。カマ連撃の両回に適用。"
+    },
+    {
+      "id": "minomushi_no_kakuremino",
+      "officialNumber": "108/130",
+      "name": "蓑虫の隠れ蓑",
+      "set": "STARTER",
+      "rarity": "N",
+      "starterDeck": "KABUTOMUSHI",
+      "type": "ENHANCEMENT",
+      "color": null,
+      "cost": 0,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [],
+      "cardEffects": [],
+      "enhancementEffects": [
+        {
+          "stat": "HP",
+          "amount": 500
+        }
+      ],
+      "tags": [
+        "starter",
+        "enhancement",
+        "hp-buff",
+        "blocked-currenthp"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "実カード画像照合: 108/130、強化、cost0",
+        "公式ルール: 強化は自分の虫のみ。複数装着可。装着虫が場を離れたら強化カードも破壊(捨て札へ)。"
+      ],
+      "verificationNotes": "スターター強化カード。自分の虫1体に装着。HP+500。装着虫離脱時DISCARD。【BLOCKED】装着時 currentHp 挙動は公式未確認。max増加のみ、currentHp変化なしで暫定実装。"
+    },
+    {
+      "id": "niji_no_kakehashi",
+      "officialNumber": "118/130",
+      "name": "虹の架け橋",
+      "set": "STARTER",
+      "rarity": "R",
+      "starterDeck": "OKAMAKIRI",
+      "type": "SPELL",
+      "color": null,
+      "cost": 1,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [],
+      "cardEffects": [
+        {
+          "type": "RETRIEVE_FROM_DISCARD",
+          "cardType": "INSECT"
+        }
+      ],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "spell",
+        "discard-recovery"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 118/130、術、R、cost1",
+        "公式カードデータ: 効果「自分の捨て札の虫を１つ選び、手札に加える。」"
+      ],
+      "verificationNotes": "スターター術。捨て札の虫1体を手札に加える。虫限定(術・強化は不可)。捨て札に虫がなければ使用可能だが効果は空振り。使用後自身はDISCARD。"
+    },
+    {
+      "id": "jinkaichu_no_bakunetsudan",
+      "officialNumber": "124/130",
+      "name": "塵芥虫の爆熱弾",
+      "set": "STARTER",
+      "rarity": "R",
+      "starterDeck": "KABUTOMUSHI",
+      "type": "SPELL",
+      "color": null,
+      "cost": 1,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [],
+      "cardEffects": [
+        {
+          "type": "DEAL_DAMAGE_TO_TARGET",
+          "target": "OPPONENT_FIELD_INSECT",
+          "amount": 600,
+          "ignoreAttributeMultiplier": true
+        }
+      ],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "spell",
+        "fixed-damage"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式カードデータ: 124/130、術、cost1、相手虫1体600ダメージ",
+        "公式Q&A: 色倍率なし。爆熱弾単体破壊では縄張りドローなし。攻撃最終ダメージで破壊なら縄張りドローあり",
+        "公式Q&A: 相手場に虫がいなければ使用不可。擬態は術targetingまで禁止しない"
+      ],
+      "verificationNotes": "スターター術。相手虫1体へ600固定ダメージ(色倍率無視)。対象が擬態中でも術対象可。自力破壊なら縄張りドローなし、攻撃トドメならあり。"
+    },
+    {
+      "id": "mushi_no_ibuki",
+      "officialNumber": null,
+      "name": "蟲の息吹",
+      "set": "STARTER",
+      "rarity": null,
+      "starterDeck": "KABUTOMUSHI",
+      "type": "SPELL",
+      "color": null,
+      "cost": 1,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [],
+      "cardEffects": [
+        {
+          "type": "MOVE_SELF",
+          "from": "HAND",
+          "to": "FOOD"
+        }
+      ],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "spell"
+      ],
+      "implementationStatus": "SPEC_COMPLETE",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "公式Q&A: 蟲の息吹をエサ場に置いたとき、その分の1コストは使用できない"
+      ],
+      "verificationNotes": "公式Q&Aに基づく。使用後エサ+1、コストは支払い分のみ減り再獲得されない。"
+    },
+    {
+      "id": "batta_no_kyousou",
+      "officialNumber": "129/130",
+      "name": "飛蝗の凶相",
+      "set": "STARTER",
+      "rarity": "N",
+      "starterDeck": "KABUTOMUSHI",
+      "type": "SPELL",
+      "color": null,
+      "cost": 0,
+      "baseHp": null,
+      "skills": [],
+      "passiveAbilities": [],
+      "cardEffects": [
+        {
+          "type": "APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD",
+          "id": "batta_no_kyousou_ap_up",
+          "stat": "AP",
+          "amount": 200
+        }
+      ],
+      "enhancementEffects": null,
+      "tags": [
+        "starter",
+        "spell",
+        "stat-modifier",
+        "ap-buff"
+      ],
+      "implementationStatus": "TESTED",
+      "sourceLevel": "A",
+      "sourceRefs": [
+        "実カード画像照合: 129/130、術、cost0",
+        "公式裁定: 使用時点で場にいる虫のみAP+200。ターン終了まで。使用後に場へ出た虫は対象外。"
+      ],
+      "verificationNotes": "スターター術カード。使用時点で自分FIELD全虫へAP+200(ターン終了まで)。スナップショット適用。"
+    }
+  ]
+}
+

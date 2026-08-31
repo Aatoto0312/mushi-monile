@@ -1,0 +1,3162 @@
+{
+  "schemaVersion": "mushijingi-card-db/1.0",
+  "dataVersion": "starter-v1-shadow/1.0",
+  "identities": [
+    {
+      "canonicalCardId": "ginyanma",
+      "canonicalName": "ギンヤンマ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "okamakiri",
+      "canonicalName": "オオカマキリ",
+      "tags": [
+        "starter",
+        "continuous-attack",
+        "sacrifice-cost"
+      ]
+    },
+    {
+      "canonicalCardId": "kooniyanma",
+      "canonicalName": "コオニヤンマ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "seakakogegumo",
+      "canonicalName": "セアカゴケグモ",
+      "tags": [
+        "starter",
+        "usage-limit"
+      ]
+    },
+    {
+      "canonicalCardId": "akiakane",
+      "canonicalName": "アキアカネ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "namitentou",
+      "canonicalName": "ナミテントウ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "kabutomushi",
+      "canonicalName": "カブトムシ",
+      "tags": [
+        "starter",
+        "face-down-effect"
+      ]
+    },
+    {
+      "canonicalCardId": "namiageha",
+      "canonicalName": "ナミアゲハ",
+      "tags": [
+        "starter",
+        "force-attack-to-self"
+      ]
+    },
+    {
+      "canonicalCardId": "minminzemi",
+      "canonicalName": "ミンミンゼミ",
+      "tags": [
+        "starter",
+        "tobidasu"
+      ]
+    },
+    {
+      "canonicalCardId": "kanabun",
+      "canonicalName": "カナブン",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "higurashi",
+      "canonicalName": "ヒグラシ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "tonosamabatta",
+      "canonicalName": "トノサマバッタ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "namiageha_larva",
+      "canonicalName": "ナミアゲハ（幼虫）",
+      "tags": [
+        "starter",
+        "stat-modifier",
+        "ap-reduction"
+      ]
+    },
+    {
+      "canonicalCardId": "nanafushimodoki",
+      "canonicalName": "ナナフシモドキ",
+      "tags": [
+        "starter",
+        "gitai"
+      ]
+    },
+    {
+      "canonicalCardId": "nijuuyaahoshitentou",
+      "canonicalName": "ニジュウヤホシテントウ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "wataaburamushi",
+      "canonicalName": "ワタアブラムシ",
+      "tags": [
+        "starter"
+      ]
+    },
+    {
+      "canonicalCardId": "tamamushiiro_no_uka",
+      "canonicalName": "玉虫色の羽化",
+      "tags": [
+        "starter",
+        "enhancement",
+        "color-override"
+      ]
+    },
+    {
+      "canonicalCardId": "hariganemushi_no_michizure",
+      "canonicalName": "針金虫の道連れ",
+      "tags": [
+        "starter",
+        "enhancement",
+        "death-trigger"
+      ]
+    },
+    {
+      "canonicalCardId": "kamikiri_no_daigaku",
+      "canonicalName": "天牛の大顎",
+      "tags": [
+        "starter",
+        "enhancement",
+        "ap-buff"
+      ]
+    },
+    {
+      "canonicalCardId": "minomushi_no_kakuremino",
+      "canonicalName": "蓑虫の隠れ蓑",
+      "tags": [
+        "starter",
+        "enhancement",
+        "hp-buff",
+        "blocked-currenthp"
+      ]
+    },
+    {
+      "canonicalCardId": "niji_no_kakehashi",
+      "canonicalName": "虹の架け橋",
+      "tags": [
+        "starter",
+        "spell",
+        "discard-recovery"
+      ]
+    },
+    {
+      "canonicalCardId": "jinkaichu_no_bakunetsudan",
+      "canonicalName": "塵芥虫の爆熱弾",
+      "tags": [
+        "starter",
+        "spell",
+        "fixed-damage"
+      ]
+    },
+    {
+      "canonicalCardId": "mushi_no_ibuki",
+      "canonicalName": "蟲の息吹",
+      "tags": [
+        "starter",
+        "spell"
+      ]
+    },
+    {
+      "canonicalCardId": "batta_no_kyousou",
+      "canonicalName": "飛蝗の凶相",
+      "tags": [
+        "starter",
+        "spell",
+        "stat-modifier",
+        "ap-buff"
+      ]
+    }
+  ],
+  "printings": [
+    {
+      "printingId": "printing:starter:006:standard",
+      "canonicalCardId": "ginyanma",
+      "rulesId": "rules:ginyanma:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 6,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:ginyanma:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "006/130",
+        "verificationRef": "verification:ginyanma:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:ginyanma:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:007:standard",
+      "canonicalCardId": "okamakiri",
+      "rulesId": "rules:okamakiri:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 7,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:okamakiri:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "007/130",
+        "verificationRef": "verification:okamakiri:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "SR",
+        "verificationRef": "verification:okamakiri:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:011:standard",
+      "canonicalCardId": "kooniyanma",
+      "rulesId": "rules:kooniyanma:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 11,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:kooniyanma:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "011/130",
+        "verificationRef": "verification:kooniyanma:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:kooniyanma:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:022:standard",
+      "canonicalCardId": "seakakogegumo",
+      "rulesId": "rules:seakakogegumo:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 22,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:seakakogegumo:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "022/130",
+        "verificationRef": "verification:seakakogegumo:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:seakakogegumo:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:024:standard",
+      "canonicalCardId": "akiakane",
+      "rulesId": "rules:akiakane:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 24,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:akiakane:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "024/130",
+        "verificationRef": "verification:akiakane:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:akiakane:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:030:standard",
+      "canonicalCardId": "namitentou",
+      "rulesId": "rules:namitentou:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 30,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:namitentou:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "030/130",
+        "verificationRef": "verification:namitentou:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:namitentou:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:040:standard",
+      "canonicalCardId": "kabutomushi",
+      "rulesId": "rules:kabutomushi:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 40,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:kabutomushi:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "040/130",
+        "verificationRef": "verification:kabutomushi:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "SR",
+        "verificationRef": "verification:kabutomushi:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:044:standard",
+      "canonicalCardId": "namiageha",
+      "rulesId": "rules:namiageha:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 44,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:namiageha:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "044/130",
+        "verificationRef": "verification:namiageha:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:namiageha:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:047:standard",
+      "canonicalCardId": "minminzemi",
+      "rulesId": "rules:minminzemi:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 47,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:minminzemi:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "047/130",
+        "verificationRef": "verification:minminzemi:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:minminzemi:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:063:standard",
+      "canonicalCardId": "kanabun",
+      "rulesId": "rules:kanabun:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 63,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:kanabun:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "063/130",
+        "verificationRef": "verification:kanabun:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:kanabun:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:064:standard",
+      "canonicalCardId": "higurashi",
+      "rulesId": "rules:higurashi:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 64,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:higurashi:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "064/130",
+        "verificationRef": "verification:higurashi:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:higurashi:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:071:standard",
+      "canonicalCardId": "tonosamabatta",
+      "rulesId": "rules:tonosamabatta:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 71,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:tonosamabatta:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "071/130",
+        "verificationRef": "verification:tonosamabatta:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:tonosamabatta:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:079:standard",
+      "canonicalCardId": "namiageha_larva",
+      "rulesId": "rules:namiageha_larva:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 79,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:namiageha_larva:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "079/130",
+        "verificationRef": "verification:namiageha_larva:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:namiageha_larva:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:080:standard",
+      "canonicalCardId": "nanafushimodoki",
+      "rulesId": "rules:nanafushimodoki:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 80,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:nanafushimodoki:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "080/130",
+        "verificationRef": "verification:nanafushimodoki:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:nanafushimodoki:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:091:standard",
+      "canonicalCardId": "nijuuyaahoshitentou",
+      "rulesId": "rules:nijuuyaahoshitentou:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 91,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:nijuuyaahoshitentou:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "091/130",
+        "verificationRef": "verification:nijuuyaahoshitentou:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:nijuuyaahoshitentou:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:095:standard",
+      "canonicalCardId": "wataaburamushi",
+      "rulesId": "rules:wataaburamushi:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 95,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:wataaburamushi:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "095/130",
+        "verificationRef": "verification:wataaburamushi:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:wataaburamushi:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:101:standard",
+      "canonicalCardId": "tamamushiiro_no_uka",
+      "rulesId": "rules:tamamushiiro_no_uka:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 101,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:tamamushiiro_no_uka:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "101/130",
+        "verificationRef": "verification:tamamushiiro_no_uka:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:tamamushiiro_no_uka:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:106:standard",
+      "canonicalCardId": "hariganemushi_no_michizure",
+      "rulesId": "rules:hariganemushi_no_michizure:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 106,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:hariganemushi_no_michizure:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "106/130",
+        "verificationRef": "verification:hariganemushi_no_michizure:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:hariganemushi_no_michizure:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:107:standard",
+      "canonicalCardId": "kamikiri_no_daigaku",
+      "rulesId": "rules:kamikiri_no_daigaku:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 107,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:kamikiri_no_daigaku:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "107/130",
+        "verificationRef": "verification:kamikiri_no_daigaku:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:kamikiri_no_daigaku:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:108:standard",
+      "canonicalCardId": "minomushi_no_kakuremino",
+      "rulesId": "rules:minomushi_no_kakuremino:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 108,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:minomushi_no_kakuremino:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "108/130",
+        "verificationRef": "verification:minomushi_no_kakuremino:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:minomushi_no_kakuremino:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:118:standard",
+      "canonicalCardId": "niji_no_kakehashi",
+      "rulesId": "rules:niji_no_kakehashi:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "OKAMAKIRI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 118,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:niji_no_kakehashi:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "118/130",
+        "verificationRef": "verification:niji_no_kakehashi:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:niji_no_kakehashi:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:124:standard",
+      "canonicalCardId": "jinkaichu_no_bakunetsudan",
+      "rulesId": "rules:jinkaichu_no_bakunetsudan:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 124,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:jinkaichu_no_bakunetsudan:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "124/130",
+        "verificationRef": "verification:jinkaichu_no_bakunetsudan:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "R",
+        "verificationRef": "verification:jinkaichu_no_bakunetsudan:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:unresolved-mushi_no_ibuki:standard",
+      "canonicalCardId": "mushi_no_ibuki",
+      "rulesId": "rules:mushi_no_ibuki:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "blocked",
+        "blockedReason": "starter_cards_and_catalog_disagree",
+        "verificationRef": "verification:mushi_no_ibuki:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "blocked",
+        "blockedReason": "starter_cards_and_catalog_disagree",
+        "verificationRef": "verification:mushi_no_ibuki:collector-number"
+      },
+      "officialNumberCandidates": [
+        "127/130"
+      ],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:mushi_no_ibuki:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    },
+    {
+      "printingId": "printing:starter:129:standard",
+      "canonicalCardId": "batta_no_kyousou",
+      "rulesId": "rules:batta_no_kyousou:starter-v1",
+      "setId": "STARTER",
+      "starterDeck": "KABUTOMUSHI",
+      "collectorNumber": {
+        "state": "known",
+        "value": {
+          "number": 129,
+          "total": 130,
+          "suffix": null
+        },
+        "verificationRef": "verification:batta_no_kyousou:collector-number"
+      },
+      "officialNumberDisplay": {
+        "state": "known",
+        "value": "129/130",
+        "verificationRef": "verification:batta_no_kyousou:collector-number"
+      },
+      "officialNumberCandidates": [],
+      "rarity": {
+        "state": "known",
+        "value": "N",
+        "verificationRef": "verification:batta_no_kyousou:rarity"
+      },
+      "artwork": {
+        "variantId": "standard",
+        "isAlternateArt": false
+      },
+      "reprint": {
+        "isReprint": false
+      }
+    }
+  ],
+  "rules": [
+    {
+      "rulesId": "rules:ginyanma:starter-v1",
+      "canonicalCardId": "ginyanma",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "RED"
+      },
+      "cost": {
+        "state": "known",
+        "value": 5
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 1100
+      },
+      "skills": [
+        {
+          "id": "tobikakaru",
+          "name": "とびかかる",
+          "baseAp": 700,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:ginyanma:rules"
+    },
+    {
+      "rulesId": "rules:okamakiri:starter-v1",
+      "canonicalCardId": "okamakiri",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "RED"
+      },
+      "cost": {
+        "state": "known",
+        "value": 4
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 800
+      },
+      "skills": [
+        {
+          "id": "tomogui",
+          "name": "共食い",
+          "baseAp": 800,
+          "additionalCost": [
+            {
+              "type": "SACRIFICE_OWN_INSECT",
+              "amount": 1
+            }
+          ],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "kama_renshoku",
+          "name": "カマ連撃",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [
+            {
+              "type": "CONTINUOUS_ATTACK",
+              "maxCount": 2,
+              "immediate": true,
+              "requiresOpponentFieldInsect": true
+            }
+          ],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:okamakiri:rules"
+    },
+    {
+      "rulesId": "rules:kooniyanma:starter-v1",
+      "canonicalCardId": "kooniyanma",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "RED"
+      },
+      "cost": {
+        "state": "known",
+        "value": 4
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 800
+      },
+      "skills": [
+        {
+          "id": "tobikakaru",
+          "name": "とびかかる",
+          "baseAp": 500,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:kooniyanma:rules"
+    },
+    {
+      "rulesId": "rules:seakakogegumo:starter-v1",
+      "canonicalCardId": "seakakogegumo",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "RED"
+      },
+      "cost": {
+        "state": "known",
+        "value": 2
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 400
+      },
+      "skills": [
+        {
+          "id": "kamu",
+          "name": "かむ",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "dokubari",
+          "name": "毒針",
+          "baseAp": 400,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": "ONCE_PER_FIELD_STAY",
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:seakakogegumo:rules"
+    },
+    {
+      "rulesId": "rules:akiakane:starter-v1",
+      "canonicalCardId": "akiakane",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "RED"
+      },
+      "cost": {
+        "state": "known",
+        "value": 2
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 500
+      },
+      "skills": [
+        {
+          "id": "tobikakaru",
+          "name": "とびかかる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:akiakane:rules"
+    },
+    {
+      "rulesId": "rules:namitentou:starter-v1",
+      "canonicalCardId": "namitentou",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "RED"
+      },
+      "cost": {
+        "state": "known",
+        "value": 1
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 300
+      },
+      "skills": [
+        {
+          "id": "kamitsubusu",
+          "name": "かみつぶす",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:namitentou:rules"
+    },
+    {
+      "rulesId": "rules:kabutomushi:starter-v1",
+      "canonicalCardId": "kabutomushi",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "BLUE"
+      },
+      "cost": {
+        "state": "known",
+        "value": 4
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 800
+      },
+      "skills": [
+        {
+          "id": "tsuno_tosshin",
+          "name": "ツノ突進",
+          "baseAp": 500,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "sukoinage",
+          "name": "すくい投げ",
+          "baseAp": 0,
+          "additionalCost": [],
+          "effects": [
+            {
+              "type": "TURN_FACE_DOWN",
+              "target": "DEFENDER",
+              "duration": "UNTIL_END_OF_TURN"
+            }
+          ],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:kabutomushi:rules"
+    },
+    {
+      "rulesId": "rules:namiageha:starter-v1",
+      "canonicalCardId": "namiageha",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "BLUE"
+      },
+      "cost": {
+        "state": "known",
+        "value": 4
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 1100
+      },
+      "skills": [
+        {
+          "id": "suitsukusu",
+          "name": "すいつくす",
+          "baseAp": 300,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [
+        {
+          "id": "rinpun",
+          "name": "＜りんぷん＞",
+          "baseAp": null,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": "FORCE_ATTACK_TO_SELF_GROUP",
+          "timing": "PASSIVE"
+        }
+      ],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:namiageha:rules"
+    },
+    {
+      "rulesId": "rules:minminzemi:starter-v1",
+      "canonicalCardId": "minminzemi",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "BLUE"
+      },
+      "cost": {
+        "state": "known",
+        "value": 3
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 500
+      },
+      "skills": [
+        {
+          "id": "shiboritoru",
+          "name": "しぼりとる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [
+        {
+          "id": "tobidasu",
+          "name": "＜とびだす＞",
+          "baseAp": null,
+          "optional": true,
+          "timing": "TERRITORY_DRAW",
+          "effects": [
+            {
+              "type": "OFFER_SELF_TO_FIELD",
+              "condition": {
+                "type": "NO_OWN_FIELD_SKILL",
+                "skillId": "tobidasu"
+              }
+            }
+          ]
+        }
+      ],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:minminzemi:rules"
+    },
+    {
+      "rulesId": "rules:kanabun:starter-v1",
+      "canonicalCardId": "kanabun",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "BLUE"
+      },
+      "cost": {
+        "state": "known",
+        "value": 1
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 300
+      },
+      "skills": [
+        {
+          "id": "taiatari",
+          "name": "たいあたり",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:kanabun:rules"
+    },
+    {
+      "rulesId": "rules:higurashi:starter-v1",
+      "canonicalCardId": "higurashi",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "BLUE"
+      },
+      "cost": {
+        "state": "known",
+        "value": 2
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 200
+      },
+      "skills": [
+        {
+          "id": "shiboritoru",
+          "name": "しぼりとる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:higurashi:rules"
+    },
+    {
+      "rulesId": "rules:tonosamabatta:starter-v1",
+      "canonicalCardId": "tonosamabatta",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "GREEN"
+      },
+      "cost": {
+        "state": "known",
+        "value": 5
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 1200
+      },
+      "skills": [
+        {
+          "id": "kuraitsuku",
+          "name": "くらいつく",
+          "baseAp": 700,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:tonosamabatta:rules"
+    },
+    {
+      "rulesId": "rules:namiageha_larva:starter-v1",
+      "canonicalCardId": "namiageha_larva",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "GREEN"
+      },
+      "cost": {
+        "state": "known",
+        "value": 3
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 700
+      },
+      "skills": [
+        {
+          "id": "kajiru",
+          "name": "かじる",
+          "baseAp": 200,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        },
+        {
+          "id": "kusai_tsuno",
+          "name": "くさいツノ",
+          "baseAp": 0,
+          "additionalCost": [],
+          "effects": [
+            {
+              "type": "APPLY_STAT_MODIFIER",
+              "id": "kusai_tsuno_ap_down",
+              "stat": "AP",
+              "amount": -400,
+              "startTurnOffset": 1,
+              "endTurnOffset": 1
+            }
+          ],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:namiageha_larva:rules"
+    },
+    {
+      "rulesId": "rules:nanafushimodoki:starter-v1",
+      "canonicalCardId": "nanafushimodoki",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "GREEN"
+      },
+      "cost": {
+        "state": "known",
+        "value": 3
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 400
+      },
+      "skills": [
+        {
+          "id": "kaburitsuku",
+          "name": "かぶりつく",
+          "baseAp": 400,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [
+        {
+          "id": "gitai",
+          "name": "＜擬態＞",
+          "baseAp": null,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ENTER_FIELD",
+          "gitai": true
+        }
+      ],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:nanafushimodoki:rules"
+    },
+    {
+      "rulesId": "rules:nijuuyaahoshitentou:starter-v1",
+      "canonicalCardId": "nijuuyaahoshitentou",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "GREEN"
+      },
+      "cost": {
+        "state": "known",
+        "value": 2
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 300
+      },
+      "skills": [
+        {
+          "id": "kamitsubusu",
+          "name": "かみつぶす",
+          "baseAp": 300,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:nijuuyaahoshitentou:rules"
+    },
+    {
+      "rulesId": "rules:wataaburamushi:starter-v1",
+      "canonicalCardId": "wataaburamushi",
+      "type": {
+        "state": "known",
+        "value": "INSECT"
+      },
+      "color": {
+        "state": "known",
+        "value": "GREEN"
+      },
+      "cost": {
+        "state": "known",
+        "value": 1
+      },
+      "baseHp": {
+        "state": "known",
+        "value": 300
+      },
+      "skills": [
+        {
+          "id": "suu",
+          "name": "すう",
+          "baseAp": 100,
+          "additionalCost": [],
+          "effects": [],
+          "usageLimit": null,
+          "targetRule": null,
+          "timing": "ATTACK"
+        }
+      ],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:wataaburamushi:rules"
+    },
+    {
+      "rulesId": "rules:tamamushiiro_no_uka:starter-v1",
+      "canonicalCardId": "tamamushiiro_no_uka",
+      "type": {
+        "state": "known",
+        "value": "ENHANCEMENT"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 2
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "known",
+        "value": [
+          {
+            "type": "COLOR_OVERRIDE",
+            "colors": [
+              "RED",
+              "BLUE",
+              "GREEN"
+            ]
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:tamamushiiro_no_uka:rules"
+    },
+    {
+      "rulesId": "rules:hariganemushi_no_michizure:starter-v1",
+      "canonicalCardId": "hariganemushi_no_michizure",
+      "type": {
+        "state": "known",
+        "value": "ENHANCEMENT"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 0
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "known",
+        "value": []
+      },
+      "passiveEffects": [
+        {
+          "id": "michizure",
+          "name": "道連れ",
+          "timing": "ON_DESTROYED",
+          "condition": {
+            "type": "DESTROYED_BY_OPPONENT_ATTACK"
+          },
+          "effects": [
+            {
+              "type": "DESTROY_SOURCE"
+            }
+          ]
+        }
+      ],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:hariganemushi_no_michizure:rules"
+    },
+    {
+      "rulesId": "rules:kamikiri_no_daigaku:starter-v1",
+      "canonicalCardId": "kamikiri_no_daigaku",
+      "type": {
+        "state": "known",
+        "value": "ENHANCEMENT"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 0
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "known",
+        "value": [
+          {
+            "stat": "AP",
+            "amount": 300
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:kamikiri_no_daigaku:rules"
+    },
+    {
+      "rulesId": "rules:minomushi_no_kakuremino:starter-v1",
+      "canonicalCardId": "minomushi_no_kakuremino",
+      "type": {
+        "state": "known",
+        "value": "ENHANCEMENT"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 0
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_spell"
+      },
+      "enhancementEffects": {
+        "state": "known",
+        "value": [
+          {
+            "stat": "HP",
+            "amount": 500,
+            "currentHpPolicy": {
+              "state": "blocked",
+              "blockedReason": "official_current_hp_behavior_unconfirmed",
+              "verificationRef": "verification:minomushi_no_kakuremino:current-hp-policy"
+            }
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:minomushi_no_kakuremino:rules"
+    },
+    {
+      "rulesId": "rules:niji_no_kakehashi:starter-v1",
+      "canonicalCardId": "niji_no_kakehashi",
+      "type": {
+        "state": "known",
+        "value": "SPELL"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 1
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "known",
+        "value": [
+          {
+            "type": "RETRIEVE_FROM_DISCARD",
+            "cardType": "INSECT"
+          }
+        ]
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:niji_no_kakehashi:rules"
+    },
+    {
+      "rulesId": "rules:jinkaichu_no_bakunetsudan:starter-v1",
+      "canonicalCardId": "jinkaichu_no_bakunetsudan",
+      "type": {
+        "state": "known",
+        "value": "SPELL"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 1
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "known",
+        "value": [
+          {
+            "type": "DEAL_DAMAGE_TO_TARGET",
+            "target": "OPPONENT_FIELD_INSECT",
+            "amount": 600,
+            "ignoreAttributeMultiplier": true
+          }
+        ]
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:jinkaichu_no_bakunetsudan:rules"
+    },
+    {
+      "rulesId": "rules:mushi_no_ibuki:starter-v1",
+      "canonicalCardId": "mushi_no_ibuki",
+      "type": {
+        "state": "known",
+        "value": "SPELL"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 1
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "known",
+        "value": [
+          {
+            "type": "MOVE_SELF",
+            "from": "HAND",
+            "to": "FOOD"
+          }
+        ]
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "SPEC_COMPLETE"
+      },
+      "verificationRef": "verification:mushi_no_ibuki:rules"
+    },
+    {
+      "rulesId": "rules:batta_no_kyousou:starter-v1",
+      "canonicalCardId": "batta_no_kyousou",
+      "type": {
+        "state": "known",
+        "value": "SPELL"
+      },
+      "color": {
+        "state": "unknown"
+      },
+      "cost": {
+        "state": "known",
+        "value": 0
+      },
+      "baseHp": {
+        "state": "not_applicable",
+        "reason": "card_type_has_no_hp"
+      },
+      "skills": [],
+      "traits": [],
+      "spellEffects": {
+        "state": "known",
+        "value": [
+          {
+            "type": "APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD",
+            "id": "batta_no_kyousou_ap_up",
+            "stat": "AP",
+            "amount": 200
+          }
+        ]
+      },
+      "enhancementEffects": {
+        "state": "not_applicable",
+        "reason": "card_type_is_not_enhancement"
+      },
+      "passiveEffects": [],
+      "implementationStatus": {
+        "state": "known",
+        "value": "TESTED"
+      },
+      "verificationRef": "verification:batta_no_kyousou:rules"
+    }
+  ],
+  "verifications": [
+    {
+      "verificationId": "verification:ginyanma:collector-number",
+      "entityId": "printing:starter:006:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:ginyanma:rarity",
+      "entityId": "printing:starter:006:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:ginyanma:rules",
+      "entityId": "rules:ginyanma:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:okamakiri:collector-number",
+      "entityId": "printing:starter:007:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 7/130、赤、cost4、HP800、共食い800、カマ連撃200",
+        "公式Q&A: カマ連撃は攻撃後、相手場に虫がいればもう1度使用可能(最大2回)",
+        "公式Q&A: 共食いは使用時にこの虫以外の自虫1体を選んで破壊",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:okamakiri:rarity",
+      "entityId": "printing:starter:007:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:okamakiri:rules",
+      "entityId": "rules:okamakiri:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター虫。通常攻撃「共食い」AP800(自虫1体破壊コスト)。「カマ連撃」AP200は攻撃後、相手場に虫がいれば連続攻撃最大2回。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 7/130、赤、cost4、HP800、共食い800、カマ連撃200",
+        "公式Q&A: カマ連撃は攻撃後、相手場に虫がいればもう1度使用可能(最大2回)",
+        "公式Q&A: 共食いは使用時にこの虫以外の自虫1体を選んで破壊"
+      ]
+    },
+    {
+      "verificationId": "verification:kooniyanma:collector-number",
+      "entityId": "printing:starter:011:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kooniyanma:rarity",
+      "entityId": "printing:starter:011:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kooniyanma:rules",
+      "entityId": "rules:kooniyanma:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:seakakogegumo:collector-number",
+      "entityId": "printing:starter:022:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 22/130、赤、cost2、HP400、かむ100、毒針400",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:seakakogegumo:rarity",
+      "entityId": "printing:starter:022:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:seakakogegumo:rules",
+      "entityId": "rules:seakakogegumo:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター虫。通常攻撃「かむ」AP100。特殊攻撃「毒針」AP400は場にいる間1回のみ使用可。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 22/130、赤、cost2、HP400、かむ100、毒針400"
+      ]
+    },
+    {
+      "verificationId": "verification:akiakane:collector-number",
+      "entityId": "printing:starter:024:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:akiakane:rarity",
+      "entityId": "printing:starter:024:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:akiakane:rules",
+      "entityId": "rules:akiakane:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:namitentou:collector-number",
+      "entityId": "printing:starter:030:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:namitentou:rarity",
+      "entityId": "printing:starter:030:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:namitentou:rules",
+      "entityId": "rules:namitentou:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:kabutomushi:collector-number",
+      "entityId": "printing:starter:040:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 40/130、青、cost4、HP800、ツノ突進500、すくい投げ0",
+        "公式Q&A: すくい投げで裏返された虫は場にいない扱い、攻撃・効果対象不可、強化も裏返る、ターン終了時に表戻り",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kabutomushi:rarity",
+      "entityId": "printing:starter:040:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kabutomushi:rules",
+      "entityId": "rules:kabutomushi:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター虫。通常攻撃「ツノ突進」AP500。「すくい投げ」AP0で相手虫1体をターン終了時まで裏返し。裏向き虫は場にいない扱い(攻撃・効果対象不可)、強化も裏返り、ターン終了時に表向きへ戻る。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 40/130、青、cost4、HP800、ツノ突進500、すくい投げ0",
+        "公式Q&A: すくい投げで裏返された虫は場にいない扱い、攻撃・効果対象不可、強化も裏返る、ターン終了時に表戻り"
+      ]
+    },
+    {
+      "verificationId": "verification:namiageha:collector-number",
+      "entityId": "printing:starter:044:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 44/130、青、cost4、HP1100、すいつくす300",
+        "蟲神器公式 第1弾Q&A・公式Q&A: ＜りんぷん＞は相手の攻撃対象を自分(この虫)のみに限定する",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:namiageha:rarity",
+      "entityId": "printing:starter:044:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:namiageha:rules",
+      "entityId": "rules:namiageha:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター虫。通常攻撃「すいつくす」AP300。特殊能力「＜りんぷん＞」は相手がこの虫以外を攻撃対象にできない。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 44/130、青、cost4、HP1100、すいつくす300",
+        "蟲神器公式 第1弾Q&A・公式Q&A: ＜りんぷん＞は相手の攻撃対象を自分(この虫)のみに限定する"
+      ]
+    },
+    {
+      "verificationId": "verification:minminzemi:collector-number",
+      "entityId": "printing:starter:047:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式 遊び方: ＜とびだす＞は縄張りから引かれた時に発揮",
+        "公式 ゲームルールQ&A: 裏返った虫は場にいない扱いなので＜とびだす＞可能",
+        "公式 第1弾Q&A: 複数縄張りドローは1枚ずつ処理し、＜とびだす＞使用可否を毎回判断",
+        "実カード／カードデータ照合: 47/130、青、cost3、HP500、しぼりとる200",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:minminzemi:rarity",
+      "entityId": "printing:starter:047:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:minminzemi:rules",
+      "entityId": "rules:minminzemi:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。通常攻撃「しぼりとる」AP200。特殊技「＜とびだす＞」は縄張りドロー時に任意発動。コスト不要、自分の場に有効な＜とびだす＞持ちがいなければ使用可。"
+      ],
+      "sourceRefs": [
+        "公式 遊び方: ＜とびだす＞は縄張りから引かれた時に発揮",
+        "公式 ゲームルールQ&A: 裏返った虫は場にいない扱いなので＜とびだす＞可能",
+        "公式 第1弾Q&A: 複数縄張りドローは1枚ずつ処理し、＜とびだす＞使用可否を毎回判断",
+        "実カード／カードデータ照合: 47/130、青、cost3、HP500、しぼりとる200"
+      ]
+    },
+    {
+      "verificationId": "verification:kanabun:collector-number",
+      "entityId": "printing:starter:063:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kanabun:rarity",
+      "entityId": "printing:starter:063:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kanabun:rules",
+      "entityId": "rules:kanabun:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:higurashi:collector-number",
+      "entityId": "printing:starter:064:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:higurashi:rarity",
+      "entityId": "printing:starter:064:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:higurashi:rules",
+      "entityId": "rules:higurashi:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:tonosamabatta:collector-number",
+      "entityId": "printing:starter:071:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:tonosamabatta:rarity",
+      "entityId": "printing:starter:071:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:tonosamabatta:rules",
+      "entityId": "rules:tonosamabatta:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:namiageha_larva:collector-number",
+      "entityId": "printing:starter:079:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 79/130、緑、cost3、HP700、かじる200、くさいツノ0",
+        "公式裁定: くさいツノは次のターン、対象虫の攻撃力を400下げる。対象が場を離れればmodifier消失",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:namiageha_larva:rarity",
+      "entityId": "printing:starter:079:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:namiageha_larva:rules",
+      "entityId": "rules:namiageha_larva:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター虫。通常攻撃「かじる」AP200。効果付き攻撃「くさいツノ」AP0、次のターン対象虫AP-400。擬態中の虫には不可。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 79/130、緑、cost3、HP700、かじる200、くさいツノ0",
+        "公式裁定: くさいツノは次のターン、対象虫の攻撃力を400下げる。対象が場を離れればmodifier消失"
+      ]
+    },
+    {
+      "verificationId": "verification:nanafushimodoki:collector-number",
+      "entityId": "printing:starter:080:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "実カード画像・カードデータ照合: 80/130、緑、cost3、HP400、かぶりつく400",
+        "蟲神器公式Q&A: ＜擬態＞は場に出た次の相手のターンに攻撃を受けない",
+        "2026年1月15日 公式裁定変更: 現在はカードテキスト通り「この虫から見て、場に出た次の相手のターン」に攻撃を受けない",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:nanafushimodoki:rarity",
+      "entityId": "printing:starter:080:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:nanafushimodoki:rules",
+      "entityId": "rules:nanafushimodoki:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター虫。通常攻撃「かぶりつく」AP400。特殊能力「＜擬態＞」は場に出た次の相手のターンのみ攻撃対象にならず、他に攻撃対象とならない虫がいなければ直接攻撃を許す。"
+      ],
+      "sourceRefs": [
+        "実カード画像・カードデータ照合: 80/130、緑、cost3、HP400、かぶりつく400",
+        "蟲神器公式Q&A: ＜擬態＞は場に出た次の相手のターンに攻撃を受けない",
+        "2026年1月15日 公式裁定変更: 現在はカードテキスト通り「この虫から見て、場に出た次の相手のターン」に攻撃を受けない"
+      ]
+    },
+    {
+      "verificationId": "verification:nijuuyaahoshitentou:collector-number",
+      "entityId": "printing:starter:091:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:nijuuyaahoshitentou:rarity",
+      "entityId": "printing:starter:091:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:nijuuyaahoshitentou:rules",
+      "entityId": "rules:nijuuyaahoshitentou:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:wataaburamushi:collector-number",
+      "entityId": "printing:starter:095:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:wataaburamushi:rarity",
+      "entityId": "printing:starter:095:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:wataaburamushi:rules",
+      "entityId": "rules:wataaburamushi:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター基本虫。追加効果なし。"
+      ],
+      "sourceRefs": [
+        "公式スターターカードデータ"
+      ]
+    },
+    {
+      "verificationId": "verification:tamamushiiro_no_uka:collector-number",
+      "entityId": "printing:starter:101:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 101/130、強化、R、cost2",
+        "公式カードデータ: 効果「この虫の色を赤か青か緑に変える。」",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:tamamushiiro_no_uka:rarity",
+      "entityId": "printing:starter:101:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:tamamushiiro_no_uka:rules",
+      "entityId": "rules:tamamushiiro_no_uka:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター強化。装着虫の色を赤/青/緑から選択して変更。色変更は装着中持続。虫が場を離れれば強化カードもDISCARDへ行き色は戻る。エンジンはgetEffectiveColor()でattachmentのCOLOR_OVERRIDEを参照。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 101/130、強化、R、cost2",
+        "公式カードデータ: 効果「この虫の色を赤か青か緑に変える。」"
+      ]
+    },
+    {
+      "verificationId": "verification:hariganemushi_no_michizure:collector-number",
+      "entityId": "printing:starter:106:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 106/130、強化、cost0",
+        "公式Q&A: 装着虫が相手虫の攻撃で破壊された時、死亡誘発として相手虫を破壊",
+        "公式Q&A: 攻撃破壊と術/能力/共食い破壊を区別、同時死亡誘発はプレイヤー選択",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:hariganemushi_no_michizure:rarity",
+      "entityId": "printing:starter:106:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:hariganemushi_no_michizure:rules",
+      "entityId": "rules:hariganemushi_no_michizure:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター強化。装着虫が相手攻撃で破壊された時、攻撃元の虫を道連れ破壊。destruction cause判定が必要。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 106/130、強化、cost0",
+        "公式Q&A: 装着虫が相手虫の攻撃で破壊された時、死亡誘発として相手虫を破壊",
+        "公式Q&A: 攻撃破壊と術/能力/共食い破壊を区別、同時死亡誘発はプレイヤー選択"
+      ]
+    },
+    {
+      "verificationId": "verification:kamikiri_no_daigaku:collector-number",
+      "entityId": "printing:starter:107:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 107/130、強化、cost0、AP+300",
+        "公式Q&A: オオカマキリのカマ連撃では1回目・2回目とも+300適用",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kamikiri_no_daigaku:rarity",
+      "entityId": "printing:starter:107:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:kamikiri_no_daigaku:rules",
+      "entityId": "rules:kamikiri_no_daigaku:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター強化。装着虫のAP+300。attachment/enhancementEffects基盤で実装。カマ連撃の両回に適用。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 107/130、強化、cost0、AP+300",
+        "公式Q&A: オオカマキリのカマ連撃では1回目・2回目とも+300適用"
+      ]
+    },
+    {
+      "verificationId": "verification:minomushi_no_kakuremino:collector-number",
+      "entityId": "printing:starter:108:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 108/130、強化、cost0",
+        "公式ルール: 強化は自分の虫のみ。複数装着可。装着虫が場を離れたら強化カードも破壊(捨て札へ)。",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:minomushi_no_kakuremino:rarity",
+      "entityId": "printing:starter:108:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:minomushi_no_kakuremino:rules",
+      "entityId": "rules:minomushi_no_kakuremino:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター強化カード。自分の虫1体に装着。HP+500。装着虫離脱時DISCARD。【BLOCKED】装着時 currentHp 挙動は公式未確認。max増加のみ、currentHp変化なしで暫定実装。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 108/130、強化、cost0",
+        "公式ルール: 強化は自分の虫のみ。複数装着可。装着虫が場を離れたら強化カードも破壊(捨て札へ)。"
+      ]
+    },
+    {
+      "verificationId": "verification:minomushi_no_kakuremino:current-hp-policy",
+      "entityId": "rules:minomushi_no_kakuremino:starter-v1",
+      "fieldPath": "/enhancementEffects/0/currentHpPolicy",
+      "status": "BLOCKED",
+      "notes": [
+        "最大HP増加時のcurrentHpの厳密な公式挙動は未確認。既存の暫定実装で解消しない。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/MUSHI_MANUAL.md",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:niji_no_kakehashi:collector-number",
+      "entityId": "printing:starter:118:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 118/130、術、R、cost1",
+        "公式カードデータ: 効果「自分の捨て札の虫を１つ選び、手札に加える。」",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:niji_no_kakehashi:rarity",
+      "entityId": "printing:starter:118:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:niji_no_kakehashi:rules",
+      "entityId": "rules:niji_no_kakehashi:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター術。捨て札の虫1体を手札に加える。虫限定(術・強化は不可)。捨て札に虫がなければ使用可能だが効果は空振り。使用後自身はDISCARD。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 118/130、術、R、cost1",
+        "公式カードデータ: 効果「自分の捨て札の虫を１つ選び、手札に加える。」"
+      ]
+    },
+    {
+      "verificationId": "verification:jinkaichu_no_bakunetsudan:collector-number",
+      "entityId": "printing:starter:124:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 124/130、術、cost1、相手虫1体600ダメージ",
+        "公式Q&A: 色倍率なし。爆熱弾単体破壊では縄張りドローなし。攻撃最終ダメージで破壊なら縄張りドローあり",
+        "公式Q&A: 相手場に虫がいなければ使用不可。擬態は術targetingまで禁止しない",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:jinkaichu_no_bakunetsudan:rarity",
+      "entityId": "printing:starter:124:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:jinkaichu_no_bakunetsudan:rules",
+      "entityId": "rules:jinkaichu_no_bakunetsudan:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター術。相手虫1体へ600固定ダメージ(色倍率無視)。対象が擬態中でも術対象可。自力破壊なら縄張りドローなし、攻撃トドメならあり。"
+      ],
+      "sourceRefs": [
+        "公式カードデータ: 124/130、術、cost1、相手虫1体600ダメージ",
+        "公式Q&A: 色倍率なし。爆熱弾単体破壊では縄張りドローなし。攻撃最終ダメージで破壊なら縄張りドローあり",
+        "公式Q&A: 相手場に虫がいなければ使用不可。擬態は術targetingまで禁止しない"
+      ]
+    },
+    {
+      "verificationId": "verification:mushi_no_ibuki:collector-number",
+      "entityId": "printing:starter:unresolved-mushi_no_ibuki:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "CONFLICTED",
+      "notes": [
+        "starter-cards.jsではnull、CARD_CATALOG.mdでは127/130。一次資料確認まで確定しない。"
+      ],
+      "sourceRefs": [
+        "js/cards/starter-cards.js: officialNumber=null",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md: officialNumber=127/130"
+      ]
+    },
+    {
+      "verificationId": "verification:mushi_no_ibuki:rarity",
+      "entityId": "printing:starter:unresolved-mushi_no_ibuki:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:mushi_no_ibuki:rules",
+      "entityId": "rules:mushi_no_ibuki:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "公式Q&Aに基づく。使用後エサ+1、コストは支払い分のみ減り再獲得されない。"
+      ],
+      "sourceRefs": [
+        "公式Q&A: 蟲の息吹をエサ場に置いたとき、その分の1コストは使用できない"
+      ]
+    },
+    {
+      "verificationId": "verification:batta_no_kyousou:collector-number",
+      "entityId": "printing:starter:129:standard",
+      "fieldPath": "/collectorNumber",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "starter-cards.jsの登録値とCARD_CATALOG.mdの数値表現を構造化した。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 129/130、術、cost0",
+        "公式裁定: 使用時点で場にいる虫のみAP+200。ターン終了まで。使用後に場へ出た虫は対象外。",
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:batta_no_kyousou:rarity",
+      "entityId": "printing:starter:129:standard",
+      "fieldPath": "/rarity",
+      "status": "VERIFIED_SECONDARY",
+      "notes": [
+        "CARD_CATALOG.mdの記載を使用。カタログはカード本文データを原則VERIFIED_SECONDARYとしている。"
+      ],
+      "sourceRefs": [
+        "docs/mushijingi-knowledge/CARD_CATALOG.md"
+      ]
+    },
+    {
+      "verificationId": "verification:batta_no_kyousou:rules",
+      "entityId": "rules:batta_no_kyousou:starter-v1",
+      "fieldPath": "/",
+      "status": "VERIFIED_OFFICIAL",
+      "notes": [
+        "スターター術カード。使用時点で自分FIELD全虫へAP+200(ターン終了まで)。スナップショット適用。"
+      ],
+      "sourceRefs": [
+        "実カード画像照合: 129/130、術、cost0",
+        "公式裁定: 使用時点で場にいる虫のみAP+200。ターン終了まで。使用後に場へ出た虫は対象外。"
+      ]
+    }
+  ]
+}
+
