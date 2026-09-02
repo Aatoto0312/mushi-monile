@@ -2,6 +2,7 @@
 
 var TestRunner = require('./lib.js');
 var h = require('./helpers.js');
+require('../js/engine/cpu-agent.js');
 
 var runner = new TestRunner();
 
@@ -25,7 +26,7 @@ runner.test('Niji1 虹の架け橋CardDefinition', function () {
 });
 
 // Niji2: 基本使用 捨て札の虫を手札に加える
-runner.test('Niji2 捨て札の虫を手札に加える', function () {
+runner.test('Rainbow1 捨て札の虫1体を手札に加える', function () {
   var state = h.newGame({ rng: h.firstPlayerRng });
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
@@ -126,7 +127,7 @@ runner.test('Niji7 メインフェイズ以外では使用不可', function () {
 });
 
 // Niji8: 複数虫捨て札→1体回収
-runner.test('Niji8 複数虫捨て札→1体回収', function () {
+runner.test('Rainbow2 複数虫捨て札→選択pending、自動回収しない', function () {
   var state = h.newGame({ rng: h.firstPlayerRng });
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
@@ -142,10 +143,40 @@ runner.test('Niji8 複数虫捨て札→1体回収', function () {
   var niji = h.addToHandRaw(state, 'P1', nijiDef());
   var handBefore = state.player('P1').hand.length;
   global.useSpell(state, 'P1', niji.instanceId);
+  var pending = global.getPendingEffect(state);
+  runner.assertEqual(state.player('P1').hand.length, handBefore - 1, '自動回収しない');
+  runner.assertEqual(pending.type, 'DISCARD_INSECT_SELECTION', '選択pending');
+  runner.assertEqual(pending.options.length, 2, '候補2体');
+});
 
-  // 1体回収+虹DISCARD → 手札変化なし
-  runner.assertEqual(state.player('P1').hand.length, handBefore, '手札変化なし(虹DISCARD+1体回収=±0)');
-  runner.assertEqual(state.player('P1').discard.length, 2, 'discardに2枚(残り1虫+虹)');
+runner.test('Rainbow3 指定した2体目だけを手札へ戻す', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
+  h.toMainPhase(state);
+  var d1 = h.addToHandRaw(state, 'P1', h.defById('test_red_1'));
+  var d2 = h.addToHandRaw(state, 'P1', h.defById('test_blue_1'));
+  global.moveCard(state, d1.instanceId, global.ZONES.HAND, global.ZONES.DISCARD, { playerId: 'P1' });
+  global.moveCard(state, d2.instanceId, global.ZONES.HAND, global.ZONES.DISCARD, { playerId: 'P1' });
+  var niji = h.addToHandRaw(state, 'P1', nijiDef());
+  global.useSpell(state, 'P1', niji.instanceId);
+
+  global.resolveDiscardInsectSelection(state, 'P1', d2.instanceId);
+  runner.assertTrue(state.player('P1').hand.some(function (c) { return c.instanceId === d2.instanceId; }), '指定した2体目を回収');
+  runner.assertTrue(state.player('P1').discard.some(function (c) { return c.instanceId === d1.instanceId; }), '1体目は捨て場に残る');
+});
+
+runner.test('RainbowCPU1 CPUは合法な捨て場虫を1体選択', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  state.activePlayerId = 'P2';
+  var d1 = h.putInsectOnField(state, 'P2', 'test_red_1');
+  var d2 = h.putInsectOnField(state, 'P2', 'test_blue_1');
+  global.moveCard(state, d1.instanceId, global.ZONES.FIELD, global.ZONES.DISCARD, { playerId: 'P2' });
+  global.moveCard(state, d2.instanceId, global.ZONES.FIELD, global.ZONES.DISCARD, { playerId: 'P2' });
+  state.pendingEffect = { type: 'DISCARD_INSECT_SELECTION', playerId: 'P2', options: [d1.instanceId, d2.instanceId] };
+  var cpu = new global.CpuAgent('P2', { rng: function () { return 0.99; } });
+  var action = cpu.getPendingAction(state);
+  runner.assertEqual(action.type, 'RESOLVE_DISCARD_INSECT_SELECTION', 'CPU選択action');
+  runner.assertEqual(action.instanceId, d2.instanceId, '2体目を選択');
 });
 
 module.exports = runner;

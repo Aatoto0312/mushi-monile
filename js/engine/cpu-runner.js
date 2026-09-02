@@ -70,8 +70,14 @@
     }
 
     if (self.actionsThisTurn >= self.maxActions) {
-      self.onActionLog('CPU: 行動上限到達、強制ターン終了');
-      try { global.endTurn(state); self.ui.render(); } catch (e) {}
+      self.onActionLog('CPU: 行動上限到達、ターン終了処理へ');
+      try {
+        global.endTurn(state);
+        self.ui.render();
+      } catch (e) {
+        self.onActionLog('CPU: ターン終了失敗: ' + e.message);
+        // エラー時は強制状態遷移させず、安全に停止する
+      }
       self.isRunning = false;
       resolve();
       return;

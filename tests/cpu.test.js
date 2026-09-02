@@ -356,6 +356,129 @@ runner.test('TestC14 P2 CPUターン中にP1 pendingが発生したらCpuRunner�
   });
 });
 
+// ---- 新規回帰テスト (Freeze対応) ----
+
+// TestCPUFreeze1: maxActions到達で正常終了
+runner.test('TestCPUFreeze1 maxActions到達で正常終了', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  reachP2SetPhase(state);
+  global.setFood(state, 'P2', state.player('P2').hand[0].instanceId);
+  global.enterMainPhase(state);
+  state.player('P2').hand = [];
+  placeAttackers(state, 'P2', 5); // 5体で十分
+  var uiStub = { render: function () {} };
+  var runner2 = new global.CpuRunner({ state: state }, uiStub, { thinkDelay: 0, maxActionsPerTurn: 5 });
+
+  return runner2.runTurn().then(function () {
+    runner.assertEqual(runner2.isRunning, false, 'isRunning=false');
+    runner.assertTrue(state.activePlayerId === 'P1', 'ターンがP1に遷移している');
+    runner.assertEqual(global.getPendingEffect(state), null, 'pendingは残っていない');
+  });
+});
+
+// TestCPUFreeze2: endTurn例外で安全停止
+// 注意: このテストは global.endTurn をモックするため、他テストへの副作用を避けるため
+// 実行順序を制御するために最後に配置し、モックを確実にクリーンアップする
+runner.test('TestCPUFreeze2 endTurn例外で安全停止', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+
+  // 完全に分離した環境で実行：reachP2SetPhase を使わず手動でP2 MAIN_PHASEを作る
+  state.activePlayerId = 'P2';
+  state.phase = global.Phases.MAIN_PHASE;
+
+  // CPUがEND_TURNを選択する状態にする
+  state.player('P2').hand = [];
+  state.player('P2').field = [];
+
+  var originalEndTurn = global.endTurn;
+  var callCount = 0;
+
+  // 重要: Promise.allによる並列実行時のグローバル汚染を防ぐため、
+  // このテストのstateオブジェクトに対してのみ例外を投げるように限定する
+  global.endTurn = function(s) {
+    if (s === state) {
+      callCount++;
+      throw new Error('Mock Error');
+    }
+    return originalEndTurn(s);
+  };
+
+  var uiStub = { render: function () {} };
+  var runner2 = new global.CpuRunner({ state: state }, uiStub, { thinkDelay: 0, maxActionsPerTurn: 1 });
+
+  return runner2.runTurn().then(function () {
+    try {
+      runner.assertEqual(runner2.isRunning, false, '例外時も安全に停止');
+      // 成功時: 期待される state の状態を確認
+      runner.assertEqual(state.activePlayerId, 'P2', '状態が不正遷移していない');
+      runner.assertTrue(callCount >= 1, 'endTurnが少なくとも1回呼ばれた');
+    } finally {
+      global.endTurn = originalEndTurn;
+    }
+  }).catch(function(err) {
+    global.endTurn = originalEndTurn;
+    throw err;
+  });
+});
+
+// TestCPUFreeze3: CPUターン中にP1 pendingで思考中表示OFF
+runner.test('TestCPUFreeze3 CPUターン中にP1 pendingで思考中表示OFF', function () {
+  resetDom();
+  var engine = new global.GameEngine();
+  var ui = new global.BattleUI(engine);
+  ui.cpuMode = true;
+
+  // 正式なゲーム開始手順で初期化
+  var deck = global.buildStarterTestDeck();
+  engine.newGame(deck, deck.slice(), h.firstPlayerRng);
+  ui.state = engine.state;
+
+  if (!ui.state.player('P1')) {
+    throw new Error('P1 player undefined');
+  }
+
+  ui.state.activePlayerId = 'P2';
+  ui.state.phase = global.Phases.MAIN_PHASE;
+
+  // P1 pending発生
+  h.addToTerritoryRaw(ui.state, 'P1', h.defById('test_red_1'));
+  global.triggerTerritoryDrawSelection(ui.state, 'P1');
+
+  ui.render();
+  var cpuThinking = getById('cpu-thinking');
+  runner.assertEqual(cpuThinking.style.display, 'none', 'P1 pending中はCPU思考中表示OFF');
+
+  // Human向けpending表示が出ていること
+  var statusText = getById('status-text');
+  runner.assertTrue(statusText.textContent.indexOf('縄張り') !== -1, 'Human向けpending表示が出ている');
+});
+
+// TestCPUFreeze4: P1 pending解決後CPU再開
+runner.test('TestCPUFreeze4 P1 pending解決後CPU再開', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  // 初期状態でいきなりP1 pendingを発生させる
+  h.addToTerritoryRaw(state, 'P1', h.defById('test_red_1'));
+  global.triggerTerritoryDrawSelection(state, 'P1');
+
+  var uiStub = { render: function () {} };
+  var runner2 = new global.CpuRunner({ state: state }, uiStub, { thinkDelay: 0, maxActionsPerTurn: 50 });
+
+  return runner2.runTurn().then(function () {
+    runner.assertEqual(runner2.isRunning, false, 'pending中は停止');
+    runner.assertTrue(global.getPendingEffect(state) !== null, 'pendingが残っている');
+
+    // P1の選択を解決
+    global.resolveTerritoryDrawSelection(state, 'P1', state.player('P1').territory[0].instanceId);
+
+    // 再開
+    return runner2.runTurn();
+  }).then(function () {
+    runner.assertEqual(runner2.isRunning, false, '最終的に停止している');
+    runner.assertEqual(global.getPendingEffect(state), null, 'pendingは解決済み');
+    runner.assertTrue(state.activePlayerId === 'P1' || state.activePlayerId === 'P2', '状態が破損していない');
+  });
+});
+
 module.exports = runner;
 
 if (require.main === module) {

@@ -293,10 +293,11 @@ body.battle-screen {
 .spell-card { width: 62px; height: 80px; }
 
 .card-name-full {
-  line-height: 1.2;
+  line-height: 1.15;
   font-weight: 700;
-  font-size: 10px;
-  word-break: break-word;
+  font-size: 11px;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -394,6 +395,25 @@ body.battle-screen {
   cursor: pointer;
 }
 .skill-select-btn:active { background: var(--accent); color: var(--accent-ink); }
+
+.skill-select-row.color-select-active { gap: 10px; padding: 8px 4px; }
+.color-btn {
+  flex: 1 1 72px;
+  min-width: 72px;
+  min-height: 48px;
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  color: #fff;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.color-btn-red { background: #c0392b; }
+.color-btn-blue { background: #2471a3; }
+.color-btn-green { background: #1e8449; }
+.color-btn:active { transform: scale(0.96); filter: brightness(1.15); }
 
 /* ---- バトルログ ---- */
 .log-section {

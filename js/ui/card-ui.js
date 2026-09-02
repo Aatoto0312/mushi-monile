@@ -53,8 +53,45 @@
     return map[def.color] || '';
   }
 
+  function firstAttackAp(skills) {
+    if (!skills) return null;
+    for (var i = 0; i < skills.length; i++) {
+      if (skills[i] && skills[i].timing === 'ATTACK') {
+        return skills[i].baseAp != null ? skills[i].baseAp : 0;
+      }
+    }
+    return null;
+  }
+
+  var EFFECT_JA = {
+    DEAL_DAMAGE_TO_TARGET: '対象にダメージを与える', DEAL_DAMAGE: '対象にダメージを与える',
+    TURN_FACE_DOWN: '対象を裏向きにする', RETRIEVE_FROM_DISCARD: '捨て場からカードを回収する',
+    COLOR_OVERRIDE: 'この虫の色を変更する', SACRIFICE_OWN_INSECT: '自分の虫1体を破壊する',
+    APPLY_STAT_MODIFIER: '能力値を変更する', APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD: '自分の場の全虫の能力値を変更する',
+    CONTINUOUS_ATTACK: '連続攻撃'
+  };
+
+  function effectToJa(effect) {
+    if (!effect) return '';
+    return effect.description || effect.effectText || EFFECT_JA[effect.type || effect.id] || '';
+  }
+
+  function enhancementToJa(effect) {
+    if (!effect) return '';
+    if (effect.description) return effect.description;
+    if (effect.type === 'COLOR_OVERRIDE') return 'この虫の色を赤・青・緑から選んで変更する';
+    if (effect.stat) return effect.stat + (effect.amount >= 0 ? ' +' : ' ') + effect.amount;
+    return effectToJa(effect);
+  }
+
+  function effectiveAp(instance, state) {
+    var base = firstAttackAp((getDef(instance) || {}).skills);
+    if (base == null) return null;
+    return state && typeof global.getEffectiveAP === 'function' ? global.getEffectiveAP(state, instance, base) : base;
+  }
+
   // 場の虫カード1枚
-  function renderFieldInsect(instance) {
+  function renderFieldInsect(instance, state) {
     var def = getDef(instance) || {};
     var el = document.createElement('div');
     el.className = 'battle-card field-card ' + colorClass(def);
@@ -66,7 +103,8 @@
 
     var hp = document.createElement('div');
     hp.className = 'card-hp';
-    hp.textContent = 'HP ' + instance.currentHp;
+    var maxHp = typeof global.calculateMaxHp === 'function' ? global.calculateMaxHp(instance) : null;
+    hp.textContent = 'HP ' + instance.currentHp + (maxHp != null ? '/' + maxHp : '');
 
     var costColor = document.createElement('div');
     costColor.className = 'card-cost-color';
@@ -76,8 +114,9 @@
 
     var atk = document.createElement('div');
     atk.className = 'card-atk';
-    var ap = def.skills && def.skills[0] ? (def.skills[0].baseAp || 0) : 0;
-    atk.textContent = 'AP ' + ap;
+    var ap = effectiveAp(instance, state);
+    if (ap == null) atk.style.display = 'none';
+    else atk.textContent = 'AP ' + ap;
 
     el.appendChild(name);
     el.appendChild(hp);
@@ -88,7 +127,7 @@
   }
 
   // 手札の虫カード
-  function renderHandInsect(instance) {
+  function renderHandInsect(instance, state) {
     var def = getDef(instance) || {};
     var el = document.createElement('button');
     el.type = 'button';
@@ -111,8 +150,9 @@
 
     var atk = document.createElement('div');
     atk.className = 'card-atk';
-    var ap = def.skills && def.skills[0] ? (def.skills[0].baseAp || 0) : 0;
-    atk.textContent = 'AP ' + ap;
+    var ap = effectiveAp(instance, state);
+    if (ap == null) atk.style.display = 'none';
+    else atk.textContent = 'AP ' + ap;
 
     el.appendChild(name);
     el.appendChild(hp);
@@ -190,20 +230,20 @@
   }
 
   // 汎用レンダラ（カード種別に応じて分岐）
-  function renderCard(instance, zone) {
+  function renderCard(instance, zone, state) {
     var def = getDef(instance);
     if (!def) { return renderFaceDown(null, instance); }
 
     // 捨て場は表向きで表示
     if (zone === ZONES.DISCARD) {
-      if (def.type === CardTypes.INSECT) { return renderHandInsect(instance); }
+      if (def.type === CardTypes.INSECT) { return renderHandInsect(instance, state); }
       return renderSpellOrEnhancement(instance);
     }
 
     if (def.type === CardTypes.INSECT) {
-      if (zone === ZONES.HAND) { return renderHandInsect(instance); }
-      if (zone === ZONES.FIELD) { return renderFieldInsect(instance); }
-      if (zone === ZONES.FOOD) { return renderHandInsect(instance); } // エサは表向きで同じ見た目
+      if (zone === ZONES.HAND) { return renderHandInsect(instance, state); }
+      if (zone === ZONES.FIELD) { return renderFieldInsect(instance, state); }
+      if (zone === ZONES.FOOD) { return renderHandInsect(instance, state); } // エサは表向きで同じ見た目
       return renderFaceDown(null, instance);
     }
     if (def.type === CardTypes.SPELL || def.type === CardTypes.ENHANCEMENT) {
@@ -213,7 +253,7 @@
   }
 
   // 詳細モーダル用データ生成
-  function getCardDetail(instance) {
+  function getCardDetail(instance, state) {
     var def = getDef(instance);
     if (!def) { return null; }
     var detail = {
@@ -224,7 +264,7 @@
       cost: def.cost,
       baseHp: def.baseHp,
       currentHp: instance.currentHp != null ? instance.currentHp : def.baseHp,
-      ap: (def.skills && def.skills[0]) ? (def.skills[0].baseAp || 0) : 0,
+      ap: firstAttackAp(def.skills),
       skills: [],
       traits: [],
       biologicalNote: def.biologicalNote ? def.biologicalNote.rawText : '',
@@ -235,9 +275,14 @@
     };
     if (def.skills) {
       def.skills.forEach(function(s) {
+        var effective = s.timing === 'ATTACK' && typeof global.getEffectiveAP === 'function'
+          ? global.getEffectiveAP(state, instance, s.baseAp || 0)
+          : null;
         detail.skills.push({
           name: s.name,
           baseAp: s.baseAp,
+          effectiveAp: effective,
+          apBonus: effective == null ? null : effective - (s.baseAp || 0),
           effectText: s.effectText,
           timing: s.timing,
           optional: s.optional
@@ -255,11 +300,8 @@
     if (def.passiveAbilities) {
       def.passiveAbilities.forEach(function(pa) {
         detail.passiveAbilities.push({
-          id: pa.id,
           name: pa.name,
-          timing: pa.timing,
-          condition: pa.condition,
-          effects: pa.effects
+          effectText: pa.effectText || (pa.effects || []).map(effectToJa).join('、')
         });
       });
     }
@@ -270,23 +312,15 @@
     }
     if (def.cardEffects) {
       def.cardEffects.forEach(function(ce) {
-        detail.cardEffects.push({
-          type: ce.type,
-          description: ce.description || ce.effectText || ''
-        });
+        detail.cardEffects.push({ text: effectToJa(ce) });
       });
     }
     if (def.enhancementEffects) {
       def.enhancementEffects.forEach(function(ee) {
-        detail.enhancementEffects.push({
-          type: ee.type || '',
-          stat: ee.stat || '',
-          amount: ee.amount != null ? ee.amount : 0
-        });
+        detail.enhancementEffects.push({ text: enhancementToJa(ee) });
       });
     }
     if (def.sourceLevel) { detail.sourceLevel = def.sourceLevel; }
-    if (def.verificationNotes) { detail.verificationNotes = def.verificationNotes; }
     return detail;
   }
 
@@ -300,6 +334,9 @@
     getCardDetail: getCardDetail,
     getDef: getDef,
     shortName: shortName,
-    colorClass: colorClass
+    colorClass: colorClass,
+    firstAttackAp: firstAttackAp,
+    effectToJa: effectToJa,
+    enhancementToJa: enhancementToJa
   };
 })(typeof window !== 'undefined' ? window : globalThis);

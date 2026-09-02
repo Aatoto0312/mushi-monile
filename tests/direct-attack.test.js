@@ -245,6 +245,131 @@ runner.test('TestDA9 CPUは相手虫がいない時に直接攻撃を選択す�
   runner.assertTrue(result.wasTerritoryDraw || result.victory, '直接攻撃が成立');
 });
 
+// ---- 新規回帰テスト (DirectFreeze対応) ----
+
+runner.test('DirectFreeze1 Human direct attack -> P1 pending解消 -> ゲーム継続', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  reachMainPhaseAsP1(state);
+  h.putInsectOnField(state, 'P1', 'test_red_1');
+
+  // P2に縄張りを持たせる
+  h.addToTerritoryRaw(state, 'P2', h.defById('test_red_1'));
+
+  var attacker = state.player('P1').field[0];
+  var result = global.performAttack(state, attacker.instanceId, null, 'LEADER', 'attack');
+
+  runner.assertTrue(result.wasTerritoryDraw, 'wasTerritoryDraw=true');
+  var pending = global.getPendingEffect(state);
+  runner.assertTrue(pending !== null, 'pendingが発生');
+
+  // P2(Human)が選択してpending解消
+  global.resolveTerritoryDrawSelection(state, 'P2', state.player('P2').territory[0].instanceId);
+  runner.assertEqual(global.getPendingEffect(state), null, 'pendingが解消された');
+  runner.assertEqual(state.phase, global.Phases.MAIN_PHASE, 'MAIN_PHASEのまま');
+});
+
+runner.test('DirectFreeze2 CPU direct attack -> P1 pending発生 -> CpuRunner停止 -> 再開可能', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+
+  // P2(CPU)をメインフェイズへ
+  state.activePlayerId = 'P2';
+  state.phase = global.Phases.MAIN_PHASE;
+  h.putInsectOnField(state, 'P2', 'test_red_1');
+
+  // P1に縄張りを持たせる
+  h.addToTerritoryRaw(state, 'P1', h.defById('test_red_1'));
+
+  var uiStub = { render: function () {} };
+  var runner2 = new global.CpuRunner({ state: state }, uiStub, { thinkDelay: 0, maxActionsPerTurn: 50 });
+
+  // P2のCPUアクションを実行させる
+  return runner2.runTurn().then(function () {
+    var pending = global.getPendingEffect(state);
+    runner.assertTrue(pending !== null && pending.playerId === 'P1', 'P1 pending発生');
+    runner.assertEqual(runner2.isRunning, false, 'CpuRunner停止');
+
+    // pending解決
+    global.resolveTerritoryDrawSelection(state, 'P1', state.player('P1').territory[0].instanceId);
+
+    // 再開
+    return runner2.runTurn();
+  }).then(function () {
+    runner.assertEqual(global.getPendingEffect(state), null, 'pending解消');
+  });
+});
+
+runner.test('DirectFreeze3 直接攻撃で勝利 -> GAME_OVER', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  reachMainPhaseAsP1(state);
+  h.putInsectOnField(state, 'P1', 'test_red_1');
+  h.setTerritoryEmpty(state, 'P2');
+
+  var attacker = state.player('P1').field[0];
+  var result = global.performAttack(state, attacker.instanceId, null, 'LEADER', 'attack');
+
+  runner.assertTrue(result.victory, '勝利');
+  runner.assertEqual(state.phase, global.Phases.GAME_OVER, 'GAME_OVER');
+  runner.assertEqual(global.getPendingEffect(state), null, 'pendingなし');
+});
+
+runner.test('DirectFreeze4 direct attack -> territoryあり(tobidasuなし)', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  reachMainPhaseAsP1(state);
+  h.putInsectOnField(state, 'P1', 'test_red_1');
+
+  // 縄張り用のカード定義を新規作成(tobidasuなし)
+  var territoryDef = new CardDefinition({
+    id: 'test_territory_no_skill',
+    name: 'テスト縄張り(技なし)',
+    set: 'TEST',
+    type: CardTypes.INSECT,
+    color: Attributes.RED,
+    cost: 0,
+    baseHp: 500,
+    skills: [],
+    implementationStatus: CardStatus.TEST,
+    sourceLevel: SourceLevel.D,
+    sourceRefs: [],
+    verificationNotes: '直接攻撃テスト用'
+  });
+  h.addToTerritoryRaw(state, 'P2', territoryDef);
+
+  var attacker = state.player('P1').field[0];
+  var result = global.performAttack(state, attacker.instanceId, null, 'LEADER', 'attack');
+
+  // pending解消まで
+  global.resolveTerritoryDrawSelection(state, 'P2', state.player('P2').territory[0].instanceId);
+
+  runner.assertEqual(global.getPendingEffect(state), null, 'pending解消');
+  runner.assertTrue(state.player('P2').hand.length >= 1, '手札に加わった');
+});
+
+runner.test('DirectFreeze5 direct attack -> とびだすあり -> choice pending -> 解消', function () {
+  var state = h.newGame({ rng: h.firstPlayerRng });
+  reachMainPhaseAsP1(state);
+  h.putInsectOnField(state, 'P1', 'test_red_1');
+
+  // 縄張り(とびだすあり = minminzemi)
+  var cardDef = global.getCardDefinition('minminzemi');
+  h.addToTerritoryRaw(state, 'P2', cardDef);
+
+  var attacker = state.player('P1').field[0];
+  var result = global.performAttack(state, attacker.instanceId, null, 'LEADER', 'attack');
+
+  // pending選択
+  global.resolveTerritoryDrawSelection(state, 'P2', state.player('P2').territory[0].instanceId);
+
+  // とびだす選択pendingが発生しているはず
+  var pending = global.getPendingEffect(state);
+  runner.assertEqual(pending.type, 'TERRITORY_DRAW_CHOICE', 'とびだす判定pending');
+
+  // 選択
+  global.resolvePendingTerritoryChoice(state, 'TAKE_TO_HAND');
+
+  runner.assertEqual(global.getPendingEffect(state), null, 'pending解消');
+  runner.assertTrue(state.player('P2').hand.length >= 1, '手札に加わった');
+});
+
 module.exports = runner;
 
 if (require.main === module) {

@@ -15,7 +15,12 @@
       mode: 'idle', // idle | attackTarget | confirm | territoryChoice
       attackerInstanceId: null,
       skillId: null,
-      legalTargets: []
+      legalTargets: [],
+      pendingAttackTarget: null,
+      sacrificeCandidates: null,
+      enhancementInstanceId: null,
+      enhancementDef: null,
+      pendingEnh: null
     };
 
     this._lastActivePlayerId = null;
@@ -213,7 +218,7 @@
   BattleUI.prototype.render = function () {
     var s = this.state;
     var activeId = s.activePlayerId;
-    
+
     // CPUモード時は固定視点 (P1=下, P2=上)
     var selfId = this.cpuMode ? 'P1' : activeId;
     var oppId = this.cpuMode ? 'P2' : s.opponentOf(activeId);
@@ -258,8 +263,15 @@
     // CPU思考中表示
     var cpuThinking = document.getElementById('cpu-thinking');
     if (cpuThinking) {
-      cpuThinking.style.display = (this.cpuMode && activeId === 'P2') ? 'block' : 'none';
+      var pending = getPendingEffect(s);
+      var isCpuTurn = (this.cpuMode && activeId === 'P2');
+      // CPUターン中で、かつP1のpending解決待ちではない場合に表示
+      var isP1Pending = !!(pending && pending.playerId === 'P1');
+      cpuThinking.style.display = (isCpuTurn && !isP1Pending) ? 'block' : 'none';
     }
+
+    // Pending Effect表示
+    this.renderPendingEffect(s);
 
     // 詳細モーダル表示中なら更新
     if (this._detailInstanceId) {
@@ -324,7 +336,7 @@
     this.renderZoneField(id + '-field-zone', player.field, false, playerId);
 
     // 捨て場
-    this.renderZoneDiscard(id + '-discard-zone', player.discard);
+    this.renderZoneDiscard(id + '-discard-zone', player.discard, playerId);
 
     // 縄張り (防御側の縄張り選択用)
     this.renderZoneTerritory(id + '-territory-zone', player.territory, false, function (inst) {
@@ -353,7 +365,7 @@
     this.renderZoneField(id + '-field-zone', player.field, true, playerId);
 
     // 捨て場
-    this.renderZoneDiscard(id + '-discard-zone', player.discard);
+    this.renderZoneDiscard(id + '-discard-zone', player.discard, playerId);
 
     // 縄張り
     this.renderZoneTerritory(id + '-territory-zone', player.territory, true, function (inst) {
@@ -385,7 +397,7 @@
 
     if (isSelf && handInstances) {
       handInstances.forEach(function (inst) {
-        var el = CardUI.renderCard(inst, ZONES.HAND);
+        var el = CardUI.renderCard(inst, ZONES.HAND, self.state);
         el.addEventListener('click', function () {
           self.onHandCardTap(playerId, inst);
         });
@@ -414,7 +426,7 @@
 
     if (foodInstances) {
       foodInstances.forEach(function (inst) {
-        var el = CardUI.renderCard(inst, ZONES.FOOD);
+        var el = CardUI.renderCard(inst, ZONES.FOOD, self.state);
         el.addEventListener('click', function () {
           self.showCardDetail(inst, []);
         });
@@ -435,7 +447,7 @@
 
     var self = this;
     fieldInstances.forEach(function (inst) {
-      var el = CardUI.renderCard(inst, ZONES.FIELD);
+      var el = CardUI.renderCard(inst, ZONES.FIELD, self.state);
       el.addEventListener('click', function () {
         self.onFieldCardTap(playerId, inst, el);
       });
@@ -453,16 +465,33 @@
     cardRow.className = 'card-row';
     container.appendChild(cardRow);
 
+    var self = this;
+    var pending = getPendingEffect(this.state);
+    var isTargetZone = false;
+    if (pending && pending.type === 'TERRITORY_DRAW_SELECTION') {
+      var targetPlayerId = pending.playerId;
+      // In CPU mode, Human is always P1, opponent/CPU is P2
+      // In Hotseat, view shifts but we can check based on zoneId
+      var zonePlayerId = zoneId.indexOf('self') !== -1 ? (this.cpuMode ? 'P1' : this.state.activePlayerId) : (this.cpuMode ? 'P2' : this.state.opponentOf(this.state.activePlayerId));
+      if (targetPlayerId === zonePlayerId) {
+        isTargetZone = true;
+      }
+    }
+
     territoryInstances.forEach(function (inst) {
       var el = CardUI.renderFaceDown(function (i) {
         if (onTap) onTap(i);
       }, inst);
+      if (isTargetZone) {
+        el.classList.add('legal-target');
+      }
       cardRow.appendChild(el);
     });
   };
 
   // 捨て場ゾーン (表向き。最新が最後)
-  BattleUI.prototype.renderZoneDiscard = function (zoneId, discardInstances) {
+  BattleUI.prototype.renderZoneDiscard = function (zoneId, discardInstances, playerId) {
+    var self = this;
     var container = document.getElementById(zoneId);
     if (!container) return;
     container.innerHTML = '';
@@ -480,9 +509,30 @@
     container.appendChild(cardRow);
 
     discardInstances.forEach(function (inst) {
-      var el = CardUI.renderCard(inst, ZONES.DISCARD);
+      var el = CardUI.renderCard(inst, ZONES.DISCARD, self.state);
+      var pending = getPendingEffect(self.state);
+      if (pending && pending.type === 'DISCARD_INSECT_SELECTION' && pending.playerId === playerId && pending.options.indexOf(inst.instanceId) !== -1) {
+        el.classList.add('legal-target');
+      }
+      el.addEventListener('click', function () { self.onDiscardCardTap(playerId, inst); });
       cardRow.appendChild(el);
     });
+  };
+
+  BattleUI.prototype.onDiscardCardTap = function (playerId, instance) {
+    var pending = getPendingEffect(this.state);
+    if (!pending || pending.type !== 'DISCARD_INSECT_SELECTION') {
+      this.showCardDetail(instance, []);
+      return;
+    }
+    if (pending.playerId !== playerId || pending.options.indexOf(instance.instanceId) === -1) return;
+    try {
+      global.resolveDiscardInsectSelection(this.state, playerId, instance.instanceId);
+      this.render();
+    } catch (e) {
+      alert(e.message);
+      this.render();
+    }
   };
 
   BattleUI.prototype.setText = function (elId, text) {
@@ -544,7 +594,8 @@
   // 攻撃キャンセル・直接攻撃ボタンの表示制御
   BattleUI.prototype.renderAttackButtons = function () {
     var st = this.actionState;
-    var isAttackMode = st.mode === 'attackTarget' || st.mode === 'selectSkill';
+    var isAttackMode = st.mode === 'attackTarget' || st.mode === 'selectSkill' ||
+      st.mode === 'sacrificeTarget' || st.mode === 'colorPicker';
     var btnDirect = document.getElementById('btn-direct-attack');
     var btnCancel = document.getElementById('btn-cancel-attack');
 
@@ -557,11 +608,68 @@
     btnCancel.style.display = isAttackMode ? 'block' : 'none';
   };
 
+  BattleUI.prototype.renderPendingEffect = function (state) {
+    var pending = getPendingEffect(state);
+    var statusText = document.getElementById('status-text');
+    if (!statusText) return;
+
+    if (!pending) {
+      if (statusText.textContent === 'あなたの縄張りを1枚選択してください' ||
+          statusText.textContent === 'とびだすを使用するか選択してください' ||
+          statusText.textContent === 'あなたの行動待ちです' ||
+          statusText.textContent === 'CPUが選択中...') {
+        statusText.textContent = '';
+      }
+      return;
+    }
+
+    var activeHumanId = this.cpuMode ? 'P1' : state.activePlayerId;
+    if (pending.playerId === activeHumanId) {
+      if (pending.type === 'TERRITORY_DRAW_SELECTION') {
+        statusText.textContent = 'あなたの縄張りを1枚選択してください';
+      } else if (pending.type === 'DISCARD_INSECT_SELECTION') {
+        statusText.textContent = '手札に戻す虫を捨て場から選択してください';
+      } else if (pending.type === 'TERRITORY_DRAW_CHOICE') {
+        statusText.textContent = 'とびだすを使用するか選択してください';
+        this.showTerritoryChoiceModal(pending);
+      } else {
+        statusText.textContent = 'あなたの行動待ちです';
+      }
+    } else {
+      statusText.textContent = 'CPUが選択中...';
+    }
+  };
+
+  BattleUI.prototype.showTerritoryChoiceModal = function (pending) {
+    if (this._handlingChoice) return;
+    this._handlingChoice = true;
+    var self = this;
+    var card = findAnywhere(this.state, pending.cardInstanceId).instance;
+    var def = CardUI.getDef(card);
+    var cardName = def ? def.name : 'カード';
+
+    setTimeout(function () {
+      var useTobidasu = confirm(cardName + ' の ＜とびだす＞ を使用しますか？\n「キャンセル」で手札に加えます。');
+      var choice = useTobidasu ? 'USE_TOBIDASU' : 'TAKE_TO_HAND';
+      try {
+        resolvePendingTerritoryChoice(self.state, choice);
+        self._handlingChoice = false;
+        self.render();
+      } catch (e) {
+        alert(e.message);
+        self._handlingChoice = false;
+        self.render();
+      }
+    }, 100);
+  };
+
   BattleUI.prototype.onHandCardTap = function (playerId, instance) {
+    if (this.actionState.mode === 'colorPicker') return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
     }
+    if (getPendingEffect(this.state)) return;
 
     var self = this;
     var def = CardUI.getDef(instance) || {};
@@ -628,10 +736,18 @@
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
     }
+    if (getPendingEffect(this.state)) return;
 
     var self = this;
     var st = this.actionState;
     var activeId = this.state.activePlayerId;
+
+    if (st.mode === 'colorPicker') return;
+
+    if (st.mode === 'sacrificeTarget') {
+      this.onSacrificeTargetTap(playerId, instance);
+      return;
+    }
 
     // 強化対象選択中 (enhanceTarget モード) の場合
     if (st.mode === 'enhanceTarget') {
@@ -673,7 +789,9 @@
     }
 
     // --- ここから自分の虫をタップ → 攻撃者選択 ---
-    if (instance.attackedThisTurn) {
+    var continuous = instance.runtimeFlags && instance.runtimeFlags.continuousAttack;
+    var hasContinuous = !!(continuous && continuous.usedCount < continuous.maxCount);
+    if (instance.attackedThisTurn && !hasContinuous) {
       alert('この蟲は既に攻撃済みです');
       return;
     }
@@ -681,8 +799,10 @@
     var def = CardUI.getDef(instance);
     if (!def) return;
 
-    // ATTACK timing の技を取得（攻撃のみ、非ATTACK技は混ぜない）
-    var attackSkills = (def.skills || []).filter(function (s) { return s.timing === 'ATTACK'; });
+    // 連撃中は同じ技だけを使用する。
+    var attackSkills = (def.skills || []).filter(function (s) {
+      return s.timing === 'ATTACK' && (!hasContinuous || s.id === continuous.skillId);
+    });
     if (attackSkills.length === 0) {
       alert('攻撃技がありません');
       return;
@@ -769,6 +889,7 @@
 
   // 本体直接攻撃ボタン
   BattleUI.prototype.onDirectAttack = function () {
+    if (this.actionState.mode === 'colorPicker') return;
     var st = this.actionState;
     var leaderTarget = null;
     if (st.legalTargets) {
@@ -786,9 +907,13 @@
 
   // 攻撃取消
   BattleUI.prototype.cancelAttack = function () {
-    // 強化対象選択中のキャンセル
-    if (this.actionState.mode === 'enhanceTarget') {
+    // 強化対象・色選択中のキャンセル
+    if (this.actionState.mode === 'enhanceTarget' || this.actionState.mode === 'colorPicker') {
       this.cancelEnhancementMode();
+      return;
+    }
+    if (this.actionState.mode === 'sacrificeTarget') {
+      this.cancelSacrificeMode();
       return;
     }
     this.clearAttackerHighlight();
@@ -796,8 +921,11 @@
     this.actionState.attackerInstanceId = null;
     this.actionState.skillId = null;
     this.actionState.legalTargets = [];
-    document.getElementById('skill-select-row').style.display = 'none';
-    document.getElementById('skill-select-row').innerHTML = '';
+    this.actionState.pendingAttackTarget = null;
+    this.actionState.sacrificeCandidates = null;
+    var skillRow = document.getElementById('skill-select-row');
+    if (skillRow) { skillRow.style.display = 'none'; skillRow.innerHTML = ''; }
+    this.hideColorPicker();
     this.renderAttackButtons();
     document.getElementById('status-text').textContent = '';
   };
@@ -851,6 +979,19 @@
     }
 
     var enhInstanceId = st.enhancementInstanceId;
+    var def = st.enhancementDef;
+    var colorEffect = null;
+    (def && def.enhancementEffects || []).some(function (effect) {
+      if (effect && effect.type === 'COLOR_OVERRIDE' && effect.colors && effect.colors.length) {
+        colorEffect = effect;
+        return true;
+      }
+      return false;
+    });
+    if (colorEffect) {
+      this.beginColorSelection(enhInstanceId, instance.instanceId, colorEffect.colors);
+      return;
+    }
     this.cancelEnhancementMode();
 
     try {
@@ -862,6 +1003,58 @@
     }
   };
 
+  BattleUI.prototype.beginColorSelection = function (enhInstanceId, targetInstanceId, colors) {
+    var self = this;
+    var st = this.actionState;
+    st.mode = 'colorPicker';
+    st.pendingEnh = { enhInstanceId: enhInstanceId, targetInstanceId: targetInstanceId, colors: colors.slice() };
+    var row = document.getElementById('color-select-row') || document.getElementById('skill-select-row');
+    if (row) {
+      row.innerHTML = '';
+      row.classList.add('color-select-active');
+      colors.forEach(function (color) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'color-btn color-btn-' + String(color).toLowerCase();
+        button.textContent = self._colorJa(color);
+        button.addEventListener('click', function () { self.onColorSelect(color); });
+        row.appendChild(button);
+      });
+      row.style.display = 'flex';
+    }
+    var status = document.getElementById('status-text');
+    if (status) status.textContent = '色を選択してください';
+    this.renderAttackButtons();
+  };
+
+  BattleUI.prototype._colorJa = function (color) {
+    var labels = {};
+    labels[Attributes.RED] = '赤';
+    labels[Attributes.BLUE] = '青';
+    labels[Attributes.GREEN] = '緑';
+    return labels[color] || color;
+  };
+
+  BattleUI.prototype.onColorSelect = function (color) {
+    var st = this.actionState;
+    if (st.mode !== 'colorPicker' || !st.pendingEnh || st.pendingEnh.colors.indexOf(color) === -1) return;
+    var pending = st.pendingEnh;
+    var playerId = this.state.activePlayerId;
+    this.cancelEnhancementMode();
+    try {
+      global.useEnhancement(this.state, playerId, pending.enhInstanceId, pending.targetInstanceId, color);
+      this.render();
+    } catch (e) {
+      alert(e.message);
+      this.render();
+    }
+  };
+
+  BattleUI.prototype.hideColorPicker = function () {
+    var row = document.getElementById('color-select-row') || document.getElementById('skill-select-row');
+    if (row) { row.classList.remove('color-select-active'); row.style.display = 'none'; row.innerHTML = ''; }
+  };
+
   // 強化モード解除(キャンセル・完了時にハイライトをクリア)
   BattleUI.prototype.cancelEnhancementMode = function () {
     var st = this.actionState;
@@ -869,6 +1062,8 @@
     st.enhancementInstanceId = null;
     st.enhancementDef = null;
     st.legalTargets = [];
+    st.pendingEnh = null;
+    this.hideColorPicker();
     document.querySelectorAll('.legal-target').forEach(function (el) { el.classList.remove('legal-target'); });
     document.getElementById('btn-cancel-attack').style.display = 'none';
     document.getElementById('status-text').textContent = '';
@@ -909,31 +1104,102 @@
     var st = this.actionState;
     var attackerId = st.attackerInstanceId;
     var skillId = st.skillId;
+    var holder = attackerId ? findAnywhere(this.state, attackerId) : null;
+    var def = holder ? CardUI.getDef(holder.instance) : null;
+    var skill = (def && def.skills || []).filter(function (candidate) {
+      return candidate.id === skillId && candidate.timing === 'ATTACK';
+    })[0];
+    if (skill && global.skillRequiresSacrifice(skill)) {
+      this.beginSacrificeTargetSelection(target);
+      return;
+    }
+    this.resolveAttack(target, null);
+  };
+
+  BattleUI.prototype.resolveAttack = function (target, chosenSacrificeInstanceId) {
+    var st = this.actionState;
+    var attackerId = st.attackerInstanceId;
+    var skillId = st.skillId;
     var targetId = target.targetType === 'LEADER' ? null : target.instance.instanceId;
-    var targetType = target.targetType;
-
-    st.mode = 'idle';
-    st.attackerInstanceId = null;
-    st.skillId = null;
-    st.legalTargets = [];
-
-    // ハイライト解除
-    this.clearAttackerHighlight();
-    document.querySelectorAll('.legal-target').forEach(function (el) { el.classList.remove('legal-target'); });
-    document.querySelectorAll('.legal-leader-target').forEach(function (el) { el.classList.remove('legal-leader-target'); });
-    document.getElementById('skill-select-row').style.display = 'none';
-    document.getElementById('skill-select-row').innerHTML = '';
-
     try {
-      performAttack(this.state, attackerId, targetId, targetType, skillId);
+      var result = global.performAttack(this.state, attackerId, targetId, target.targetType, skillId, chosenSacrificeInstanceId);
+      if (result && result.continuousAttackAvailable) {
+        st.mode = 'attackTarget';
+        st.attackerInstanceId = attackerId;
+        st.skillId = skillId;
+        st.pendingAttackTarget = null;
+        st.sacrificeCandidates = null;
+        st.legalTargets = global.getLegalAttackTargets(this.state, attackerId);
+        this.render();
+        this.beginAttackTargetSelection(this.state.activePlayerId, result.attacker);
+        var status = document.getElementById('status-text');
+        if (status) status.textContent = 'カマ連撃：2回目の攻撃対象を選択してください';
+        return;
+      }
+      this.finishAttackSelection();
       this.render();
     } catch (e) {
+      this.finishAttackSelection();
       alert(e.message);
       this.render();
     }
   };
 
+  BattleUI.prototype.finishAttackSelection = function () {
+    var st = this.actionState;
+    st.mode = 'idle';
+    st.attackerInstanceId = null;
+    st.skillId = null;
+    st.legalTargets = [];
+    st.pendingAttackTarget = null;
+    st.sacrificeCandidates = null;
+    this.clearAttackerHighlight();
+    document.querySelectorAll('.legal-target').forEach(function (el) { el.classList.remove('legal-target'); });
+    document.querySelectorAll('.legal-leader-target').forEach(function (el) { el.classList.remove('legal-leader-target'); });
+    var row = document.getElementById('skill-select-row');
+    if (row) { row.style.display = 'none'; row.innerHTML = ''; }
+    this.hideColorPicker();
+    this.renderAttackButtons();
+  };
+
+  BattleUI.prototype.beginSacrificeTargetSelection = function (target) {
+    var st = this.actionState;
+    var candidates = global.getSacrificeCandidates(this.state, st.attackerInstanceId);
+    if (!candidates.length) {
+      alert('追加コストの自虫破壊に十分な虫がいません');
+      this.cancelAttack();
+      return;
+    }
+    st.mode = 'sacrificeTarget';
+    st.pendingAttackTarget = target;
+    st.sacrificeCandidates = candidates.map(function (candidate) { return candidate.instanceId; });
+    candidates.forEach(function (candidate) {
+      var el = document.querySelector('[data-instance-id="' + candidate.instanceId + '"]');
+      if (el) el.classList.add('legal-target');
+    });
+    var status = document.getElementById('status-text');
+    if (status) status.textContent = '共食い：破壊する自虫を選択してください';
+    this.renderAttackButtons();
+  };
+
+  BattleUI.prototype.onSacrificeTargetTap = function (playerId, instance) {
+    var st = this.actionState;
+    if (st.mode !== 'sacrificeTarget' || playerId !== this.state.activePlayerId) return;
+    if (st.sacrificeCandidates.indexOf(instance.instanceId) === -1) {
+      alert('この蟲は犠牲対象に選択できません');
+      return;
+    }
+    this.resolveAttack(st.pendingAttackTarget, instance.instanceId);
+  };
+
+  BattleUI.prototype.cancelSacrificeMode = function () {
+    this.finishAttackSelection();
+    var status = document.getElementById('status-text');
+    if (status) status.textContent = '';
+  };
+
   BattleUI.prototype.onEndTurn = function () {
+    if (this.actionState.mode === 'colorPicker') return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -955,6 +1221,7 @@
   };
 
   BattleUI.prototype.onDraw = function () {
+    if (this.actionState.mode === 'colorPicker') return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -969,6 +1236,7 @@
   };
 
   BattleUI.prototype.onToSetPhase = function () {
+    if (this.actionState.mode === 'colorPicker') return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -984,6 +1252,7 @@
   };
 
   BattleUI.prototype.onToMainPhase = function () {
+    if (this.actionState.mode === 'colorPicker') return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -1014,7 +1283,7 @@
 
   BattleUI.prototype.showCardDetail = function (instance, actions) {
     this._detailInstanceId = instance.instanceId;
-    var detail = CardUI.getCardDetail(instance);
+    var detail = CardUI.getCardDetail(instance, this.state);
     if (!detail) return;
 
     var modal = document.getElementById('card-detail-modal');
@@ -1052,9 +1321,13 @@
       detail.skills.forEach(function (s) {
         var sk = document.createElement('div');
         sk.className = 'detail-skill';
-        var text = s.name + ' (AP ' + (s.baseAp || 0) + ')';
+        var text = s.name;
+        if (s.timing === 'ATTACK') {
+          var shownAp = s.effectiveAp != null ? s.effectiveAp : (s.baseAp != null ? s.baseAp : 0);
+          text += ' (AP ' + shownAp + ')';
+          if (s.apBonus) text += '（基本' + (s.baseAp || 0) + ' + 強化' + s.apBonus + '）';
+        }
         if (s.effectText) text += ': ' + s.effectText;
-        if (s.timing) text += ' [' + s.timing + ']';
         if (s.optional) text += ' [任意]';
         sk.textContent = text;
         content.appendChild(sk);
@@ -1087,15 +1360,8 @@
       detail.passiveAbilities.forEach(function (pa) {
         var el = document.createElement('div');
         el.className = 'detail-passive';
-        var text = pa.name || pa.id || '常在効果';
-        if (pa.timing) text += ' [' + pa.timing + ']';
-        if (pa.condition) text += ': ' + pa.condition;
-        if (pa.effects) {
-          try {
-            var es = JSON.stringify(pa.effects);
-            if (es && es !== 'null' && es !== '[]') text += ' 効果:' + es;
-          } catch (e) {}
-        }
+        var text = pa.name || '常在効果';
+        if (pa.effectText) text += ': ' + pa.effectText;
         el.textContent = text;
         content.appendChild(el);
       });
@@ -1110,8 +1376,7 @@
       detail.cardEffects.forEach(function (ce) {
         var el = document.createElement('div');
         el.className = 'detail-effect';
-        el.textContent = ce.type || '効果';
-        if (ce.description) el.textContent += ': ' + ce.description;
+        el.textContent = ce.text || ce.description || '効果';
         content.appendChild(el);
       });
     }
@@ -1125,12 +1390,7 @@
       detail.enhancementEffects.forEach(function (ee) {
         var el = document.createElement('div');
         el.className = 'detail-enhance';
-        var txt = ee.type || '強化';
-        if (ee.stat) txt += ' ' + ee.stat;
-        if (ee.amount) txt += ' +' + ee.amount;
-        if (ee.colors) txt += ' 色:' + ee.colors.join('/');
-        if (ee.description) txt += ' ' + ee.description;
-        el.textContent = txt;
+        el.textContent = ee.text || ee.description || '強化';
         content.appendChild(el);
       });
     }

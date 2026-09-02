@@ -85,7 +85,7 @@ runner.test('Okamakiri3 共食い - 自虫破壊コストで攻撃', function ()
   // 共食いを使用
   var okamakiriInst = state.player('P1').field.find(function(c) { return c.cardId === 'okamakiri'; });
   
-  global.performAttack(state, okamakiriInst.instanceId, target.instanceId, 'INSECT', 'tomogui');
+  global.performAttack(state, okamakiriInst.instanceId, target.instanceId, 'INSECT', 'tomogui', insect1.instanceId);
   
   // 自虫1体が破壊された (追加コスト)
   var p1Field = state.player('P1').field.filter(function(c) { return c.cardId !== 'okamakiri'; });

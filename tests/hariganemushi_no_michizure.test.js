@@ -100,7 +100,7 @@ runner.test('Hariganemushi3 共食い(自虫破壊コスト)では道連れ発�
   var target = state.player('P2').field[0];
   
   // 共食い使用 (追加コストで自虫破壊)
-  global.performAttack(state, okamakiriInst.instanceId, target.instanceId, 'INSECT', 'tomogui');
+  global.performAttack(state, okamakiriInst.instanceId, target.instanceId, 'INSECT', 'tomogui', hostInsect.instanceId);
   
   // 針金虫装着の自虫は破壊されるが、道連れは発動しない (自虫破壊コストなので)
   // hostInsect (test_red_1) が犠牲になって破壊される。オオカマキリ (okamakiri) は生存

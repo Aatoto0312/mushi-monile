@@ -432,16 +432,22 @@
       // RETRIEVE_FROM_DISCARD: 捨て札の虫を1体手札に加える
       if (effect.type === 'RETRIEVE_FROM_DISCARD') {
         var player = state.player(playerId);
-        var insectInDiscard = null;
+        var insectCandidates = [];
         for (var di = 0; di < player.discard.length; di++) {
           var discardDef = getCardDefinition(player.discard[di].cardId);
           if (discardDef && discardDef.type === CardTypes.INSECT) {
-            insectInDiscard = player.discard[di];
-            break;
+            insectCandidates.push(player.discard[di]);
           }
         }
-        if (insectInDiscard) {
-          moveCard(state, insectInDiscard.instanceId, ZONES.DISCARD, ZONES.HAND, { playerId: playerId });
+        if (insectCandidates.length === 1) {
+          moveCard(state, insectCandidates[0].instanceId, ZONES.DISCARD, ZONES.HAND, { playerId: playerId });
+        } else if (insectCandidates.length > 1) {
+          state.pendingEffect = {
+            type: 'DISCARD_INSECT_SELECTION',
+            playerId: playerId,
+            sourceInstanceId: instance.instanceId,
+            options: insectCandidates.map(function (candidate) { return candidate.instanceId; })
+          };
         }
       }
     });
@@ -720,7 +726,7 @@
   }
 
   // 攻撃実行。targetType は 'INSECT' | 'LEADER'
-  function performAttack(state, attackerInstanceId, targetInstanceId, targetType, skillId) {
+  function performAttack(state, attackerInstanceId, targetInstanceId, targetType, skillId, chosenSacrificeInstanceId) {
     assertActivePlayer(state, state.activePlayerId);
     if (state.phase !== Phases.MAIN_PHASE) {
       throw new Error('メインフェイズ以外では攻撃できません');
@@ -792,7 +798,7 @@
 
     // 追加コスト支払い
     if (skill.additionalCost && skill.additionalCost.length > 0) {
-      payAdditionalCosts(state, attacker, skill.additionalCost);
+      payAdditionalCosts(state, attacker, skill.additionalCost, chosenSacrificeInstanceId);
     }
 
     // AP modifier (一時的な攻撃力補正) を適用
@@ -1007,7 +1013,7 @@
   }
 
   // 追加コスト支払い (共食い等)
-  function payAdditionalCosts(state, attacker, additionalCosts) {
+  function payAdditionalCosts(state, attacker, additionalCosts, chosenSacrificeInstanceId) {
     var ownerId = attacker.ownerId;
     var player = state.player(ownerId);
     
@@ -1021,12 +1027,31 @@
         if (candidates.length < count) {
           throw new Error('追加コストの自虫破壊に十分な虫がいません');
         }
-        // 最初の候補を破壊 (UI側で選択させる実装は将来的に)
-        for (var i = 0; i < count; i++) {
-          var sacrifice = candidates[i];
-          destroyInsect(state, sacrifice.instanceId, 'SACRIFICE', attacker.instanceId, null, { skipTerritoryDraw: true });
+        var chosen = candidates.filter(function (c) {
+          return c.instanceId === chosenSacrificeInstanceId;
+        })[0];
+        if (!chosen) {
+          throw new Error(chosenSacrificeInstanceId ? '指定された自虫は破壊対象にできません' : '破壊する自虫を選択してください');
         }
+        if (count !== 1) {
+          throw new Error('複数体の自虫破壊には対応していません');
+        }
+        destroyInsect(state, chosen.instanceId, 'SACRIFICE', attacker.instanceId, null, { skipTerritoryDraw: true });
       }
+    });
+  }
+
+  function skillRequiresSacrifice(skill) {
+    return !!(skill && skill.additionalCost && skill.additionalCost.some(function (cost) {
+      return cost.type === 'SACRIFICE_OWN_INSECT';
+    }));
+  }
+
+  function getSacrificeCandidates(state, attackerInstanceId) {
+    var holder = findAnywhere(state, attackerInstanceId);
+    if (!holder || holder.zone !== ZONES.FIELD) { return []; }
+    return state.player(holder.instance.ownerId).field.filter(function (candidate) {
+      return candidate.instanceId !== attackerInstanceId && !candidate.faceDown;
     });
   }
 
@@ -1299,10 +1324,28 @@ function endTurn(state) {
     return state.pendingEffect || null;
   }
 
+  function resolveDiscardInsectSelection(state, playerId, instanceId) {
+    var pending = state.pendingEffect;
+    if (!pending || pending.type !== 'DISCARD_INSECT_SELECTION' || pending.playerId !== playerId) {
+      throw new Error('捨て場の虫選択待ちではありません');
+    }
+    if (pending.options.indexOf(instanceId) === -1) {
+      throw new Error('その虫は回収対象に選択できません');
+    }
+    var candidate = findInZone(state, playerId, ZONES.DISCARD, instanceId);
+    var def = candidate ? getCardDefinition(candidate.cardId) : null;
+    if (!candidate || !def || def.type !== CardTypes.INSECT) {
+      throw new Error('選択した虫が捨て場にありません');
+    }
+    state.pendingEffect = null;
+    return moveCard(state, instanceId, ZONES.DISCARD, ZONES.HAND, { playerId: playerId });
+  }
+
   global.resolvePendingTerritoryChoice = resolvePendingTerritoryChoice;
   global.resolveTerritoryDrawSelection = resolveTerritoryDrawSelection;
   global.triggerTerritoryDrawSelection = triggerTerritoryDrawSelection;
   global.getPendingEffect = getPendingEffect;
+  global.resolveDiscardInsectSelection = resolveDiscardInsectSelection;
   global.setFood = setFood;
   global.gainCost = gainCost;
   global.enterMainPhase = enterMainPhase;
@@ -1311,6 +1354,8 @@ function endTurn(state) {
   global.resolveSpellEffects = resolveSpellEffects;
   global.getLegalAttackTargets = getLegalAttackTargets;
   global.performAttack = performAttack;
+  global.skillRequiresSacrifice = skillRequiresSacrifice;
+  global.getSacrificeCandidates = getSacrificeCandidates;
   global.applyDamage = applyDamage;
   global.destroyInsect = destroyInsect;
   global.endTurn = endTurn;

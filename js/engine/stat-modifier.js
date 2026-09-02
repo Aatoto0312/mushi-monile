@@ -37,7 +37,18 @@
   // 有効な AP 修飾を合算した総AP量を返す。
   // baseAp は通常、技の baseAp。攻撃のたびに再計算される。
   function getEffectiveAP(state, instance, baseAp) {
-    return (baseAp || 0) + getStatModifierTotal(state, instance, 'AP');
+    var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP');
+    var attachments = instance.attachments || [];
+    for (var i = 0; i < attachments.length; i++) {
+      var def = global.getCardDefinition ? global.getCardDefinition(attachments[i].cardId) : null;
+      var effects = def && def.enhancementEffects ? def.enhancementEffects : [];
+      for (var j = 0; j < effects.length; j++) {
+        if (effects[j] && effects[j].stat === 'AP') {
+          total += effects[j].amount || 0;
+        }
+      }
+    }
+    return total;
   }
 
   // 虫の現在の最大HPを返す。

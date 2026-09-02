@@ -41,6 +41,12 @@
       };
     }
 
+    if (pending.type === 'DISCARD_INSECT_SELECTION') {
+      if (!pending.options || pending.options.length === 0) return null;
+      var discardIdx = Math.floor(this.rng() * pending.options.length);
+      return { type: 'RESOLVE_DISCARD_INSECT_SELECTION', instanceId: pending.options[discardIdx] };
+    }
+
     return null;
   };
 
@@ -129,7 +135,13 @@
       if (inst.faceDown) return false;
       if (inst.attackedThisTurn) return false;
       var legalTargets = global.getLegalAttackTargets(state, inst.instanceId);
-      return legalTargets.length > 0;
+      if (legalTargets.length === 0) return false;
+      var def = global.getCardDefinition(inst.cardId);
+      var skills = (def && def.skills) ? def.skills.filter(function (skill) {
+        if (skill.timing !== 'ATTACK') return false;
+        return !global.skillRequiresSacrifice(skill) || global.getSacrificeCandidates(state, inst.instanceId).length > 0;
+      }) : [];
+      return skills.length > 0;
     });
 
     if (attackerCandidates.length > 0) {
@@ -137,15 +149,24 @@
       var targets = global.getLegalAttackTargets(state, chosenAttacker.instanceId);
       var chosenTarget = targets[Math.floor(this.rng() * targets.length)];
       var def = global.getCardDefinition(chosenAttacker.cardId);
-      var attackSkills = (def && def.skills) ? def.skills.filter(function(s) { return s.timing === 'ATTACK'; }) : [];
+      var attackSkills = (def && def.skills) ? def.skills.filter(function(s) {
+        if (s.timing !== 'ATTACK') return false;
+        return !global.skillRequiresSacrifice(s) || global.getSacrificeCandidates(state, chosenAttacker.instanceId).length > 0;
+      }) : [];
       var skillId = (attackSkills.length > 0) ? attackSkills[0].id : null;
+      var sacrificeId = null;
+      if (attackSkills.length > 0 && global.skillRequiresSacrifice(attackSkills[0])) {
+        var sacrificeCandidates = global.getSacrificeCandidates(state, chosenAttacker.instanceId);
+        sacrificeId = sacrificeCandidates[0].instanceId;
+      }
 
       return {
         type: 'ATTACK',
         attackerInstanceId: chosenAttacker.instanceId,
         targetInstanceId: chosenTarget.instance ? chosenTarget.instance.instanceId : null,
         targetType: chosenTarget.targetType,
-        skillId: skillId
+        skillId: skillId,
+        chosenSacrificeInstanceId: sacrificeId
       };
     }
 
@@ -209,6 +230,10 @@
         global.resolvePendingTerritoryChoice(state, action.choice);
         return true;
       }
+      if (action.type === 'RESOLVE_DISCARD_INSECT_SELECTION') {
+        global.resolveDiscardInsectSelection(state, this.playerId, action.instanceId);
+        return true;
+      }
       if (action.type === 'ENTER_SET_PHASE') {
         global.enterSetPhase(state);
         return true;
@@ -234,7 +259,7 @@
         return true;
       }
       if (action.type === 'ATTACK') {
-        global.performAttack(state, action.attackerInstanceId, action.targetInstanceId, action.targetType, action.skillId);
+        global.performAttack(state, action.attackerInstanceId, action.targetInstanceId, action.targetType, action.skillId, action.chosenSacrificeInstanceId);
         return true;
       }
       if (action.type === 'END_TURN') {

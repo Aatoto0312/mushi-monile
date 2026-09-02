@@ -581,6 +581,7 @@
       {
         id: 'michizure',
         name: '道連れ',
+        effectText: 'この強化カードを付けた虫が相手の虫の攻撃によって破壊されたとき、その攻撃した虫も破壊する。',
         timing: 'ON_DESTROYED',
         condition: { type: 'DESTROYED_BY_OPPONENT_ATTACK' },
         effects: [
