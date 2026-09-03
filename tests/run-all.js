@@ -32,6 +32,7 @@ function requireAll() {
     require('./browser-load-order.test.js'),
     require('./ui-perspective.test.js'),
     require('./cpu.test.js'),
+    require('./cpu-rainbow-pending.test.js'),
     require('./direct-attack.test.js'),
     require('./battle-foundation.test.js'),
     require('./phase1a-fix-batch.test.js'),

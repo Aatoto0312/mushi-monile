@@ -41,11 +41,22 @@
 
     // P2 の pendingEffect があれば、人間(P1)のターン中でも自動解決する
     if (pending && pending.playerId === 'P2') {
+      if (self.actionsThisTurn >= self.maxActions) {
+        self.onActionLog('CPU: pending解決が行動上限に到達したため安全停止');
+        self.isRunning = false;
+        resolve();
+        return;
+      }
       var pAction = self.cpuAgent.getPendingAction(state);
       if (pAction) {
-        self.cpuAgent.executeAction(state, pAction);
+        var pendingExecuted = self.cpuAgent.executeAction(state, pAction);
         self.ui.render();
         self.actionsThisTurn++;
+        if (!pendingExecuted) {
+          self.isRunning = false;
+          resolve();
+          return;
+        }
         setTimeout(function () { self._runTurnStep(resolve); }, 0);
         return;
       }
@@ -108,8 +119,15 @@
     self.actionsThisTurn++;
 
     // 次のステップへ
-    if (state.phase === global.Phases.GAME_OVER || state.activePlayerId !== 'P2' ||
-        global.getPendingEffect(state)) {
+    var nextPending = global.getPendingEffect(state);
+    if (state.phase === global.Phases.GAME_OVER || state.activePlayerId !== 'P2') {
+      self.isRunning = false;
+      resolve();
+    } else if (nextPending && nextPending.playerId === 'P2') {
+      // 通常行動がCPU自身の選択待ちを生成した場合は、先頭のpending解決経路へ継続する。
+      setTimeout(function () { self._runTurnStep(resolve); }, 0);
+    } else if (nextPending) {
+      // Human所有pendingは勝手に解決せず、安全停止して入力を待つ。
       self.isRunning = false;
       resolve();
     } else {
