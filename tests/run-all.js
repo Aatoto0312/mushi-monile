@@ -33,6 +33,7 @@ function requireAll() {
     require('./ui-perspective.test.js'),
     require('./cpu.test.js'),
     require('./direct-attack.test.js'),
+    require('./battle-foundation.test.js'),
     require('./experience.test.js')
   ];
 }

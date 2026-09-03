@@ -24,6 +24,9 @@
     };
 
     this._lastActivePlayerId = null;
+    this._lastBattleEventId = 0;
+    this._damageVectorQueue = [];
+    this._damageVectorActive = false;
     this.cpuMode = false;
     this.cpuRunner = null;
     this.selectedDecks = { P1: 'KABUTOMUSHI', P2: 'OKAMAKIRI' };
@@ -40,9 +43,6 @@
     });
     document.getElementById('btn-to-main').addEventListener('click', function () {
       self.onToMainPhase();
-    });
-    document.getElementById('btn-to-set').addEventListener('click', function () {
-      self.onToSetPhase();
     });
     var btnDraw = document.getElementById('btn-draw');
     if (btnDraw) {
@@ -183,6 +183,9 @@
     this.logUI.clear();
     this.actionState.mode = 'idle';
     this._lastActivePlayerId = null;
+    this._lastBattleEventId = 0;
+    this._damageVectorQueue = [];
+    this._damageVectorActive = false;
     this.hidePassOverlay();
     var go = document.getElementById('game-over');
     if (go) go.style.display = 'none';
@@ -240,6 +243,9 @@
     // 描画: 上=相手, 下=自分
     this.renderOpponent(oppPlayer, oppId);
     this.renderSelf(selfPlayer, selfId);
+
+    // 盤面DOM更新後に、エンジンが確定した未表示イベントだけを演出へ渡す。
+    this.renderBattleEvents();
 
     // コントロール更新
     this.renderControls();
@@ -517,6 +523,58 @@
       el.addEventListener('click', function () { self.onDiscardCardTap(playerId, inst); });
       cardRow.appendChild(el);
     });
+  };
+
+  BattleUI.prototype.renderBattleEvents = function () {
+    var unseen = global.getBattleEventsSince ? global.getBattleEventsSince(this.state, this._lastBattleEventId || 0) : [];
+    var self = this;
+    unseen.forEach(function (event) {
+      self._lastBattleEventId = Math.max(self._lastBattleEventId || 0, event.id);
+      if (event.type === 'DAMAGE') { self._damageVectorQueue.push(event); }
+    });
+    if (!this._damageVectorActive) { this._showNextDamageVector(); }
+  };
+
+  BattleUI.prototype._showNextDamageVector = function () {
+    var event = this._damageVectorQueue.shift();
+    if (!event) { this._damageVectorActive = false; return; }
+    var overlay = document.getElementById('damage-vector');
+    var line = document.getElementById('damage-vector-line');
+    var label = document.getElementById('damage-vector-label');
+    if (!overlay || !line || !label) { this._damageVectorActive = false; return; }
+
+    var source = document.querySelector('[data-instance-id="' + event.sourceInstanceId + '"]');
+    var target = document.querySelector('[data-instance-id="' + event.targetInstanceId + '"]');
+    var sourceRect = source && source.getBoundingClientRect ? source.getBoundingClientRect() : null;
+    var targetRect = target && target.getBoundingClientRect ? target.getBoundingClientRect() : null;
+    var viewportWidth = window.innerWidth || 390;
+    var viewportHeight = window.innerHeight || 844;
+    var startX = sourceRect ? sourceRect.left + sourceRect.width / 2 : viewportWidth / 2;
+    var startY = sourceRect ? sourceRect.top + sourceRect.height / 2 : viewportHeight * 0.65;
+    var endX = targetRect ? targetRect.left + targetRect.width / 2 : viewportWidth / 2;
+    var endY = targetRect ? targetRect.top + targetRect.height / 2 : viewportHeight * 0.3;
+    var dx = endX - startX;
+    var dy = endY - startY;
+    line.style.left = startX + 'px';
+    line.style.top = startY + 'px';
+    line.style.width = Math.sqrt(dx * dx + dy * dy) + 'px';
+    line.style.transform = 'rotate(' + Math.atan2(dy, dx) + 'rad)';
+
+    var names = (event.sourceName || '攻撃元') + ' → ' + (event.targetName || '攻撃対象');
+    var damage = String(event.damage) + ' DAMAGE';
+    if (event.colorMultiplier && event.colorMultiplier !== 1) {
+      damage = event.baseDamage + ' ×' + event.colorMultiplier + ' = ' + event.damage + ' DAMAGE';
+    }
+    label.textContent = names + '\n' + damage;
+    overlay.style.display = 'block';
+    this._damageVectorActive = true;
+
+    var self = this;
+    setTimeout(function () {
+      overlay.style.display = 'none';
+      self._damageVectorActive = false;
+      self._showNextDamageVector();
+    }, 1100);
   };
 
   BattleUI.prototype.onDiscardCardTap = function (playerId, instance) {

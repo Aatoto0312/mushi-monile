@@ -80,7 +80,6 @@
       <div id="status-text" class="status-text"></div>
       <div class="btn-row">
         <button id="btn-draw" class="action-btn-wide draw-btn" type="button" style="display:none;">1枚ドロー</button>
-        <button id="btn-to-set" class="action-btn-wide" type="button">セットフェイズへ</button>
         <button id="btn-to-main" class="action-btn-wide" type="button">メインフェイズへ</button>
         <button id="btn-end-turn" class="action-btn-wide" type="button">ターン終了</button>
         <button id="btn-direct-attack" class="action-btn-wide attack-btn" type="button" style="display:none;">本体へ攻撃</button>
@@ -140,6 +139,11 @@
       <div id="battle-log" class="battle-log"></div>
     </section>
 
+  </div>
+
+  <div id="damage-vector" class="damage-vector" style="display:none;" aria-live="polite">
+    <div id="damage-vector-line" class="damage-vector-line"></div>
+    <div id="damage-vector-label" class="damage-vector-label"></div>
   </div>
 
   <!-- モード選択 -->

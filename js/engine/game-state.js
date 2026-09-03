@@ -35,6 +35,10 @@
     this.playerOrder = [];
     this.pendingEffect = null;
     this.battleLog = [];
+    // UI・ログ・将来のリプレイが同じ事実を参照できる軽量イベント列。
+    // UIはイベントを削除せず、idカーソルで未表示分だけを読む。
+    this.battleEvents = [];
+    this._battleEventCounter = 0;
     this.winner = null;
     this._instanceCounter = 0;
     // ドロー制御: manualDrawPlayers に含まれるプレイヤーは

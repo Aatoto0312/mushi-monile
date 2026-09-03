@@ -64,6 +64,21 @@
     });
   }
 
+  // BattleEventは状態差分ではなく、エンジンで確定した出来事そのものを記録する。
+  function emitBattleEvent(state, type, payload) {
+    if (!state.battleEvents) { state.battleEvents = []; }
+    state._battleEventCounter = (state._battleEventCounter || 0) + 1;
+    var event = { id: state._battleEventCounter, type: type, turnNumber: state.turnNumber, activePlayerId: state.activePlayerId };
+    Object.keys(payload || {}).forEach(function (key) { event[key] = payload[key]; });
+    state.battleEvents.push(event);
+    return event;
+  }
+
+  function getBattleEventsSince(state, lastEventId) {
+    lastEventId = lastEventId || 0;
+    return (state.battleEvents || []).filter(function (event) { return event.id > lastEventId; });
+  }
+
   // 50/50 ランダムで先攻決定。ロジックと演出を分離するため、
   // 演出表示は呼び出し側(UI)がそのまま利用する。
   function determineFirstPlayer(player1Id, player2Id, rng) {
@@ -126,6 +141,9 @@
 
     state.phase = Phases.DRAW_PHASE;
     log(state, state.turnNumber, 'TURN ' + state.turnNumber + ' ' + ap + ' 開始');
+    if (isFirstTurnFirstPlayer || (expectedDraw && !manual && state.drewThisTurn)) {
+      enterSetPhase(state);
+    }
     return state;
   }
 
@@ -155,7 +173,25 @@
     }
     var card = drawCard(state, playerId);
     state.drewThisTurn = true;
+    enterSetPhase(state);
     return card;
+  }
+
+  function enterSetPhase(state) {
+    if (state.phase === Phases.GAME_OVER) {
+      throw new Error('ゲームは終了しています');
+    }
+    // 自動遷移後に古い呼び出し経路が到着しても、再遷移・再ログしない。
+    if (state.phase === Phases.SET_PHASE) { return state; }
+    if (state.phase !== Phases.DRAW_PHASE) {
+      throw new Error('ドローフェイズからのみセットフェイズへ進めます');
+    }
+    if (expectsDraw(state, state.activePlayerId) && !state.drewThisTurn) {
+      throw new Error('ドローするまでセットフェイズへ進めません');
+    }
+    state.phase = Phases.SET_PHASE;
+    log(state, state.turnNumber, state.activePlayerId + ' はセットフェイズへ');
+    return state;
   }
 
   function drawCard(state, playerId) {
@@ -425,7 +461,11 @@
         var dmg = effect.amount || 0;
         var multiplier = effect.ignoreAttributeMultiplier ? 1 : getAttributeMultiplier(def.color || Attributes.COLORLESS, getEffectiveColor(target));
         var finalDmg = dmg * multiplier;
-        applyDamage(state, instance, target, finalDmg, 'SPELL', instance.instanceId, target.instanceId, {});
+        applyDamage(state, instance, target, finalDmg, 'SPELL', instance.instanceId, target.instanceId, {
+          effectId: effect.id || effect.type,
+          multiplier: multiplier,
+          apVal: dmg
+        });
         var spellResult = {};
         spellResult.damageDealt = finalDmg;
       }
@@ -823,6 +863,14 @@
       skillName: skill.name || skill.id
     };
 
+    emitBattleEvent(state, 'ATTACK', {
+      sourceInstanceId: attacker.instanceId,
+      targetInstanceId: targetInstanceId,
+      targetType: targetType,
+      skillId: skill.id,
+      sourceName: result.attackerName
+    });
+
     if (targetType === 'INSECT') {
       var defender = findInZone(state, opponentId, ZONES.FIELD, targetInstanceId);
       if (!defender) {
@@ -1063,6 +1111,20 @@
     target.currentHp -= damage;
     result.damageDealt = damage;
     result.defenderCurrentHp = target.currentHp;
+    var sourceDef = attacker && global.getCardDefinition ? global.getCardDefinition(attacker.cardId) : null;
+    var targetDef = global.getCardDefinition ? global.getCardDefinition(target.cardId) : null;
+    emitBattleEvent(state, 'DAMAGE', {
+      sourceInstanceId: sourceInstanceId,
+      targetInstanceId: targetInstanceId,
+      damage: damage,
+      baseDamage: result && result.apVal != null ? Math.max(0, result.apVal) : damage,
+      damageType: sourceType,
+      skillId: result && result.skill ? result.skill.id : null,
+      effectId: result && result.effectId ? result.effectId : null,
+      colorMultiplier: result && result.multiplier != null ? result.multiplier : 1,
+      sourceName: sourceDef ? sourceDef.name : null,
+      targetName: targetDef ? targetDef.name : null
+    });
     if (target.currentHp <= 0) {
       destroyInsect(state, target.instanceId, sourceType, sourceInstanceId, result);
     }
@@ -1088,6 +1150,12 @@
     
     // FIELD→DISCARD へ移動 (1回だけ)
     moveCard(state, targetInstanceId, ZONES.FIELD, ZONES.DISCARD, { playerId: defenderPlayerId });
+    emitBattleEvent(state, 'DESTROY', {
+      sourceInstanceId: sourceInstanceId,
+      targetInstanceId: targetInstanceId,
+      damageType: sourceType,
+      targetName: destroyedName
+    });
     log(state, state.turnNumber, defenderPlayerId + '「' + destroyedName + '」が破壊された（' + sourceType + '）→ ' + defenderPlayerId + '捨て場へ');
     
     // onDestroyed triggers を解決 (死亡誘発) - host自身 + attachments 双方
@@ -1186,7 +1254,11 @@
       var target = effect.targetId ? global.findAnywhere(state, effect.targetId).instance : null;
       if (target && target.zone === global.ZONES.FIELD) {
         var dmg = effect.amount || 0;
-        global.applyDamage(state, sourceCard, target, dmg, 'ABILITY', sourceCard.instanceId, target.instanceId, {});
+        global.applyDamage(state, sourceCard, target, dmg, 'ABILITY', sourceCard.instanceId, target.instanceId, {
+          effectId: effect.id || effect.type,
+          multiplier: 1,
+          apVal: dmg
+        });
       }
     }
     // DESTROY_SOURCE: 破壊元を破壊 (道連れ等)
@@ -1364,21 +1436,9 @@ function endTurn(state) {
   global.resolveOnDestroyedTriggers = resolveOnDestroyedTriggers;
   global.resolveEffect = resolveEffect;
   global.checkCondition = checkCondition;
-  global.enterSetPhase = function (state) {
-    if (state.phase === Phases.GAME_OVER) {
-      throw new Error('ゲームは終了しています');
-    }
-    if (state.phase !== Phases.DRAW_PHASE) {
-      throw new Error('ドローフェイズからのみセットフェイズへ進めます');
-    }
-    // ドローすべきターン(先攻1ターン目以外)は、ドロー完了するまで進めない。
-    if (expectsDraw(state, state.activePlayerId) && !state.drewThisTurn) {
-      throw new Error('ドローするまでセットフェイズへ進めません');
-    }
-    state.phase = Phases.SET_PHASE;
-    log(state, state.turnNumber, state.activePlayerId + ' はセットフェイズへ');
-    return state;
-  };
+  global.enterSetPhase = enterSetPhase;
+  global.emitBattleEvent = emitBattleEvent;
+  global.getBattleEventsSince = getBattleEventsSince;
   global.isManualDrawPlayer = isManualDrawPlayer;
   global.expectsDraw = expectsDraw;
   global.drawCardOnce = drawCardOnce;

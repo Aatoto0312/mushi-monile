@@ -313,7 +313,7 @@ runner.test('TestC13 P1ターン中のP2 pendingをCPUが自動解決する', fu
   var state = h.newGame({ rng: h.firstPlayerRng });
   // newGame直後は P1 の通常ターン(DRAW_PHASE)が進行中のまま
   runner.assertEqual(state.activePlayerId, 'P1', '前提: P1のターン');
-  runner.assertEqual(state.phase, global.Phases.DRAW_PHASE, '前提: P1はDRAW_PHASE');
+  runner.assertEqual(state.phase, global.Phases.SET_PHASE, '前提: P1は先攻初手SET_PHASE');
 
   h.addToTerritoryRaw(state, 'P2', h.defById('test_red_1'));
   global.triggerTerritoryDrawSelection(state, 'P2'); // P2のpendingを発生させる
@@ -327,7 +327,7 @@ runner.test('TestC13 P1ターン中のP2 pendingをCPUが自動解決する', fu
     runner.assertEqual(state.player('P2').hand.length, p2HandBefore + 1, '縄張りから1枚を手札へ引いた');
     // P1の通常ターンは進めない
     runner.assertEqual(state.activePlayerId, 'P1', 'P1のターンは進めない(アクティブはP1のまま)');
-    runner.assertEqual(state.phase, global.Phases.DRAW_PHASE, 'P1のフェイズは進めない(DRAW_PHASEのまま)');
+    runner.assertEqual(state.phase, global.Phases.SET_PHASE, 'P1のフェイズは進めない(SET_PHASEのまま)');
   });
 });
 

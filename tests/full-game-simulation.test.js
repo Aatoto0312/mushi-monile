@@ -64,7 +64,7 @@ function runAll() {
 
   // P1: 先攻1ターン目（ドローなし）
   assertEquals(state.activePlayerId, 'P1', 'P1 先攻');
-  assertEquals(state.phase, Phases.DRAW_PHASE, 'ドローフェイズ');
+  assertEquals(state.phase, Phases.SET_PHASE, '先攻初手はセットフェイズ');
 
   assertEquals(p1.hand.length, 4, 'P1 先攻1ターン目 ドローなし');
 

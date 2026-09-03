@@ -120,7 +120,7 @@ function runAll() {
     assert(getById('self-player-label').textContent.indexOf(firstActive) !== -1, '下側表示が ' + firstActive);
 
     // activeId でセットフェイズを操作
-    ui.engine.turn.enterSetPhase();
+    ui.engine.turn.enterSetPhase(); // 先攻初手は既にSET。冪等で二重進行しない。
     var activeHand0 = ui.state.player(firstActive).hand[0];
     global.setFood(ui.state, firstActive, activeHand0.instanceId);
     ui.engine.turn.enterMainPhase();
@@ -136,7 +136,8 @@ function runAll() {
     assert(getById('opp-player-label').textContent.indexOf(firstActive) !== -1, '動的切替: 上側表示が ' + firstActive);
 
     // 交代後のプレイヤーの手札操作性テスト
-    ui.engine.turn.enterSetPhase();
+    ui.onDraw();
+    assert(ui.state.phase === global.Phases.SET_PHASE, '通常ドロー後にSETへ自動遷移');
     var p2Hand0 = ui.state.player(secondActive).hand[0];
     global.setFood(ui.state, secondActive, p2Hand0.instanceId);
     assert(ui.state.player(secondActive).food.length === 1, '交代後手札からエサセット成功');

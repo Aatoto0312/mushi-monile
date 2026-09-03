@@ -101,11 +101,11 @@ if (!app || !app.engine || !app.ui) {
 
 var ui = app.ui;
 console.log('初期描画 OK, アクティブ=', ui.state.activePlayerId, 'フェイズ=', ui.phaseLabel(ui.state.phase));
-if (ui.state.phase !== global.Phases.DRAW_PHASE) {
-  throw new Error('ゲーム開始直後は DRAW_PHASE であるべき');
+if (ui.state.phase !== global.Phases.SET_PHASE) {
+  throw new Error('先攻1ターン目はドローをスキップして SET_PHASE であるべき');
 }
 
-// DRAW_PHASE → SET_PHASE を正式な TurnEngine 経由で遷移
+// 自動遷移後の重複呼び出しでも二重進行しない
 ui.engine.turn.enterSetPhase();
 ui.render();
 if (ui.state.phase !== global.Phases.SET_PHASE) {

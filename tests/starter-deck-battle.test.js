@@ -66,7 +66,7 @@ runner.test('StarterBattle3 両デッキでゲーム開始からターン終了�
   // 初期状態確認
   runner.assertEqual(state.turnNumber, 1);
   runner.assert(state.activePlayerId === 'P1' || state.activePlayerId === 'P2');
-  runner.assertEqual(state.phase, global.Phases.DRAW_PHASE);
+  runner.assertEqual(state.phase, global.Phases.SET_PHASE);
 
   // P1のターン進行: ドロー→セット→メイン→ターン終了
   global.enterSetPhase(state); // ドローフェイズ完了、セットフェイズへ
@@ -79,7 +79,7 @@ runner.test('StarterBattle3 両デッキでゲーム開始からターン終了�
   // P2のターン開始
   runner.assertEqual(state.turnNumber, 2);
   runner.assertEqual(state.activePlayerId, state.opponentOf('P1'));
-  runner.assertEqual(state.phase, global.Phases.DRAW_PHASE);
+  runner.assertEqual(state.phase, global.Phases.SET_PHASE);
 });
 
 runner.test('StarterBattle4 正式カードで召喚・攻撃・破壊・縄張りドローが動作する', function () {
