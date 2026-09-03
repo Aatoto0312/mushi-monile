@@ -39,7 +39,7 @@
       self.onEndTurn();
     });
     document.getElementById('btn-new-game').addEventListener('click', function () {
-      self.newGame();
+      self.returnToDeckSelect();
     });
     document.getElementById('btn-to-main').addEventListener('click', function () {
       self.onToMainPhase();
@@ -216,6 +216,46 @@
   BattleUI.prototype.newGame = function () {
     this.hideDeckSelect();
     this._beginNewGame();
+  };
+
+  BattleUI.prototype.returnToDeckSelect = function () {
+    if (this.cpuRunner) {
+      this.cpuRunner.isRunning = false;
+      this.cpuRunner = null;
+    }
+
+    this.state = this.engine.resetSession();
+    this.actionState = {
+      mode: 'idle',
+      attackerInstanceId: null,
+      skillId: null,
+      legalTargets: [],
+      pendingAttackTarget: null,
+      sacrificeCandidates: null,
+      enhancementInstanceId: null,
+      enhancementDef: null,
+      pendingEnh: null
+    };
+    this._detailInstanceId = null;
+    this._lastActivePlayerId = null;
+    this._lastBattleEventId = 0;
+    this._damageVectorQueue = [];
+    this._damageVectorActive = false;
+    this.selectedDecks = { P1: null, P2: null };
+    this._deckSelectDone = { P1: false, P2: false };
+
+    if (this.logUI) this.logUI.clear();
+    var idsToHide = ['card-detail-modal', 'pass-overlay', 'game-over', 'damage-vector', 'cpu-thinking', 'cpu-action-log'];
+    for (var i = 0; i < idsToHide.length; i++) {
+      var hidden = document.getElementById(idsToHide[i]);
+      if (hidden) hidden.style.display = 'none';
+    }
+    var skillRow = document.getElementById('skill-select-row');
+    if (skillRow) {
+      skillRow.innerHTML = '';
+      skillRow.style.display = 'none';
+    }
+    this._openDeckSelect();
   };
 
   BattleUI.prototype.render = function () {
@@ -404,7 +444,12 @@
     if (isSelf && handInstances) {
       handInstances.forEach(function (inst) {
         var el = CardUI.renderCard(inst, ZONES.HAND, self.state);
+        if (self._detailInstanceId === inst.instanceId) {
+          el.classList.add('selected-hand-card');
+          el.setAttribute('aria-current', 'true');
+        }
         el.addEventListener('click', function () {
+          el.classList.add('selected-hand-card');
           self.onHandCardTap(playerId, inst);
         });
         cardRow.appendChild(el);
@@ -1380,15 +1425,34 @@
 
     var meta = document.createElement('div');
     meta.className = 'detail-meta';
-    var typeColor = detail.type + ' | ' + detail.color + ' | コスト: ' + detail.cost;
+    var shownColor = detail.colorChanged ? detail.color + ' → ' + detail.effectiveColor : detail.color;
+    var typeColor = detail.type + ' | ' + shownColor + ' | コスト: ' + detail.cost;
     meta.textContent = typeColor;
     content.appendChild(meta);
 
     if (detail.baseHp != null) {
       var hp = document.createElement('div');
       hp.className = 'detail-hp';
-      hp.textContent = 'HP: ' + detail.baseHp;
+      hp.textContent = 'HP: ' + detail.currentHp + ' / ' + detail.effectiveMaxHp;
+      if (detail.hpBonus) hp.textContent += '（基本' + detail.baseHp + ' ' + (detail.hpBonus > 0 ? '+' : '') + detail.hpBonus + '）';
       content.appendChild(hp);
+    }
+
+    if (detail.attachments && detail.attachments.length) {
+      var attached = document.createElement('div');
+      attached.className = 'detail-attachments';
+      attached.textContent = '装着中: ' + detail.attachments.join('、');
+      content.appendChild(attached);
+    }
+
+    if ((detail.apModifierSources && detail.apModifierSources.length) || (detail.hpModifierSources && detail.hpModifierSources.length)) {
+      var sources = document.createElement('div');
+      sources.className = 'detail-modifier-sources';
+      var sourceText = [];
+      if (detail.apModifierSources.length) sourceText.push('AP補正: ' + detail.apModifierSources.join('、'));
+      if (detail.hpModifierSources.length) sourceText.push('HP補正: ' + detail.hpModifierSources.join('、'));
+      sources.textContent = sourceText.join(' / ');
+      content.appendChild(sources);
     }
 
     if (detail.skills && detail.skills.length > 0) {
@@ -1512,6 +1576,8 @@
 
   BattleUI.prototype.hideCardDetail = function () {
     this._detailInstanceId = null;
+    var selected = document.querySelectorAll ? document.querySelectorAll('.selected-hand-card') : [];
+    for (var i = 0; i < selected.length; i++) selected[i].classList.remove('selected-hand-card');
     document.getElementById('card-detail-modal').style.display = 'none';
   };
 

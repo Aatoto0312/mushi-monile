@@ -36,6 +36,7 @@ function requireAll() {
     require('./direct-attack.test.js'),
     require('./battle-foundation.test.js'),
     require('./phase1a-fix-batch.test.js'),
+    require('./phase1b-ui.test.js'),
     require('./experience.test.js')
   ];
 }

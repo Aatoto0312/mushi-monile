@@ -53,6 +53,42 @@
     return map[def.color] || '';
   }
 
+  function colorValueLabel(color) {
+    return colorLabel({ color: color });
+  }
+
+  function getEffectiveColorValue(instance, def) {
+    return typeof global.getEffectiveColor === 'function' ? global.getEffectiveColor(instance) : def.color;
+  }
+
+  function modifierSummary(instance, state) {
+    var def = getDef(instance) || {};
+    var baseHp = instance.baseHp != null ? instance.baseHp : (def.baseHp || 0);
+    var maxHp = typeof global.calculateMaxHp === 'function' ? global.calculateMaxHp(instance) : baseHp;
+    var baseAp = firstAttackAp(def.skills);
+    var currentAp = baseAp == null ? null : effectiveAp(instance, state);
+    var originalColor = def.color;
+    var currentColor = getEffectiveColorValue(instance, def);
+    return {
+      baseHp: baseHp,
+      maxHp: maxHp,
+      hpDelta: maxHp - baseHp,
+      baseAp: baseAp,
+      currentAp: currentAp,
+      apDelta: currentAp == null ? 0 : currentAp - baseAp,
+      originalColor: originalColor,
+      currentColor: currentColor,
+      attachmentCount: (instance.attachments || []).length
+    };
+  }
+
+  function addBadge(container, className, text) {
+    var badge = document.createElement('span');
+    badge.className = 'card-state-badge ' + className;
+    badge.textContent = text;
+    container.appendChild(badge);
+  }
+
   function firstAttackAp(skills) {
     if (!skills) return null;
     for (var i = 0; i < skills.length; i++) {
@@ -93,8 +129,11 @@
   // 場の虫カード1枚
   function renderFieldInsect(instance, state) {
     var def = getDef(instance) || {};
+    var summary = modifierSummary(instance, state);
     var el = document.createElement('div');
-    el.className = 'battle-card field-card ' + colorClass(def);
+    var effectiveColorClass = COLOR_CLASS[summary.currentColor] || COLOR_CLASS.COLORLESS;
+    el.className = 'battle-card field-card ' + effectiveColorClass;
+    if (instance.attackedThisTurn) { el.classList.add('is-attacked'); }
     el.dataset.instanceId = instance.instanceId;
 
     var name = document.createElement('div');
@@ -103,7 +142,7 @@
 
     var hp = document.createElement('div');
     hp.className = 'card-hp';
-    var maxHp = typeof global.calculateMaxHp === 'function' ? global.calculateMaxHp(instance) : null;
+    var maxHp = summary.maxHp;
     hp.textContent = 'HP ' + instance.currentHp + (maxHp != null ? '/' + maxHp : '');
 
     var costColor = document.createElement('div');
@@ -122,6 +161,17 @@
     el.appendChild(hp);
     el.appendChild(costColor);
     el.appendChild(atk);
+
+    var badges = document.createElement('div');
+    badges.className = 'card-state-badges';
+    if (instance.attackedThisTurn) addBadge(badges, 'state-attacked', '攻撃済');
+    if (summary.originalColor !== summary.currentColor) {
+      addBadge(badges, 'state-color', colorValueLabel(summary.originalColor) + '→' + colorValueLabel(summary.currentColor));
+    }
+    if (summary.apDelta) addBadge(badges, 'state-ap', 'AP ' + (summary.apDelta > 0 ? '+' : '') + summary.apDelta);
+    if (summary.hpDelta) addBadge(badges, 'state-hp', 'HP ' + (summary.hpDelta > 0 ? '+' : '') + summary.hpDelta);
+    if (summary.attachmentCount) addBadge(badges, 'state-attachments', '強化 ' + summary.attachmentCount);
+    if (badges.children.length) el.appendChild(badges);
 
     return el;
   }
@@ -256,6 +306,8 @@
   function getCardDetail(instance, state) {
     var def = getDef(instance);
     if (!def) { return null; }
+    var summary = modifierSummary(instance, state);
+    var attachments = instance.attachments || [];
     var detail = {
       name: def.name,
       type: typeLabel(def),
@@ -264,6 +316,10 @@
       cost: def.cost,
       baseHp: def.baseHp,
       currentHp: instance.currentHp != null ? instance.currentHp : def.baseHp,
+      effectiveMaxHp: summary.maxHp,
+      hpBonus: summary.hpDelta,
+      effectiveColor: colorValueLabel(summary.currentColor),
+      colorChanged: summary.originalColor !== summary.currentColor,
       ap: firstAttackAp(def.skills),
       skills: [],
       traits: [],
@@ -271,8 +327,25 @@
       passiveAbilities: [],
       rulings: [],
       cardEffects: [],
-      enhancementEffects: []
+      enhancementEffects: [],
+      attachments: [],
+      apModifierSources: [],
+      hpModifierSources: []
     };
+    attachments.forEach(function (att) {
+      var attDef = getDef(att) || {};
+      var attName = attDef.name || att.cardId;
+      detail.attachments.push(attName);
+      (attDef.enhancementEffects || []).forEach(function (effect) {
+        if (effect.stat === 'AP' && effect.amount) detail.apModifierSources.push(attName + ' ' + (effect.amount > 0 ? '+' : '') + effect.amount);
+        if (effect.stat === 'HP' && effect.amount) detail.hpModifierSources.push(attName + ' ' + (effect.amount > 0 ? '+' : '') + effect.amount);
+      });
+    });
+    (instance.statModifiers || []).forEach(function (mod) {
+      if (state && ((mod.startTurn != null && state.turnNumber < mod.startTurn) || (mod.endTurn != null && state.turnNumber > mod.endTurn))) return;
+      var label = '一時効果 ' + (mod.amount > 0 ? '+' : '') + mod.amount;
+      if (mod.stat === 'AP') detail.apModifierSources.push(label);
+    });
     if (def.skills) {
       def.skills.forEach(function(s) {
         var effective = s.timing === 'ATTACK' && typeof global.getEffectiveAP === 'function'

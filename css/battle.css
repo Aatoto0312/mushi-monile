@@ -166,6 +166,10 @@ body.battle-screen {
 /* 手札 */
 .hand-zone {
   min-height: 40px;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
 }
 .hand-zone .card-row {
   display: flex;
@@ -176,7 +180,10 @@ body.battle-screen {
   -webkit-overflow-scrolling: touch;
   align-items: flex-start;
   padding-bottom: 2px;
+  min-width: max-content;
 }
+.hand-zone .battle-card { flex: 0 0 62px; min-width: 62px; }
+.hand-zone .face-down { flex-basis: 44px; min-width: 44px; }
 .hand-back {
   background: repeating-linear-gradient(45deg,#5d6d73,#5d6d73 6px,#4d5b60 6px,#4d5b60 12px);
   color: #eaf0f1;
@@ -320,6 +327,48 @@ body.battle-screen {
   text-align: center;
 }
 .hand-card:active { transform: scale(0.95); }
+.hand-card.selected-hand-card {
+  position: relative;
+  z-index: 3;
+  outline: 3px solid #f4c23d;
+  outline-offset: 1px;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.field-card { position: relative; }
+.field-card.is-attacked { filter: saturate(0.55); }
+.field-card.is-attacked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: rgba(20,20,20,0.18);
+  pointer-events: none;
+}
+.card-state-badges {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  pointer-events: none;
+}
+.card-state-badge {
+  padding: 1px 3px;
+  border-radius: 4px;
+  background: rgba(15,15,15,0.84);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.state-attacked { background: rgba(120,35,30,0.92); }
+.state-color { background: rgba(70,60,125,0.94); }
 
 .face-down {
   background: repeating-linear-gradient(45deg,#4a5a5f,#4a5a5f 6px,#3a474b 6px,#3a474b 12px);
@@ -574,6 +623,7 @@ body.battle-screen {
 .detail-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
 .detail-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
 .detail-hp { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 8px; }
+.detail-attachments, .detail-modifier-sources { font-size: 11px; line-height: 1.45; margin: 5px 0; padding: 6px 8px; background: rgba(47,111,79,0.08); border-radius: 6px; }
 .detail-section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 12px 0 6px; }
 .detail-skill { font-size: 11px; line-height: 1.5; margin-bottom: 4px; padding: 6px 8px; background: rgba(0,0,0,0.04); border-radius: 6px; }
 .detail-trait { font-size: 11px; line-height: 1.5; margin-bottom: 4px; padding: 6px 8px; background: rgba(47,111,79,0.1); border-radius: 6px; color: var(--accent); }
@@ -642,4 +692,47 @@ body.battle-screen {
   .deck-count { bottom: -14px; font-size: 8px; }
   .zone { padding: 2px 3px; margin: 1px 3px; }
   .zone-label { font-size: 8px; }
+}
+
+/* 横画面: DOM順は維持し、各プレイヤーのゾーンだけをプレイマット状に並べる。 */
+@media (orientation: landscape) and (max-height: 520px) {
+  html, body { height: auto; min-height: 100%; }
+  body.battle-screen { overflow-y: auto; }
+  .mobile-frame { max-width: none; width: 100%; min-height: 100vh; }
+  .topbar { min-height: 28px; }
+  .zone {
+    display: grid;
+    grid-template-columns: minmax(70px, 0.7fr) minmax(150px, 2fr) minmax(92px, 1fr) minmax(72px, 0.8fr);
+    grid-template-areas:
+      "player field territory hand"
+      "deck field food discard"
+      "cost field food discard";
+    gap: 2px 5px;
+    align-items: start;
+    padding: 3px 6px;
+    min-width: 640px;
+  }
+  .player-info { grid-area: player; }
+  .zone-group--field { grid-area: field; min-width: 0; }
+  .zone-group--territory { grid-area: territory; min-width: 0; }
+  .zone-group--hand { grid-area: hand; min-width: 0; }
+  .zone-group--deck { grid-area: deck; }
+  .zone-group--food { grid-area: food; min-width: 0; }
+  .zone-group--discard { grid-area: discard; min-width: 0; }
+  .zone-group--cost { grid-area: cost; }
+  .zone-bottom .self-info { grid-area: player; }
+  .zone-bottom { order: 1; grid-template-areas: "player field field territory" "hand hand hand hand" "deck food discard discard"; }
+  .control-bar { order: 2; position: sticky; top: auto; bottom: 0; z-index: 4; background: rgba(244,241,232,0.97); padding: 3px 8px; box-shadow: 0 -2px 8px rgba(0,0,0,0.12); }
+  .zone-top { order: 3; }
+  .zone-bottom .zone-group--hand { min-width: 0; width: 100%; }
+  .zone-bottom .hand-zone { min-height: 92px; }
+  .zone-top .hand-card, .zone-top .hand-back { width: 34px; min-width: 34px; height: 46px; flex-basis: 34px; }
+  .zone-top .hand-zone { min-height: 30px; max-height: 50px; }
+  .control-bar .btn-row { justify-content: center; }
+  .action-btn-wide { flex: 0 1 180px; min-height: 34px; }
+  .field-zone, .hand-zone, .food-zone, .discard-zone { max-width: 100%; overflow-x: auto; }
+  .territory-zone .card-row, .discard-zone .card-row { flex-wrap: nowrap; min-width: max-content; }
+  .log-section { max-height: 72px; overflow-y: auto; }
+  .modal-content { max-width: min(620px, 92vw); max-height: 92vh; }
+  .modal-body { max-height: 64vh; }
 }

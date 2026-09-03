@@ -8,6 +8,13 @@
     this.turn = new TurnEngine(this.state);
   }
 
+  // 対戦開始前の空状態へ戻す。デッキ確定まではstartGameを呼ばない。
+  GameEngine.prototype.resetSession = function () {
+    this.state = new GameState();
+    this.turn = new TurnEngine(this.state);
+    return this.state;
+  };
+
   GameEngine.prototype.newGame = function (p1Defs, p2Defs, opts) {
     opts = opts || {};
     this.state = new GameState();
