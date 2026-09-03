@@ -47,6 +47,12 @@
       return { type: 'RESOLVE_DISCARD_INSECT_SELECTION', instanceId: pending.options[discardIdx] };
     }
 
+    if (pending.type === 'SPELL_TARGET_SELECTION') {
+      if (!pending.options || pending.options.length === 0) return null;
+      var spellTargetIdx = Math.floor(this.rng() * pending.options.length);
+      return { type: 'RESOLVE_SPELL_TARGET_SELECTION', instanceId: pending.options[spellTargetIdx] };
+    }
+
     return null;
   };
 
@@ -97,9 +103,11 @@
 
     if (playableSpells.length > 0) {
       var chosenSpell = playableSpells[Math.floor(this.rng() * playableSpells.length)];
+      var spellTargets = global.getSpellTargetCandidates(state, self.playerId, chosenSpell.instanceId);
       return {
         type: 'USE_SPELL',
-        instanceId: chosenSpell.instanceId
+        instanceId: chosenSpell.instanceId,
+        targetInstanceId: spellTargets.length ? spellTargets[Math.floor(this.rng() * spellTargets.length)].instanceId : null
       };
     }
 
@@ -234,6 +242,10 @@
         global.resolveDiscardInsectSelection(state, this.playerId, action.instanceId);
         return true;
       }
+      if (action.type === 'RESOLVE_SPELL_TARGET_SELECTION') {
+        global.resolveSpellTargetSelection(state, this.playerId, action.instanceId);
+        return true;
+      }
       if (action.type === 'ENTER_SET_PHASE') {
         global.enterSetPhase(state);
         return true;
@@ -251,7 +263,7 @@
         return true;
       }
       if (action.type === 'USE_SPELL') {
-        global.useSpell(state, this.playerId, action.instanceId);
+        global.useSpell(state, this.playerId, action.instanceId, action.targetInstanceId);
         return true;
       }
       if (action.type === 'USE_ENHANCEMENT') {

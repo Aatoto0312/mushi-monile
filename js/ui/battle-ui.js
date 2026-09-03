@@ -454,6 +454,10 @@
     var self = this;
     fieldInstances.forEach(function (inst) {
       var el = CardUI.renderCard(inst, ZONES.FIELD, self.state);
+      var pending = getPendingEffect(self.state);
+      if (pending && pending.type === 'SPELL_TARGET_SELECTION' && pending.options.indexOf(inst.instanceId) !== -1) {
+        el.classList.add('legal-target');
+      }
       el.addEventListener('click', function () {
         self.onFieldCardTap(playerId, inst, el);
       });
@@ -674,6 +678,7 @@
     if (!pending) {
       if (statusText.textContent === 'あなたの縄張りを1枚選択してください' ||
           statusText.textContent === 'とびだすを使用するか選択してください' ||
+          statusText.textContent === '術の対象にする相手の虫を選択してください' ||
           statusText.textContent === 'あなたの行動待ちです' ||
           statusText.textContent === 'CPUが選択中...') {
         statusText.textContent = '';
@@ -687,6 +692,8 @@
         statusText.textContent = 'あなたの縄張りを1枚選択してください';
       } else if (pending.type === 'DISCARD_INSECT_SELECTION') {
         statusText.textContent = '手札に戻す虫を捨て場から選択してください';
+      } else if (pending.type === 'SPELL_TARGET_SELECTION') {
+        statusText.textContent = '術の対象にする相手の虫を選択してください';
       } else if (pending.type === 'TERRITORY_DRAW_CHOICE') {
         statusText.textContent = 'とびだすを使用するか選択してください';
         this.showTerritoryChoiceModal(pending);
@@ -768,6 +775,7 @@
           onSelect: function () {
             try {
               useSpell(self.state, playerId, instance.instanceId);
+              self.hideCardDetail();
               self.render();
             } catch (e) {
               alert(e.message);
@@ -794,7 +802,20 @@
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
     }
-    if (getPendingEffect(this.state)) return;
+    var pending = getPendingEffect(this.state);
+    if (pending) {
+      if (pending.type === 'SPELL_TARGET_SELECTION' && pending.playerId === this.state.activePlayerId &&
+          pending.options.indexOf(instance.instanceId) !== -1) {
+        try {
+          global.resolveSpellTargetSelection(this.state, pending.playerId, instance.instanceId);
+          this.render();
+        } catch (e) {
+          alert(e.message);
+          this.render();
+        }
+      }
+      return;
+    }
 
     var self = this;
     var st = this.actionState;

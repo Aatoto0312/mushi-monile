@@ -128,8 +128,9 @@
     var expectedDraw = !isFirstTurnFirstPlayer;
 
     if (expectedDraw && !manual) {
-      drawCard(state, ap);
-      state.drewThisTurn = true;
+      var drawnCard = drawCard(state, ap);
+      state.drewThisTurn = !!drawnCard;
+      if (!drawnCard) { resolveFailedDraw(state, ap); }
     } else if (isFirstTurnFirstPlayer) {
       state.drewThisTurn = false;
       log(state, state.turnNumber, ap + ' は先攻1ターン目のためドローしない');
@@ -139,7 +140,7 @@
       log(state, state.turnNumber, ap + ' はドロー待ちです');
     }
 
-    state.phase = Phases.DRAW_PHASE;
+    if (state.phase !== Phases.GAME_OVER) { state.phase = Phases.DRAW_PHASE; }
     log(state, state.turnNumber, 'TURN ' + state.turnNumber + ' ' + ap + ' 開始');
     if (isFirstTurnFirstPlayer || (expectedDraw && !manual && state.drewThisTurn)) {
       enterSetPhase(state);
@@ -172,6 +173,10 @@
       throw new Error('このターンは既にドローしています');
     }
     var card = drawCard(state, playerId);
+    if (!card) {
+      resolveFailedDraw(state, playerId);
+      return null;
+    }
     state.drewThisTurn = true;
     enterSetPhase(state);
     return card;
@@ -204,6 +209,27 @@
     var drawDef = global.getCardDefinition ? global.getCardDefinition(card.cardId) : null;
     log(state, state.turnNumber, playerId + ' は1枚ドローした' + (drawDef ? '（' + drawDef.name + '）' : ''));
     return card;
+  }
+
+  // 山札0枚そのものではなく、必要な通常ドローが実際に失敗した時だけ判定する。
+  function resolveFailedDraw(state, playerId) {
+    var p1Territory = state.player('P1').territory.length;
+    var p2Territory = state.player('P2').territory.length;
+    log(state, state.turnNumber, playerId + ' は山札がなくカードを引けなかった');
+    if (p1Territory === p2Territory) {
+      state.phase = Phases.DRAW_PHASE;
+      throw new Error('山札切れ時の縄張りが同数です（同数時の公式裁定未確認）');
+    }
+    state.winner = p1Territory > p2Territory ? 'P1' : 'P2';
+    state.phase = Phases.GAME_OVER;
+    log(state, state.turnNumber, '山札切れ：縄張り枚数 ' + p1Territory + ' 対 ' + p2Territory + ' で ' + state.winner + ' の勝利');
+    emitBattleEvent(state, 'GAME_OVER', {
+      reason: 'FAILED_DRAW',
+      failedPlayerId: playerId,
+      winner: state.winner,
+      territoryCounts: { P1: p1Territory, P2: p2Territory }
+    });
+    return state.winner;
   }
 
   // 縄張りからカードを引く処理（攻撃・直接攻撃による防御側の選択）。
@@ -420,7 +446,23 @@
   // 術の基本終了先は DISCARD(使い切り)。効果が最終移動先を上書きすることで
   // 《蟲の息吹》のような「自身をエサ場へ」が実現する。
   // カード名if文は使わず、cardEffects の内容に応じて決まる。
-  function resolveSpellEffects(state, playerId, instance, def) {
+  function getSpellTargetCandidates(state, playerId, handInstanceId) {
+    var held = findInZone(state, playerId, ZONES.HAND, handInstanceId);
+    var def = held ? getCardDefinition(held.cardId) : null;
+    if (!def || def.type !== CardTypes.SPELL) { return []; }
+    var candidates = [];
+    (def.cardEffects || []).forEach(function (effect) {
+      if (!effect || effect.type !== 'DEAL_DAMAGE_TO_TARGET') { return; }
+      if (effect.target === 'OPPONENT_FIELD_INSECT') {
+        candidates = state.player(state.opponentOf(playerId)).field.filter(function (card) {
+          return !card.faceDown;
+        });
+      }
+    });
+    return candidates;
+  }
+
+  function resolveSpellEffects(state, playerId, instance, def, chosenTargetInstanceId) {
     var effects = def.cardEffects || [];
     var finalZone = ZONES.DISCARD;
     effects.forEach(function (effect) {
@@ -456,8 +498,10 @@
         if (targets.length === 0) {
           throw new Error('対象となる虫がいません');
         }
-        // 最初の対象にダメージ (UI側で選択実装は将来的に)
-        var target = targets[0];
+        var target = targets.filter(function (candidate) {
+          return candidate.instanceId === chosenTargetInstanceId;
+        })[0];
+        if (!target) { throw new Error('選択した虫は術の対象にできません'); }
         var dmg = effect.amount || 0;
         var multiplier = effect.ignoreAttributeMultiplier ? 1 : getAttributeMultiplier(def.color || Attributes.COLORLESS, getEffectiveColor(target));
         var finalDmg = dmg * multiplier;
@@ -531,7 +575,7 @@
   // 最終的な移動先は cardEffects によって決まり、基本は DISCARD。
   // VALIDATE 失敗は状態変更ゼロ。PAY_COST以降の内部エラーは rollback で
   // 「使用直前」へ復旧する。
-  function useSpell(state, playerId, handInstanceId) {
+  function useSpell(state, playerId, handInstanceId, chosenTargetInstanceId) {
     // ---- VALIDATE ----
     assertNoPendingEffect(state);
     assertActivePlayer(state, playerId);
@@ -557,6 +601,27 @@
       throw new Error('コストが不足しています');
     }
 
+    var targetedEffects = (def.cardEffects || []).filter(function (effect) {
+      return effect && effect.type === 'DEAL_DAMAGE_TO_TARGET';
+    });
+    if (targetedEffects.length > 0) {
+      var targetCandidates = getSpellTargetCandidates(state, playerId, handInstanceId);
+      if (targetCandidates.length === 0) { throw new Error('対象となる虫がいません'); }
+      if (!chosenTargetInstanceId && targetCandidates.length === 1) {
+        chosenTargetInstanceId = targetCandidates[0].instanceId;
+      } else if (!chosenTargetInstanceId) {
+        state.pendingEffect = {
+          type: 'SPELL_TARGET_SELECTION',
+          playerId: playerId,
+          sourceInstanceId: handInstanceId,
+          options: targetCandidates.map(function (candidate) { return candidate.instanceId; })
+        };
+        return { pending: true, targetCandidates: targetCandidates };
+      } else if (!targetCandidates.some(function (candidate) { return candidate.instanceId === chosenTargetInstanceId; })) {
+        throw new Error('選択した虫は術の対象にできません');
+      }
+    }
+
     // 使用直前の状態を記録(rollback用)。
     var snapshot = {
       availableCost: player.availableCost,
@@ -579,7 +644,7 @@
       moveCard(state, handInstanceId, ZONES.HAND, ZONES.RESOLVING, { playerId: playerId });
 
       // 最終移動先を cardEffects から決定
-      var finalZone = resolveSpellEffects(state, playerId, held, def);
+      var finalZone = resolveSpellEffects(state, playerId, held, def, chosenTargetInstanceId);
 
       // ---- FINALIZE: RESOLVING → 最終移動先 ----
       moveCard(state, held.instanceId, ZONES.RESOLVING, finalZone, { playerId: playerId });
@@ -1413,16 +1478,35 @@ function endTurn(state) {
     return moveCard(state, instanceId, ZONES.DISCARD, ZONES.HAND, { playerId: playerId });
   }
 
+  function resolveSpellTargetSelection(state, playerId, instanceId) {
+    var pending = state.pendingEffect;
+    if (!pending || pending.type !== 'SPELL_TARGET_SELECTION' || pending.playerId !== playerId) {
+      throw new Error('術の対象選択待ちではありません');
+    }
+    if (pending.options.indexOf(instanceId) === -1) {
+      throw new Error('その虫は術の対象に選択できません');
+    }
+    state.pendingEffect = null;
+    try {
+      return useSpell(state, playerId, pending.sourceInstanceId, instanceId);
+    } catch (err) {
+      state.pendingEffect = pending;
+      throw err;
+    }
+  }
+
   global.resolvePendingTerritoryChoice = resolvePendingTerritoryChoice;
   global.resolveTerritoryDrawSelection = resolveTerritoryDrawSelection;
   global.triggerTerritoryDrawSelection = triggerTerritoryDrawSelection;
   global.getPendingEffect = getPendingEffect;
   global.resolveDiscardInsectSelection = resolveDiscardInsectSelection;
+  global.resolveSpellTargetSelection = resolveSpellTargetSelection;
   global.setFood = setFood;
   global.gainCost = gainCost;
   global.enterMainPhase = enterMainPhase;
   global.summonInsect = summonInsect;
   global.useSpell = useSpell;
+  global.getSpellTargetCandidates = getSpellTargetCandidates;
   global.resolveSpellEffects = resolveSpellEffects;
   global.getLegalAttackTargets = getLegalAttackTargets;
   global.performAttack = performAttack;

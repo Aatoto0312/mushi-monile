@@ -386,7 +386,13 @@
     def.rarity = 'N';
     def.skills = [];
     def.cardEffects = [
-      { type: 'APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD', id: 'batta_no_kyousou_ap_up', stat: 'AP', amount: 200 }
+      {
+        type: 'APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD',
+        id: 'batta_no_kyousou_ap_up',
+        stat: 'AP',
+        amount: 200,
+        effectText: 'ターン終了時まで、自分のすべての虫の攻撃力を２００増やす。'
+      }
     ];
     def.passiveAbilities = [];
     def.rulings = [];
