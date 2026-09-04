@@ -139,12 +139,18 @@ runner.test('Phase1B6 NEW clears the old match and waits for fresh deck selectio
   runner.assertEqual(ui.cpuRunner, null, 'old CPU runner detached');
 });
 
-runner.test('Phase1B7 landscape prioritizes self field, full-width hand tray and controls without changing portrait', function () {
+runner.test('Phase1B7 landscape zones are vertically inverted so fields face each other at the center', function () {
   var css = fs.readFileSync(path.join(__dirname, '..', 'css', 'battle.css'), 'utf8');
-  runner.assert(/\.zone-bottom\s*\{\s*order:\s*1/.test(css), 'self board appears first in landscape');
-  runner.assert(/\.zone-bottom[\s\S]*grid-template-areas:[\s\S]*"hand hand hand hand"/.test(css), 'self hand spans landscape tray');
-  runner.assert(/\.control-bar\s*\{[\s\S]*position:\s*sticky[\s\S]*bottom:\s*0/.test(css), 'controls stay accessible');
-  runner.assert(/@media\s*\(orientation:\s*landscape\)/.test(css), 'layout remains landscape-scoped');
+  var landscape = css.slice(css.indexOf('@media (orientation: landscape) and (max-height: 520px)'));
+  runner.assert(/\.zone-top\s*\{\s*order:\s*1/.test(landscape), 'opponent remains above in landscape');
+  runner.assert(/\.zone-bottom\s*\{\s*order:\s*2/.test(landscape), 'self board stays below opponent');
+  runner.assert(/\.control-bar\s*\{\s*order:\s*3/.test(landscape), 'controls stay beside self hand');
+  runner.assert(/\.zone-top\s*\{[^}]*grid-template-areas:\s*"deck food cost discard"/.test(landscape), 'opponent layout has deck/food/cost/discard at top');
+  runner.assert(/\.zone-top\s*\{[^}]*"player field field territory"/.test(landscape), 'opponent field is at bottom closest to center');
+  runner.assert(/\.zone-bottom\s*\{[^}]*"player field field territory"/.test(landscape), 'self field is at top closest to center');
+  runner.assert(/\.zone-bottom\s*\{[^}]*"deck food discard discard"/.test(landscape), 'self deck/food/discard at bottom');
+  runner.assert(/\.zone-bottom[\s\S]*"hand hand hand hand"/.test(landscape), 'self hand spans landscape tray');
+  runner.assert(/@media\s*\(orientation:\s*landscape\)/.test(landscape), 'layout remains landscape-scoped');
 });
 
 async function runAll() { console.log('==== Phase 1-B UI Test ===='); return runner.runAll(); }

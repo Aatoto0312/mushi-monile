@@ -31,6 +31,8 @@
     this.cpuRunner = null;
     this.selectedDecks = { P1: 'KABUTOMUSHI', P2: 'OKAMAKIRI' };
     this._deckSelectDone = { P1: false, P2: false };
+    this.tutorialController = null;
+    this._tutorialAutoTimer = null;
   }
 
   BattleUI.prototype.attach = function () {
@@ -88,6 +90,14 @@
         self.startVsHuman();
       });
     }
+    var btnTutorial = document.getElementById('btn-tutorial');
+    if (btnTutorial) btnTutorial.addEventListener('click', function () { self.startTutorial(); });
+    var btnTutorialExit = document.getElementById('btn-tutorial-exit');
+    if (btnTutorialExit) btnTutorialExit.addEventListener('click', function () { self.exitTutorial(); });
+    var btnTutorialMode = document.getElementById('btn-tutorial-mode-select');
+    if (btnTutorialMode) btnTutorialMode.addEventListener('click', function () { self.exitTutorial(); });
+    var btnTutorialReplay = document.getElementById('btn-tutorial-replay');
+    if (btnTutorialReplay) btnTutorialReplay.addEventListener('click', function () { self.restartTutorial(); });
 
     // カード詳細モーダル閉じる
     var modalClose = document.getElementById('card-detail-close');
@@ -105,11 +115,13 @@
   };
 
   BattleUI.prototype.startVsHuman = function () {
+    this._deactivateTutorial();
     this.cpuMode = false;
     this._openDeckSelect();
   };
 
   BattleUI.prototype.startVsCpu = function () {
+    this._deactivateTutorial();
     this.cpuMode = true;
     this._openDeckSelect();
   };
@@ -169,6 +181,66 @@
     if (overlay) overlay.style.display = 'none';
   };
 
+  BattleUI.prototype.showModeSelect = function () {
+    var overlay = document.getElementById('mode-select-overlay');
+    if (overlay) overlay.style.display = 'flex';
+  };
+
+  BattleUI.prototype._resetActionState = function () {
+    this.actionState = { mode: 'idle', attackerInstanceId: null, skillId: null, legalTargets: [], pendingAttackTarget: null, sacrificeCandidates: null, enhancementInstanceId: null, enhancementDef: null, pendingEnh: null };
+  };
+
+  BattleUI.prototype._deactivateTutorial = function () {
+    if (this._tutorialAutoTimer) { clearTimeout(this._tutorialAutoTimer); this._tutorialAutoTimer = null; }
+    if (this.tutorialController) this.tutorialController.active = false;
+    this.tutorialController = null;
+    if (document.body) document.body.classList.remove('tutorial-active');
+    var guide = document.getElementById('tutorial-guide');
+    if (guide) guide.style.display = 'none';
+  };
+
+  BattleUI.prototype.startTutorial = function () {
+    if (this.cpuRunner) { this.cpuRunner.isRunning = false; this.cpuRunner = null; }
+    this.cpuMode = false;
+    this.hideModeSelect();
+    this.hideDeckSelect();
+    this._resetActionState();
+    this.tutorialController = new global.TutorialController(this.engine, this, global.TUTORIAL_SCENARIOS.basicV01);
+    this.tutorialController.start();
+    this.state = this.engine.state;
+    this._lastBattleEventId = 0;
+    this._damageVectorQueue = [];
+    this._damageVectorActive = false;
+    if (this.logUI) this.logUI.clear();
+    if (document.body) document.body.classList.add('tutorial-active');
+    this.render();
+  };
+
+  BattleUI.prototype.restartTutorial = function () {
+    if (!this.tutorialController) return;
+    this._resetActionState();
+    this.tutorialController.restart();
+    this.state = this.engine.state;
+    this._lastBattleEventId = 0;
+    this._damageVectorQueue = [];
+    this._damageVectorActive = false;
+    var go = document.getElementById('game-over'); if (go) go.style.display = 'none';
+    this.render();
+  };
+
+  BattleUI.prototype.exitTutorial = function () {
+    if (this.tutorialController) this.tutorialController.exit();
+    this.state = this.engine.state;
+    this._resetActionState();
+    this._deactivateTutorial();
+    ['card-detail-modal', 'pass-overlay', 'game-over', 'damage-vector', 'cpu-thinking', 'cpu-action-log'].forEach(function (id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; });
+    this.showModeSelect();
+  };
+
+  BattleUI.prototype._tutorialAllows = function (action, payload) {
+    return !this.tutorialController || this.tutorialController.allows(action, payload || {});
+  };
+
   BattleUI.prototype._beginNewGame = function () {
     var kabutoRecipe = global.STARTER_DECK_RECIPES[this.selectedDecks.P1] || global.STARTER_DECK_RECIPES.KABUTOMUSHI;
     var okamakiriRecipe = global.STARTER_DECK_RECIPES[this.selectedDecks.P2] || global.STARTER_DECK_RECIPES.OKAMAKIRI;
@@ -214,11 +286,13 @@
   };
 
   BattleUI.prototype.newGame = function () {
+    if (this.tutorialController) { this.restartTutorial(); return; }
     this.hideDeckSelect();
     this._beginNewGame();
   };
 
   BattleUI.prototype.returnToDeckSelect = function () {
+    if (this.tutorialController) { this.exitTutorial(); return; }
     if (this.cpuRunner) {
       this.cpuRunner.isRunning = false;
       this.cpuRunner = null;
@@ -259,6 +333,7 @@
   };
 
   BattleUI.prototype.render = function () {
+    if (this.tutorialController) this.tutorialController.observe();
     var s = this.state;
     var activeId = s.activePlayerId;
 
@@ -336,6 +411,33 @@
       if (hasP2Pending || (activeId === 'P2' && s.phase !== global.Phases.GAME_OVER)) {
         this._startCpuTurn();
       }
+    }
+    this.renderTutorialGuide();
+  };
+
+  BattleUI.prototype.renderTutorialGuide = function () {
+    var controller = this.tutorialController;
+    var guide = document.getElementById('tutorial-guide');
+    if (!guide) return;
+    if (!controller || !controller.active) { guide.style.display = 'none'; return; }
+    guide.style.display = 'block';
+    var step = controller.currentStep();
+    var complete = controller.isComplete();
+    this.setText('tutorial-step', complete ? 'COMPLETE' : 'STEP ' + (controller.stepIndex + 1) + ' / ' + controller.scenario.steps.length);
+    this.setText('tutorial-message', complete ? 'おめでとうございます。基本対戦を完走しました！' : step.message);
+    var actions = document.getElementById('tutorial-complete-actions');
+    if (actions) actions.style.display = complete ? 'flex' : 'none';
+    document.querySelectorAll('.tutorial-allowed, .tutorial-blocked').forEach(function (el) { el.classList.remove('tutorial-allowed'); el.classList.remove('tutorial-blocked'); });
+    var allowed = controller.allowedInstanceIds();
+    document.querySelectorAll('[data-instance-id]').forEach(function (el) { el.classList.add(allowed.indexOf(el.dataset.instanceId) >= 0 ? 'tutorial-allowed' : 'tutorial-blocked'); });
+    var buttonMap = { DRAW: 'btn-draw', ENTER_MAIN: 'btn-to-main', DIRECT_ATTACK: 'btn-direct-attack' };
+    Object.keys(buttonMap).forEach(function (action) { var el = document.getElementById(buttonMap[action]); if (el && controller.allows(action)) el.classList.add('tutorial-allowed'); });
+    if (step && step.autoResolve && this.state.pendingEffect && !this._tutorialAutoTimer) {
+      var self = this;
+      this._tutorialAutoTimer = setTimeout(function () {
+        self._tutorialAutoTimer = null;
+        if (self.tutorialController) { self.tutorialController.observe(); self.render(); }
+      }, 450);
     }
   };
 
@@ -775,6 +877,7 @@
 
   BattleUI.prototype.onHandCardTap = function (playerId, instance) {
     if (this.actionState.mode === 'colorPicker') return;
+    if (!this._tutorialAllows('HAND_CARD', { instanceId: instance.instanceId })) return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -843,6 +946,9 @@
   };
 
   BattleUI.prototype.onFieldCardTap = function (playerId, instance, el) {
+    var tutorialAction = this.actionState.mode === 'attackTarget' ? 'ATTACK_TARGET' :
+      (this.actionState.mode === 'enhanceTarget' ? 'ENHANCEMENT_TARGET' : 'FIELD_CARD');
+    if (!this._tutorialAllows(tutorialAction, { instanceId: instance.instanceId })) return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -975,6 +1081,7 @@
   };
 
   BattleUI.prototype.onTerritoryZoneTap = function (playerId, role) {
+    if (!this._tutorialAllows('DIRECT_ATTACK')) return;
     var st = this.actionState;
     if (st.mode !== 'attackTarget') { return; }
     var leader = st.legalTargets.filter(function (t) { return t.targetType === 'LEADER'; })[0];
@@ -1003,6 +1110,7 @@
 
   // スキル選択完了 → 対象選択へ
   BattleUI.prototype.onSkillSelect = function (skillId, playerId, instance) {
+    if (!this._tutorialAllows('SKILL', { instanceId: instance.instanceId, skillId: skillId })) return;
     var st = this.actionState;
     st.mode = 'attacking';
     st.skillId = skillId;
@@ -1014,6 +1122,7 @@
   // 本体直接攻撃ボタン
   BattleUI.prototype.onDirectAttack = function () {
     if (this.actionState.mode === 'colorPicker') return;
+    if (!this._tutorialAllows('DIRECT_ATTACK')) return;
     var st = this.actionState;
     var leaderTarget = null;
     if (st.legalTargets) {
@@ -1094,6 +1203,7 @@
 
   // 強化対象タップ
   BattleUI.prototype.onEnhancementTargetTap = function (playerId, instance) {
+    if (!this._tutorialAllows('ENHANCEMENT_TARGET', { instanceId: instance.instanceId })) return;
     var st = this.actionState;
     if (st.mode !== 'enhanceTarget') { return; }
     if (playerId !== this.state.activePlayerId) { return; }
@@ -1324,6 +1434,7 @@
 
   BattleUI.prototype.onEndTurn = function () {
     if (this.actionState.mode === 'colorPicker') return;
+    if (!this._tutorialAllows('END_TURN')) return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -1346,6 +1457,7 @@
 
   BattleUI.prototype.onDraw = function () {
     if (this.actionState.mode === 'colorPicker') return;
+    if (!this._tutorialAllows('DRAW')) return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
@@ -1377,6 +1489,7 @@
 
   BattleUI.prototype.onToMainPhase = function () {
     if (this.actionState.mode === 'colorPicker') return;
+    if (!this._tutorialAllows('ENTER_MAIN')) return;
     // CPUターン中は人間側の操作を無効化
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;

@@ -653,6 +653,21 @@ body.battle-screen {
 
 /* デッキ選択 */
 .deck-select-box { min-width: 260px; }
+.tutorial-mode-btn span { display: block; margin-top: 3px; font-size: 11px; font-weight: normal; opacity: .82; }
+.tutorial-guide { position: fixed; left: max(10px, env(safe-area-inset-left)); right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); z-index: 230; max-width: 520px; margin: 0 auto; padding: 12px 14px; border: 2px solid #ffd54f; border-radius: 12px; background: rgba(22, 27, 32, .96); color: #fff; box-shadow: 0 5px 22px rgba(0, 0, 0, .45); pointer-events: none; }
+.tutorial-guide__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tutorial-guide__head button, .tutorial-complete-actions button { pointer-events: auto; }
+.tutorial-guide p { margin: 8px 0 0; line-height: 1.45; }
+.tutorial-complete-actions { display: flex; gap: 8px; margin-top: 10px; }
+.tutorial-active .control-bar { padding-bottom: 94px; }
+.tutorial-active .mobile-frame { padding-bottom: 112px; }
+.tutorial-allowed { position: relative; z-index: 4; outline: 3px solid #ffd54f !important; box-shadow: 0 0 14px #ffd54f !important; }
+.tutorial-blocked { opacity: .48; filter: grayscale(.35); }
+@media (orientation: landscape) {
+  .tutorial-guide { left: auto; width: min(310px, 42vw); max-height: calc(100vh - 20px); overflow-y: auto; font-size: 12px; }
+  .tutorial-active .control-bar { padding-bottom: 6px; }
+  .tutorial-active .mobile-frame { padding-bottom: 6px; }
+}
 .deck-select-row {
   display: flex;
   align-items: center;
@@ -721,11 +736,13 @@ body.battle-screen {
   .zone-group--discard { grid-area: discard; min-width: 0; }
   .zone-group--cost { grid-area: cost; }
   .zone-bottom .self-info { grid-area: player; }
-  .zone-bottom { order: 1; grid-template-areas: "player field field territory" "hand hand hand hand" "deck food discard discard"; }
-  .control-bar { order: 2; position: sticky; top: auto; bottom: 0; z-index: 4; background: rgba(244,241,232,0.97); padding: 3px 8px; box-shadow: 0 -2px 8px rgba(0,0,0,0.12); }
-  .zone-top { order: 3; }
+  .zone-top { order: 1; grid-template-areas: "deck food cost discard" "hand hand hand hand" "player field field territory"; }
+  .zone-bottom { order: 2; grid-template-areas: "player field field territory" "hand hand hand hand" "deck food discard discard"; }
+  .control-bar { order: 3; position: sticky; top: auto; bottom: 0; z-index: 4; background: rgba(244,241,232,0.97); padding: 3px 8px; box-shadow: 0 -2px 8px rgba(0,0,0,0.12); }
   .zone-bottom .zone-group--hand { min-width: 0; width: 100%; }
-  .zone-bottom .hand-zone { min-height: 92px; }
+  .zone-bottom .hand-zone { min-height: 98px; overflow-x: auto; overflow-y: hidden; padding: 5px 3px 7px; scroll-padding-inline: 3px; }
+  .zone-bottom .hand-zone .card-row { overflow-x: visible; width: max-content; min-width: 100%; gap: 6px; padding: 0; }
+  .zone-bottom .hand-zone .battle-card { flex: 0 0 62px; width: 62px; min-width: 62px; max-width: 62px; margin: 0; }
   .zone-top .hand-card, .zone-top .hand-back { width: 34px; min-width: 34px; height: 46px; flex-basis: 34px; }
   .zone-top .hand-zone { min-height: 30px; max-height: 50px; }
   .control-bar .btn-row { justify-content: center; }
