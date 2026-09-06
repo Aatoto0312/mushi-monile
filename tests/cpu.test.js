@@ -299,7 +299,9 @@ runner.test('TestC12 CPU(P2)の手札は裏向きで非公開', function () {
   var zone = getById('opp-hand-zone');
   var cardRow = zone.children[0];
   var cards = cardRow ? cardRow.children : [];
-  runner.assertTrue(cards.length === Math.min(p2HandCount, 7), 'P2手札の枚数分だけ裏向きカードが描画される');
+  runner.assertTrue(cards.length === Math.min(p2HandCount, 3), 'CPU手札は小型スタック(最大3枚)で描画され枚数バッジが表示される');
+  var countBadge = getById('opp-hand-count');
+  runner.assertTrue(countBadge && countBadge.textContent == p2HandCount, '手札countバッジに実枚数が入る');
   var allHidden = cards.every(function (c) {
     if (c.className.indexOf('face-down') === -1) { return false; }
     var revealed = c.children.some(function (ch) { return ch.className && ch.className.indexOf('card-name-full') !== -1; });

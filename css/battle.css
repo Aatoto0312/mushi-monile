@@ -10,6 +10,16 @@
   font-weight: bold;
   z-index: 1000;
   padding: 2px;
+  pointer-events: none;
+}
+#layout-metrics {
+  font-weight: normal;
+  color: #333;
+  margin-left: 6px;
+}
+#layout-metrics.bad {
+  color: #b00020;
+  font-weight: 800;
 }
 
 :root {
@@ -23,12 +33,46 @@
   --blue: #2471a3;
   --green: #1e8449;
   --grey: #7f8c8d;
+
+  /* Role-based card sizing — Portrait (width-driven) */
+  --card-w-hand: clamp(52px, 17vw, 72px);
+  --card-h-hand: clamp(72px, 24vw, 100px);
+  --card-w-field: clamp(48px, 15.5vw, 64px);
+  --card-h-field: clamp(68px, 21.5vw, 88px);
+  --card-w-opp-field: clamp(40px, 13vw, 54px);
+  --card-h-opp-field: clamp(56px, 18vw, 76px);
+  --card-w-aux: clamp(16px, 4.4vw, 20px);
+  --card-h-aux: clamp(22px, 6.4vw, 28px);
+  --card-w-deck: clamp(14px, 3.8vw, 18px);
+  --card-h-deck: clamp(18px, 5.4vw, 24px);
+  --card-w-deck-pile: clamp(18px, 5vw, 22px);
+  --card-h-deck-pile: clamp(22px, 6.6vw, 30px);
+  --card-w-opp-hand: clamp(12px, 3.4vw, 16px);
+  --card-h-opp-hand: clamp(16px, 4.8vw, 22px);
+
+  /* ---- 画面高さ予算 (Portrait)。全row合計 <= 100dvh を保証する ---- */
+  --row-topbar: minmax(20px, 6%);
+  --row-cpu: minmax(0, 27%);
+  --row-divider: minmax(2px, 1%);
+  --row-human: minmax(0, 1fr);
+  --row-action: clamp(44px, 10%, 58px);
+  --row-log: minmax(0, 5%);
+
+  /* 補助情報 rail の高さ */
+  --aux-rail-h: clamp(26px, 7vh, 34px);
+
+  /* Human zone 内の分割予算 */
+  --human-field-row: minmax(0, 42%);
+  --human-hand-row: minmax(0, 1fr);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body.battle-screen {
@@ -39,250 +83,481 @@ body.battle-screen {
   touch-action: manipulation;
 }
 
-.mobile-frame {
-  max-width: 480px;
+/* ============================================================
+   Battle viewport: Battle画面全体を 100dvh に固定する単一コンテナ
+   ============================================================ */
+.mobile-frame, .battle-viewport {
+  max-width: clamp(480px, 100vw, 540px);
   margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows:
+    var(--row-topbar)
+    var(--row-cpu)
+    var(--row-divider)
+    var(--row-human)
+    var(--row-action)
+    var(--row-log);
   background: var(--paper);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+/* グリッドの行配置を明示（orderプロパティの影響を受けない） */
+.mobile-frame > .topbar { grid-row: 1; }
+.mobile-frame > .zone--cpu { grid-row: 2; }
+.mobile-frame > .battlefield-divider { grid-row: 3; }
+.mobile-frame > .zone--human { grid-row: 4; }
+.mobile-frame > .control-bar { grid-row: 5; }
+.mobile-frame > .log-section { grid-row: 6; }
 
 /* ---- トップバー ---- */
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 3px 8px;
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(1px, 0.3vw, 2px)) clamp(6px, 2vw, 10px) clamp(1px, 0.3vw, 2px);
   background: var(--accent);
   color: var(--accent-ink);
-  position: sticky;
-  top: 0;
-  z-index: 5;
+  min-height: clamp(20px, 5.2vw, 26px);
+  overflow: hidden;
+  flex: 0 0 auto;
 }
 .topbar-left, .topbar-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(6px, 2vw, 10px);
   font-weight: 700;
-  font-size: 14px;
+  font-size: clamp(10px, 3vw, 13px);
+  white-space: nowrap;
 }
 .mini-btn {
   background: rgba(255,255,255,0.2);
   color: var(--accent-ink);
   border: 1px solid rgba(255,255,255,0.5);
   border-radius: 6px;
-  padding: 2px 10px;
-  font-size: 12px;
+  padding: clamp(1px, 0.3vw, 2px) clamp(6px, 1.8vw, 10px);
+  font-size: clamp(9px, 2.6vw, 12px);
 }
 
-/* ---- メインレイアウト ---- */
+/* ---- ゾーン（各サイド）: 固定高さ予算内のgrid ---- */
 .zone {
   background: var(--panel);
-  margin: 1px 4px;
-  border-radius: 8px;
-  padding: 3px 5px;
+  margin: clamp(1px, 0.3vw, 2px) clamp(2px, 0.8vw, 5px);
+  border-radius: clamp(6px, 1.4vw, 10px);
+  padding: clamp(1px, 0.3vw, 3px) clamp(2px, 0.6vw, 5px);
   box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  display: grid;
+  grid-template-columns: clamp(84px, 19vw, 112px) minmax(0, 1fr);
+  column-gap: clamp(3px, 1vw, 6px);
+  row-gap: clamp(1px, 0.4vw, 3px);
+  min-height: 0;
+  overflow: hidden;
+}
+.zone--cpu {
+  grid-template-rows: var(--aux-rail-h) minmax(0, 1fr);
+  grid-template-areas:
+    "info aux"
+    "field field";
+}
+.zone--human {
+  grid-template-rows: var(--aux-rail-h) var(--human-field-row) var(--human-hand-row);
+  grid-template-areas:
+    "info aux"
+    "field field"
+    "hand hand";
 }
 
-.zone-top {
+.battlefield-divider {
+  height: clamp(3px, 1vw, 6px);
+  margin: 0 clamp(2px, 0.8vw, 5px);
+  background: linear-gradient(90deg, rgba(47,111,79,0), rgba(47,111,79,0.35), rgba(47,111,79,0));
+  border-radius: 999px;
   flex: 0 0 auto;
-  order: 1;
 }
 
-.zone-bottom {
-  flex: 0 0 auto;
-  order: 3;
-}
-
-.control-bar {
-  order: 2;
-  padding: 2px 6px 4px;
-  background: transparent;
-}
-
-/* プレイヤー情報 */
+/* プレイヤー情報：コンパクト（2行以内） */
 .player-info {
+  grid-area: info;
+  align-self: center;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1px 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
   font-weight: 700;
-  font-size: 10px;
+  font-size: clamp(8px, 2.6vw, 11px);
+  line-height: 1.15;
+  min-width: 0;
+  overflow: hidden;
 }
 .pname { font-weight: 800; }
-.cost-text { font-size: 10px; color: var(--muted); }
+.cost-text { font-size: clamp(8px, 2.4vw, 10px); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 
-/* ゾーングループ */
-.zone-group {
-  margin-bottom: 1px;
-}
 .zone-label {
-  font-size: 9px;
+  font-size: clamp(6px, 1.8vw, 8px);
   color: var(--muted);
-  font-weight: 600;
-  margin-bottom: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  line-height: 1;
-  padding: 0;
-}
-
-/* 山札 */
-.deck-zone {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  min-height: 38px;
-}
-.deck-pile {
-  position: relative;
-  width: 44px;
-  height: 58px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-.deck-card {
-  position: absolute;
-  bottom: 0;
-  width: 38px;
-  height: 54px;
-  border-radius: 6px;
-  background: repeating-linear-gradient(45deg,#4a5a5f,#4a5a5f 6px,#3a474b 6px,#3a474b 12px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.deck-count {
-  position: absolute;
-  bottom: -16px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 9px;
   font-weight: 700;
-  color: var(--ink);
+  line-height: 1;
+  letter-spacing: 0.3px;
   white-space: nowrap;
 }
-
-/* 手札 */
-.hand-zone {
-  min-height: 40px;
-  max-width: 100%;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  touch-action: pan-x;
+.zone-count {
+  font-size: clamp(7px, 2vw, 9px);
+  color: var(--ink);
+  background: rgba(47,111,79,0.12);
+  border-radius: 3px;
+  padding: 0 clamp(2px, 0.5vw, 4px);
+  font-weight: 800;
 }
-.hand-zone .card-row {
+
+/* ---- 場（主役）。行高さを超えても縦成長しない ---- */
+.zone-group--field {
+  grid-area: field;
   display: flex;
-  gap: 5px;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  align-items: flex-start;
-  padding-bottom: 2px;
-  min-width: max-content;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
 }
-.hand-zone .battle-card { flex: 0 0 62px; min-width: 62px; }
-.hand-zone .face-down { flex-basis: 44px; min-width: 44px; }
-.hand-back {
-  background: repeating-linear-gradient(45deg,#5d6d73,#5d6d73 6px,#4d5b60 6px,#4d5b60 12px);
-  color: #eaf0f1;
-  width: 58px;
-  height: 84px;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  font-weight: 700;
-  border-radius: 7px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+.zone-group--field .zone-label {
+  flex: 0 0 auto;
+  margin-bottom: clamp(1px, 0.2vw, 2px);
 }
-
-/* エサ */
-.food-zone {
-  min-height: 36px;
-}
-.food-zone .card-row {
-  display: flex;
-  gap: 5px;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  align-items: flex-start;
-}
-
-/* 場 */
 .field-zone {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 6px;
-  min-height: 42px;
-  padding: 2px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   background: #eef1e6;
-  border-radius: 8px;
+  border-radius: clamp(6px, 1.4vw, 10px);
   border: 1px dashed #c3c9ae;
+  padding: clamp(2px, 0.5vw, 4px);
+  display: flex;
+  align-items: center;
 }
 .field-zone .card-row {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 6px;
-  align-items: stretch;
-  min-width: max-content;
+  gap: clamp(3px, 1vw, 6px);
+  align-items: center;
+  justify-content: flex-start;
+  width: max-content;
+  min-width: 100%;
+  height: 100%;
 }
-.field-zone .battle-card {
+.zone--cpu .field-zone { background: #eef1e6; }
+.zone--cpu .field-zone .card-row { align-items: center; }
+
+/* ---- 手札（自分=最優先）。カード枚数増加で高さを増やさない ---- */
+.zone--human .zone-group--hand {
+  grid-area: hand;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+.zone-group--hand .zone-label {
+  flex: 0 0 auto;
+  margin-bottom: clamp(1px, 0.2vw, 2px);
+}
+.hand-zone {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  display: flex;
+  align-items: center;
+}
+.hand-zone .card-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: clamp(4px, 1.2vw, 7px);
+  align-items: center;
+  width: max-content;
+  min-width: 100%;
+  height: 100%;
+}
+.hand-zone .battle-card {
+  flex: 0 0 auto;
+  width: var(--card-w-hand);
+  min-width: var(--card-w-hand);
+  max-width: var(--card-w-hand);
+  height: var(--card-h-hand);
+}
+.hand-zone .spell-card { width: var(--card-w-hand); height: var(--card-h-hand); }
+.face-down {
+  background: repeating-linear-gradient(45deg,#4a5a5f,#4a5a5f 6px,#3a474b 6px,#3a474b 12px);
+  width: var(--card-w-aux);
+  height: var(--card-h-aux);
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  font-size: clamp(6px, 1.8vw, 8px);
+  font-weight: 700;
+  border-radius: clamp(4px, 1vw, 6px);
+  border: none;
   flex: 0 0 auto;
 }
 
-/* 縄張り */
-.territory-zone {
-  min-height: 30px;
-}
-.territory-zone .card-row {
+/* ---- 補助情報 rail（山札・手札・エサ・捨て場・縄張り）----
+   独立した縦zoneにはしない。fieldエリア上端/下端の1行コンパクトrailに固定。
+   内容量で親zoneを縦に伸ばさない。 */
+.aux-strip {
+  grid-area: aux;
   display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: clamp(2px, 0.6vw, 4px);
+  flex: 0 0 auto;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.aux-strip .zone-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(2px, 0.6vw, 4px);
+  border: 1px solid #d6d2c4;
+  border-radius: clamp(5px, 1.2vw, 8px);
+  padding: clamp(1px, 0.2vw, 2px) clamp(3px, 0.8vw, 6px);
+  background: #faf8f2;
+  max-width: 100%;
+  height: 100%;
+  flex: 0 0 auto;
+  min-height: 0;
+}
+.aux-strip .zone-label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.aux-strip .deck-zone,
+.aux-strip .hand-zone,
+.aux-strip .food-zone,
+.aux-strip .discard-zone,
+.aux-strip .territory-zone {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: var(--card-h-aux);
+  min-height: var(--card-h-aux);
+  max-height: var(--card-h-aux);
+  max-width: 100%;
+}
+.aux-strip .card-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: clamp(1px, 0.4vw, 3px);
+  align-items: flex-end;
+  width: max-content;
+  min-width: max-content;
+  height: 100%;
+}
+.aux-strip .battle-card,
+.aux-strip .face-down,
+.aux-strip .hand-back {
+  flex: 0 0 auto;
+  width: var(--card-w-aux);
+  min-width: var(--card-w-aux);
+  max-width: var(--card-w-aux);
+  height: var(--card-h-aux);
+  max-height: var(--card-h-aux);
+  border-radius: clamp(4px, 1vw, 6px);
+  font-size: clamp(5px, 1.5vw, 7px);
+  padding: 1px 2px;
+}
+.aux-strip .hand-back,
+.aux-strip .hand-zone--compact .face-down {
+  width: var(--card-w-opp-hand);
+  min-width: var(--card-w-opp-hand);
+  max-width: var(--card-w-opp-hand);
+  height: var(--card-h-opp-hand);
+  min-height: var(--card-h-opp-hand);
+}
+.aux-strip .hand-back { background: repeating-linear-gradient(45deg,#5d6d73,#5d6d73 6px,#4d5b60 6px,#4d5b60 12px); }
+.aux-strip .deck-zone { height: var(--card-h-deck-pile); min-height: var(--card-h-deck-pile); max-height: var(--card-h-deck-pile); }
+.aux-strip .deck-pile {
+  position: relative;
+  width: var(--card-w-deck-pile);
+  height: var(--card-h-deck-pile);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 0 auto;
+}
+.aux-strip .deck-card {
+  position: absolute;
+  bottom: 0;
+  width: var(--card-w-deck);
+  height: var(--card-h-deck);
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg,#4a5a5f,#4a5a5f 5px,#3a474b 5px,#3a474b 10px);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+.aux-strip .deck-count {
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(5px, 1.5vw, 7px);
+  font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap;
+  line-height: 1.1;
+}
+.aux-strip .discard-empty {
+  font-size: clamp(6px, 1.8vw, 8px);
+  color: var(--muted);
+  line-height: var(--card-h-aux);
+  white-space: nowrap;
+}
+.aux-strip .card-name-full,
+.aux-strip .card-hp,
+.aux-strip .card-atk,
+.aux-strip .card-type,
+.aux-strip .card-cost-color {
+  font-size: inherit;
+  display: none;
+}
+
+/* ---- 縄張り：常時コンパクトスタック。選択は専用fixedピッカーで行い、レイアウトは伸ばさない ---- */
+.aux-strip .territory-zone .card-row--compact {
+  gap: clamp(1px, 0.3vw, 2px);
 }
 .territory-zone.legal-leader-target {
   border: 2px dashed var(--red);
   background: #fdecea;
+  border-radius: clamp(4px, 1vw, 6px);
 }
 
-/* 捨て場 */
-.discard-zone {
-  min-height: 26px;
-}
-.discard-zone .card-row {
+/* 縄張り：表向きカード(例:《蜜蝋の壁》)の小型表示 (aux rail内) */
+.territory-faceup--mini {
   display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: clamp(3px, 0.8vw, 5px);
+  height: var(--card-h-aux);
+  max-height: var(--card-h-aux);
+  width: var(--card-w-aux);
+  max-width: var(--card-w-aux);
+  overflow: hidden;
+  font-size: clamp(5px, 1.4vw, 7px);
+  font-weight: 800;
+  line-height: 1.1;
+  padding: 0 1px;
+  text-align: center;
+  color: #fff;
 }
-.discard-zone .discard-empty {
-  font-size: 10px;
-  color: var(--muted);
+.territory-faceup--mini .territory-faceup__name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
-/* コスト表示 */
-.cost-display {
-  padding: 1px 0;
+/* ---- 縄張り選択ピッカー (fixed overlay。Battle viewportとは独立でgridサイズを変えない) ---- */
+#territory-picker.territory-picker {
+  z-index: 260;
+  background: rgba(18, 24, 20, 0.66);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.territory-picker__box {
+  background: var(--panel);
+  border-radius: clamp(10px, 2.4vw, 14px);
+  width: 92vw;
+  max-width: clamp(300px, 82vw, 440px);
+  max-height: 88dvh;
+  border: 2px solid var(--accent);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: clamp(10px, 2.6vw, 16px);
+}
+.territory-picker__title {
+  font-weight: 800;
+  font-size: clamp(13px, 3.8vw, 17px);
   text-align: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--accent);
+  color: var(--ink);
+  margin-bottom: clamp(8px, 2vw, 12px);
+  flex: 0 0 auto;
+}
+.territory-picker__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(48px, 14vw, 64px), 1fr));
+  gap: clamp(6px, 1.6vw, 10px);
+  justify-items: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: 68dvh;
+  min-height: 0;
+}
+.territory-picker__card {
+  width: clamp(48px, 14vw, 64px);
+  height: clamp(68px, 19vw, 90px);
+  min-width: clamp(48px, 14vw, 64px);
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 0.6vw, 4px);
+  border: none;
+  border-radius: clamp(5px, 1.4vw, 8px);
+  cursor: pointer;
+  touch-action: manipulation;
+  font-size: clamp(8px, 2.2vw, 10px);
+  line-height: 1.15;
+}
+#territory-picker .battle-card.face-down {
+  width: clamp(48px, 14vw, 64px);
+  height: clamp(68px, 19vw, 90px);
+  min-width: clamp(48px, 14vw, 64px);
+  border-radius: clamp(5px, 1.4vw, 8px);
+}
+.territory-picker__card--up {
+  padding: clamp(4px, 1vw, 7px);
+  color: #fff;
+}
+.territory-picker__up-name {
+  font-weight: 800;
+}
+.territory-picker__up-type {
+  font-size: clamp(7px, 1.9vw, 9px);
+  color: rgba(255,255,255,0.85);
 }
 
 /* ---- カード ---- */
 .battle-card {
-  width: 62px;
-  height: 90px;
-  border-radius: 8px;
-  padding: 5px 4px;
-  font-size: 11px;
+  width: var(--card-w-hand);
+  height: var(--card-h-hand);
+  border-radius: clamp(6px, 1.6vw, 10px);
+  padding: clamp(2px, 0.6vw, 5px) clamp(2px, 0.5vw, 4px);
+  font-size: clamp(8px, 2.5vw, 11px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -296,13 +571,14 @@ body.battle-screen {
 .color-green { background: linear-gradient(160deg,#1e8449,#145a32); }
 .color-colorless { background: linear-gradient(160deg,#868e96,#5f6a72); }
 
-.field-card { width: 70px; height: 98px; }
-.spell-card { width: 62px; height: 80px; }
+.field-card { width: var(--card-w-field); height: var(--card-h-field); }
+.zone--cpu .field-card,
+.zone--cpu .spell-card.field-card { width: var(--card-w-opp-field); height: var(--card-h-opp-field); }
 
 .card-name-full {
-  line-height: 1.15;
+  line-height: 1.1;
   font-weight: 700;
-  font-size: 11px;
+  font-size: clamp(7px, 2.2vw, 10px);
   word-break: keep-all;
   overflow-wrap: anywhere;
   overflow: hidden;
@@ -311,14 +587,10 @@ body.battle-screen {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-
-.card-hp { font-size: 11px; background: rgba(0,0,0,0.25); border-radius: 4px; padding: 1px 4px; align-self: flex-start; font-weight: 700; }
-
-.card-cost-color { font-size: 10px; background: rgba(0,0,0,0.2); border-radius: 4px; padding: 1px 4px; align-self: flex-start; font-weight: 600; }
-
-.card-type { font-size: 9px; background: rgba(0,0,0,0.15); border-radius: 3px; padding: 1px 3px; align-self: flex-start; font-weight: 600; text-transform: uppercase; }
-
-.card-atk { align-self: flex-end; background: rgba(0,0,0,0.25); border-radius: 4px; padding: 1px 4px; font-size: 10px; font-weight: 700; }
+.card-hp { font-size: clamp(7px, 2.2vw, 10px); background: rgba(0,0,0,0.25); border-radius: 3px; padding: 0 clamp(2px, 0.5vw, 4px); align-self: flex-start; font-weight: 700; }
+.card-cost-color { font-size: clamp(6px, 1.8vw, 8px); background: rgba(0,0,0,0.2); border-radius: 3px; padding: 0 clamp(2px, 0.5vw, 4px); align-self: flex-start; font-weight: 600; }
+.card-type { font-size: clamp(6px, 1.8vw, 8px); background: rgba(0,0,0,0.15); border-radius: 3px; padding: 0 clamp(2px, 0.5vw, 4px); align-self: flex-start; font-weight: 600; text-transform: uppercase; }
+.card-atk { align-self: flex-end; background: rgba(0,0,0,0.25); border-radius: 3px; padding: 0 clamp(2px, 0.5vw, 4px); font-size: clamp(7px, 2.2vw, 10px); font-weight: 700; }
 
 .hand-card {
   border: none;
@@ -362,7 +634,7 @@ body.battle-screen {
   border-radius: 4px;
   background: rgba(15,15,15,0.84);
   color: #fff;
-  font-size: 8px;
+  font-size: clamp(6px, 1.8vw, 8px);
   font-weight: 800;
   line-height: 1.2;
   white-space: nowrap;
@@ -370,21 +642,22 @@ body.battle-screen {
 .state-attacked { background: rgba(120,35,30,0.92); }
 .state-color { background: rgba(70,60,125,0.94); }
 
-.face-down {
-  background: repeating-linear-gradient(45deg,#4a5a5f,#4a5a5f 6px,#3a474b 6px,#3a474b 12px);
-  width: 44px;
-  height: 62px;
+.hand-back {
+  background: repeating-linear-gradient(45deg,#5d6d73,#5d6d73 6px,#4d5b60 6px,#4d5b60 12px);
+  color: #eaf0f1;
+  width: var(--card-w-aux);
+  height: var(--card-h-aux);
   align-items: center;
   justify-content: center;
-  color: transparent;
-  font-size: 9px;
+  font-size: clamp(6px, 1.8vw, 8px);
   font-weight: 700;
-  border-radius: 7px;
-  border: none;
+  border-radius: clamp(4px, 1vw, 6px);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 /* 合法攻撃対象ハイライト */
-.field-card.legal-target {
+.field-card.legal-target,
+.face-down.legal-target {
   outline: 3px solid var(--accent);
   outline-offset: 1px;
   animation: pulse 0.9s infinite alternate;
@@ -394,31 +667,79 @@ body.battle-screen {
   to { outline-color: #7fd8a0; }
 }
 
-/* ---- 操作域 ---- */
+.tutorial-active .control-bar { padding-bottom: clamp(72px, 20vw, 96px); }
+.tutorial-active .mobile-frame { padding-bottom: clamp(92px, 26vw, 116px); }
+
+/* ---- 操作域（常時固定・高さ予算内） ---- */
+.control-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  background: rgba(244,241,232,0.97);
+  padding: clamp(1px, 0.2vw, 2px) clamp(3px, 0.8vw, 8px) clamp(2px, 0.5vw, 4px);
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.12);
+  flex: 0 0 auto;
+}
 .status-text {
   text-align: center;
   color: var(--accent);
   font-weight: 700;
-  min-height: 12px;
+  min-height: clamp(8px, 2.4vw, 12px);
   margin-bottom: 1px;
-  font-size: 11px;
+  font-size: clamp(8px, 2.5vw, 11px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.btn-row { display: flex; gap: 4px; }
+.btn-row { display: flex; gap: clamp(2px, 0.6vw, 4px); flex-wrap: wrap; }
 .action-btn-wide {
   flex: 1;
-  padding: 7px;
-  border-radius: 8px;
+  padding: clamp(3px, 1vw, 7px);
+  border-radius: clamp(6px, 1.6vw, 10px);
   border: none;
   font-weight: 700;
-  font-size: 12px;
+  font-size: clamp(9px, 2.8vw, 13px);
   background: var(--accent);
   color: var(--accent-ink);
 }
 .action-btn-wide:disabled { opacity: 0.4; cursor: not-allowed; }
-
 .attack-btn { background: var(--red) !important; }
 .cancel-btn { background: var(--muted) !important; }
 .draw-btn { background: var(--blue) !important; }
+
+/* ---- CPU行動通知 Toast（小型フローティング・盤面を覆わない） ---- */
+.cpu-toast {
+  position: fixed;
+  top: max(env(safe-area-inset-top, 0px), 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  max-width: 85vw;
+  background: rgba(25, 25, 25, 0.82);
+  color: #fff;
+  border-radius: 999px;
+  padding: 5px 12px 6px;
+  font-size: clamp(10px, 2.6vw, 13px);
+  text-align: center;
+  line-height: 1.35;
+  z-index: 30;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  visibility: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 0.22s ease, visibility 0.22s;
+}
+.cpu-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
 
 .selected-attacker {
   outline: 3px solid var(--red);
@@ -428,33 +749,33 @@ body.battle-screen {
 
 .skill-select-row {
   display: flex;
-  gap: 3px;
-  margin-top: 3px;
+  gap: clamp(2px, 0.6vw, 4px);
+  margin-top: clamp(2px, 0.6vw, 4px);
   flex-wrap: wrap;
 }
 .skill-select-btn {
   flex: 1 1 auto;
-  padding: 5px 4px;
+  padding: clamp(3px, 0.8vw, 6px) clamp(2px, 0.6vw, 5px);
   border-radius: 6px;
   border: 2px solid var(--accent);
   background: var(--panel);
   color: var(--ink);
   font-weight: 700;
-  font-size: 10px;
+  font-size: clamp(8px, 2.5vw, 11px);
   cursor: pointer;
 }
 .skill-select-btn:active { background: var(--accent); color: var(--accent-ink); }
 
-.skill-select-row.color-select-active { gap: 10px; padding: 8px 4px; }
+.skill-select-row.color-select-active { gap: clamp(6px, 1.8vw, 12px); padding: clamp(4px, 1.2vw, 8px) clamp(2px, 0.6vw, 5px); }
 .color-btn {
-  flex: 1 1 72px;
-  min-width: 72px;
-  min-height: 48px;
+  flex: 1 1 clamp(56px, 16vw, 80px);
+  min-width: clamp(56px, 16vw, 80px);
+  min-height: clamp(48px, 12vw, 56px);
   border: 2px solid var(--accent);
-  border-radius: 10px;
+  border-radius: clamp(8px, 2vw, 12px);
   color: #fff;
   font: inherit;
-  font-size: 18px;
+  font-size: clamp(14px, 4vw, 20px);
   font-weight: 800;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -497,62 +818,62 @@ body.battle-screen {
   top: 48%;
   transform: translate(-50%, -50%);
   width: min(88vw, 400px);
-  padding: 9px 12px;
-  border-radius: 10px;
+  padding: clamp(6px, 1.8vw, 12px);
+  border-radius: clamp(8px, 2vw, 12px);
   background: rgba(20,20,20,0.9);
   color: #fff;
   text-align: center;
   white-space: pre-line;
-  font-size: 16px;
+  font-size: clamp(13px, 3.8vw, 18px);
   font-weight: 800;
   line-height: 1.35;
   text-shadow: 0 1px 2px #000;
 }
 
-/* ---- バトルログ ---- */
+/* ---- バトルログ（残り予算行） ---- */
 .log-section {
-  margin: 4px 6px;
-  padding: 4px 6px;
+  margin: clamp(1px, 0.2vw, 2px) clamp(2px, 0.8vw, 5px);
+  padding: clamp(1px, 0.2vw, 2px) clamp(2px, 0.6vw, 5px);
   background: var(--panel);
-  border-radius: 10px;
+  border-radius: clamp(5px, 1.2vw, 8px);
   flex-shrink: 0;
   overflow: hidden;
+  min-height: 0;
 }
-.log-title { font-weight: 800; font-size: 11px; margin-bottom: 2px; color: var(--muted); }
-.battle-log { font-size: 10px; line-height: 1.4; color: var(--ink); }
-.battle-log .log-entry { margin: 1px 0; padding: 1px 4px; background: rgba(0,0,0,0.03); border-radius: 4px; }
+.log-title { font-weight: 800; font-size: clamp(6px, 1.8vw, 9px); color: var(--muted); display: inline; }
+.log-title::after { content: '｜'; }
+.battle-log { font-size: clamp(6px, 1.8vw, 9px); line-height: 1.2; color: var(--ink); display: inline; }
+.battle-log .log-entry { margin: 0; padding: 0 clamp(2px, 0.5vw, 4px); background: rgba(0,0,0,0.03); border-radius: 3px; display: inline; }
 .battle-log .log-entry.turn { background: rgba(47,111,79,0.1); font-weight: 700; }
+.battle-log .log-turn { margin-right: 2px; }
 
-.log-summary {
-  max-height: 4.4em;
-  overflow: hidden;
-}
-.log-summary .log-entry { font-size: 10px; }
+.log-summary { max-height: 1.3em; overflow: hidden; }
+.log-summary .log-entry { font-size: clamp(6px, 1.8vw, 9px); }
 
 .log-toggle {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  width: auto;
   border: none;
   background: rgba(47,111,79,0.08);
   color: var(--accent);
-  font-size: 10px;
+  font-size: clamp(6px, 1.8vw, 9px);
   font-weight: 700;
-  padding: 3px 0;
-  border-radius: 4px;
-  margin-top: 2px;
+  padding: 0 clamp(2px, 0.6vw, 5px);
+  border-radius: 3px;
+  margin-left: 2px;
   cursor: pointer;
+  vertical-align: middle;
 }
 .log-toggle:active { background: rgba(47,111,79,0.2); }
 
 .log-full {
-  max-height: 160px;
+  max-height: clamp(60px, 16vw, 100px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  margin-top: 4px;
-  padding: 2px 0;
+  margin-top: 1px;
   border-top: 1px solid rgba(0,0,0,0.08);
 }
-.log-full .log-entry { font-size: 10px; }
+.log-full .log-entry { font-size: clamp(6px, 1.8vw, 9px); display: block; margin: 1px 0; }
 
 /* ---- モーダル ---- */
 .modal-overlay {
@@ -563,13 +884,14 @@ body.battle-screen {
   align-items: center;
   justify-content: center;
   z-index: 100;
-  padding: 16px;
+  padding: clamp(8px, 2.4vw, 16px);
 }
 .modal-content {
   background: var(--panel);
-  border-radius: 12px;
-  max-width: 90vw;
-  max-height: 85vh;
+  border-radius: clamp(10px, 2.4vw, 14px);
+  max-width: 92vw;
+  max-height: 88vh;
+  max-height: 88dvh;
   width: 100%;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -580,54 +902,55 @@ body.battle-screen {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: clamp(8px, 2.4vw, 14px) clamp(10px, 3vw, 16px);
   border-bottom: 1px solid #e0e0e0;
   background: var(--accent);
   color: var(--accent-ink);
 }
-.modal-title { font-weight: 700; font-size: 15px; }
+.modal-title { font-weight: 700; font-size: clamp(13px, 3.5vw, 16px); }
 .modal-close {
   background: rgba(255,255,255,0.2);
   border: 1px solid rgba(255,255,255,0.5);
   color: var(--accent-ink);
-  width: 28px;
-  height: 28px;
+  width: clamp(24px, 7vw, 32px);
+  height: clamp(24px, 7vw, 32px);
   border-radius: 50%;
-  font-size: 18px;
+  font-size: clamp(14px, 4vw, 20px);
   line-height: 1;
 }
 .modal-body {
-  padding: 16px;
+  padding: clamp(8px, 2.4vw, 14px);
   overflow-y: auto;
-  max-height: 60vh;
+  max-height: 68vh;
+  max-height: 68dvh;
 }
 .modal-actions {
   display: flex;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: clamp(4px, 1.2vw, 8px);
+  padding: clamp(8px, 2.4vw, 14px) clamp(10px, 3vw, 16px);
   border-top: 1px solid #e0e0e0;
   background: #fafafa;
 }
 .detail-action-btn {
   flex: 1;
-  padding: 10px;
-  border-radius: 8px;
+  padding: clamp(6px, 1.8vw, 12px);
+  border-radius: clamp(6px, 1.6vw, 10px);
   border: none;
   font-weight: 700;
-  font-size: 13px;
+  font-size: clamp(11px, 3vw, 14px);
   background: var(--accent);
   color: var(--accent-ink);
 }
 
 /* 詳細表示スタイル */
-.detail-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
-.detail-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-.detail-hp { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 8px; }
-.detail-attachments, .detail-modifier-sources { font-size: 11px; line-height: 1.45; margin: 5px 0; padding: 6px 8px; background: rgba(47,111,79,0.08); border-radius: 6px; }
-.detail-section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 12px 0 6px; }
-.detail-skill { font-size: 11px; line-height: 1.5; margin-bottom: 4px; padding: 6px 8px; background: rgba(0,0,0,0.04); border-radius: 6px; }
-.detail-trait { font-size: 11px; line-height: 1.5; margin-bottom: 4px; padding: 6px 8px; background: rgba(47,111,79,0.1); border-radius: 6px; color: var(--accent); }
-.detail-bio { font-size: 10px; color: var(--muted); margin-top: 12px; padding: 8px; background: #f5f5f0; border-radius: 6px; font-style: italic; }
+.detail-name { font-size: clamp(13px, 3.8vw, 18px); font-weight: 800; margin-bottom: clamp(2px, 0.6vw, 6px); }
+.detail-meta { font-size: clamp(10px, 2.8vw, 13px); color: var(--muted); margin-bottom: clamp(4px, 1.2vw, 10px); }
+.detail-hp { font-size: clamp(11px, 3.2vw, 15px); font-weight: 700; color: var(--red); margin-bottom: clamp(4px, 1.2vw, 10px); }
+.detail-attachments, .detail-modifier-sources { font-size: clamp(9px, 2.6vw, 12px); line-height: 1.45; margin: clamp(3px, 0.8vw, 6px) 0; padding: clamp(4px, 1.2vw, 8px) clamp(5px, 1.5vw, 10px); background: rgba(47,111,79,0.08); border-radius: 6px; }
+.detail-section-title { font-size: clamp(9px, 2.6vw, 12px); font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin: clamp(8px, 2.4vw, 14px) 0 clamp(4px, 1.2vw, 8px); }
+.detail-skill { font-size: clamp(9px, 2.6vw, 12px); line-height: 1.5; margin-bottom: clamp(2px, 0.6vw, 5px); padding: clamp(4px, 1.2vw, 8px) clamp(5px, 1.5vw, 10px); background: rgba(0,0,0,0.04); border-radius: 6px; }
+.detail-trait { font-size: clamp(9px, 2.6vw, 12px); line-height: 1.5; margin-bottom: clamp(2px, 0.6vw, 5px); padding: clamp(4px, 1.2vw, 8px) clamp(5px, 1.5vw, 10px); background: rgba(47,111,79,0.1); border-radius: 6px; color: var(--accent); }
+.detail-bio { font-size: clamp(8px, 2.4vw, 11px); color: var(--muted); margin-top: clamp(8px, 2.4vw, 14px); padding: clamp(5px, 1.5vw, 10px); background: #f5f5f0; border-radius: 6px; font-style: italic; }
 
 /* ---- オーバーレイ共通 ---- */
 .overlay {
@@ -641,56 +964,51 @@ body.battle-screen {
 }
 .pass-box {
   background: var(--panel);
-  padding: 24px;
-  border-radius: 16px;
+  padding: clamp(16px, 5vw, 28px);
+  border-radius: clamp(12px, 3vw, 18px);
   text-align: center;
   max-width: 90vw;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-.pass-box p { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--ink); }
-#winner-message { color: var(--accent); font-size: 20px; }
-#winner-text { color: var(--accent) !important; font-size: 20px; margin-bottom: 16px; }
+.pass-box p { font-size: clamp(13px, 3.8vw, 18px); font-weight: 700; margin-bottom: clamp(8px, 2.4vw, 14px); color: var(--ink); }
+#winner-text { color: var(--accent) !important; font-size: clamp(16px, 4.5vw, 22px); margin-bottom: clamp(10px, 3vw, 18px); }
 
 /* デッキ選択 */
-.deck-select-box { min-width: 260px; }
-.tutorial-mode-btn span { display: block; margin-top: 3px; font-size: 11px; font-weight: normal; opacity: .82; }
-.tutorial-guide { position: fixed; left: max(10px, env(safe-area-inset-left)); right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); z-index: 230; max-width: 520px; margin: 0 auto; padding: 12px 14px; border: 2px solid #ffd54f; border-radius: 12px; background: rgba(22, 27, 32, .96); color: #fff; box-shadow: 0 5px 22px rgba(0, 0, 0, .45); pointer-events: none; }
-.tutorial-guide__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.deck-select-box { min-width: clamp(200px, 60vw, 300px); }
+.tutorial-mode-btn span { display: block; margin-top: clamp(2px, 0.5vw, 4px); font-size: clamp(9px, 2.6vw, 12px); font-weight: normal; opacity: .82; }
+.tutorial-guide { position: fixed; left: max(10px, env(safe-area-inset-left)); right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); z-index: 230; max-width: min(520px, 90vw); margin: 0 auto; padding: clamp(8px, 2.4vw, 14px) clamp(10px, 2.8vw, 16px); border: 2px solid #ffd54f; border-radius: clamp(8px, 2vw, 14px); background: rgba(22, 27, 32, .96); color: #fff; box-shadow: 0 5px 22px rgba(0, 0, 0, .45); pointer-events: none; }
+.tutorial-guide__head { display: flex; align-items: center; justify-content: space-between; gap: clamp(6px, 1.8vw, 12px); }
 .tutorial-guide__head button, .tutorial-complete-actions button { pointer-events: auto; }
-.tutorial-guide p { margin: 8px 0 0; line-height: 1.45; }
-.tutorial-complete-actions { display: flex; gap: 8px; margin-top: 10px; }
-.tutorial-active .control-bar { padding-bottom: 94px; }
-.tutorial-active .mobile-frame { padding-bottom: 112px; }
+.tutorial-guide p { margin: clamp(4px, 1.2vw, 8px) 0 0; line-height: 1.45; }
+.tutorial-complete-actions { display: flex; gap: clamp(4px, 1.2vw, 8px); margin-top: clamp(6px, 1.8vw, 12px); }
 .tutorial-allowed { position: relative; z-index: 4; outline: 3px solid #ffd54f !important; box-shadow: 0 0 14px #ffd54f !important; }
 .tutorial-blocked { opacity: .48; filter: grayscale(.35); }
 @media (orientation: landscape) {
-  .tutorial-guide { left: auto; width: min(310px, 42vw); max-height: calc(100vh - 20px); overflow-y: auto; font-size: 12px; }
-  .tutorial-active .control-bar { padding-bottom: 6px; }
-  .tutorial-active .mobile-frame { padding-bottom: 6px; }
+  .tutorial-guide { left: auto; width: min(280px, 38vw); max-height: calc(100dvh - 20px); overflow-y: auto; font-size: clamp(9px, 2.6vw, 12px); }
 }
 .deck-select-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 12px;
+  gap: clamp(4px, 1.2vw, 8px);
+  margin-bottom: clamp(8px, 2.4vw, 14px);
   flex-wrap: wrap;
   justify-content: center;
 }
 .deck-side-label {
-  font-size: 12px;
+  font-size: clamp(10px, 2.8vw, 13px);
   font-weight: 700;
   color: var(--muted);
-  width: 72px;
+  width: clamp(56px, 16vw, 80px);
   text-align: left;
 }
 .deck-choice-btn {
   flex: 1;
-  min-width: 110px;
-  padding: 8px;
-  border-radius: 8px;
+  min-width: clamp(90px, 26vw, 130px);
+  padding: clamp(5px, 1.5vw, 10px);
+  border-radius: clamp(6px, 1.6vw, 10px);
   border: none;
   font-weight: 700;
-  font-size: 12px;
+  font-size: clamp(10px, 2.8vw, 13px);
   background: var(--panel);
   color: var(--accent);
   border: 1px solid var(--accent);
@@ -698,58 +1016,135 @@ body.battle-screen {
 }
 .deck-choice-btn:active { background: var(--accent); color: var(--accent-ink); }
 
-/* レスポンシブ調整 */
-@media (max-width: 360px) {
-  .battle-card { width: 52px; height: 78px; }
-  .field-card { width: 60px; height: 86px; }
-  .face-down { width: 36px; height: 50px; }
-  .deck-card { width: 34px; height: 48px; }
-  .deck-count { bottom: -14px; font-size: 8px; }
-  .zone { padding: 2px 3px; margin: 1px 3px; }
-  .zone-label { font-size: 8px; }
-}
-
-/* 横画面: DOM順は維持し、各プレイヤーのゾーンだけをプレイマット状に並べる。 */
+/* ============================================================
+   横画面 — Layout v2: 同じく 100dvh 固定。横幅を活かし field/手札を優先
+   ============================================================ */
 @media (orientation: landscape) and (max-height: 520px) {
-  html, body { height: auto; min-height: 100%; }
-  body.battle-screen { overflow-y: auto; }
-  .mobile-frame { max-width: none; width: 100%; min-height: 100vh; }
-  .topbar { min-height: 28px; }
-  .zone {
-    display: grid;
-    grid-template-columns: minmax(70px, 0.7fr) minmax(150px, 2fr) minmax(92px, 1fr) minmax(72px, 0.8fr);
-    grid-template-areas:
-      "player field territory hand"
-      "deck field food discard"
-      "cost field food discard";
-    gap: 2px 5px;
-    align-items: start;
-    padding: 3px 6px;
-    min-width: 640px;
+  html, body { height: 100%; height: 100dvh; overflow: hidden; }
+  body.battle-screen { overflow: hidden; }
+  .mobile-frame, .battle-viewport {
+    max-width: none;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow: hidden;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    padding-top: env(safe-area-inset-top, 0px);
+    grid-template-rows:
+      minmax(12px, 4vh)
+      minmax(var(--cpu-zone-min), 0.9fr)
+      minmax(1px, 0.5vh)
+      minmax(var(--human-zone-min), 1.1fr)
+      minmax(var(--control-row-min), auto)
+      minmax(var(--log-row-min), auto);
   }
-  .player-info { grid-area: player; }
-  .zone-group--field { grid-area: field; min-width: 0; }
-  .zone-group--territory { grid-area: territory; min-width: 0; }
-  .zone-group--hand { grid-area: hand; min-width: 0; }
-  .zone-group--deck { grid-area: deck; }
-  .zone-group--food { grid-area: food; min-width: 0; }
-  .zone-group--discard { grid-area: discard; min-width: 0; }
-  .zone-group--cost { grid-area: cost; }
-  .zone-bottom .self-info { grid-area: player; }
-  .zone-top { order: 1; grid-template-areas: "deck food cost discard" "hand hand hand hand" "player field field territory"; }
-  .zone-bottom { order: 2; grid-template-areas: "player field field territory" "hand hand hand hand" "deck food discard discard"; }
-  .control-bar { order: 3; position: sticky; top: auto; bottom: 0; z-index: 4; background: rgba(244,241,232,0.97); padding: 3px 8px; box-shadow: 0 -2px 8px rgba(0,0,0,0.12); }
-  .zone-bottom .zone-group--hand { min-width: 0; width: 100%; }
-  .zone-bottom .hand-zone { min-height: 98px; overflow-x: auto; overflow-y: hidden; padding: 5px 3px 7px; scroll-padding-inline: 3px; }
-  .zone-bottom .hand-zone .card-row { overflow-x: visible; width: max-content; min-width: 100%; gap: 6px; padding: 0; }
-  .zone-bottom .hand-zone .battle-card { flex: 0 0 62px; width: 62px; min-width: 62px; max-width: 62px; margin: 0; }
-  .zone-top .hand-card, .zone-top .hand-back { width: 34px; min-width: 34px; height: 46px; flex-basis: 34px; }
-  .zone-top .hand-zone { min-height: 30px; max-height: 50px; }
-  .control-bar .btn-row { justify-content: center; }
-  .action-btn-wide { flex: 0 1 180px; min-height: 34px; }
-  .field-zone, .hand-zone, .food-zone, .discard-zone { max-width: 100%; overflow-x: auto; }
-  .territory-zone .card-row, .discard-zone .card-row { flex-wrap: nowrap; min-width: max-content; }
-  .log-section { max-height: 72px; overflow-y: auto; }
-  .modal-content { max-width: min(620px, 92vw); max-height: 92vh; }
-  .modal-body { max-height: 64vh; }
+
+  /* Landscape card sizing + 高さ予算。
+     固定必要量（topbar / CPU field / divider / Human field+hand / control / log）を
+     minmax(…) で先に確保し、余った高さだけを fr で分配する。
+     Human hand は縦につぶれないよう width/height に下限を持たせる。 */
+  :root {
+    --card-w-hand: clamp(54px, min(8.4vw, 16vh), 76px);
+    --card-h-hand: clamp(72px, min(11.4vw, 21vh), 92px);
+    --card-w-field: clamp(54px, min(9vw, 16.5vh), 68px);
+    --card-h-field: clamp(72px, min(12vw, 21vh), 92px);
+    --card-w-opp-field: clamp(48px, min(8.5vw, 15vh), 60px);
+    --card-h-opp-field: clamp(64px, min(11.5vw, 19vh), 82px);
+    --card-w-aux: clamp(14px, min(2.6vw, 4.8vh), 20px);
+    --card-h-aux: clamp(16px, min(3.2vw, 5.5vh), 24px);
+    --card-w-deck: clamp(13px, min(2.4vw, 4.4vh), 18px);
+    --card-h-deck: clamp(16px, min(2.9vw, 5vh), 22px);
+    --card-w-deck-pile: clamp(16px, min(3vw, 5.4vh), 22px);
+    --card-h-deck-pile: clamp(20px, min(3.6vw, 6vh), 26px);
+    --card-w-opp-hand: clamp(11px, min(2vw, 3.7vh), 15px);
+    --card-h-opp-hand: clamp(14px, min(2.4vw, 4.4vh), 19px);
+    --aux-rail-h: clamp(17px, 5.5vh, 25px);
+    --human-field-row: minmax(calc(var(--card-h-field) + 3px), 1.5fr);
+    --human-hand-row: minmax(calc(var(--card-h-hand) + 2px), 1fr);
+    --cpu-field-row: minmax(calc(var(--card-h-opp-field) + 3px), 1fr);
+    --human-zone-min: calc(var(--aux-rail-h) + var(--card-h-field) + var(--card-h-hand) + clamp(6px, 1.9vh, 9px));
+    --cpu-zone-min: calc(var(--aux-rail-h) + var(--card-h-opp-field) + clamp(4px, 1.4vh, 6px));
+    --control-row-min: clamp(28px, 8vh, 34px);
+    --log-row-min: clamp(0px, 2vh, 8px);
+  }
+
+  .topbar { min-height: 0; padding: clamp(1px, 0.2vh, 2px) clamp(6px, 1.2vw, 10px); }
+  .topbar-left, .topbar-right { font-size: clamp(9px, 2.6vh, 12px); }
+
+  /* 各ゾーン: 上段=info+aux rail / 下段=field。Human にはさらに hand。 */
+  .zone { display: grid; padding: clamp(1px, 0.3vh, 2px) clamp(3px, 0.7vw, 6px); gap: clamp(1px, 0.3vh, 2px) clamp(4px, 1vw, 8px); margin: clamp(1px, 0.2vh, 2px) clamp(3px, 0.7vw, 6px); }
+  .zone--cpu {
+    order: 1;
+    grid-template-columns: clamp(84px, 16vw, 118px) minmax(0, 1fr);
+    grid-template-rows: var(--aux-rail-h) var(--cpu-field-row);
+    grid-template-areas:
+      "info aux"
+      "field field";
+  }
+  .zone--human {
+    order: 3;
+    grid-template-columns: clamp(84px, 16vw, 118px) minmax(0, 1fr);
+    grid-template-rows: var(--aux-rail-h) var(--human-field-row) var(--human-hand-row);
+    grid-template-areas:
+      "info aux"
+      "field field"
+      "hand hand";
+  }
+  .battlefield-divider { height: clamp(1px, 0.5vh, 3px); }
+
+  .player-info { grid-area: info; align-self: center; flex-direction: column; align-items: flex-start; gap: 0; font-size: clamp(7px, 2.2vh, 10px); line-height: 1.15; min-width: 0; overflow: hidden; }
+  .player-info .cost-text { display: block; font-size: clamp(6px, 1.8vh, 9px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+  .aux-strip { grid-area: aux; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; gap: clamp(1px, 0.3vh, 2px) clamp(3px, 0.7vw, 6px); padding: 0; height: 100%; overflow-x: auto; overflow-y: hidden; }
+  .aux-strip .zone-group { flex-direction: row; align-items: center; gap: clamp(1px, 0.3vw, 3px); padding: 0 clamp(3px, 0.7vw, 6px); min-height: 0; height: 100%; }
+  .aux-strip .zone-label { font-size: clamp(5px, 1.6vh, 8px); }
+  .aux-strip .zone-count { font-size: clamp(5px, 1.7vh, 8px); }
+  .aux-strip .deck-zone, .aux-strip .hand-zone, .aux-strip .food-zone, .aux-strip .discard-zone, .aux-strip .territory-zone { height: var(--card-h-aux); min-height: var(--card-h-aux); max-height: var(--card-h-aux); overflow-x: auto; overflow-y: hidden; }
+  .aux-strip .battle-card, .aux-strip .face-down, .aux-strip .hand-back { width: var(--card-w-aux); min-width: var(--card-w-aux); max-width: var(--card-w-aux); height: var(--card-h-aux); max-height: var(--card-h-aux); border-radius: 3px; font-size: 5px; }
+  .aux-strip .hand-back, .aux-strip .hand-zone--compact .face-down { width: var(--card-w-opp-hand); min-width: var(--card-w-opp-hand); max-width: var(--card-w-opp-hand); height: var(--card-h-opp-hand); min-height: var(--card-h-opp-hand); }
+  .aux-strip .deck-zone { height: var(--card-h-deck-pile); min-height: var(--card-h-deck-pile); max-height: var(--card-h-deck-pile); }
+  .aux-strip .deck-pile { width: var(--card-w-deck-pile); height: var(--card-h-deck-pile); }
+  .aux-strip .deck-card { width: var(--card-w-deck); height: var(--card-h-deck); }
+  .aux-strip .discard-empty { font-size: clamp(6px, 1.8vh, 8px); line-height: var(--card-h-aux); }
+
+  .zone-group--field { grid-area: field; min-width: 0; min-height: 0; align-self: stretch; }
+  .zone-group--field .zone-label { display: none; }
+  .zone-group--hand .zone-label { display: none; }
+  .zone--human .zone-group--hand { grid-area: hand; min-width: 0; min-height: 0; }
+
+  .field-zone {
+    border-radius: clamp(5px, 1.1vw, 8px);
+    border: 1px solid #bfc6a8;
+    background: linear-gradient(180deg,#eef1e6,#e4e8d8);
+    padding: clamp(1px, 0.3vh, 2px) clamp(3px, 0.7vw, 6px);
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+  .field-zone .card-row { gap: clamp(3px, 0.8vw, 6px); align-items: center; padding: 0; }
+  .zone--cpu .field-zone .card-row { justify-content: flex-start; }
+
+  .zone--human .hand-zone {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    min-height: 0;
+  }
+  .zone--human .hand-zone .card-row { overflow-x: visible; width: max-content; min-width: 100%; gap: clamp(3px, 0.8vw, 6px); padding: 0; height: 100%; }
+  .zone--human .hand-zone .battle-card { flex: 0 0 var(--card-w-hand); width: var(--card-w-hand); min-width: var(--card-w-hand); max-width: var(--card-w-hand); margin: 0; }
+
+  .control-bar { order: 5; flex-direction: row; align-items: center; gap: clamp(2px, 0.5vw, 6px); padding: 0 clamp(3px, 0.8vw, 8px); min-height: 0; }
+  .tutorial-active .control-bar { padding-bottom: 0; }
+  .cpu-toast { max-width: 60vw; top: max(env(safe-area-inset-top, 0px), 8px); font-size: clamp(9px, 2.2vh, 12px); }
+  .control-bar .status-text { flex: 0 1 auto; margin: 0; min-height: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(8px, 2.2vh, 11px); }
+  .control-bar .btn-row { flex: 1 1 auto; justify-content: flex-end; align-items: center; }
+  .action-btn-wide { flex: 0 1 clamp(96px, 16vw, 160px); min-height: var(--control-row-min); height: min(var(--control-row-min), 100%); font-size: clamp(8px, 2.4vh, 11px); padding: 0 clamp(6px, 1.5vw, 12px); }
+  .skill-select-row { margin-top: 0; }
+
+  .log-section { order: 4; max-height: clamp(0px, 2vh, 8px); margin: 0; padding: 0 clamp(3px, 0.7vw, 6px); min-height: 0; overflow: hidden; }
 }

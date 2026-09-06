@@ -109,12 +109,16 @@
 
   function effectToJa(effect) {
     if (!effect) return '';
-    return effect.description || effect.effectText || EFFECT_JA[effect.type || effect.id] || '';
+    if (effect.description) return effect.description;
+    if (effect.effectText) return effect.effectText;
+    if (global.CardEffectFormatter) return global.CardEffectFormatter.formatCardEffect(effect);
+    return EFFECT_JA[effect.type || effect.id] || '';
   }
 
   function enhancementToJa(effect) {
     if (!effect) return '';
     if (effect.description) return effect.description;
+    if (global.CardEffectFormatter) return global.CardEffectFormatter.formatEnhancementEffect(effect);
     if (effect.type === 'COLOR_OVERRIDE') return 'この虫の色を赤・青・緑から選んで変更する';
     if (effect.stat) return effect.stat + (effect.amount >= 0 ? ' +' : ' ') + effect.amount;
     return effectToJa(effect);

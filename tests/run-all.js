@@ -38,6 +38,12 @@ function requireAll() {
     require('./phase1a-fix-batch.test.js'),
     require('./phase1b-ui.test.js'),
     require('./tutorial-v01.test.js'),
+    require('./single-screen-battle.test.js'),
+    require('./battle-viewport.test.js'),
+    require('./territory-picker.test.js'),
+    require('./landscape-field-hand.test.js'),
+    require('./landscape-control-bar.test.js'),
+    require('./cpu-toast.test.js'),
     require('./experience.test.js')
   ];
 }

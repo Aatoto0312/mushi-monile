@@ -238,21 +238,21 @@ runner.test('Tutorial23 full scenario completes through real Engine APIs', funct
   runner.assertEqual(x.state.pendingEffect, null);
 });
 
-runner.test('Tutorial24 landscape keeps opponent above human and controls beside human hand', function () {
+runner.test('Tutorial24 landscape keeps opponent above human and control bar fixed at bottom', function () {
   var css = fs.readFileSync(path.join(__dirname, '..', 'css', 'battle.css'), 'utf8');
   var landscape = css.slice(css.indexOf('@media (orientation: landscape) and (max-height: 520px)'));
-  runner.assert(/\.zone-top\s*\{\s*order:\s*1/.test(landscape), 'opponent remains above');
-  runner.assert(/\.zone-bottom\s*\{\s*order:\s*2/.test(landscape), 'human board follows opponent');
-  runner.assert(/\.control-bar\s*\{\s*order:\s*3/.test(landscape), 'controls stay beside the human hand');
+  runner.assert(/\.zone--cpu\s*\{\s*order:\s*1/.test(landscape), 'opponent remains above');
+  runner.assert(/\.zone--human\s*\{\s*order:\s*3/.test(landscape), 'human board follows opponent');
+  runner.assert(/\.control-bar\s*\{\s*order:\s*5/.test(landscape), 'control bar is fixed at the bottom');
 });
 
 runner.test('Tutorial25 landscape hand has one scroll owner and fixed non-overlapping cards', function () {
   var css = fs.readFileSync(path.join(__dirname, '..', 'css', 'battle.css'), 'utf8');
   var landscape = css.slice(css.indexOf('@media (orientation: landscape) and (max-height: 520px)'));
-  runner.assert(/\.zone-bottom \.hand-zone\s*\{[^}]*overflow-x:\s*auto/.test(landscape), 'outer tray scrolls');
-  runner.assert(/\.zone-bottom \.hand-zone \.card-row\s*\{[^}]*overflow-x:\s*visible[^}]*width:\s*max-content/.test(landscape), 'inner row does not create nested scroll');
-  runner.assert(/\.zone-bottom \.hand-zone \.battle-card\s*\{[^}]*flex:\s*0 0 62px[^}]*min-width:\s*62px[^}]*max-width:\s*62px/.test(landscape), 'cards remain 62px');
-  runner.assert(/\.zone-bottom \.hand-zone \.card-row\s*\{[^}]*gap:\s*[5-9]px/.test(landscape), 'cards do not overlap');
+  runner.assert(/\.zone--human \.hand-zone\s*\{[^}]*overflow-x:\s*auto/.test(landscape), 'outer tray scrolls');
+  runner.assert(/\.zone--human \.hand-zone \.card-row\s*\{[^}]*overflow-x:\s*visible[^}]*width:\s*max-content/.test(landscape), 'inner row does not create nested scroll');
+  runner.assert(/\.zone--human \.hand-zone \.battle-card\s*\{[^}]*flex:\s*0 0\s+var\(--card-w-hand\)[^}]*min-width:\s*var\(--card-w-hand\)[^}]*max-width:\s*var\(--card-w-hand\)/.test(landscape), 'cards use role-based sizing variable');
+  runner.assert(/\.zone--human \.hand-zone \.card-row\s*\{[^}]*gap:\s*clamp\([2-9]px/.test(landscape), 'cards do not overlap');
 });
 
 async function runAll() { console.log('==== Tutorial v0.1 Test ===='); return runner.runAll(); }

@@ -14,7 +14,7 @@
     if (!this.container) return;
     this.container.innerHTML = '';
 
-    this.summaryEl = document.createElement('div');
+    this.summaryEl = document.createElement('span');
     this.summaryEl.className = 'log-summary';
 
     this.toggleBtn = document.createElement('button');
@@ -35,6 +35,7 @@
       self.expanded = !self.expanded;
       self.fullEl.style.display = self.expanded ? 'block' : 'none';
       self.toggleBtn.textContent = self.expanded ? '閉じる' : 'ログ';
+      self.summaryEl.style.display = self.expanded ? 'none' : '';
       self._updateSummary();
       if (self.expanded) {
         self.fullEl.scrollTop = self.fullEl.scrollHeight;
@@ -85,7 +86,9 @@
     this.rendered = log.length;
 
     this._updateSummary();
-    this.fullEl.scrollTop = this.fullEl.scrollHeight;
+    if (this.expanded) {
+      this.fullEl.scrollTop = this.fullEl.scrollHeight;
+    }
   };
 
   BattleLogUI.prototype.clear = function () {

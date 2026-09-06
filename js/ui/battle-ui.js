@@ -35,6 +35,16 @@
     this._tutorialAutoTimer = null;
   }
 
+  // 縄張りピッカー用のカード種別ラベル
+  function territoryTypeLabel(def) {
+    if (!def) { return '?'; }
+    var map = {};
+    map[global.CardTypes.INSECT] = '蟲';
+    map[global.CardTypes.SPELL] = '術';
+    map[global.CardTypes.ENHANCEMENT] = '強化';
+    return map[def.type] || '?';
+  }
+
   BattleUI.prototype.attach = function () {
     var self = this;
     document.getElementById('btn-end-turn').addEventListener('click', function () {
@@ -233,7 +243,7 @@
     this.state = this.engine.state;
     this._resetActionState();
     this._deactivateTutorial();
-    ['card-detail-modal', 'pass-overlay', 'game-over', 'damage-vector', 'cpu-thinking', 'cpu-action-log'].forEach(function (id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; });
+['card-detail-modal', 'pass-overlay', 'game-over', 'damage-vector', 'cpu-thinking', 'cpu-action-log', 'territory-picker'].forEach(function (id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; });
     this.showModeSelect();
   };
 
@@ -268,11 +278,7 @@
         thinkDelay: 300,
         maxActionsPerTurn: 50,
         onActionLog: function (msg) {
-          var logEl = document.getElementById('cpu-action-log');
-          if (logEl) {
-            logEl.textContent = msg;
-            logEl.style.display = 'block';
-          }
+          global.CpuToast.show(document.getElementById('cpu-action-log'), msg);
         }
       });
     }
@@ -319,7 +325,7 @@
     this._deckSelectDone = { P1: false, P2: false };
 
     if (this.logUI) this.logUI.clear();
-    var idsToHide = ['card-detail-modal', 'pass-overlay', 'game-over', 'damage-vector', 'cpu-thinking', 'cpu-action-log'];
+    var idsToHide = ['card-detail-modal', 'pass-overlay', 'game-over', 'damage-vector', 'cpu-thinking', 'cpu-action-log', 'territory-picker'];
     for (var i = 0; i < idsToHide.length; i++) {
       var hidden = document.getElementById(idsToHide[i]);
       if (hidden) hidden.style.display = 'none';
@@ -413,6 +419,9 @@
       }
     }
     this.renderTutorialGuide();
+
+    // デバッグ: レイアウトメトリクスを記録
+    this._renderLayoutMetrics();
   };
 
   BattleUI.prototype.renderTutorialGuide = function () {
@@ -469,7 +478,6 @@
   // 相手側 (上)
   BattleUI.prototype.renderOpponent = function (player, playerId) {
     var id = 'opp';
-    var self = this;
 
     // 山札
     this.renderZoneDeck(id + '-deck-zone', player.deck.length);
@@ -486,10 +494,8 @@
     // 捨て場
     this.renderZoneDiscard(id + '-discard-zone', player.discard, playerId);
 
-    // 縄張り (防御側の縄張り選択用)
-    this.renderZoneTerritory(id + '-territory-zone', player.territory, false, function (inst) {
-      self.onTerritoryCardTap(playerId, inst);
-    });
+    // 縄張り (常時コンパクト表示。選択UIは専用ピッカーで行う)
+    this.renderZoneTerritory(id + '-territory-zone', player.territory);
 
     // コスト表示
     this.setText(id + '-cost', '使用可能コスト: ' + player.availableCost + ' / ' + player.food.length);
@@ -498,7 +504,6 @@
   // 自分側 (下 / アクティブ)
   BattleUI.prototype.renderSelf = function (player, playerId) {
     var id = 'self';
-    var self = this;
 
     // 山札
     this.renderZoneDeck(id + '-deck-zone', player.deck.length);
@@ -515,10 +520,8 @@
     // 捨て場
     this.renderZoneDiscard(id + '-discard-zone', player.discard, playerId);
 
-    // 縄張り
-    this.renderZoneTerritory(id + '-territory-zone', player.territory, true, function (inst) {
-      self.onTerritoryCardTap(playerId, inst);
-    });
+    // 縄張り (常時コンパクト表示。選択UIは専用ピッカーで行う)
+    this.renderZoneTerritory(id + '-territory-zone', player.territory);
 
     // コスト表示
     this.setText(id + '-cost', '使用可能コスト: ' + player.availableCost + ' / ' + player.food.length);
@@ -528,14 +531,16 @@
   BattleUI.prototype.renderZoneDeck = function (zoneId, count) {
     var container = document.getElementById(zoneId);
     if (!container) return;
+    this.setZoneCount(zoneId, count);
     container.innerHTML = '';
     container.appendChild(CardUI.renderDeck(count));
   };
 
-  // ゾーン: 手札
+// ゾーン: 手札
   BattleUI.prototype.renderZoneHand = function (zoneId, count, isSelf, handInstances, playerId) {
     var container = document.getElementById(zoneId);
     if (!container) return;
+    this.setZoneCount(zoneId, count);
     container.innerHTML = '';
 
     var self = this;
@@ -557,8 +562,10 @@
         cardRow.appendChild(el);
       });
     } else {
-      // 相手の手札は裏向きで枚数分
-      for (var i = 0; i < count && i < 7; i++) {
+      // 相手の手札は内容非公開。枚数はラベルのcountバッジで表示し、
+      // カードは小型スタック(最大3枚)だけ描画して縦積みを避ける。
+      var backsToRender = Math.min(count, 3);
+      for (var i = 0; i < backsToRender; i++) {
         var back = CardUI.renderFaceDown(null, null);
         back.classList.add('hand-back');
         cardRow.appendChild(back);
@@ -570,6 +577,7 @@
   BattleUI.prototype.renderZoneFood = function (zoneId, count, isSelf, foodInstances, playerId) {
     var container = document.getElementById(zoneId);
     if (!container) return;
+    this.setZoneCount(zoneId, count);
     container.innerHTML = '';
 
     var self = this;
@@ -613,44 +621,51 @@
   };
 
   // ゾーン: 縄張り
-  BattleUI.prototype.renderZoneTerritory = function (zoneId, territoryInstances, isSelf, onTap) {
+  // 常時コンパクト表示（最大2枚のスタック + 枚数バッジがauthoritative）。
+  // 選択pendingの選択UIは専用オーバーレイ（territory picker）で行い、このゾーンは伸ばさない。
+  BattleUI.prototype.renderZoneTerritory = function (zoneId, territoryInstances) {
     var container = document.getElementById(zoneId);
     if (!container) return;
+    this.setZoneCount(zoneId, territoryInstances ? territoryInstances.length : 0);
     container.innerHTML = '';
 
-    var cardRow = document.createElement('div');
-    cardRow.className = 'card-row';
-    container.appendChild(cardRow);
-
-    var self = this;
-    var pending = getPendingEffect(this.state);
-    var isTargetZone = false;
-    if (pending && pending.type === 'TERRITORY_DRAW_SELECTION') {
-      var targetPlayerId = pending.playerId;
-      // In CPU mode, Human is always P1, opponent/CPU is P2
-      // In Hotseat, view shifts but we can check based on zoneId
-      var zonePlayerId = zoneId.indexOf('self') !== -1 ? (this.cpuMode ? 'P1' : this.state.activePlayerId) : (this.cpuMode ? 'P2' : this.state.opponentOf(this.state.activePlayerId));
-      if (targetPlayerId === zonePlayerId) {
-        isTargetZone = true;
+    var compactRow = document.createElement('div');
+    compactRow.className = 'card-row card-row--compact';
+    container.appendChild(compactRow);
+    if (territoryInstances && territoryInstances.length > 0) {
+      var stackSize = Math.min(territoryInstances.length, 2);
+      for (var i = 0; i < stackSize; i++) {
+        compactRow.appendChild(this._buildTerritoryCompact(territoryInstances[i]));
       }
     }
-
-    territoryInstances.forEach(function (inst) {
-      var el = CardUI.renderFaceDown(function (i) {
-        if (onTap) onTap(i);
-      }, inst);
-      if (isTargetZone) {
-        el.classList.add('legal-target');
-      }
-      cardRow.appendChild(el);
-    });
   };
 
-  // 捨て場ゾーン (表向き。最新が最後)
+  // 通常縄張り表示の1枚分。裏向きならカードバック、表向きなら小型のfaceupチップ。
+  BattleUI.prototype._buildTerritoryCompact = function (inst) {
+    var el, def;
+    if (inst.faceDown) {
+      el = CardUI.renderFaceDown(null, inst);
+      el.classList.add('hand-back');
+      return el;
+    }
+    def = CardUI.getDef(inst);
+    el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'territory-faceup territory-faceup--mini ' + (CardUI.colorClass ? CardUI.colorClass(def) : '');
+    el.dataset.instanceId = inst.instanceId;
+    var name = document.createElement('span');
+    name.className = 'territory-faceup__name';
+    name.textContent = CardUI.shortName ? CardUI.shortName(def) : (def && def.name ? def.name : '?');
+    el.appendChild(name);
+    return el;
+  };
+
+// 捨て場ゾーン (表向き。最新が最後)
   BattleUI.prototype.renderZoneDiscard = function (zoneId, discardInstances, playerId) {
     var self = this;
     var container = document.getElementById(zoneId);
     if (!container) return;
+    this.setZoneCount(zoneId, discardInstances ? discardInstances.length : 0);
     container.innerHTML = '';
 
     if (!discardInstances || discardInstances.length === 0) {
@@ -749,6 +764,12 @@
     if (el) { el.textContent = text; }
   };
 
+  // ゾーンラベルへ枚数バッジを反映。zoneId (例: 'self-food-zone') -> 'self-food-count'
+  BattleUI.prototype.setZoneCount = function (zoneId, count) {
+    var el = document.getElementById(zoneId.replace(/-zone$/, '-count'));
+    if (el) { el.textContent = count; }
+  };
+
   BattleUI.prototype.renderControls = function () {
     var s = this.state;
     var btnMain = document.getElementById('btn-to-main');
@@ -817,10 +838,13 @@
     btnCancel.style.display = isAttackMode ? 'block' : 'none';
   };
 
-  BattleUI.prototype.renderPendingEffect = function (state) {
+BattleUI.prototype.renderPendingEffect = function (state) {
     var pending = getPendingEffect(state);
     var statusText = document.getElementById('status-text');
     if (!statusText) return;
+
+    // 縄張り選択ピッカーの表示/非表示を常に同期する（pending解除・GAME_OVER等で必ず閉じる）
+    this._syncTerritoryPicker(pending);
 
     if (!pending) {
       if (statusText.textContent === 'あなたの縄張りを1枚選択してください' ||
@@ -850,6 +874,80 @@
     } else {
       statusText.textContent = 'CPUが選択中...';
     }
+  };
+
+  // この端末で人が解決すべき縄張りドロー選択か判定する。
+  // CPU戦: P1だけが人間(P2はCPUが自動解決)。Hotseat/チュートリアル: どちらのplayerIdも人間が解決する。
+  BattleUI.prototype._resolveTerritoryPickerPending = function (pending) {
+    if (!pending || pending.type !== 'TERRITORY_DRAW_SELECTION') {
+      return null;
+    }
+    if (this.cpuMode && pending.playerId !== 'P1') {
+      return null;
+    }
+    return pending;
+  };
+
+  // 縄張り選択ピッカーの表示/非表示を同期する。Battle viewportのgridサイズには一切影響しない。
+  BattleUI.prototype._syncTerritoryPicker = function (pending) {
+    var picker = document.getElementById('territory-picker');
+    var cardsEl = document.getElementById('territory-picker-cards');
+    if (!picker || !cardsEl) return;
+
+    var target = this._resolveTerritoryPickerPending(pending);
+    if (!target) {
+      picker.style.display = 'none';
+      cardsEl.innerHTML = '';
+      return;
+    }
+
+    var player = this.state.player(target.playerId);
+    var territory = player ? (player.territory || []) : [];
+    cardsEl.innerHTML = '';
+    var self = this;
+    territory.forEach(function (inst) {
+      cardsEl.appendChild(self._buildTerritoryPickerCard(target.playerId, inst));
+    });
+
+    var title = document.getElementById('territory-picker-title');
+    if (title) {
+      title.textContent = '縄張りを1枚選択してください（現在 ' + territory.length + '枚）';
+    }
+    picker.style.display = 'flex';
+  };
+
+  // ピッカー用カード1枚。横スクロール/内部scrollで全枚タップ可能サイズを確保する。
+  // 裏向き→カードバック、表向き(例:《蜜蝋の壁》)→faceup表示。
+  BattleUI.prototype._buildTerritoryPickerCard = function (playerId, inst) {
+    var self = this;
+    var el;
+    if (inst.faceDown) {
+      el = CardUI.renderFaceDown(function (i) {
+        self.onTerritoryCardTap(playerId, i);
+      }, inst);
+      el.classList.add('territory-picker__card', 'territory-picker__card--back');
+      return el;
+    }
+
+    var def = CardUI.getDef(inst);
+    el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'territory-picker__card territory-picker__card--up ' + (CardUI.colorClass ? CardUI.colorClass(def) : '');
+    el.dataset.instanceId = inst.instanceId;
+    el.addEventListener('click', function () {
+      self.onTerritoryCardTap(playerId, inst);
+    });
+
+    var name = document.createElement('span');
+    name.className = 'territory-picker__up-name';
+    name.textContent = CardUI.shortName ? CardUI.shortName(def) : (def && def.name ? def.name : '?');
+    el.appendChild(name);
+
+    var type = document.createElement('span');
+    type.className = 'territory-picker__up-type';
+    type.textContent = territoryTypeLabel(def);
+    el.appendChild(type);
+    return el;
   };
 
   BattleUI.prototype.showTerritoryChoiceModal = function (pending) {
@@ -1692,6 +1790,60 @@
     var selected = document.querySelectorAll ? document.querySelectorAll('.selected-hand-card') : [];
     for (var i = 0; i < selected.length; i++) selected[i].classList.remove('selected-hand-card');
     document.getElementById('card-detail-modal').style.display = 'none';
+  };
+
+  /* -------------------------------------------------------
+     Layout metrics: 実測ヘルパー（Safari実機デバッグ用）
+     getBoundingClientRect / scrollHeight / innerHeight を収集し
+     #layout-metrics に短いサマリを書き込む。
+     ------------------------------------------------------- */
+  BattleUI.prototype.measureLayout = function () {
+    var doc = global.document || null;
+    var win = typeof window !== 'undefined' ? window : null;
+    var root = doc && doc.querySelector ? (doc.querySelector('.battle-viewport') || doc.querySelector('.mobile-frame')) : null;
+    var safeRect = function (node) {
+      if (!node || typeof node.getBoundingClientRect !== 'function') return null;
+      try { var r = node.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, height: r.height }; }
+      catch (_e) { return null; }
+    };
+    var metrics = {
+      innerHeight: win ? win.innerHeight : null,
+      docScrollHeight: doc && doc.documentElement ? doc.documentElement.scrollHeight : null,
+      bodyScrollHeight: doc && doc.body ? doc.body.scrollHeight : null,
+      viewportRect: safeRect(root),
+      zones: {},
+      lastElementBottom: null,
+      ok: false,
+      summary: ''
+    };
+    var ids = ['zone-top','zone-bottom','self-field-zone','opp-field-zone',
+      'self-hand-zone','opp-hand-zone','self-territory-zone','opp-territory-zone',
+      'self-food-zone','opp-food-zone','self-discard-zone','opp-discard-zone',
+      'self-deck-zone','opp-deck-zone'];
+    var maxBottom = 0;
+    for (var i = 0; i < ids.length; i++) {
+      var el = doc && doc.getElementById ? doc.getElementById(ids[i]) : null;
+      var rect = safeRect(el);
+      if (rect) { metrics.zones[ids[i]] = rect; if (rect.bottom > maxBottom) maxBottom = rect.bottom; }
+    }
+    var logRect = safeRect(doc && doc.querySelector ? doc.querySelector('.log-section') : null);
+    if (logRect && logRect.bottom > maxBottom) maxBottom = logRect.bottom;
+    var controlRect = safeRect(doc && doc.querySelector ? doc.querySelector('.control-bar') : null);
+    if (controlRect && controlRect.bottom > maxBottom) maxBottom = controlRect.bottom;
+    metrics.lastElementBottom = maxBottom || null;
+
+    metrics.ok = metrics.viewportRect !== null && metrics.viewportRect.height <= (metrics.innerHeight || Infinity) && (metrics.lastElementBottom || 0) <= (metrics.innerHeight || Infinity);
+    metrics.summary = 'VH:' + (metrics.innerHeight || '?') + ' ROOT:' + (metrics.viewportRect ? Math.round(metrics.viewportRect.height) : '?') + ' SCROLL:' + (metrics.docScrollHeight || '?') + (metrics.ok ? ' OK' : ' !!');
+    return metrics;
+  };
+
+  BattleUI.prototype._renderLayoutMetrics = function () {
+    if (typeof global.document === 'undefined' || !global.document.getElementById) return;
+    try {
+      var m = this.measureLayout();
+      var indicator = global.document.getElementById('layout-metrics');
+      if (indicator) { indicator.textContent = m.summary; indicator.className = m.ok ? '' : 'bad'; }
+    } catch (_e) { /* metrics never block */ }
   };
 
   global.BattleUI = BattleUI;

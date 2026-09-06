@@ -139,18 +139,15 @@ runner.test('Phase1B6 NEW clears the old match and waits for fresh deck selectio
   runner.assertEqual(ui.cpuRunner, null, 'old CPU runner detached');
 });
 
-runner.test('Phase1B7 landscape zones are vertically inverted so fields face each other at the center', function () {
+runner.test('Phase1B7 landscape zones are stacked with CPU on top and fixed (non-growing) battle area', function () {
   var css = fs.readFileSync(path.join(__dirname, '..', 'css', 'battle.css'), 'utf8');
   var landscape = css.slice(css.indexOf('@media (orientation: landscape) and (max-height: 520px)'));
-  runner.assert(/\.zone-top\s*\{\s*order:\s*1/.test(landscape), 'opponent remains above in landscape');
-  runner.assert(/\.zone-bottom\s*\{\s*order:\s*2/.test(landscape), 'self board stays below opponent');
-  runner.assert(/\.control-bar\s*\{\s*order:\s*3/.test(landscape), 'controls stay beside self hand');
-  runner.assert(/\.zone-top\s*\{[^}]*grid-template-areas:\s*"deck food cost discard"/.test(landscape), 'opponent layout has deck/food/cost/discard at top');
-  runner.assert(/\.zone-top\s*\{[^}]*"player field field territory"/.test(landscape), 'opponent field is at bottom closest to center');
-  runner.assert(/\.zone-bottom\s*\{[^}]*"player field field territory"/.test(landscape), 'self field is at top closest to center');
-  runner.assert(/\.zone-bottom\s*\{[^}]*"deck food discard discard"/.test(landscape), 'self deck/food/discard at bottom');
-  runner.assert(/\.zone-bottom[\s\S]*"hand hand hand hand"/.test(landscape), 'self hand spans landscape tray');
-  runner.assert(/@media\s*\(orientation:\s*landscape\)/.test(landscape), 'layout remains landscape-scoped');
+  runner.assert(/\.zone--cpu\s*\{\s*order:\s*1/.test(landscape), 'opponent remains above in landscape');
+  runner.assert(/\.zone--human\s*\{\s*order:\s*3/.test(landscape), 'self board stays below opponent');
+  runner.assert(/\.control-bar\s*\{\s*order:\s*5/.test(landscape), 'controls fixed at bottom');
+  runner.assert(/\.zone--cpu\s*\{[^}]*"info aux"/.test(landscape), 'opponent top row is compact info+aux rail');
+  runner.assert(/\.zone--human\s*\{[^}]*"hand\s+hand"/.test(landscape), 'self hand spans full landscape tray');
+  runner.assert(/\.zone--human\s*\{[^}]*"field field"/.test(landscape), 'self field is a fixed full-width row');
 });
 
 async function runAll() { console.log('==== Phase 1-B UI Test ===='); return runner.runAll(); }

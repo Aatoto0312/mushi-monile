@@ -2,15 +2,15 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="robots" content="noindex,nofollow">
   <title>蟲神器 プロトタイプ 0.1</title>
   <link rel="stylesheet" href="css/battle.css">
 </head>
 <body class="battle-screen">
-  <div class="test-build-indicator">TEST BUILD / v0.2-test</div>
-  <div class="mobile-frame">
+  <div class="test-build-indicator">TEST BUILD / v0.2-test <span id="layout-metrics"></span></div>
+  <div class="mobile-frame battle-viewport">
 
     <!-- トップバー -->
     <header class="topbar">
@@ -24,54 +24,86 @@
       </div>
     </header>
 
-    <div id="cpu-action-log" style="display:none; background: rgba(0,0,0,0.7); color: white; padding: 4px; text-align: center; font-size: 12px; position: absolute; top: 40px; width: 100%; z-index: 10;"></div>
+    <div id="cpu-action-log" class="cpu-toast" role="status" aria-live="polite"></div>
 
-    <!-- ===== 相手側 (上) ===== -->
-    <section class="zone zone-top" id="zone-top">
-      <!-- 相手プレイヤー情報 -->
+    <!-- ===== 相手側（上） ===== -->
+    <section class="zone zone--cpu" id="zone-top">
       <div class="player-info opponent-info">
         <span id="opp-player-label" class="pname">相手 P2</span>
+        <span id="opp-cost" class="cost-text">使用可能コスト: 0 / 0</span>
       </div>
 
-      <!-- 山札 -->
-      <div class="zone-group zone-group--deck">
-        <div class="zone-label">山札</div>
-        <div id="opp-deck-zone" class="deck-zone"></div>
-      </div>
-
-      <!-- 手札 -->
-      <div class="zone-group zone-group--hand">
-        <div class="zone-label">手札</div>
-        <div id="opp-hand-zone" class="hand-zone"></div>
-      </div>
-
-      <!-- エサ -->
-      <div class="zone-group zone-group--food">
-        <div class="zone-label">エサ</div>
-        <div id="opp-food-zone" class="food-zone"></div>
-      </div>
-
-      <!-- 捨て場 -->
-      <div class="zone-group zone-group--discard">
-        <div class="zone-label">捨て場</div>
-        <div id="opp-discard-zone" class="discard-zone"></div>
-      </div>
-
-      <!-- 縄張り -->
-      <div class="zone-group zone-group--territory">
-        <div class="zone-label">縄張り</div>
-        <div id="opp-territory-zone" class="territory-zone"></div>
-      </div>
-
-      <!-- 場 -->
+      <!-- 場（主役） -->
       <div class="zone-group zone-group--field">
         <div class="zone-label">場</div>
         <div id="opp-field-zone" class="field-zone"></div>
       </div>
 
-      <!-- コスト表示 -->
-      <div class="zone-group zone-group--cost cost-display">
-        <span id="opp-cost">使用可能コスト: 0 / 0</span>
+      <!-- 補助情報 rail（山札・手札・エサ・捨て場・縄張り） -->
+      <div class="aux-strip">
+        <div class="zone-group zone-group--hand">
+          <div class="zone-label">手札 <span class="zone-count" id="opp-hand-count"></span></div>
+          <div id="opp-hand-zone" class="hand-zone hand-zone--compact"></div>
+        </div>
+        <div class="zone-group zone-group--deck">
+          <div class="zone-label">山札 <span class="zone-count" id="opp-deck-count"></span></div>
+          <div id="opp-deck-zone" class="deck-zone"></div>
+        </div>
+        <div class="zone-group zone-group--territory">
+          <div class="zone-label">縄張り <span class="zone-count" id="opp-territory-count"></span></div>
+          <div id="opp-territory-zone" class="territory-zone"></div>
+        </div>
+        <div class="zone-group zone-group--food">
+          <div class="zone-label">エサ <span class="zone-count" id="opp-food-count"></span></div>
+          <div id="opp-food-zone" class="food-zone"></div>
+        </div>
+        <div class="zone-group zone-group--discard">
+          <div class="zone-label">捨て場 <span class="zone-count" id="opp-discard-count"></span></div>
+          <div id="opp-discard-zone" class="discard-zone"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 盤面中央 -->
+    <div class="battlefield-divider" aria-hidden="true"></div>
+
+    <!-- ===== 自分側（下） ===== -->
+    <section class="zone zone--human" id="zone-bottom">
+      <div class="player-info self-info">
+        <span id="self-player-label" class="pname">自分 P1</span>
+        <span id="self-cost" class="cost-text">使用可能コスト: 0 / 0</span>
+      </div>
+
+      <!-- 場（主役） -->
+      <div class="zone-group zone-group--field">
+        <div class="zone-label">場</div>
+        <div id="self-field-zone" class="field-zone"></div>
+      </div>
+
+      <!-- 手札（最優先・大きく） -->
+      <div class="zone-group zone-group--hand">
+        <div class="zone-label">手札 <span class="zone-count" id="self-hand-count"></span></div>
+        <div id="self-hand-zone" class="hand-zone"></div>
+      </div>
+
+      <!-- 補助情報 rail -->
+      <div class="aux-strip">
+        <div class="zone-group zone-group--territory">
+          <div class="zone-label">縄張り <span class="zone-count" id="self-territory-count"></span></div>
+          <div id="self-territory-zone" class="territory-zone"></div>
+        </div>
+        <div class="zone-group zone-group--deck">
+          <div class="zone-label">山札 <span class="zone-count" id="self-deck-count"></span></div>
+          <div id="self-deck-zone" class="deck-zone"></div>
+        </div>
+        <div class="zone-group zone-group--food">
+          <div class="zone-label">エサ <span class="zone-count" id="self-food-count"></span></div>
+          <div id="self-food-zone" class="food-zone"></div>
+        </div>
+        <div class="zone-group zone-group--discard">
+          <div class="zone-label">捨て場 <span class="zone-count" id="self-discard-count"></span></div>
+          <div id="self-discard-zone" class="discard-zone"></div>
+        </div>
       </div>
     </section>
 
@@ -79,7 +111,7 @@
     <div class="control-bar">
       <div id="status-text" class="status-text"></div>
       <div class="btn-row">
-        <button id="btn-draw" class="action-btn-wide draw-btn" type="button" style="display:none;">1枚ドロー</button>
+        <button id="btn-draw" class="action-btn-wide draw-btn" type="button">カードを引く</button>
         <button id="btn-to-main" class="action-btn-wide" type="button">メインフェイズへ</button>
         <button id="btn-end-turn" class="action-btn-wide" type="button">ターン終了</button>
         <button id="btn-direct-attack" class="action-btn-wide attack-btn" type="button" style="display:none;">本体へ攻撃</button>
@@ -87,51 +119,6 @@
       </div>
       <div id="skill-select-row" class="skill-select-row" style="display:none;"></div>
     </div>
-
-    <!-- ===== 自分側 (下) ===== -->
-    <section class="zone zone-bottom" id="zone-bottom">
-      <!-- 場 -->
-      <div class="zone-group zone-group--field">
-        <div class="zone-label">場</div>
-        <div id="self-field-zone" class="field-zone"></div>
-      </div>
-
-      <!-- 縄張り -->
-      <div class="zone-group zone-group--territory">
-        <div class="zone-label">縄張り</div>
-        <div id="self-territory-zone" class="territory-zone"></div>
-      </div>
-
-      <!-- 捨て場 -->
-      <div class="zone-group zone-group--discard">
-        <div class="zone-label">捨て場</div>
-        <div id="self-discard-zone" class="discard-zone"></div>
-      </div>
-
-      <!-- エサ -->
-      <div class="zone-group zone-group--food">
-        <div class="zone-label">エサ</div>
-        <div id="self-food-zone" class="food-zone"></div>
-      </div>
-
-      <!-- 手札 -->
-      <div class="zone-group zone-group--hand">
-        <div class="zone-label">手札</div>
-        <div id="self-hand-zone" class="hand-zone"></div>
-      </div>
-
-      <!-- 山札 -->
-      <div class="zone-group zone-group--deck">
-        <div class="zone-label">山札</div>
-        <div id="self-deck-zone" class="deck-zone"></div>
-      </div>
-
-      <!-- 自分プレイヤー情報 + コスト -->
-      <div class="player-info self-info">
-        <span id="self-player-label" class="pname">自分 P1</span>
-        <span id="self-cost" class="cost-text">使用可能コスト: 0 / 0</span>
-      </div>
-    </section>
 
     <!-- バトルログ -->
     <section class="log-section">
@@ -161,7 +148,7 @@
     <p id="tutorial-message"></p>
     <div id="tutorial-complete-actions" class="tutorial-complete-actions" style="display:none;">
       <button id="btn-tutorial-replay" class="action-btn-wide" type="button">もう一度</button>
-      <button id="btn-tutorial-mode-select" class="action-btn-wide" type="button">モード選択へ</button>
+      <button id="btn-tuto-close" class="action-btn-wide cancel-btn" type="button">完了</button>
     </div>
   </aside>
 
@@ -169,18 +156,26 @@
   <div id="card-detail-modal" class="modal-overlay" style="display:none;">
     <div class="modal-content">
       <div class="modal-header">
-        <span id="card-detail-title">カード詳細</span>
-        <button id="card-detail-close" class="modal-close" type="button">×</button>
+        <span id="card-detail-title" class="modal-title">カード詳細</span>
+        <button id="card-detail-close" class="modal-close" type="button">✕</button>
       </div>
       <div id="card-detail-content" class="modal-body"></div>
       <div id="card-detail-actions" class="modal-actions"></div>
     </div>
   </div>
 
+  <!-- 縄張り選択ピッカー (Battle viewportと独立のfixedオーバーレイ) -->
+  <div id="territory-picker" class="territory-picker modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-label="縄張り選択">
+    <div class="territory-picker__box">
+      <div class="territory-picker__title" id="territory-picker-title">縄張りを1枚選択してください</div>
+      <div id="territory-picker-cards" class="territory-picker__cards"></div>
+    </div>
+  </div>
+
   <!-- ターン交代受け渡しオーバーレイ -->
   <div id="pass-overlay" class="overlay" style="display:none;">
     <div class="pass-box">
-      <p id="pass-message">P1 のターンです</p>
+      <p id="pass-message">P1 のターンです。</p>
       <button id="btn-pass-ok" class="action-btn-wide" type="button">OK</button>
     </div>
   </div>
@@ -225,6 +220,8 @@
   <script src="js/engine/cpu-agent.js"></script>
   <script src="js/engine/cpu-runner.js"></script>
   <script src="js/ui/battle-log-ui.js"></script>
+  <script src="js/ui/cpu-toast.js"></script>
+  <script src="js/ui/card-effect-formatter.js"></script>
   <script src="js/ui/card-ui.js"></script>
   <script src="js/tutorial/tutorial-scenario.js"></script>
   <script src="js/tutorial/tutorial-controller.js"></script>

@@ -86,6 +86,7 @@ require(path.join(base, 'engine', 'battle-engine.js'));
 require(path.join(base, 'engine', 'turn-engine.js'));
 require(path.join(base, 'engine', 'game-engine.js'));
 require(path.join(base, 'ui', 'battle-log-ui.js'));
+require(path.join(base, 'ui', 'cpu-toast.js'));
 require(path.join(base, 'ui', 'card-ui.js'));
 require(path.join(base, 'ui', 'battle-ui.js'));
 require(path.join(base, 'app.js'));

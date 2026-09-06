@@ -136,38 +136,36 @@
   };
 
   CpuRunner.prototype._formatActionLog = function (action) {
-    var def, targetDef;
+    var def;
     if (action.type === 'SET_FOOD') {
       def = global.getCardDefinition(global.findAnywhere(this.engine.state, action.instanceId).instance.cardId);
-      return 'CPUは ' + (def ? def.name : 'カード') + ' をエサにした';
+      return 'CPU：' + (def ? def.name : 'カード') + 'をエサに';
     }
     if (action.type === 'SUMMON') {
       def = global.getCardDefinition(global.findAnywhere(this.engine.state, action.instanceId).instance.cardId);
-      return 'CPUは ' + (def ? def.name : '蟲') + ' を召喚した';
+      return 'CPU：' + (def ? def.name : '蟲') + 'を召喚';
     }
     if (action.type === 'USE_SPELL') {
       def = global.getCardDefinition(global.findAnywhere(this.engine.state, action.instanceId).instance.cardId);
-      return 'CPUは ' + (def ? def.name : '術') + ' を使った';
+      return 'CPU：' + (def ? def.name : '術') + 'を使用';
     }
     if (action.type === 'USE_ENHANCEMENT') {
       def = global.getCardDefinition(global.findAnywhere(this.engine.state, action.instanceId).instance.cardId);
-      targetDef = global.getCardDefinition(global.findAnywhere(this.engine.state, action.targetInstanceId).instance.cardId);
-      return 'CPUは ' + (def ? def.name : '強化') + ' を ' + (targetDef ? targetDef.name : '蟲') + ' に使った';
+      return 'CPU：' + (def ? def.name : '強化') + 'で強化';
     }
     if (action.type === 'ATTACK') {
       var att = global.findAnywhere(this.engine.state, action.attackerInstanceId).instance;
       var atkDef = global.getCardDefinition(att.cardId);
-      var tgtStr = action.targetType === 'LEADER' ? '相手本体' : '相手の ' + global.getCardDefinition(global.findAnywhere(this.engine.state, action.targetInstanceId).instance.cardId).name;
-      return 'CPUは ' + (atkDef ? atkDef.name : '蟲') + ' で ' + tgtStr + ' を攻撃した';
+      return 'CPU：' + (atkDef ? atkDef.name : '蟲') + 'で攻撃';
     }
     if (action.type === 'RESOLVE_TERRITORY_SELECTION') {
-      return 'CPUは縄張りから1枚を選択した';
+      return 'CPU：縄張りから1枚を選択';
     }
     if (action.type === 'RESOLVE_TERRITORY_CHOICE') {
-      return 'CPUは <とびだす> 判定で ' + (action.choice === 'USE_TOBIDASU' ? '場へ出す' : '手札に加える') + ' を選択した';
+      return 'CPU：とびだす判定を選択';
     }
     if (action.type === 'END_TURN') {
-      return 'CPUはターンを終了した';
+      return 'CPU：ターン終了';
     }
     return null;
   };
