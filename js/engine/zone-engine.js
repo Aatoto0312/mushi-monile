@@ -36,6 +36,39 @@
     return null;
   }
 
+  function findAttachment(state, instanceId) {
+    for (var p = 0; p < state.playerOrder.length; p++) {
+      var playerId = state.playerOrder[p];
+      var field = state.player(playerId).field;
+      for (var f = 0; f < field.length; f++) {
+        var attachments = field[f].attachments || [];
+        for (var a = 0; a < attachments.length; a++) {
+          if (attachments[a].instanceId === instanceId) {
+            return { playerId: playerId, host: field[f], instance: attachments[a], index: a };
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  // 全移動を先に検証し、妥当な場合だけ適用する。交換途中の部分状態を作らない。
+  function batchMoveCards(state, moves) {
+    var seen = {};
+    var prepared = (moves || []).map(function (move) {
+      if (!move || seen[move.instanceId]) { throw new Error('batchMoveCards: duplicate or invalid move'); }
+      seen[move.instanceId] = true;
+      var holder = findAnywhere(state, move.instanceId);
+      if (!holder || holder.zone !== move.from) { throw new Error('batchMoveCards: source mismatch'); }
+      if (!getPlayerZoneArray(state, move.playerId || holder.playerId, move.to)) { throw new Error('batchMoveCards: invalid destination'); }
+      return { move: move, holder: holder };
+    });
+    return prepared.map(function (entry) {
+      var move = entry.move;
+      return moveCard(state, move.instanceId, move.from, move.to, { playerId: move.playerId || entry.holder.playerId, faceDown: move.faceDown });
+    });
+  }
+
   // カードを移動させる。fromZone/toZone は対象プレイヤーのゾーン。
   // デフォルトではカードの現在の保持者(holder.playerId)のゾーン間で移動する。
   // opts.playerId を指定すると、移動先ゾーンをそのプレイヤーのゾーンにする。
@@ -150,6 +183,8 @@
   global.getPlayerZoneArray = getPlayerZoneArray;
   global.findInZone = findInZone;
   global.findAnywhere = findAnywhere;
+  global.findAttachment = findAttachment;
+  global.batchMoveCards = batchMoveCards;
   global.isAttackTargetable = isAttackTargetable;
   global.moveCard = moveCard;
 })(typeof window !== 'undefined' ? window : globalThis);

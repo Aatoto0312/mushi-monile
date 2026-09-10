@@ -45,6 +45,10 @@ function requireAll() {
     require('./landscape-control-bar.test.js'),
     require('./cpu-toast.test.js'),
     require('./experience.test.js')
+    ,require('./set1-registry.test.js')
+    ,require('./set1-core-mechanics.test.js')
+    ,require('./set1-zone-spells.test.js')
+    ,require('./set1-phase2-mechanics.test.js')
   ];
 }
 

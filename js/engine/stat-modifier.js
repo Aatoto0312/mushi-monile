@@ -36,7 +36,25 @@
 
   // 有効な AP 修飾を合算した総AP量を返す。
   // baseAp は通常、技の baseAp。攻撃のたびに再計算される。
-  function getEffectiveAP(state, instance, baseAp) {
+  function getEffectiveAP(state, instance, baseAp, skill) {
+    if (skill && skill.dynamicAp) {
+      var rule = skill.dynamicAp;
+      var player = state.player(instance.ownerId);
+      if (rule.type === 'FOOD_COLOR_COUNT') {
+        baseAp = player.food.filter(function (card) {
+          var def = global.getCardDefinition(card.cardId);
+          return def && def.color === rule.color;
+        }).length * rule.multiplier;
+      } else if (rule.type === 'DISCARD_COUNT') {
+        baseAp = player.discard.length * rule.multiplier;
+      } else if (rule.type === 'OWN_FIELD_COUNT') {
+        baseAp = player.field.filter(function (card) { return !card.faceDown; }).length * rule.multiplier;
+      } else if (rule.type === 'PARTNER_PRESENT') {
+        baseAp = rule.base + (player.field.some(function (card) {
+          return !card.faceDown && card.cardId === rule.cardId;
+        }) ? rule.bonus : 0);
+      }
+    }
     var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP');
     var attachments = instance.attachments || [];
     for (var i = 0; i < attachments.length; i++) {

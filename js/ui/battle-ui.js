@@ -48,6 +48,10 @@
   BattleUI.prototype.attach = function () {
     var self = this;
     document.getElementById('btn-end-turn').addEventListener('click', function () {
+      var pending=global.getPendingEffect(self.state);
+      if(pending&&pending.type==='CARD_SELECTION'){
+        try{global.completeCardSelection(self.state,pending.playerId);self.render();}catch(e){alert(e.message);}return;
+      }
       self.onEndTurn();
     });
     document.getElementById('btn-new-game').addEventListener('click', function () {
@@ -588,7 +592,14 @@
     if (foodInstances) {
       foodInstances.forEach(function (inst) {
         var el = CardUI.renderCard(inst, ZONES.FOOD, self.state);
+        var pending = getPendingEffect(self.state);
+        if (pending && (pending.type === 'SPELL_TARGET_SELECTION' || pending.type === 'CARD_SELECTION') && pending.options.indexOf(inst.instanceId) !== -1) { el.classList.add('legal-target'); }
         el.addEventListener('click', function () {
+          var current = getPendingEffect(self.state);
+          if (current && current.type === 'SPELL_TARGET_SELECTION' && current.options.indexOf(inst.instanceId) !== -1) {
+            global.resolveSpellTargetSelection(self.state, current.playerId, inst.instanceId); self.render(); return;
+          }
+          if (current && current.type === 'CARD_SELECTION' && current.options.indexOf(inst.instanceId) !== -1) { global.selectPendingCard(self.state,current.playerId,inst.instanceId); self.render(); return; }
           self.showCardDetail(inst, []);
         });
         cardRow.appendChild(el);
@@ -779,6 +790,13 @@
 
     // CPUターン中は人間側の操作を無効化
     var isCpuTurn = this.cpuMode && s.activePlayerId === 'P2';
+    var cardSelection=global.getPendingEffect(s);
+    if(cardSelection&&cardSelection.type==='CARD_SELECTION'&&!isCpuTurn){
+      if(btnSet)btnSet.style.display='none';if(btnMain)btnMain.style.display='none';if(btnDraw)btnDraw.style.display='none';
+      if(btnEnd){btnEnd.style.display='block';btnEnd.textContent='選択を決定 ('+(cardSelection.selectedIds||[]).length+'/'+cardSelection.maxSelections+')';btnEnd.disabled=(cardSelection.selectedIds||[]).length<cardSelection.minSelections;}
+      return;
+    }
+    if(btnEnd)btnEnd.textContent='ターン終了';
 
     if (s.phase === Phases.GAME_OVER) {
       if (btnSet) btnSet.style.display = 'none';
@@ -980,7 +998,14 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     if (this.cpuMode && this.state.activePlayerId === 'P2') {
       return;
     }
-    if (getPendingEffect(this.state)) return;
+    var pending = getPendingEffect(this.state);
+    if (pending) {
+      if (pending.type === 'CARD_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) { global.selectPendingCard(this.state,playerId,instance.instanceId);this.render(); }
+      if (pending.type === 'SPELL_TARGET_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) {
+        global.resolveSpellTargetSelection(this.state, playerId, instance.instanceId); this.render();
+      }
+      return;
+    }
 
     var self = this;
     var def = CardUI.getDef(instance) || {};
@@ -1053,6 +1078,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     }
     var pending = getPendingEffect(this.state);
     if (pending) {
+      if (pending.type === 'CARD_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) { try { global.selectPendingCard(this.state,playerId,instance.instanceId); this.render(); } catch(e) { alert(e.message); } return; }
       if (pending.type === 'SPELL_TARGET_SELECTION' && pending.playerId === this.state.activePlayerId &&
           pending.options.indexOf(instance.instanceId) !== -1) {
         try {

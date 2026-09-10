@@ -52,6 +52,13 @@
       var spellTargetIdx = Math.floor(this.rng() * pending.options.length);
       return { type: 'RESOLVE_SPELL_TARGET_SELECTION', instanceId: pending.options[spellTargetIdx] };
     }
+    if (pending.type === 'CARD_SELECTION') {
+      if (!pending.options || pending.options.length < pending.minSelections) return null;
+      var count = pending.exactSelections != null ? pending.exactSelections : pending.maxSelections;
+      var selected=(pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count);
+      if(pending.selectionPurpose==='TRANSFER_OWN_ATTACHMENT'&&selected.length===2){var holder=global.findAttachment(state,selected[0]);var destinations=pending.selectionGroups[1].filter(function(id){return !holder||id!==holder.host.instanceId;});if(destinations.length)selected[1]=destinations[0];}
+      return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
+    }
 
     return null;
   };
@@ -244,6 +251,10 @@
       }
       if (action.type === 'RESOLVE_SPELL_TARGET_SELECTION') {
         global.resolveSpellTargetSelection(state, this.playerId, action.instanceId);
+        return true;
+      }
+      if (action.type === 'RESOLVE_CARD_SELECTION') {
+        global.resolveCardSelection(state,this.playerId,action.instanceIds,true);
         return true;
       }
       if (action.type === 'ENTER_SET_PHASE') {

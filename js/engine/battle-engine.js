@@ -234,7 +234,7 @@
 
   // 縄張りからカードを引く処理（攻撃・直接攻撃による防御側の選択）。
   // TERRITORY -> RESOLVING -> HAND (または <とびだす> 判定へ)
-  function triggerTerritoryDrawSelection(state, playerId) {
+  function triggerTerritoryDrawSelection(state, playerId, territoryContext) {
     var player = state.player(playerId);
     if (player.territory.length === 0) {
       return null;
@@ -243,6 +243,7 @@
     state.pendingEffect = {
       type: 'TERRITORY_DRAW_SELECTION',
       playerId: playerId,
+      context: territoryContext || null,
       options: player.territory.map(function(t) { return t.instanceId; })
     };
 
@@ -275,20 +276,20 @@
     }
 
     // <とびだす> 判定へ
-    return checkTerritoryDrawTrigger(state, playerId, card);
+    return checkTerritoryDrawTrigger(state, playerId, card, pending.context);
   }
 
   // 縄張りドロー（攻撃破壊・直接攻撃時）
-  function drawTerritoryCard(state, playerId) {
-    return triggerTerritoryDrawSelection(state, playerId);
+  function drawTerritoryCard(state, playerId, territoryContext) {
+    return triggerTerritoryDrawSelection(state, playerId, territoryContext);
   }
 
   // 縄張りドロー後の誘発処理を確認
-  function checkTerritoryDrawTrigger(state, playerId, card) {
+  function checkTerritoryDrawTrigger(state, playerId, card, context) {
     var def = getCardDefinition(card.cardId);
     if (!def || !def.skills) {
       // 誘発なし → HAND へ
-      return finalizeTerritoryDraw(state, playerId, card, 'HAND');
+      return finalizeTerritoryDraw(state, playerId, card, card.runtimeFlags && card.runtimeFlags.specialTerritoryDrawDestination || 'HAND');
     }
 
     // timing === 'TERRITORY_DRAW' かつ optional なスキルを探す
@@ -298,7 +299,7 @@
 
     if (!triggerSkill) {
       // 誘発スキルなし → HAND へ
-      return finalizeTerritoryDraw(state, playerId, card, 'HAND');
+      return finalizeTerritoryDraw(state, playerId, card, card.runtimeFlags && card.runtimeFlags.specialTerritoryDrawDestination || 'HAND');
     }
 
     // ＜とびだす＞使用条件チェック: 自分の場に有効な同スキル持ちがいるか
@@ -306,9 +307,9 @@
     var ownerId = card.ownerId;
     var hasSkillOnField = hasEffectiveSkill(state, ownerId, triggerSkill.id);
 
-    if (hasSkillOnField) {
+    if (hasSkillOnField || (context && context.suppressTerritoryTrigger)) {
       // 条件不成立 → HAND へ
-      return finalizeTerritoryDraw(state, playerId, card, 'HAND');
+      return finalizeTerritoryDraw(state, playerId, card, card.runtimeFlags && card.runtimeFlags.specialTerritoryDrawDestination || 'HAND');
     }
 
     // 条件成立 → 選択肢を提示 (pending state)
@@ -337,9 +338,9 @@
       card.faceDown = false;
       log(state, state.turnNumber, playerId + ' は ' + getCardDefinition(card.cardId).name + ' を縄張りから場へ出した');
     } else {
-      // HAND へ
-      moveCard(state, card.instanceId, ZONES.RESOLVING, ZONES.HAND, { playerId: playerId });
-      log(state, state.turnNumber, playerId + ' は縄張りから1枚を手札へ加えた');
+      var destination = destinationZone === ZONES.DISCARD ? ZONES.DISCARD : ZONES.HAND;
+      moveCard(state, card.instanceId, ZONES.RESOLVING, destination, { playerId: playerId });
+      log(state, state.turnNumber, playerId + ' は縄張りから1枚を' + (destination===ZONES.DISCARD?'捨て札へ送った':'手札へ加えた'));
     }
     return card;
   }
@@ -402,7 +403,8 @@
 
   // ---- 召喚 ----
 
-  function summonInsect(state, playerId, handInstanceId) {
+  function summonInsect(state, playerId, handInstanceId, summonOptions) {
+    summonOptions = summonOptions || {};
     assertNoPendingEffect(state);
     assertActivePlayer(state, playerId);
     if (state.phase !== Phases.MAIN_PHASE) {
@@ -423,10 +425,22 @@
     if (!def.isPlayable()) {
       throw new Error('このカードはまだ使用可能になっていません(正式データ確認待ち)');
     }
-    if (player.availableCost < def.cost) {
+    var alternative = (def.summonAlternatives || [])[0];
+    if (summonOptions.alternative && alternative && !summonOptions.selectedIds) {
+      var summonCandidates = player.field.filter(function (card) { return !card.faceDown; });
+      createCardSelection(state, { playerId: playerId, options: summonCandidates.map(function(c){return c.instanceId;}), exactSelections: alternative.count, candidateZones:[ZONES.FIELD], selectionPurpose:'ALTERNATIVE_SUMMON_COST', continuation:{type:'SUMMON_ALTERNATIVE',sourceInstanceId:handInstanceId} });
+      return { pending:true };
+    }
+    if (!summonOptions.alternative && player.availableCost < def.cost) {
       throw new Error('コストが不足しています');
     }
-    player.availableCost -= def.cost;
+    if (summonOptions.alternative) {
+      if (!alternative || !summonOptions.selectedIds || summonOptions.selectedIds.length !== alternative.count) { throw new Error('代替召喚コストが不正です'); }
+      summonOptions.selectedIds.forEach(function(id){ var target=findInZone(state,playerId,ZONES.FIELD,id); if(!target||target.faceDown) throw new Error('代替コスト対象が不正です'); });
+      summonOptions.selectedIds.forEach(function(id){ destroyInsect(state,id,'SACRIFICE',handInstanceId,null,{skipTerritoryDraw:true}); });
+    } else {
+      player.availableCost -= def.cost;
+    }
 
     moveCard(state, handInstanceId, ZONES.HAND, ZONES.FIELD, { playerId: playerId });
     held.currentHp = def.baseHp;
@@ -436,11 +450,108 @@
     held.faceDown = false;
     held.enteredFieldTurn = state.turnNumber;
 
+    (def.passiveAbilities || []).filter(function(a){return a.timing === 'ON_ENTER_FIELD';}).forEach(function(ability){
+      (ability.effects || []).forEach(function(effect){
+        if (effect.type === 'MOVE_SELECTED' && effect.from === ZONES.HAND && effect.to === ZONES.FOOD && player.hand.length) {
+          createCardSelection(state,{playerId:playerId,options:player.hand.map(function(c){return c.instanceId;}),minSelections:ability.optional?0:1,maxSelections:effect.count||1,candidateZones:[ZONES.HAND],selectionPurpose:'ON_ENTER_FIELD_MOVE',continuation:{type:'MOVE_SELECTED',from:effect.from,to:effect.to,grantCost:effect.grantCost}});
+        }
+      });
+    });
+
     log(state, state.turnNumber, playerId + ' は ' + def.name + ' を召喚した | コスト' + def.cost + ' | 残りコスト: ' + player.availableCost);
     return held;
   }
 
   // ---- 術カード使用 ----
+
+  function insectCards(cards) {
+    return (cards || []).filter(function (card) { var def = getCardDefinition(card.cardId); return def && def.type === CardTypes.INSECT; });
+  }
+
+  function createCardSelection(state, spec) {
+    var options = (spec.options || []).slice();
+    var min = spec.exactSelections != null ? spec.exactSelections : (spec.minSelections != null ? spec.minSelections : 1);
+    var max = spec.exactSelections != null ? spec.exactSelections : (spec.maxSelections != null ? spec.maxSelections : min);
+    if (options.length < min) { throw new Error('選択可能なカードが不足しています'); }
+    if ((spec.selectionGroups || []).some(function(group){return !group.length;})) { throw new Error('必要な選択対象グループが空です'); }
+    state.pendingEffect = {
+      type: 'CARD_SELECTION', playerId: spec.playerId, controller: spec.controller || spec.playerId,
+      options: options, selectedIds: [], minSelections: min, maxSelections: max,
+      exactSelections: spec.exactSelections, candidateZones: (spec.candidateZones || []).slice(),
+      selectionGroups: (spec.selectionGroups || []).map(function(group){return group.slice();}),
+      selectionPurpose: spec.selectionPurpose || 'CARD_SELECTION', continuation: spec.continuation || null
+    };
+    return state.pendingEffect;
+  }
+
+  function resolveCardSelection(state, playerId, instanceIds, finish) {
+    var pending = state.pendingEffect;
+    if (!pending || pending.type !== 'CARD_SELECTION' || pending.playerId !== playerId) { throw new Error('カード選択待ちではありません'); }
+    var ids = Array.isArray(instanceIds) ? instanceIds.slice() : [instanceIds];
+    var unique = [];
+    ids.forEach(function (id) { if (pending.options.indexOf(id) === -1) throw new Error('選択対象外のカードです'); if (unique.indexOf(id) !== -1) throw new Error('同じカードを重複選択できません'); unique.push(id); });
+    var mustFinish = finish !== false;
+    if (unique.length > pending.maxSelections) { throw new Error('選択枚数が上限を超えています'); }
+    if (mustFinish && unique.length < pending.minSelections) { throw new Error('必要な枚数を選択してください'); }
+    if (mustFinish && pending.selectionGroups.length && pending.selectionGroups.some(function(group){return !unique.some(function(id){return group.indexOf(id)!==-1;});})) { throw new Error('各対象グループから選択してください'); }
+    pending.selectedIds = unique;
+    if (!mustFinish) { return pending; }
+    state.pendingEffect = null;
+    try { return resolveSelectionContinuation(state, pending, unique); }
+    catch (err) { state.pendingEffect = pending; throw err; }
+  }
+
+  function selectPendingCard(state, playerId, instanceId) {
+    var pending=state.pendingEffect;
+    if(!pending||pending.type!=='CARD_SELECTION'||pending.playerId!==playerId||pending.options.indexOf(instanceId)===-1) throw new Error('このカードは選択できません');
+    var selected=(pending.selectedIds||[]).slice(), index=selected.indexOf(instanceId);
+    if(index===-1){if(selected.length>=pending.maxSelections)throw new Error('選択上限です');selected.push(instanceId);}else{selected.splice(index,1);}
+    pending.selectedIds=selected;
+    if(pending.exactSelections!=null&&selected.length===pending.exactSelections)return resolveCardSelection(state,playerId,selected,true);
+    return pending;
+  }
+
+  function completeCardSelection(state, playerId) {
+    var pending=state.pendingEffect;
+    return resolveCardSelection(state,playerId,pending&&pending.selectedIds||[],true);
+  }
+
+  function resolveSelectionContinuation(state, pending, ids) {
+    var c = pending.continuation || {};
+    if (c.type === 'USE_SPELL') { return useSpell(state, pending.playerId, c.sourceInstanceId, ids); }
+    if (c.type === 'SUMMON_ALTERNATIVE') { return summonInsect(state, pending.playerId, c.sourceInstanceId, { alternative: true, selectedIds: ids }); }
+    if (c.type === 'DIRECT_ATTACK_FOOD') {
+      moveCard(state, ids[0], ZONES.FOOD, ZONES.HAND, { playerId: pending.playerId });
+      if (c.territoryPlayerId && state.player(c.territoryPlayerId).territory.length) { triggerTerritoryDrawSelection(state, c.territoryPlayerId, c.territoryContext); }
+      return ids;
+    }
+    if (c.type === 'ATTACK_MULTI') { return performMultiTargetAttack(state, c.attackerInstanceId, ids, c.skillId); }
+    if (c.type === 'MOVE_SELECTED') { ids.forEach(function(id){moveCard(state,id,c.from,c.to,{playerId:pending.playerId});}); return ids; }
+    throw new Error('未対応の選択継続です: ' + c.type);
+  }
+
+  function getComplexSpellSelection(state, playerId, sourceId, effect) {
+    var player = state.player(playerId), opponent = state.player(state.opponentOf(playerId));
+    if (effect.type === 'MOVE_MATCHING_COLOR_INSECTS') {
+      var food = insectCards(player.food), colors = {};
+      food.forEach(function (card) { var d=getCardDefinition(card.cardId); colors[d.color]=(colors[d.color]||0)+1; });
+      return { options: food.filter(function(card){return colors[getCardDefinition(card.cardId).color] >= 1;}), minSelections: effect.minSelections, maxSelections: effect.maxSelections, zones:[ZONES.FOOD] };
+    }
+    if (effect.type === 'EXCHANGE_INSECTS') {
+      var firstGroup=insectCards(player[effect.firstZone.toLowerCase()]), secondGroup=insectCards(player[effect.secondZone.toLowerCase()]);
+      return { options:firstGroup.concat(secondGroup),groups:[firstGroup.map(function(c){return c.instanceId;}),secondGroup.map(function(c){return c.instanceId;})],exactSelections:2,zones:[effect.firstZone,effect.secondZone] };
+    }
+    if (effect.type === 'TRANSFER_OWN_ATTACHMENT') {
+      var ownAtt=[]; player.field.forEach(function(host){(host.attachments||[]).forEach(function(att){ownAtt.push(att);});});
+      var hosts=player.field.filter(function(card){return !card.faceDown;});
+      return { options:ownAtt.concat(hosts),groups:[ownAtt.map(function(c){return c.instanceId;}),hosts.map(function(c){return c.instanceId;})],exactSelections:2,zones:['ATTACHMENT',ZONES.FIELD] };
+    }
+    if (effect.type === 'DESTROY_OPPONENT_ATTACHMENT') {
+      var oppAtt=[]; opponent.field.forEach(function(host){(host.attachments||[]).forEach(function(att){oppAtt.push(att);});});
+      return { options:oppAtt, exactSelections:1, zones:['ATTACHMENT'] };
+    }
+    return null;
+  }
 
   // 術カードの cardEffects を評価して、解決後の最終移動先を返す。
   // 術の基本終了先は DISCARD(使い切り)。効果が最終移動先を上書きすることで
@@ -452,11 +563,17 @@
     if (!def || def.type !== CardTypes.SPELL) { return []; }
     var candidates = [];
     (def.cardEffects || []).forEach(function (effect) {
-      if (!effect || effect.type !== 'DEAL_DAMAGE_TO_TARGET') { return; }
+      if (!effect || (!effect.requiresTarget && effect.type !== 'DEAL_DAMAGE_TO_TARGET')) { return; }
       if (effect.target === 'OPPONENT_FIELD_INSECT') {
         candidates = state.player(state.opponentOf(playerId)).field.filter(function (card) {
           return !card.faceDown;
         });
+      } else if (effect.target === 'OWN_ATTACKED_FIELD_INSECT') {
+        candidates = state.player(playerId).field.filter(function (card) { return !card.faceDown && card.attackedThisTurn; });
+      } else if (effect.target === 'OWN_FOOD_INSECT') {
+        candidates = state.player(playerId).food.filter(function (card) { var d = getCardDefinition(card.cardId); return d && d.type === CardTypes.INSECT; });
+      } else if (effect.target === 'OWN_HAND_INSECT') {
+        candidates = state.player(playerId).hand.filter(function (card) { var d = getCardDefinition(card.cardId); return (!effect.excludeSource || card.instanceId !== handInstanceId) && d && d.type === CardTypes.INSECT; });
       }
     });
     return candidates;
@@ -467,6 +584,7 @@
     var finalZone = ZONES.DISCARD;
     effects.forEach(function (effect) {
       if (!effect) { return; }
+      var chosenIds = Array.isArray(chosenTargetInstanceId) ? chosenTargetInstanceId : (chosenTargetInstanceId ? [chosenTargetInstanceId] : []);
       if (effect.type === 'MOVE_SELF' && effect.to && CardInstance.isZone(effect.to)) {
         finalZone = effect.to;
       }
@@ -533,6 +651,70 @@
             options: insectCandidates.map(function (candidate) { return candidate.instanceId; })
           };
         }
+      }
+      if (effect.type === 'RESET_ATTACK') {
+        var resetTarget = chosenTargetInstanceId && findAnywhere(state, chosenTargetInstanceId);
+        if (!resetTarget || resetTarget.playerId !== playerId || resetTarget.zone !== ZONES.FIELD) { throw new Error('攻撃済みの自分の虫を選んでください'); }
+        resetTarget.instance.attackedThisTurn = false;
+        if (resetTarget.instance.runtimeFlags) { delete resetTarget.instance.runtimeFlags.continuousAttack; }
+      }
+      if (effect.type === 'MOVE_TARGET') {
+        var moveTarget = chosenTargetInstanceId && findAnywhere(state, chosenTargetInstanceId);
+        if (!moveTarget || moveTarget.playerId !== playerId || moveTarget.zone !== effect.from) { throw new Error('移動対象が正しいゾーンにありません'); }
+        var moved = moveCard(state, chosenTargetInstanceId, effect.from, effect.to, { playerId: playerId });
+        if (effect.to === ZONES.FIELD && effect.destroyAtEndTurn) {
+          if (!moved.runtimeFlags) { moved.runtimeFlags = {}; }
+          moved.runtimeFlags.destroyAtEndTurn = state.turnNumber;
+        }
+      }
+      if (effect.type === 'APPLY_ATTACK_RESTRICTION') {
+        var restricted = chosenTargetInstanceId && findAnywhere(state, chosenTargetInstanceId);
+        if (!restricted || restricted.zone !== ZONES.FIELD) { throw new Error('攻撃禁止の対象が場にいません'); }
+        if (!restricted.instance.runtimeFlags) { restricted.instance.runtimeFlags = {}; }
+        if (!restricted.instance.runtimeFlags.attackRestrictions) { restricted.instance.runtimeFlags.attackRestrictions = []; }
+        restricted.instance.runtimeFlags.attackRestrictions.push({ sourceInstanceId: instance.instanceId, startTurn: state.turnNumber + (effect.startTurnOffset || 0), endTurn: state.turnNumber + (effect.endTurnOffset || 0), whileSourceOnField: false });
+      }
+      if (effect.type === 'ADD_SELF_AS_FACE_UP_TERRITORY') {
+        finalZone = ZONES.TERRITORY;
+        instance.runtimeFlags = instance.runtimeFlags || {};
+        instance.runtimeFlags.specialTerritoryDrawDestination = effect.drawDestination || ZONES.HAND;
+        instance.faceDown = false;
+      }
+      if (effect.type === 'REVEAL_TOP_AND_ROUTE') {
+        var top = state.player(playerId).deck[0];
+        if (!top) { resolveFailedDraw(state, playerId); return; }
+        var topDef = getCardDefinition(top.cardId);
+        var dest = topDef && topDef.type === CardTypes.INSECT ? effect.insectTo : effect.otherTo;
+        var routed = moveCard(state, top.instanceId, ZONES.DECK, dest, { playerId: playerId, faceDown:false });
+        if (dest === ZONES.FIELD) { routed.currentHp=topDef.baseHp; routed.baseHp=topDef.baseHp; routed.attackedThisTurn=false; if(effect.destroyInsectAtEndTurn){routed.runtimeFlags.destroyAtEndTurn=state.turnNumber;} }
+      }
+      if (effect.type === 'MOVE_MATCHING_COLOR_INSECTS') {
+        var selected = chosenIds.map(function(id){return findInZone(state,playerId,effect.from,id);});
+        if (!selected.length || selected.some(function(c){return !c;})) throw new Error('移動対象が不正です');
+        var firstColor=getCardDefinition(selected[0].cardId).color;
+        if (selected.some(function(c){var d=getCardDefinition(c.cardId);return d.type!==CardTypes.INSECT||d.color!==firstColor;})) throw new Error('同じ色の虫を選択してください');
+        batchMoveCards(state, selected.map(function(c){return {instanceId:c.instanceId,from:effect.from,to:effect.to,playerId:playerId};})).forEach(function(c){var d=getCardDefinition(c.cardId);c.currentHp=d.baseHp;c.baseHp=d.baseHp;c.attackedThisTurn=false;if(effect.destroyAtEndTurn)c.runtimeFlags.destroyAtEndTurn=state.turnNumber;});
+      }
+      if (effect.type === 'EXCHANGE_INSECTS') {
+        if (chosenIds.length !== 2) throw new Error('交換する2枚を選択してください');
+        var first=findInZone(state,playerId,effect.firstZone,chosenIds[0])||findInZone(state,playerId,effect.firstZone,chosenIds[1]);
+        var second=findInZone(state,playerId,effect.secondZone,chosenIds[0])||findInZone(state,playerId,effect.secondZone,chosenIds[1]);
+        if(!first||!second) throw new Error('各ゾーンから1枚ずつ選択してください');
+        var fd=getCardDefinition(first.cardId), sd=getCardDefinition(second.cardId);
+        if(fd.type!==CardTypes.INSECT||sd.type!==CardTypes.INSECT||(effect.requireSameCost&&fd.cost!==sd.cost)) throw new Error('交換条件を満たしていません');
+        batchMoveCards(state,[{instanceId:first.instanceId,from:effect.firstZone,to:effect.secondZone,playerId:playerId},{instanceId:second.instanceId,from:effect.secondZone,to:effect.firstZone,playerId:playerId}]);
+        first.currentHp=fd.baseHp; first.baseHp=fd.baseHp; first.attackedThisTurn=effect.enteringCannotAttackThisTurn===true;
+      }
+      if (effect.type === 'TRANSFER_OWN_ATTACHMENT') {
+        var attHolder=findAttachment(state,chosenIds[0])||findAttachment(state,chosenIds[1]);
+        var hostHolder=findAnywhere(state,chosenIds[0])||findAnywhere(state,chosenIds[1]);
+        if(!attHolder||!hostHolder||hostHolder.playerId!==playerId||hostHolder.zone!==ZONES.FIELD||hostHolder.instance===attHolder.host) throw new Error('付け替え対象が不正です');
+        attHolder.host.attachments.splice(attHolder.index,1); hostHolder.instance.attachments.push(attHolder.instance);
+      }
+      if (effect.type === 'DESTROY_OPPONENT_ATTACHMENT') {
+        var destroyedAttachment=findAttachment(state,chosenIds[0]);
+        if(!destroyedAttachment||destroyedAttachment.playerId!==state.opponentOf(playerId)) throw new Error('相手の強化カードを選択してください');
+        destroyedAttachment.host.attachments.splice(destroyedAttachment.index,1); destroyedAttachment.instance.zone=ZONES.DISCARD; state.player(destroyedAttachment.instance.ownerId).discard.push(destroyedAttachment.instance);
       }
     });
     // 効果解決処理の注入フック(通常は null)。テスト・将来の複雑な効果用の拡張点。
@@ -601,8 +783,17 @@
       throw new Error('コストが不足しています');
     }
 
+    if (!Array.isArray(chosenTargetInstanceId)) {
+      var complexEffect = (def.cardEffects || []).filter(function(effect){return getComplexSpellSelection(state,playerId,handInstanceId,effect);})[0];
+      if (complexEffect) {
+        var selection=getComplexSpellSelection(state,playerId,handInstanceId,complexEffect);
+        createCardSelection(state,{playerId:playerId,options:selection.options.map(function(c){return c.instanceId;}),selectionGroups:selection.groups,minSelections:selection.minSelections,maxSelections:selection.maxSelections,exactSelections:selection.exactSelections,candidateZones:selection.zones,selectionPurpose:complexEffect.type,continuation:{type:'USE_SPELL',sourceInstanceId:handInstanceId}});
+        return {pending:true};
+      }
+    }
+
     var targetedEffects = (def.cardEffects || []).filter(function (effect) {
-      return effect && effect.type === 'DEAL_DAMAGE_TO_TARGET';
+      return effect && !getComplexSpellSelection(state,playerId,handInstanceId,effect) && (effect.type === 'DEAL_DAMAGE_TO_TARGET' || effect.requiresTarget);
     });
     if (targetedEffects.length > 0) {
       var targetCandidates = getSpellTargetCandidates(state, playerId, handInstanceId);
@@ -777,6 +968,14 @@
     if (state.phase !== Phases.MAIN_PHASE) { return []; }
     var attacker = holder.instance;
     if (attacker.zone !== ZONES.FIELD) { return []; }
+    var restrictions = (attacker.runtimeFlags && attacker.runtimeFlags.attackRestrictions) || [];
+    var attackBlocked = restrictions.some(function (restriction) {
+      if (state.turnNumber < restriction.startTurn || state.turnNumber > restriction.endTurn) { return false; }
+      if (!restriction.whileSourceOnField) { return true; }
+      var source = restriction.sourceInstanceId && findAnywhere(state, restriction.sourceInstanceId);
+      return !!(source && source.zone === ZONES.FIELD);
+    });
+    if (attackBlocked) { return []; }
     // 連続攻撃中は attackedThisTurn を無視
     var isContinuousAttack = false;
     if (attacker.runtimeFlags && attacker.runtimeFlags.continuousAttack) {
@@ -825,13 +1024,19 @@
     if (!instance || instance.faceDown) { return false; }
     var def = getCardDefinition(instance.cardId);
     if (!def || !def.skills) { return false; }
-    return def.skills.some(function (skill) {
+    var ownRule = def.skills.some(function (skill) {
       return skill.targetRule === rule;
+    });
+    if (ownRule) { return true; }
+    return (instance.attachments || []).some(function (attachment) {
+      var attachmentDef = getCardDefinition(attachment.cardId);
+      return !!(attachmentDef && (attachmentDef.enhancementEffects || []).some(function (effect) { return effect.targetRule === rule; }));
     });
   }
 
   // 攻撃実行。targetType は 'INSECT' | 'LEADER'
-  function performAttack(state, attackerInstanceId, targetInstanceId, targetType, skillId, chosenSacrificeInstanceId) {
+  function performAttack(state, attackerInstanceId, targetInstanceId, targetType, skillId, chosenSacrificeInstanceId, attackOptions) {
+    attackOptions = attackOptions || {};
     assertActivePlayer(state, state.activePlayerId);
     if (state.phase !== Phases.MAIN_PHASE) {
       throw new Error('メインフェイズ以外では攻撃できません');
@@ -907,7 +1112,7 @@
     }
 
     // AP modifier (一時的な攻撃力補正) を適用
-    var apVal = getEffectiveAP(state, attacker, skill.baseAp || 0);
+    var apVal = getEffectiveAP(state, attacker, skill.baseAp || 0, skill);
 
     var opponentId = state.opponentOf(ap);
     var result = {
@@ -953,7 +1158,14 @@
       result.defenderPreHp = defender.currentHp;
       // 最終APは負数を保持できるが、ダメージは0を下限とする。
       var finalDmg = Math.max(0, dmg);
-      applyDamage(state, attacker, defender, finalDmg, 'ATTACK', attacker.instanceId, targetInstanceId, result);
+      var selfDestructAfterDamage = (skill.effects || []).some(function(effect){return effect.type === 'SELF_DESTRUCT_AFTER_DAMAGE_BEFORE_TARGET_DESTRUCTION';});
+      applyDamage(state, attacker, defender, finalDmg, 'ATTACK', attacker.instanceId, targetInstanceId, result, { deferDestruction:selfDestructAfterDamage });
+      if (selfDestructAfterDamage && attacker.zone === ZONES.FIELD) {
+        destroyInsect(state, attacker.instanceId, 'ABILITY', attacker.instanceId, null, { skipTerritoryDraw:true });
+      }
+      if (selfDestructAfterDamage && defender.zone === ZONES.FIELD && defender.currentHp <= 0) {
+        destroyInsect(state, defender.instanceId, 'ATTACK', attacker.instanceId, result);
+      }
 
       // 攻撃ログ(戦闘検証用): 実際の計算値のみを使用
       log(state, state.turnNumber,
@@ -980,12 +1192,40 @@
             addStatModifier(state, defender, mod);
             result.statModifierApplied = true;
           }
+          if (effect.type === 'APPLY_ATTACK_RESTRICTION' && targetType === 'INSECT') {
+            if (!defender.runtimeFlags) { defender.runtimeFlags = {}; }
+            if (!defender.runtimeFlags.attackRestrictions) { defender.runtimeFlags.attackRestrictions = []; }
+            defender.runtimeFlags.attackRestrictions.push({
+              sourceInstanceId: attacker.instanceId,
+              startTurn: state.turnNumber + (effect.startTurnOffset || 0),
+              endTurn: state.turnNumber + (effect.endTurnOffset || 0),
+              whileSourceOnField: effect.whileSourceOnField === true
+            });
+          }
           if (effect.type === 'TURN_FACE_DOWN' && targetType === 'INSECT') {
             // すくい投げ等: 対象を裏向きにする (ターン終了時まで)
             defender.faceDown = true;
             if (!defender.runtimeFlags) { defender.runtimeFlags = {}; }
             defender.runtimeFlags.faceDownUntil = 'UNTIL_END_OF_TURN';
             result.turnedFaceDown = true;
+          }
+          if (effect.type === 'MOVE_ATTACK_TARGET_TO_HAND' && targetType === 'INSECT' && defender.zone === ZONES.FIELD) {
+            moveCard(state, defender.instanceId, ZONES.FIELD, ZONES.HAND, { playerId: opponentId });
+            result.targetMovedToHand = true;
+          }
+          if (effect.type === 'DAMAGE_DOES_NOT_HEAL' && targetType === 'INSECT' && defender.zone === ZONES.FIELD) {
+            defender.runtimeFlags = defender.runtimeFlags || {};
+            defender.runtimeFlags.damageDoesNotHeal = true;
+          }
+          if (effect.type === 'CHOOSE_COLOR_FOR_ALL_OPPONENT_FIELD' && targetType === 'INSECT') {
+            if ([Attributes.RED,Attributes.BLUE,Attributes.GREEN].indexOf(attackOptions.chosenColor)===-1) throw new Error('赤・青・緑から色を選択してください');
+            state.player(opponentId).field.forEach(function(card){card.runtimeFlags=card.runtimeFlags||{};card.runtimeFlags.colorOverride=attackOptions.chosenColor;card.runtimeFlags.colorOverrideUntil='UNTIL_END_OF_TURN';});
+          }
+          if (effect.type === 'TRANSFER_OWN_ATTACHMENT') {
+            var transfer=findAttachment(state,attackOptions.attachmentInstanceId);
+            var destination=findInZone(state,ap,ZONES.FIELD,attackOptions.destinationInstanceId);
+            if(!transfer||transfer.playerId!==ap||!destination||destination===attacker||destination===transfer.host) throw new Error('付け替える強化と別の自分の虫を選択してください');
+            transfer.host.attachments.splice(transfer.index,1); destination.attachments.push(transfer.instance);
           }
           
         });
@@ -1002,7 +1242,10 @@
       if (opp.territory.length > 0) {
         // 直接攻撃が成立 → 縄張りから1枚を手札へ
         result.zerosTerritory = false;
-        drawTerritoryCard(state, opponentId);
+        var directFoodEffect=(skill.effects||[]).filter(function(effect){return effect.type==='ON_DIRECT_ATTACK_MOVE_OPPONENT_FOOD_TO_HAND';})[0];
+        if(directFoodEffect&&opp.food.length){
+          createCardSelection(state,{playerId:opponentId,options:opp.food.map(function(c){return c.instanceId;}),exactSelections:1,candidateZones:[ZONES.FOOD],selectionPurpose:'DIRECT_ATTACK_FOOD_RETURN',continuation:{type:'DIRECT_ATTACK_FOOD',territoryPlayerId:opponentId,territoryContext:null}});
+        } else { drawTerritoryCard(state, opponentId); }
         result.wasTerritoryDraw = true;
         log(state, state.turnNumber, opponentId + ' は縄張りを1枚選択する');
       } else {
@@ -1057,8 +1300,32 @@
       });
     }
     
+    emitBattleEvent(state,'ATTACK_COMPLETED',{sourceInstanceId:attacker.instanceId,targetInstanceId:targetInstanceId,targetType:targetType,skillId:skill.id});
     log(state, state.turnNumber, ap + ' の ' + def.name + ' が攻撃した(' + (result.damageDealt || 0) + 'ダメージ)');
     return result;
+  }
+
+  function performMultiTargetAttack(state, attackerInstanceId, targetInstanceIds, skillId) {
+    var holder=findAnywhere(state,attackerInstanceId);
+    if(!holder||holder.zone!==ZONES.FIELD||holder.playerId!==state.activePlayerId) throw new Error('攻撃する虫が場にいません');
+    var attacker=holder.instance, def=getCardDefinition(attacker.cardId);
+    var skill=(def.skills||[]).filter(function(s){return s.id===skillId;})[0];
+    var multi=skill&&(skill.effects||[]).filter(function(e){return e.type==='ATTACK_MULTIPLE_TARGETS';})[0];
+    if(!multi||!Array.isArray(targetInstanceIds)||targetInstanceIds.length!==multi.exactSelections||targetInstanceIds[0]===targetInstanceIds[1]) throw new Error('異なる攻撃対象を2体選択してください');
+    var legal=getLegalAttackTargets(state,attackerInstanceId).filter(function(t){return t.targetType==='INSECT';}).map(function(t){return t.instance.instanceId;});
+    if(targetInstanceIds.some(function(id){return legal.indexOf(id)===-1;})) throw new Error('指定した攻撃対象は合法ではありません');
+    var results=[];
+    targetInstanceIds.forEach(function(id){
+      var target=findInZone(state,state.opponentOf(holder.playerId),ZONES.FIELD,id);
+      if(!target) return;
+      var result={attackerInstanceId:attackerInstanceId,attacker:attacker,def:def,skill:skill,targetType:'INSECT',baseAp:skill.baseAp||0,apVal:getEffectiveAP(state,attacker,skill.baseAp||0,skill),multiplier:1,damageDealt:0,defenderDestroyed:false};
+      result.multiplier=getAttributeMultiplier(getEffectiveColor(attacker),getEffectiveColor(target)); result.finalAp=result.apVal*result.multiplier;
+      applyDamage(state,attacker,target,Math.max(0,result.finalAp),'ATTACK',attacker.instanceId,target.instanceId,result);
+      results.push(result);
+    });
+    attacker.attackedThisTurn=true;
+    emitBattleEvent(state,'ATTACK_COMPLETED',{sourceInstanceId:attacker.instanceId,skillId:skill.id,targetInstanceIds:targetInstanceIds.slice()});
+    return results;
   }
 
   // 連続攻撃可否チェック (カマ連撃等)
@@ -1102,6 +1369,7 @@
   // 玉虫色の羽化等の色変更は attachment 経由で参照される。
   // COLOR_OVERRIDE が colors 配列を持つ場合、attachment.chosenColor を優先
   function getEffectiveColor(instance) {
+    if (instance.runtimeFlags && instance.runtimeFlags.colorOverride) { return instance.runtimeFlags.colorOverride; }
     var attachments = instance.attachments || [];
     for (var i = 0; i < attachments.length; i++) {
       var att = attachments[i];
@@ -1151,6 +1419,11 @@
         }
         destroyInsect(state, chosen.instanceId, 'SACRIFICE', attacker.instanceId, null, { skipTerritoryDraw: true });
       }
+      if (cost.type === 'SACRIFICE_OWN_FOOD') {
+        var foodCandidate=findInZone(state,ownerId,ZONES.FOOD,chosenSacrificeInstanceId);
+        if(!foodCandidate) throw new Error('破壊するエサを選択してください');
+        moveCard(state,foodCandidate.instanceId,ZONES.FOOD,ZONES.DISCARD,{playerId:ownerId});
+      }
     });
   }
 
@@ -1169,7 +1442,8 @@
   }
 
   // ダメージ適用 (target はダメージを受ける虫)
-  function applyDamage(state, attacker, target, damage, sourceType, sourceInstanceId, targetInstanceId, result) {
+  function applyDamage(state, attacker, target, damage, sourceType, sourceInstanceId, targetInstanceId, result, opts) {
+    opts = opts || {};
     if (target.zone !== ZONES.FIELD) {
       return target;
     }
@@ -1190,7 +1464,7 @@
       sourceName: sourceDef ? sourceDef.name : null,
       targetName: targetDef ? targetDef.name : null
     });
-    if (target.currentHp <= 0) {
+    if (target.currentHp <= 0 && !opts.deferDestruction) {
       destroyInsect(state, target.instanceId, sourceType, sourceInstanceId, result);
     }
     return target;
@@ -1209,6 +1483,22 @@
     
     // 破壊前に attachments を snapshot (死亡誘発で使用)
     var attachmentsSnapshot = (destroyedCard.attachments || []).slice();
+
+    // 破壊確定前の置換。最初の合法な置換だけを適用し、DESTROYイベントは発生させない。
+    for (var ri = 0; ri < attachmentsSnapshot.length; ri++) {
+      var replacementAttachment = attachmentsSnapshot[ri];
+      var replacementDef = getCardDefinition(replacementAttachment.cardId);
+      var replacement = replacementDef && (replacementDef.enhancementEffects || []).filter(function(e){return e.type === 'DESTRUCTION_REPLACEMENT';})[0];
+      if (!replacement) continue;
+      var attachmentIndex = destroyedCard.attachments.indexOf(replacementAttachment);
+      if (attachmentIndex !== -1) destroyedCard.attachments.splice(attachmentIndex,1);
+      replacementAttachment.zone=ZONES.DISCARD;
+      state.player(replacementAttachment.ownerId).discard.push(replacementAttachment);
+      if (replacement.healToMax) destroyedCard.currentHp=calculateMaxHp(destroyedCard);
+      emitBattleEvent(state,'DESTROY_REPLACED',{targetInstanceId:targetInstanceId,replacementInstanceId:replacementAttachment.instanceId,damageType:sourceType});
+      if(result){result.defenderDestroyed=false;result.destructionReplaced=true;result.defenderCurrentHp=destroyedCard.currentHp;}
+      return destroyedCard;
+    }
     
     var destroyedDef = global.getCardDefinition ? global.getCardDefinition(destroyedCard.cardId) : null;
     var destroyedName = destroyedDef ? destroyedDef.name : destroyedCard.cardId;
@@ -1237,7 +1527,12 @@
 
     // 攻撃由来の破壊のみ、相手(破壊された側)が縄張りから1枚を手札へ加える
     if (sourceType === 'ATTACK' && !opts.skipTerritoryDraw) {
-      drawTerritoryCard(state, defenderPlayerId);
+      var suppressed = state.player(defenderPlayerId).field.some(function(card){return (card.attachments||[]).some(function(att){var d=getCardDefinition(att.cardId);return d&&(d.enhancementEffects||[]).some(function(e){return e.type==='SUPPRESS_TERRITORY_DRAW_WHILE_ATTACHED';});});});
+      if (!suppressed) {
+        var sourceHolder=findAnywhere(state,sourceInstanceId), suppressTrigger=false;
+        if(sourceHolder&&sourceHolder.zone===ZONES.FIELD){suppressTrigger=(sourceHolder.instance.attachments||[]).some(function(att){var d=getCardDefinition(att.cardId);return d&&(d.enhancementEffects||[]).some(function(e){return e.type==='SUPPRESS_TERRITORY_TRIGGER_FOR_ATTACK';});});}
+        drawTerritoryCard(state, defenderPlayerId, {suppressTerritoryTrigger:suppressTrigger});
+      }
     }
     return destroyedCard;
   }
@@ -1335,13 +1630,19 @@
         }
       }
     }
+    if (effect.type === 'RETURN_ATTACK_SOURCE_TO_HAND' && sourceInstanceId) {
+      var sourceHolder = global.findAnywhere(state, sourceInstanceId);
+      if (sourceHolder && sourceHolder.zone === global.ZONES.FIELD) {
+        global.moveCard(state, sourceInstanceId, global.ZONES.FIELD, global.ZONES.HAND, { playerId: sourceHolder.playerId });
+      }
+    }
   }
 
   // ---- ターン終了 ----
 
   function healFieldDamage(player) {
     player.field.forEach(function (c) {
-      c.currentHp = calculateCurrentMaxHp(c);
+      if (!(c.runtimeFlags && c.runtimeFlags.damageDoesNotHeal)) c.currentHp = calculateCurrentMaxHp(c);
     });
   }
 
@@ -1355,6 +1656,15 @@ function endTurn(state) {
     var ap = state.activePlayerId;
     var player = state.player(ap);
     player.availableCost = 0;
+    var delayedDestructions = [];
+    state.playerOrder.forEach(function (pid) {
+      state.player(pid).field.forEach(function (card) {
+        if (card.runtimeFlags && card.runtimeFlags.destroyAtEndTurn === state.turnNumber) { delayedDestructions.push(card.instanceId); }
+      });
+    });
+    delayedDestructions.forEach(function (instanceId) {
+      destroyInsect(state, instanceId, 'EFFECT', null, null, { skipTerritoryDraw: true });
+    });
     
     // 全プレイヤーの場のダメージを回復
     state.playerOrder.forEach(function (pid) {
@@ -1399,6 +1709,7 @@ function endTurn(state) {
             });
           }
         }
+        if (c.runtimeFlags && c.runtimeFlags.colorOverrideUntil === 'UNTIL_END_OF_TURN') { delete c.runtimeFlags.colorOverride; delete c.runtimeFlags.colorOverrideUntil; }
         // usedSkills はターン単位で全消去しない。ONCE_PER_FIELD_STAY 等の usage state は
         // 場にいる間保持され、場を離れた時点で zone-engine が該当履歴をリセットする。
         // 将来 ONCE_PER_TURN を追加する場合は、ここで該当タイプのみリセットする。
@@ -1501,6 +1812,10 @@ function endTurn(state) {
   global.getPendingEffect = getPendingEffect;
   global.resolveDiscardInsectSelection = resolveDiscardInsectSelection;
   global.resolveSpellTargetSelection = resolveSpellTargetSelection;
+  global.createCardSelection = createCardSelection;
+  global.resolveCardSelection = resolveCardSelection;
+  global.selectPendingCard = selectPendingCard;
+  global.completeCardSelection = completeCardSelection;
   global.setFood = setFood;
   global.gainCost = gainCost;
   global.enterMainPhase = enterMainPhase;
@@ -1510,6 +1825,7 @@ function endTurn(state) {
   global.resolveSpellEffects = resolveSpellEffects;
   global.getLegalAttackTargets = getLegalAttackTargets;
   global.performAttack = performAttack;
+  global.performMultiTargetAttack = performMultiTargetAttack;
   global.skillRequiresSacrifice = skillRequiresSacrifice;
   global.getSacrificeCandidates = getSacrificeCandidates;
   global.applyDamage = applyDamage;

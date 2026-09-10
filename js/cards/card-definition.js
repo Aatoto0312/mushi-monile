@@ -18,6 +18,8 @@
   var CardStatus = {
     NOT_RESEARCHED: 'NOT_RESEARCHED',
     RESEARCHED: 'RESEARCHED',
+    PARTIAL: 'PARTIAL',
+    BLOCKED: 'BLOCKED',
     SPEC_COMPLETE: 'SPEC_COMPLETE',
     IMPLEMENTED: 'IMPLEMENTED',
     TESTED: 'TESTED',
@@ -52,6 +54,7 @@
     this.skills = opts.skills || [];
     this.passiveAbilities = opts.passiveAbilities || [];
     this.cardEffects = opts.cardEffects || [];
+    this.enhancementEffects = opts.enhancementEffects || [];
 
     this.rulings = opts.rulings || [];
     this.tags = opts.tags || [];
@@ -61,6 +64,7 @@
     this.sourceLevel = opts.sourceLevel || SourceLevel.D;
     this.sourceRefs = opts.sourceRefs || [];
     this.verificationNotes = opts.verificationNotes || null;
+    this.implementationNotes = opts.implementationNotes || null;
   }
 
   // ゲーム中で使用可能か。SPEC_COMPLETE 以上。
