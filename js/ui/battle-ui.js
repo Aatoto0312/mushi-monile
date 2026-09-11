@@ -154,9 +154,41 @@
     bind('btn-deck-p1-okama', 'P1', 'OKAMAKIRI');
     bind('btn-deck-p2-kabuto', 'P2', 'KABUTOMUSHI');
     bind('btn-deck-p2-okama', 'P2', 'OKAMAKIRI');
+    var bindUser = function (buttonId, selectId, side) {
+      var button = document.getElementById(buttonId);
+      if (button) button.addEventListener('click', function () {
+        var select = document.getElementById(selectId);
+        if (select && select.value) self.selectDeck(side, 'USER:' + select.value);
+      });
+    };
+    bindUser('btn-user-deck-p1', 'user-deck-p1', 'P1');
+    bindUser('btn-user-deck-p2', 'user-deck-p2', 'P2');
+  };
+
+  BattleUI.prototype._loadUserDecks = function () {
+    var runtime = global.MushijingiDeckRuntime;
+    if (!runtime) return;
+    var store;
+    try { store = runtime.parseStore(localStorage.getItem(runtime.STORAGE_KEY)); }
+    catch (error) { store = runtime.parseStore(null); }
+    var handoff = null;
+    try { handoff = sessionStorage.getItem(runtime.HANDOFF_KEY) || new URLSearchParams(location.search).get('deck'); } catch (error2) { handoff = null; }
+    ['P1', 'P2'].forEach(function (side) {
+      var suffix = side.toLowerCase(), select = document.getElementById('user-deck-' + suffix), button = document.getElementById('btn-user-deck-' + suffix);
+      if (!select) return;
+      select.innerHTML = '<option value="">保存デッキなし</option>' + store.decks.map(function (deck) {
+        var valid = runtime.validateForBattle(deck, global.cardRegistry).valid;
+        return '<option value="' + deck.deckId.replace(/"/g, '&quot;') + '"' + (valid ? '' : ' disabled') + '>' + deck.deckName.replace(/[&<>]/g, '') + (valid ? '' : '（対戦不可）') + '</option>';
+      }).join('');
+      if (side === 'P1' && handoff) select.value = handoff;
+      if (button) button.disabled = !store.decks.some(function (deck) { return runtime.validateForBattle(deck, global.cardRegistry).valid; });
+    });
+    var edit = document.getElementById('battle-to-toolbox');
+    if (edit && handoff) edit.href = 'toolbox.html?edit=' + encodeURIComponent(handoff);
   };
 
   BattleUI.prototype._openDeckSelect = function () {
+    this._loadUserDecks();
     this.hideModeSelect();
     var self = this;
     var title = document.getElementById('deck-select-title');
@@ -256,10 +288,18 @@
   };
 
   BattleUI.prototype._beginNewGame = function () {
-    var kabutoRecipe = global.STARTER_DECK_RECIPES[this.selectedDecks.P1] || global.STARTER_DECK_RECIPES.KABUTOMUSHI;
-    var okamakiriRecipe = global.STARTER_DECK_RECIPES[this.selectedDecks.P2] || global.STARTER_DECK_RECIPES.OKAMAKIRI;
-    var p1Deck = global.expandStarterDeck(kabutoRecipe);
-    var p2Deck = global.expandStarterDeck(okamakiriRecipe);
+    var resolveDeck = function (selection, fallback) {
+      if (typeof selection === 'string' && selection.indexOf('USER:') === 0 && global.MushijingiDeckRuntime) {
+        var store = global.MushijingiDeckRuntime.parseStore(localStorage.getItem(global.MushijingiDeckRuntime.STORAGE_KEY));
+        var saved = global.MushijingiDeckRuntime.findDeck(store, selection.slice(5));
+        var validation = global.MushijingiDeckRuntime.validateForBattle(saved, global.cardRegistry);
+        if (!validation.valid) throw new Error(validation.errors.join(' '));
+        return validation.definitions;
+      }
+      return global.expandStarterDeck(global.STARTER_DECK_RECIPES[selection] || global.STARTER_DECK_RECIPES[fallback]);
+    };
+    var p1Deck = resolveDeck(this.selectedDecks.P1, 'KABUTOMUSHI');
+    var p2Deck = resolveDeck(this.selectedDecks.P2, 'OKAMAKIRI');
     this.engine.newGame(p1Deck, p2Deck, {});
     this.state = this.engine.state;
 
@@ -327,6 +367,7 @@
     this._damageVectorActive = false;
     this.selectedDecks = { P1: null, P2: null };
     this._deckSelectDone = { P1: false, P2: false };
+    this._loadUserDecks();
 
     if (this.logUI) this.logUI.clear();
     var idsToHide = ['card-detail-modal', 'pass-overlay', 'game-over', 'damage-vector', 'cpu-thinking', 'cpu-action-log', 'territory-picker'];

@@ -49,6 +49,9 @@ function requireAll() {
     ,require('./set1-core-mechanics.test.js')
     ,require('./set1-zone-spells.test.js')
     ,require('./set1-phase2-mechanics.test.js')
+    ,require('./toolbox-v1.test.js')
+    ,require('./toolbox-battle-integration.test.js')
+    ,require('./battle-user-deck-ui.test.js')
   ];
 }
 

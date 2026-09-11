@@ -196,12 +196,16 @@
         <span id="deck-p1-label" class="deck-side-label">あなた（P1）</span>
         <button id="btn-deck-p1-kabuto" class="deck-choice-btn" type="button">カブトムシデッキ</button>
         <button id="btn-deck-p1-okama" class="deck-choice-btn" type="button">オオカマキリデッキ</button>
+        <select id="user-deck-p1" aria-label="P1保存デッキ"></select><button id="btn-user-deck-p1" class="deck-choice-btn" type="button">保存デッキ</button>
       </div>
       <div class="deck-select-row">
         <span id="deck-p2-label" class="deck-side-label">相手（P2）</span>
         <button id="btn-deck-p2-kabuto" class="deck-choice-btn" type="button">カブトムシデッキ</button>
         <button id="btn-deck-p2-okama" class="deck-choice-btn" type="button">オオカマキリデッキ</button>
+        <select id="user-deck-p2" aria-label="P2保存デッキ"></select><button id="btn-user-deck-p2" class="deck-choice-btn" type="button">保存デッキ</button>
       </div>
+      <p id="user-deck-message" class="deck-select-message" aria-live="polite"></p>
+      <a id="battle-to-toolbox" href="toolbox.html">デッキを作る・編集する</a>
     </div>
   </div>
 
@@ -211,6 +215,7 @@
   <script src="js/cards/test-cards.js"></script>
   <script src="js/cards/starter-cards.js"></script>
   <script src="js/cards/set1-cards.js"></script>
+  <script src="shared/deck-format/runtime.js"></script>
   <script src="js/engine/game-state.js"></script>
   <script src="js/engine/rules.js"></script>
   <script src="js/engine/stat-modifier.js"></script>
