@@ -52,6 +52,7 @@ function requireAll() {
     ,require('./toolbox-v1.test.js')
     ,require('./toolbox-battle-integration.test.js')
     ,require('./battle-user-deck-ui.test.js')
+    ,require('./product-audit-ui.test.js')
   ];
 }
 

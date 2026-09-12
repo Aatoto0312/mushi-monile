@@ -35,6 +35,11 @@
     this._tutorialAutoTimer = null;
   }
 
+  function showUserError(error) {
+    if (global.console && global.console.error) { global.console.error('Battle operation failed', error); }
+    global.alert(global.MushijingiUiPresenter.safeErrorMessage(error));
+  }
+
   // 縄張りピッカー用のカード種別ラベル
   function territoryTypeLabel(def) {
     if (!def) { return '?'; }
@@ -50,7 +55,7 @@
     document.getElementById('btn-end-turn').addEventListener('click', function () {
       var pending=global.getPendingEffect(self.state);
       if(pending&&pending.type==='CARD_SELECTION'){
-        try{global.completeCardSelection(self.state,pending.playerId);self.render();}catch(e){alert(e.message);}return;
+        try{global.completeCardSelection(self.state,pending.playerId);self.render();}catch(e){showUserError(e);}return;
       }
       self.onEndTurn();
     });
@@ -396,7 +401,7 @@
     var oppPlayer = s.player(oppId);
 
     // ターン/フェイズ表示
-    this.setText('turn-text', 'TURN ' + s.turnNumber);
+    this.setText('turn-text', 'ターン ' + s.turnNumber);
     var phaseLabelText = this.phaseLabel(s.phase);
     this.setText('phase-text', phaseLabelText);
 
@@ -477,7 +482,7 @@
     guide.style.display = 'block';
     var step = controller.currentStep();
     var complete = controller.isComplete();
-    this.setText('tutorial-step', complete ? 'COMPLETE' : 'STEP ' + (controller.stepIndex + 1) + ' / ' + controller.scenario.steps.length);
+    this.setText('tutorial-step', complete ? '完了' : '手順 ' + (controller.stepIndex + 1) + ' / ' + controller.scenario.steps.length);
     this.setText('tutorial-message', complete ? 'おめでとうございます。基本対戦を完走しました！' : step.message);
     var actions = document.getElementById('tutorial-complete-actions');
     if (actions) actions.style.display = complete ? 'flex' : 'none';
@@ -806,7 +811,7 @@
       global.resolveDiscardInsectSelection(this.state, playerId, instance.instanceId);
       this.render();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
       this.render();
     }
   };
@@ -1025,7 +1030,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
         self._handlingChoice = false;
         self.render();
       } catch (e) {
-        alert(e.message);
+        showUserError(e);
         self._handlingChoice = false;
         self.render();
       }
@@ -1062,7 +1067,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
             setFood(self.state, playerId, instance.instanceId);
             self.render();
           } catch (e) {
-            alert(e.message);
+            showUserError(e);
             self.render();
           }
         }
@@ -1076,7 +1081,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
               summonInsect(self.state, playerId, instance.instanceId);
               self.render();
             } catch (e) {
-              alert(e.message);
+              showUserError(e);
               self.render();
             }
           }
@@ -1090,7 +1095,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
               self.hideCardDetail();
               self.render();
             } catch (e) {
-              alert(e.message);
+              showUserError(e);
               self.render();
             }
           }
@@ -1119,14 +1124,14 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     }
     var pending = getPendingEffect(this.state);
     if (pending) {
-      if (pending.type === 'CARD_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) { try { global.selectPendingCard(this.state,playerId,instance.instanceId); this.render(); } catch(e) { alert(e.message); } return; }
+      if (pending.type === 'CARD_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) { try { global.selectPendingCard(this.state,playerId,instance.instanceId); this.render(); } catch(e) { showUserError(e); } return; }
       if (pending.type === 'SPELL_TARGET_SELECTION' && pending.playerId === this.state.activePlayerId &&
           pending.options.indexOf(instance.instanceId) !== -1) {
         try {
           global.resolveSpellTargetSelection(this.state, pending.playerId, instance.instanceId);
           this.render();
         } catch (e) {
-          alert(e.message);
+          showUserError(e);
           this.render();
         }
       }
@@ -1269,7 +1274,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       resolveTerritoryDrawSelection(this.state, playerId, territoryInstance.instanceId);
       this.render();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
     }
   };
 
@@ -1397,7 +1402,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       useEnhancement(this.state, playerId, enhInstanceId, instance.instanceId);
       this.render();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
       this.render();
     }
   };
@@ -1444,7 +1449,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       global.useEnhancement(this.state, playerId, pending.enhInstanceId, pending.targetInstanceId, color);
       this.render();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
       this.render();
     }
   };
@@ -1539,7 +1544,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       this.render();
     } catch (e) {
       this.finishAttackSelection();
-      alert(e.message);
+      showUserError(e);
       this.render();
     }
   };
@@ -1616,7 +1621,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       this.render();
       this.showPassOverlay();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
     }
   };
 
@@ -1631,7 +1636,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       global.drawCardOnce(this.state, this.state.activePlayerId);
       this.render();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
       this.render();
     }
   };
@@ -1648,7 +1653,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       enterSetPhase(this.state);
       this.render();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
     }
   };
 
@@ -1665,14 +1670,14 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       enterMainPhase(this.state);
       this.render();
     } catch (e) {
-      alert(e.message);
+      showUserError(e);
     }
   };
 
   BattleUI.prototype.showPassOverlay = function () {
     var activeId = this.state.activePlayerId;
-    var label = activeId === 'P1' ? 'P1 のターン' : 'P2 のターン';
-    document.getElementById('pass-message').textContent = label + ' です。端末を渡してください。';
+    var label = activeId === 'P1' ? 'P1のターン' : 'P2のターン';
+    document.getElementById('pass-message').textContent = label + 'です。端末を渡してください。';
     document.getElementById('pass-overlay').style.display = 'flex';
   };
 

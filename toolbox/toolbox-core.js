@@ -344,7 +344,7 @@
     (deck && deck.cards || []).forEach(function (entry) {
       total += Number.isInteger(entry.quantity) ? entry.quantity : 0;
       var card = byId[entry.canonicalCardId];
-      if (!card) { errors.push('不明なカード: ' + entry.canonicalCardId); return; }
+      if (!card) { errors.push('カード情報を確認できません。デッキから削除して、もう一度追加してください。'); return; }
       totalsByName[card.name] = (totalsByName[card.name] || 0) + entry.quantity;
       if (!card.playable) { warnings.push(card.name + 'は対戦未対応です。'); }
     });
@@ -352,7 +352,7 @@
       if (totalsByName[name] > maxSameName) { errors.push(name + 'は同名合計' + maxSameName + '枚までです。'); }
     });
     if (total !== requiredSize) { warnings.push('デッキは' + requiredSize + '枚必要です（現在' + total + '枚）。'); }
-    var storable = !!deck && Array.isArray(deck.cards) && errors.filter(function (x) { return x.indexOf('不明なカード') === 0; }).length === 0;
+    var storable = !!deck && Array.isArray(deck.cards) && errors.filter(function (x) { return x.indexOf('カード情報を確認できません') === 0; }).length === 0;
     return { valid: errors.length === 0 && warnings.length === 0, storable: storable, battleReady: errors.length === 0 && warnings.length === 0, totalCards: total, errors: errors, warnings: warnings };
   }
 

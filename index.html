@@ -5,22 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="robots" content="noindex,nofollow">
-  <title>蟲神器 プロトタイプ 0.1</title>
+  <title>蟲神器</title>
   <link rel="stylesheet" href="css/battle.css">
 </head>
 <body class="battle-screen">
-  <div class="test-build-indicator">TEST BUILD / v0.2-test <span id="layout-metrics"></span></div>
   <div class="mobile-frame battle-viewport">
 
     <!-- トップバー -->
     <header class="topbar">
       <div class="topbar-left">
-        <span id="turn-text">TURN 1</span>
+        <span id="turn-text">ターン 1</span>
         <span id="phase-text">ドローフェイズ</span>
         <span id="cpu-thinking" style="display:none; color: yellow; margin-left: 10px;">CPU思考中...</span>
       </div>
       <div class="topbar-right">
-        <button id="btn-new-game" class="mini-btn" type="button">NEW</button>
+        <button id="btn-new-game" class="mini-btn" type="button">対戦設定</button>
       </div>
     </header>
 
@@ -144,7 +143,7 @@
   </div>
 
   <aside id="tutorial-guide" class="tutorial-guide" style="display:none;" aria-live="polite">
-    <div class="tutorial-guide__head"><strong id="tutorial-step">STEP 1 / 10</strong><button id="btn-tutorial-exit" class="mini-btn" type="button">終了</button></div>
+    <div class="tutorial-guide__head"><strong id="tutorial-step">手順 1 / 10</strong><button id="btn-tutorial-exit" class="mini-btn" type="button">終了</button></div>
     <p id="tutorial-message"></p>
     <div id="tutorial-complete-actions" class="tutorial-complete-actions" style="display:none;">
       <button id="btn-tutorial-replay" class="action-btn-wide" type="button">もう一度</button>
@@ -175,7 +174,7 @@
   <!-- ターン交代受け渡しオーバーレイ -->
   <div id="pass-overlay" class="overlay" style="display:none;">
     <div class="pass-box">
-      <p id="pass-message">P1 のターンです。</p>
+      <p id="pass-message">P1のターンです。</p>
       <button id="btn-pass-ok" class="action-btn-wide" type="button">OK</button>
     </div>
   </div>
@@ -216,6 +215,7 @@
   <script src="js/cards/starter-cards.js"></script>
   <script src="js/cards/set1-cards.js"></script>
   <script src="shared/deck-format/runtime.js"></script>
+  <script src="shared/ui-presenter.js"></script>
   <script src="js/engine/game-state.js"></script>
   <script src="js/engine/rules.js"></script>
   <script src="js/engine/stat-modifier.js"></script>

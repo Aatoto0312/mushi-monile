@@ -1,5 +1,7 @@
 'use strict';
 
+require('../shared/ui-presenter.js');
+
 // エンジンの各ファイルを依存順に読み込み、global に展開する。
 // 各ファイルは IIFE で globalThis(= Node では global) にメンバを生やす。
 

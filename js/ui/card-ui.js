@@ -338,7 +338,7 @@
     };
     attachments.forEach(function (att) {
       var attDef = getDef(att) || {};
-      var attName = attDef.name || att.cardId;
+      var attName = attDef.name || '不明な強化カード';
       detail.attachments.push(attName);
       (attDef.enhancementEffects || []).forEach(function (effect) {
         if (effect.stat === 'AP' && effect.amount) detail.apModifierSources.push(attName + ' ' + (effect.amount > 0 ? '+' : '') + effect.amount);
@@ -383,8 +383,8 @@
       });
     }
     if (def.rulings) {
-      def.rulings.forEach(function(r) {
-        detail.rulings.push(typeof r === 'string' ? r : (r.text || r.description || String(r)));
+      global.MushijingiUiPresenter.playerFacingRulings(def.rulings).forEach(function(r) {
+        detail.rulings.push(r);
       });
     }
     if (def.cardEffects) {

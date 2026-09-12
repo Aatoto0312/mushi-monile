@@ -12,7 +12,7 @@
     <div>
       <p class="eyebrow">MUSHI JINGI</p>
       <h1>蟲神器Toolbox</h1>
-      <p class="subtitle">Card Registry 連携デッキビルダー</p>
+      <p class="subtitle">カード一覧・デッキ作成</p>
     </div>
     <span class="phase-badge">v1</span>
   </header>
@@ -22,7 +22,7 @@
     <section class="controls" aria-label="カード検索とフィルター">
       <label class="search-field">
         <span>カード検索</span>
-        <input id="search-input" type="search" placeholder="カード名・officialNumberで検索" autocomplete="off">
+        <input id="search-input" type="search" placeholder="カード名・カード番号で検索" autocomplete="off">
       </label>
       <div class="filter-grid">
         <label>弾<select id="set-filter"><option value="">すべて</option></select></label>
@@ -31,7 +31,7 @@
         <label>コスト<select id="cost-filter"><option value="">すべて</option></select></label>
         <label>レアリティ<select id="rarity-filter"><option value="">すべて</option></select></label>
         <label>対戦対応<select id="status-filter"><option value="">すべて</option></select></label>
-        <label>並べ替え<select id="sort-select"><option value="officialNumber">officialNumber</option><option value="name">名前</option><option value="cost">コスト</option><option value="hp">HP</option></select></label>
+        <label>並べ替え<select id="sort-select"><option value="officialNumber">カード番号</option><option value="name">名前</option><option value="cost">コスト</option><option value="hp">HP</option></select></label>
       </div>
       <button id="clear-filters" class="clear-button" type="button">条件をクリア</button>
     </section>
@@ -48,7 +48,7 @@
     <section id="decks-view" class="app-view" aria-labelledby="decks-heading" hidden>
       <div class="deck-toolbar">
         <div>
-          <p class="section-kicker">DECK BUILDER</p>
+          <p class="section-kicker">デッキ作成</p>
           <h2 id="decks-heading">デッキ</h2>
         </div>
         <button id="new-deck" class="secondary-button" type="button">新規</button>
@@ -104,6 +104,7 @@
   <script src="js/cards/starter-cards.js"></script>
   <script src="js/cards/set1-cards.js"></script>
   <script src="shared/card-data/registry-catalog.js"></script>
+  <script src="shared/ui-presenter.js"></script>
   <script src="shared/deck-format/runtime.js"></script>
   <script src="toolbox/toolbox-core.js"></script>
   <script src="toolbox/toolbox-v1-app.js"></script>
