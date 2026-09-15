@@ -4,6 +4,9 @@ var fs = require('fs');
 var path = require('path');
 var TestRunner = require('./lib.js');
 var presenter = require('../shared/ui-presenter.js');
+require('./engine-loader.js');
+require('../js/ui/card-effect-formatter.js');
+var catalog = require('../shared/card-data/registry-catalog.js');
 var runner = new TestRunner();
 
 function source(relativePath) {
@@ -66,6 +69,45 @@ runner.test('Shared presenter removes internal audit notes from player rulings',
   var rulings = ['攻撃以外の破壊では発動しない。', '公式カード画像/現物と矛盾した場合は本データを上書きし、一般知識で補完しない。'];
   runner.assertEqual(presenter.playerFacingRulings(rulings).length, 1, 'internal note removed');
   runner.assertEqual(presenter.playerFacingRulings(rulings)[0], rulings[0], 'game ruling retained');
+});
+
+runner.test('Toolbox detail separates insect attacks from traits and shows attack AP', function () {
+  var card = catalog.fromDefinition(global.cardRegistry.get('set1_027'));
+  var detail = presenter.presentCardDetail(card, global.CardEffectFormatter);
+  runner.assertEqual(detail.skills.length, 1, 'one attack');
+  runner.assertEqual(detail.skills[0].name, 'かみつく', 'attack name');
+  runner.assertEqual(detail.skills[0].ap, 100, 'attack AP');
+  runner.assertEqual(detail.traits.length, 1, 'one trait');
+  runner.assertEqual(detail.traits[0].name, '蜜をためる', 'trait name');
+  runner.assert(detail.traits[0].text.indexOf('手札から1枚をエサ場へ置いてもよい') !== -1, 'trait text');
+  var riock = presenter.presentCardDetail(catalog.fromDefinition(global.cardRegistry.get('set1_002')), global.CardEffectFormatter);
+  runner.assertEqual(riock.skills[0].ap, 600, 'Riock attack AP');
+});
+
+runner.test('Toolbox detail uses existing structured spell and enhancement effect text', function () {
+  var spell = catalog.fromDefinition(global.cardRegistry.get('jinkaichu_no_bakunetsudan'));
+  var spellDetail = presenter.presentCardDetail(spell, global.CardEffectFormatter);
+  runner.assertEqual(spellDetail.effects[0], '相手の虫1体に600ダメージを与える。', 'spell effect');
+  runner.assert(spellDetail.effects.indexOf('効果の説明はありません。') === -1, 'spell has no false fallback');
+  var enhancement = catalog.fromDefinition(global.cardRegistry.get('tamamushiiro_no_uka'));
+  var detail = presenter.presentCardDetail(enhancement, global.CardEffectFormatter);
+  runner.assertEqual(detail.effects[0], 'この虫の色を赤か青か緑に変える。', 'enhancement effect');
+  runner.assert(detail.effects.indexOf('効果の説明はありません。') === -1, 'no false fallback');
+  runner.assertEqual(detail.basics.some(function (item) { return item.label === '色'; }), false, 'non-applicable color hidden');
+  runner.assertEqual(detail.basics.some(function (item) { return item.label === 'HP'; }), false, 'non-applicable HP hidden');
+});
+
+runner.test('Toolbox detail fails safe without leaking internal values', function () {
+  var detail = presenter.presentCardDetail({
+    type: 'SPELL', color: null, cost: 0, baseHp: null,
+    implementationStatus: 'TESTED', skills: [], passiveAbilities: [],
+    cardEffects: [{ type: 'INTERNAL_ONLY', payload: { canonicalCardId: 'secret' } }],
+    enhancementEffects: [], rulings: [null, { implementation: { debug: true } }]
+  }, global.CardEffectFormatter);
+  var visible = JSON.stringify(detail);
+  ['canonicalCardId', 'undefined', '[object Object]', 'INTERNAL_ONLY'].forEach(function (secret) {
+    runner.assert(visible.indexOf(secret) === -1, secret + ' hidden');
+  });
 });
 
 module.exports = runner;

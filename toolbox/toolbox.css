@@ -64,6 +64,8 @@ input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(23,107
 .detail-basics span:first-child { color: var(--muted); font-size: 11px; }
 .detail-section { padding: 15px 0; border-top: 1px solid var(--line); }
 .detail-section h3 { margin: 0 0 10px; font-size: 15px; }
+.detail-entry + .detail-entry { margin-top: 12px; }
+.detail-entry p, .detail-effect-text { margin: 5px 0 0; line-height: 1.65; }
 .structured-list { display: grid; gap: 10px; margin: 0; padding-left: 22px; }
 .structured-object { margin: 0; }
 .structured-object > div { display: grid; grid-template-columns: minmax(90px, .45fr) 1fr; gap: 8px; padding: 5px 0; }

@@ -46,7 +46,64 @@
     });
   }
 
-  var api = { label: label, setLabel: setLabel, statusGroup: statusGroup, safeEffectText: safeEffectText, safeErrorMessage: safeErrorMessage, playerFacingRulings: playerFacingRulings };
+  function readableText(value) {
+    return typeof value === 'string' && value.trim() ? value.trim() : '';
+  }
+
+  function effectText(effect, formatter, method) {
+    var direct = readableText(effect && (effect.effectText || effect.description || effect.text));
+    if (direct) { return direct; }
+    if (formatter && typeof formatter[method] === 'function') {
+      return readableText(formatter[method](effect));
+    }
+    return '';
+  }
+
+  function presentCardDetail(card, formatter) {
+    card = card || {};
+    var basics = [{ label: '種類', value: label(card.type) }];
+    if (card.color != null) { basics.push({ label: '色', value: label(card.color) }); }
+    if (card.cost != null) { basics.push({ label: 'コスト', value: String(card.cost) }); }
+    if (card.type === 'INSECT' && card.baseHp != null) { basics.push({ label: 'HP', value: String(card.baseHp) }); }
+    if (card.rarity != null && card.rarity !== '') { basics.push({ label: 'レアリティ', value: String(card.rarity) }); }
+    basics.push({ label: '対戦対応', value: label(card.implementationStatus, 'implementationStatus') });
+
+    var skills = (card.skills || []).map(function (skill) {
+      var texts = [];
+      var direct = effectText(skill, formatter, 'formatCardEffect');
+      if (direct) { texts.push(direct); }
+      (skill && skill.effects || []).forEach(function (effect) {
+        var text = effectText(effect, formatter, 'formatCardEffect');
+        if (text && texts.indexOf(text) === -1) { texts.push(text); }
+      });
+      return { name: readableText(skill && skill.name) || '名称不明の技', ap: skill && skill.baseAp != null ? skill.baseAp : null, text: texts.join(' ') };
+    });
+    var traits = (card.passiveAbilities || []).map(function (ability) {
+      var texts = [];
+      var direct = effectText(ability, formatter, 'formatCardEffect');
+      if (direct) { texts.push(direct); }
+      (ability && ability.effects || []).forEach(function (effect) {
+        var text = effectText(effect, formatter, 'formatCardEffect');
+        if (text && texts.indexOf(text) === -1) { texts.push(text); }
+      });
+      return { name: readableText(ability && ability.name) || '名称不明の特性', text: texts.join(' ') || '効果の説明はありません。' };
+    });
+    var effects = [];
+    (card.cardEffects || []).forEach(function (effect) {
+      var text = effectText(effect, formatter, 'formatCardEffect');
+      if (text) { effects.push(text); }
+    });
+    (card.enhancementEffects || []).forEach(function (effect) {
+      var text = effectText(effect, formatter, 'formatEnhancementEffect');
+      if (text) { effects.push(text); }
+    });
+    if (!effects.length && ((card.cardEffects || []).length || (card.enhancementEffects || []).length)) {
+      effects.push('効果の説明はありません。');
+    }
+    return { basics: basics, skills: skills, traits: traits, effects: effects, rulings: playerFacingRulings(card.rulings) };
+  }
+
+  var api = { label: label, setLabel: setLabel, statusGroup: statusGroup, safeEffectText: safeEffectText, safeErrorMessage: safeErrorMessage, playerFacingRulings: playerFacingRulings, presentCardDetail: presentCardDetail };
   global.MushijingiUiPresenter = api;
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
 }(typeof globalThis !== 'undefined' ? globalThis : this));

@@ -31,6 +31,7 @@
       passiveAbilities: clone(definition.passiveAbilities || []),
       cardEffects: clone(definition.cardEffects || []),
       enhancementEffects: clone(definition.enhancementEffects || []),
+      rulings: clone(definition.rulings || []),
       tags: clone(definition.tags || []),
       sourceRefs: clone(definition.sourceRefs || []),
       verificationNotes: definition.verificationNotes || null
