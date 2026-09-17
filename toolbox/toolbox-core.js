@@ -290,7 +290,10 @@
     var query = String(filters.query || '').trim().toLocaleLowerCase('ja');
     var keys = ['set', 'type', 'color', 'cost', 'rarity', 'implementationStatus'];
     return (cards || []).filter(function (card) {
-      var searchable = [card.name, card.officialNumber, card.cardId, (card.tags || []).join(' '), JSON.stringify(card.skills || []), JSON.stringify(card.cardEffects || [])].join(' ').toLocaleLowerCase('ja');
+      var searchable = [card.name, card.officialNumber, card.cardId, (card.tags || []).join(' '),
+        JSON.stringify(card.skills || []), JSON.stringify(card.passiveAbilities || []),
+        JSON.stringify(card.cardEffects || []), JSON.stringify(card.enhancementEffects || []),
+        JSON.stringify(card.rulings || [])].join(' ').toLocaleLowerCase('ja');
       if (query && searchable.indexOf(query) === -1) { return false; }
       return keys.every(function (key) {
         return filters[key] === undefined || filters[key] === '' || catalogValue(card, key) === String(filters[key]);
@@ -305,13 +308,48 @@
     return String(left).localeCompare(String(right), 'ja', { numeric: true });
   }
 
+  function catalogSetOrder(set) {
+    var value = String(set || '').toUpperCase();
+    if (value === 'STARTER') { return 1; }
+    var match = value.match(/^(?:BOOSTER_)?SET_?(\d+)$/);
+    return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
+  }
+
+  function officialNumberValue(value) {
+    var match = String(value || '').match(/^\s*(\d+)\s*(?:\/|$)/);
+    return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
+  }
+
   function sortCatalog(cards, key, direction) {
     var field = key === 'hp' ? 'baseHp' : (key || 'officialNumber');
     var multiplier = direction === 'desc' ? -1 : 1;
     return (cards || []).slice().sort(function (left, right) {
+      if (field === 'officialNumber') {
+        var setDifference = catalogSetOrder(left.set) - catalogSetOrder(right.set);
+        if (setDifference) { return setDifference * multiplier; }
+        if (catalogSetOrder(left.set) === Number.POSITIVE_INFINITY) {
+          var setNameDifference = compareNullable(left.set, right.set);
+          if (setNameDifference) { return setNameDifference * multiplier; }
+        }
+        var leftNumber = officialNumberValue(left.officialNumber);
+        var rightNumber = officialNumberValue(right.officialNumber);
+        var numberDifference = leftNumber - rightNumber;
+        if (numberDifference) { return numberDifference * multiplier; }
+      }
       var difference = compareNullable(left[field], right[field]);
       return (difference || compareNullable(left.cardId, right.cardId)) * multiplier;
     });
+  }
+
+  function buildCatalogView(cards, filters, sortBy, statusGroup) {
+    filters = filters || {};
+    var found = filterCatalog(cards, filters);
+    if (filters.implementationStatusGroup && typeof statusGroup === 'function') {
+      found = found.filter(function (card) {
+        return statusGroup(card.implementationStatus) === filters.implementationStatusGroup;
+      });
+    }
+    return sortCatalog(found, sortBy);
   }
 
   function deriveFilterOptions(cards) {
@@ -386,6 +424,7 @@
     cardHasDataWarning: cardHasDataWarning,
     filterCatalog: filterCatalog,
     sortCatalog: sortCatalog,
+    buildCatalogView: buildCatalogView,
     deriveFilterOptions: deriveFilterOptions,
     addCatalogCard: addCatalogCard,
     validateDeck: validateDeck,

@@ -947,24 +947,26 @@
       }
     },
     {
-      "printingId": "printing:starter:unresolved-mushi_no_ibuki:standard",
+      "printingId": "printing:starter:127:standard",
       "canonicalCardId": "mushi_no_ibuki",
       "rulesId": "rules:mushi_no_ibuki:starter-v1",
       "setId": "STARTER",
       "starterDeck": "KABUTOMUSHI",
       "collectorNumber": {
-        "state": "blocked",
-        "blockedReason": "starter_cards_and_catalog_disagree",
+        "state": "known",
+        "value": {
+          "number": 127,
+          "total": 130,
+          "suffix": null
+        },
         "verificationRef": "verification:mushi_no_ibuki:collector-number"
       },
       "officialNumberDisplay": {
-        "state": "blocked",
-        "blockedReason": "starter_cards_and_catalog_disagree",
+        "state": "known",
+        "value": "127/130",
         "verificationRef": "verification:mushi_no_ibuki:collector-number"
       },
-      "officialNumberCandidates": [
-        "127/130"
-      ],
+      "officialNumberCandidates": [],
       "rarity": {
         "state": "known",
         "value": "N",
@@ -3083,20 +3085,20 @@
     },
     {
       "verificationId": "verification:mushi_no_ibuki:collector-number",
-      "entityId": "printing:starter:unresolved-mushi_no_ibuki:standard",
+      "entityId": "printing:starter:127:standard",
       "fieldPath": "/collectorNumber",
-      "status": "CONFLICTED",
+      "status": "VERIFIED_OFFICIAL",
       "notes": [
-        "starter-cards.jsではnull、CARD_CATALOG.mdでは127/130。一次資料確認まで確定しない。"
+        "蟲神器カード検索でMUSHI 127/130を確認。126/130、127/130、128/130の連番とも一致。"
       ],
       "sourceRefs": [
-        "js/cards/starter-cards.js: officialNumber=null",
+        "蟲神器カード検索: 蟲の息吹 MUSHI 127/130",
         "docs/mushijingi-knowledge/CARD_CATALOG.md: officialNumber=127/130"
       ]
     },
     {
       "verificationId": "verification:mushi_no_ibuki:rarity",
-      "entityId": "printing:starter:unresolved-mushi_no_ibuki:standard",
+      "entityId": "printing:starter:127:standard",
       "fieldPath": "/rarity",
       "status": "VERIFIED_SECONDARY",
       "notes": [
@@ -3159,4 +3161,3 @@
     }
   ]
 }
-

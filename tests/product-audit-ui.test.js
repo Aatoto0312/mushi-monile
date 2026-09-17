@@ -23,6 +23,15 @@ runner.test('Toolbox user-facing copy does not expose registry field names', fun
   runner.assert(app.indexOf('JSON.stringify(x)') === -1, 'raw effect JSON is never rendered');
 });
 
+runner.test('Toolbox Full Catalog scripts use one cache version and the production view pipeline', function () {
+  var html = source('toolbox.html');
+  var app = source('toolbox/toolbox-v1-app.js');
+  ['js/cards/starter-cards.js', 'js/cards/full-catalog-data.js', 'js/cards/catalog-card-loader.js', 'toolbox/toolbox-core.js', 'toolbox/toolbox-v1-app.js'].forEach(function (file) {
+    runner.assert(html.indexOf('src="' + file + '?v=full-catalog-v1"') !== -1, file + ' is cache-versioned');
+  });
+  runner.assert(app.indexOf('core.buildCatalogView(') !== -1, 'UI render uses tested production catalog view pipeline');
+});
+
 runner.test('Battle production UI omits development diagnostics', function () {
   var html = source('index.html');
   var ui = source('js/ui/battle-ui.js');

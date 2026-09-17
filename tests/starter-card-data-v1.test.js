@@ -64,17 +64,20 @@ runner.test('Printing IDs use normalized three-digit collector numbers', functio
   runner.assertEqual(printing.officialNumberDisplay.value, '006/130', 'normalized display');
 });
 
-runner.test('Mushi no Ibuki official number remains blocked and conflicted', function () {
+runner.test('Mushi no Ibuki official number is verified as 127/130', function () {
   var data = loadStarterData();
   var printing = data.printings.filter(function (x) { return x.canonicalCardId === 'mushi_no_ibuki'; })[0];
-  runner.assertEqual(printing.collectorNumber.state, 'blocked', 'collector number blocked');
-  runner.assertEqual(printing.officialNumberDisplay.state, 'blocked', 'display blocked');
-  runner.assertEqual(printing.officialNumberCandidates[0], '127/130', 'catalog candidate retained');
+  runner.assertEqual(printing.collectorNumber.state, 'known', 'collector number known');
+  runner.assertEqual(printing.collectorNumber.value.number, 127, 'collector number');
+  runner.assertEqual(printing.collectorNumber.value.total, 130, 'collector total');
+  runner.assertEqual(printing.officialNumberDisplay.state, 'known', 'display known');
+  runner.assertEqual(printing.officialNumberDisplay.value, '127/130', 'official display');
+  runner.assertEqual(printing.officialNumberCandidates.length, 0, 'no unresolved candidates');
   var verification = data.verifications.filter(function (x) {
     return x.entityId === printing.printingId && x.fieldPath === '/collectorNumber';
   })[0];
   runner.assert(verification, 'collector number verification exists');
-  runner.assertEqual(verification.status, 'CONFLICTED', 'conflict is explicit');
+  runner.assertEqual(verification.status, 'VERIFIED_OFFICIAL', 'official verification recorded');
 });
 
 runner.test('Catalog-backed rarity does not overwrite the legacy snapshot', function () {

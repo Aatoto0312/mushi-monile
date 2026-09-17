@@ -764,10 +764,11 @@
 
   // ---- 《蟲の息吹》正式化(Wave B) ----
   // 公式Q&Aに基づき、この1枚だけ正式確定データで更新する。
-  // 未確認項目(officialNumber / rarity / color / baseHp)はnullのまま。
+  // 未確認項目(rarity / color / baseHp)はnullのまま。
   (function formalizeMushiNoIbuki() {
     var def = cardRegistry.get('mushi_no_ibuki');
     if (!def) { return; }
+    def.officialNumber = '127/130';
     def.type = CardTypes.SPELL;
     def.cost = 1;
     def.cardEffects = [

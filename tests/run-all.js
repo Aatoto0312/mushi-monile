@@ -53,6 +53,7 @@ function requireAll() {
     ,require('./toolbox-battle-integration.test.js')
     ,require('./battle-user-deck-ui.test.js')
     ,require('./product-audit-ui.test.js')
+    ,require('./full-catalog-v1.test.js')
   ];
 }
 

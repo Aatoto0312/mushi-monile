@@ -45,13 +45,13 @@ runner.test('Battle adapter keeps canonicalCardId as engineDefinitionId', functi
   });
 });
 
-runner.test('Battle adapter preserves blocked Ibuki number as null with diagnostic', function () {
+runner.test('Battle adapter exposes verified Ibuki number without a blocked diagnostic', function () {
   var result = loadAdapter().adaptCardData(loadData());
   var ibuki = result.definitions.filter(function (x) { return x.id === 'mushi_no_ibuki'; })[0];
-  runner.assertEqual(ibuki.officialNumber, null, 'blocked number is not guessed');
-  runner.assert(result.warnings.some(function (x) {
+  runner.assertEqual(ibuki.officialNumber, '127/130', 'verified number is preserved');
+  runner.assertEqual(result.warnings.some(function (x) {
     return x.code === 'BLOCKED_FIELD' && x.entityId === 'mushi_no_ibuki' && x.fieldPath === '/officialNumber';
-  }), 'blocked official number warning');
+  }), false, 'no obsolete blocked official number warning');
 });
 
 runner.test('Battle adapter recombines skills and traits without loss', function () {

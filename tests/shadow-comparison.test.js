@@ -115,7 +115,7 @@ runner.test('Shadow comparison preserves adapter diagnostics', function () {
     return counts;
   }, {});
   runner.assertEqual(warningCounts.UNKNOWN_FIELD_STATE, 8, 'unknown states');
-  runner.assertEqual(warningCounts.BLOCKED_FIELD, 2, 'blocked states');
+  runner.assertEqual(warningCounts.BLOCKED_FIELD, 1, 'blocked states');
   runner.assertEqual(result.diagnostics.filter(function (x) { return x.severity === 'error'; }).length, 0, 'errors');
 });
 
@@ -146,7 +146,7 @@ runner.test('Shadow report is concise on success and detailed on failure', funct
   runner.assert(success.indexOf('Matched: 24') !== -1, 'matched count');
   runner.assert(success.indexOf('Intentional differences: 13') !== -1, 'intentional count');
   runner.assert(success.indexOf('Unexpected differences: 0') !== -1, 'unexpected count');
-  runner.assert(success.indexOf('Warnings: 10') !== -1, 'warnings');
+  runner.assert(success.indexOf('Warnings: 9') !== -1, 'warnings');
   runner.assert(success.indexOf('Errors: 0') !== -1, 'errors');
 
   var data = clone(loadData());

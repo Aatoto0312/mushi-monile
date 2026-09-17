@@ -37,9 +37,12 @@ runner.test('Toolbox sorts by structured collector number', function () {
   runner.assertEqual(knownNumbers.join(','), knownNumbers.slice().sort(function (a, b) { return a - b; }).join(','), 'numeric order');
 });
 
-runner.test('Toolbox puts unresolved official number last', function () {
+runner.test('Toolbox sorts verified Ibuki number between 126 and 129', function () {
   var sorted = loadToolboxCore().sortCardsByOfficialNumber(cards());
-  runner.assertEqual(sorted[sorted.length - 1].canonicalCardId, 'mushi_no_ibuki', 'blocked number last');
+  var ibukiIndex = sorted.findIndex(function (card) { return card.canonicalCardId === 'mushi_no_ibuki'; });
+  runner.assertEqual(sorted[ibukiIndex].printing.officialNumberDisplay.value, '127/130', 'verified number displayed');
+  runner.assertEqual(sorted[ibukiIndex - 1].printing.collectorNumber.value.number < 127, true, 'previous number precedes 127');
+  runner.assertEqual(sorted[ibukiIndex + 1].printing.collectorNumber.value.number > 127, true, 'next number follows 127');
 });
 
 runner.test('Toolbox searches Japanese card names by partial match', function () {
@@ -87,11 +90,10 @@ runner.test('Toolbox renders every FieldState without guessing', function () {
   runner.assertEqual(display({ state: 'not_applicable', reason: 'none' }).text, '-', 'not applicable');
 });
 
-runner.test('Toolbox never displays blocked official-number candidate as confirmed', function () {
+runner.test('Toolbox displays verified Ibuki official number', function () {
   var card = cards().filter(function (item) { return item.canonicalCardId === 'mushi_no_ibuki'; })[0];
   var shown = loadToolboxCore().displayFieldState(card.printing.officialNumberDisplay);
-  runner.assertEqual(shown.text, '確認保留', 'blocked display');
-  runner.assertEqual(shown.text.indexOf('127/130'), -1, 'candidate is not displayed');
+  runner.assertEqual(shown.text, '127/130', 'verified display');
 });
 
 function deckOptions(id, name) {
