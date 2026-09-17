@@ -403,6 +403,30 @@
 
   // ---- 召喚 ----
 
+  function getAvailableSummonMethods(state, playerId, handInstanceId) {
+    if (!state || state.pendingEffect || state.phase !== Phases.MAIN_PHASE || state.activePlayerId !== playerId) {
+      return [];
+    }
+    var player = state.player(playerId);
+    var held = findInZone(state, playerId, ZONES.HAND, handInstanceId);
+    var def = held && getCardDefinition(held.cardId);
+    if (!held || !def || def.type !== CardTypes.INSECT || !def.isPlayable()) {
+      return [];
+    }
+    var methods = [];
+    if (player.availableCost >= (def.cost != null ? def.cost : 0)) {
+      methods.push({ type: 'NORMAL', cost: def.cost != null ? def.cost : 0 });
+    }
+    (def.summonAlternatives || []).forEach(function (alternative) {
+      if (alternative.type !== 'SACRIFICE_OWN_FIELD') { return; }
+      var candidates = player.field.filter(function (card) { return !card.faceDown; });
+      if (candidates.length >= alternative.count) {
+        methods.push({ type: 'ALTERNATIVE', alternativeType: alternative.type, count: alternative.count });
+      }
+    });
+    return methods;
+  }
+
   function summonInsect(state, playerId, handInstanceId, summonOptions) {
     summonOptions = summonOptions || {};
     assertNoPendingEffect(state);
@@ -1819,6 +1843,7 @@ function endTurn(state) {
   global.setFood = setFood;
   global.gainCost = gainCost;
   global.enterMainPhase = enterMainPhase;
+  global.getAvailableSummonMethods = getAvailableSummonMethods;
   global.summonInsect = summonInsect;
   global.useSpell = useSpell;
   global.getSpellTargetCandidates = getSpellTargetCandidates;

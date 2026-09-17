@@ -915,7 +915,8 @@ BattleUI.prototype.renderPendingEffect = function (state) {
           statusText.textContent === 'とびだすを使用するか選択してください' ||
           statusText.textContent === '術の対象にする相手の虫を選択してください' ||
           statusText.textContent === 'あなたの行動待ちです' ||
-          statusText.textContent === 'CPUが選択中...') {
+          statusText.textContent === 'CPUが選択中...' ||
+          statusText.textContent.indexOf('代替召喚のため、') === 0) {
         statusText.textContent = '';
       }
       return;
@@ -929,6 +930,8 @@ BattleUI.prototype.renderPendingEffect = function (state) {
         statusText.textContent = '手札に戻す虫を捨て場から選択してください';
       } else if (pending.type === 'SPELL_TARGET_SELECTION') {
         statusText.textContent = '術の対象にする相手の虫を選択してください';
+      } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'ALTERNATIVE_SUMMON_COST') {
+        statusText.textContent = '代替召喚のため、自分の虫を' + pending.maxSelections + '体選んでください（' + (pending.selectedIds || []).length + '/' + pending.maxSelections + '）';
       } else if (pending.type === 'TERRITORY_DRAW_CHOICE') {
         statusText.textContent = 'とびだすを使用するか選択してください';
         this.showTerritoryChoiceModal(pending);
@@ -1074,16 +1077,34 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       });
     } else if (isActive && this.state.phase === Phases.MAIN_PHASE) {
       if (def.type === CardTypes.INSECT) {
-        actions.push({
-          label: '場に出す (コスト ' + (def.cost != null ? def.cost : 0) + ')',
-          onSelect: function () {
-            try {
-              summonInsect(self.state, playerId, instance.instanceId);
-              self.render();
-            } catch (e) {
-              showUserError(e);
-              self.render();
-            }
+        global.getAvailableSummonMethods(this.state, playerId, instance.instanceId).forEach(function (method) {
+          if (method.type === 'NORMAL') {
+            actions.push({
+              label: '場に出す (コスト ' + method.cost + ')',
+              onSelect: function () {
+                try {
+                  summonInsect(self.state, playerId, instance.instanceId);
+                  self.render();
+                } catch (e) {
+                  showUserError(e);
+                  self.render();
+                }
+              }
+            });
+          } else if (method.type === 'ALTERNATIVE') {
+            actions.push({
+              label: '自分の場の虫' + method.count + '体を破壊して場に出す',
+              onSelect: function () {
+                try {
+                  summonInsect(self.state, playerId, instance.instanceId, { alternative: true });
+                  self.hideCardDetail();
+                  self.render();
+                } catch (e) {
+                  showUserError(e);
+                  self.render();
+                }
+              }
+            });
           }
         });
       } else if (def.type === CardTypes.SPELL) {

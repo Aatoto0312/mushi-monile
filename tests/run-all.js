@@ -54,6 +54,7 @@ function requireAll() {
     ,require('./battle-user-deck-ui.test.js')
     ,require('./product-audit-ui.test.js')
     ,require('./full-catalog-v1.test.js')
+    ,require('./human-test-fix-01.test.js')
   ];
 }
 
