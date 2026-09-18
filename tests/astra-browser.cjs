@@ -1,14 +1,14 @@
 /* Run against a local HTTP server. Playwright stays a test-only dependency.
    MUSHI_PLAYWRIGHT_PATH may point to an external Playwright installation. */
-const {chromium}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');
+const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const base=process.env.MUSHI_URL||'http://127.0.0.1:8765';
-const shots=path.resolve(__dirname,'../docs/astra-screenshots');
+const shots=process.env.MUSHI_SCREENSHOTS||path.resolve(__dirname,'../docs/astra-screenshots');
 fs.mkdirSync(shots,{recursive:true});
 (async()=>{
-  const browser=await chromium.launch({channel:'msedge',headless:true});
+  const browser=await (process.env.MUSHI_BROWSER==='webkit'?webkit.launch({headless:true}):chromium.launch({channel:'msedge',headless:true}));
   const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
   const page=await context.newPage();
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -82,7 +82,10 @@ fs.mkdirSync(shots,{recursive:true});
     await page.locator('#btn-user-deck-p1').click();await page.locator('#btn-deck-p2-okama').click();
     await finishCpu();
     if(await page.locator('#btn-draw').isVisible())await page.locator('#btn-draw').click();
-    await page.locator('#self-hand-zone .battle-card').first().click();
+    // Safari touch clicks do not focus buttons. Establish keyboard focus
+    // explicitly before testing that the dialog restores it after a rerender.
+    await page.locator('#self-hand-zone .battle-card').first().focus();
+    await page.keyboard.press('Enter');
     await page.locator('.detail-action-btn').filter({hasText:'エサにする'}).click();
     ok(!await page.locator('#card-detail-modal').isVisible(),'Food action closes the card sheet');
     ok(await page.evaluate(()=>document.activeElement!==document.body&&!!document.activeElement.closest('.battle-viewport')),'Focus restored after card action replaces the opener');
@@ -95,8 +98,11 @@ fs.mkdirSync(shots,{recursive:true});
     await shot('06-battle-390');
     for(const size of [{width:360,height:640},{width:430,height:932},{width:844,height:390},{width:1280,height:900}]){
       await page.setViewportSize(size);await layout('Battle '+size.width+'x'+size.height);
-      const m=await page.locator('.control-bar').boundingBox();ok(m.y+m.height<=size.height+1,'Controls inside viewport '+size.width);
-      const hand=await page.locator('#self-hand-zone .battle-card').first().boundingBox();ok(hand.height>=70&&hand.y>=0&&hand.y+hand.height<=size.height,'Readable hand in '+size.width);
+      // Short viewports scroll the board instead of shrinking field cards.
+      await page.locator('#btn-end-turn').scrollIntoViewIfNeeded();
+      const m=await page.locator('#btn-end-turn').boundingBox();ok(m.y>=0&&m.y+m.height<=size.height+1,'Controls reachable inside viewport '+size.width);
+      await page.locator('#self-hand-zone .battle-card').first().scrollIntoViewIfNeeded();
+      const hand=await page.locator('#self-hand-zone .battle-card').first().boundingBox();ok(hand.height>=96&&hand.y>=-1&&hand.y+hand.height<=size.height+1,'Readable hand in '+size.width);
       await shot('battle-'+size.width+'x'+size.height);
     }
     await page.setViewportSize({width:390,height:844});await page.locator('#btn-end-turn').click();

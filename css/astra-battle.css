@@ -162,49 +162,60 @@ body.battle-screen { background: #081916; color: #eef0df; }
 .lobby-actions .tutorial-mode-btn { grid-column: 1/-1; min-height: 56px; font-size: 12px; }
 .lobby-actions .tutorial-mode-btn span { font-size: 9px; color: #b7c399; margin: 0; }
 .lobby .app-nav { width: min(100%,600px); }
-@media(max-height:740px) and (orientation:portrait) {
-  .field-zone .battle-card,.zone--cpu .field-zone .battle-card { width:68px;min-width:68px;max-width:68px;flex-basis:68px;height:96px; }
-  .hand-zone .battle-card,.zone--human .hand-zone .battle-card {width:76px;min-width:76px;max-width:76px;flex-basis:76px;height:106px;}
-  .zone { gap:4px; padding:4px 10px; }
-  .zone--human { grid-template-rows:minmax(0,1fr) 25px 44px minmax(100px,1.1fr); }
-  .lobby-hero {padding-top:20px;} .lobby-hero h2 {font-size:27px;} .hero-cards {height:206px;} .hero-cards .specimen-art {width:108px;left:calc(50% - 54px);}
+/* Viewport space belongs to two flow regions, never to a fixed descendant of
+   a filtered/scrolling overlay. dvh follows Safari's expanding browser chrome. */
+.lobby-overlay { height:100vh; height:100svh; height:100dvh; overflow:hidden; backdrop-filter:none; -webkit-backdrop-filter:none; }
+.lobby.pass-box { display:flex; flex-direction:column; min-height:0; height:100%; max-height:100%; padding:0; overflow:hidden; }
+.lobby-content { flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; padding:calc(24px + env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) 24px max(24px,env(safe-area-inset-left)); }
+.lobby .app-nav { position:static; transform:none; width:100%; flex:0 0 auto; padding-left:max(12px,env(safe-area-inset-left)); padding-right:max(12px,env(safe-area-inset-right)); }
+/* The field has an intrinsic floor independent of hand size or action text.
+   On short displays the board scrolls; cards never borrow a shrinking 100% height. */
+.battle-viewport { --field-height:106px; --hand-height:106px; height:100vh; height:100svh; height:100dvh; max-height:none; overflow-y:auto; overflow-x:hidden; grid-template-rows:52px minmax(min-content,1fr) 6px minmax(min-content,1.5fr) max-content 38px; align-content:start; }
+.zone--cpu,.tutorial-active .zone--cpu { grid-template-columns:104px minmax(0,1fr); grid-template-rows:44px minmax(min-content,1fr); grid-template-areas:'info aux' 'field field'; }
+.zone--human { grid-template-columns:104px minmax(0,1fr); grid-template-rows:minmax(min-content,1fr) 44px minmax(min-content,1fr); grid-template-areas:'field field' 'info aux' 'hand hand'; }
+.zone { overflow:visible; min-height:min-content; gap:4px; padding:4px 10px; }
+.control-bar { min-height:min-content; }
+.control-bar > * { flex-shrink:0; }
+.player-info { flex-direction:column; align-items:flex-start; gap:3px; font-size:9px; }
+.player-info .cost-text { font-size:9px; padding:3px; }
+.aux-strip,.zone--cpu .aux-strip { gap:3px; height:auto; }
+.aux-strip .zone-label { font-size:8px; }
+.zone-count { font-size:14px; }
+.zone-group--field { min-height:calc(var(--field-height) + 32px); }
+.field-zone,.zone--cpu .field-zone { flex:1 0 auto; min-height:calc(var(--field-height) + 16px); touch-action:pan-x pan-y; }
+.field-zone .card-row { height:auto; min-height:var(--field-height); flex-shrink:0; }
+.field-zone .battle-card,.zone--cpu .field-zone .battle-card { width:76px; min-width:76px; max-width:76px; flex:0 0 76px; height:var(--field-height); min-height:var(--field-height); max-height:none; }
+.zone--human .zone-group--hand { min-height:calc(var(--hand-height) + 32px); }
+.zone--human .hand-zone { min-height:calc(var(--hand-height) + 12px); touch-action:pan-x pan-y; }
+.zone--human .hand-zone .card-row { height:auto; min-height:calc(var(--hand-height) + 10px); flex-shrink:0; }
+.zone--human .hand-zone .battle-card { width:76px; min-width:76px; max-width:76px; flex:0 0 76px; height:var(--hand-height); min-height:var(--hand-height); max-height:none; }
+@media(min-height:800px) and (orientation:portrait) {
+  .battle-viewport { --field-height:114px; --hand-height:123px; }
+  .field-zone .battle-card,.zone--cpu .field-zone .battle-card { width:82px; min-width:82px; max-width:82px; flex-basis:82px; }
+  .zone--human .hand-zone .battle-card { width:88px; min-width:88px; max-width:88px; flex-basis:88px; }
 }
 @media(orientation:landscape) and (max-height:520px) {
-  .battle-viewport { max-width:1100px; grid-template-columns:minmax(0,1fr) 250px; grid-template-rows:44px minmax(0,1fr) 6px minmax(0,1fr) 40px; column-gap:8px; }
-  .mobile-frame > .topbar {grid-column:1/-1;grid-row:1;}
-  .mobile-frame > .zone--cpu {grid-column:1;grid-row:2;}
-  .mobile-frame > .battlefield-divider {grid-column:1;grid-row:3;}
-  .mobile-frame > .zone--human {grid-column:1;grid-row:4;}
-  .mobile-frame > .control-bar {grid-column:2;grid-row:2/5;display:flex;flex-direction:column;justify-content:flex-end;border:0;gap:8px;}
-  .mobile-frame > .log-section {grid-column:1/-1;grid-row:5;max-height:none;overflow:visible;}
-  .zone--cpu,.zone--human {grid-template-columns:minmax(0,1fr) 150px;grid-template-rows:24px minmax(0,1fr);grid-template-areas:'info info' 'field aux';gap:3px;padding:2px 8px;}
-  .zone--human .zone-group--hand { position:fixed;right:max(12px,calc((100vw - 1100px)/2 + 12px));top:52px;width:226px;height:130px; }
-  .zone--human .zone-group--hand > .zone-label::after {display:none;}
-  .aux-strip,.zone--cpu .aux-strip {grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;gap:3px;}
-  .aux-strip .zone-group {min-height:35px;padding:2px;}
-  .aux-strip .zone-label {font-size:9px;flex-direction:row;gap:5px;}
-  .zone--cpu .aux-strip .zone-group--hand {grid-column:1/-1;}
-  .field-zone .battle-card,.zone--cpu .field-zone .battle-card {width:65px;min-width:65px;max-width:65px;flex-basis:65px;height:90px;}
-  .zone-group--field .zone-label {display:none;}
-  .zone--human .hand-zone .battle-card {width:76px;min-width:76px;max-width:76px;flex-basis:76px;height:106px;}
-  .control-bar .status-text {font-size:11px;white-space:normal;overflow:visible;}
-  .control-bar .btn-row {width:100%;flex:0 0 auto;}
-  .control-bar .action-btn-wide {height:auto;min-height:44px;flex:1;font-size:12px;}
-  .player-info,.player-info .cost-text {font-size:10px;flex-direction:row;}
-  .tutorial-active .zone--cpu {padding-top:2px;grid-template-rows:24px minmax(0,1fr);}
-  .tutorial-guide {top:auto;bottom:42px;left:12px;transform:none;width:calc(100% - 282px);max-height:110px;overflow:auto;}
-  .lobby.pass-box { max-width:900px;display:grid;grid-template-columns:1fr 1fr;column-gap:28px; }
-  .lobby-brand {grid-column:1/-1;}.lobby-hero {padding-top:12px;}.lobby-hero h2 {font-size:24px;}.hero-cards {height:190px;}.hero-cards .specimen-art {width:94px;left:calc(50% - 47px);}.lobby-actions {align-self:center;}.lobby .app-nav {width:min(100%,900px);}
-}
-/* Short phones share one row for identity and resource counters, preserving card height. */
-@media(max-height:700px) and (orientation:portrait) {
-  .battle-viewport { grid-template-rows:48px minmax(0,1fr) 6px minmax(0,1.65fr) auto 32px; }
-  .zone--cpu,.tutorial-active .zone--cpu { grid-template-columns:104px minmax(0,1fr); grid-template-rows:44px minmax(0,1fr); grid-template-areas:'info aux' 'field field'; padding:4px 10px; }
-  .zone--human { grid-template-columns:104px minmax(0,1fr); grid-template-rows:minmax(0,1fr) 44px minmax(96px,1fr); grid-template-areas:'field field' 'info aux' 'hand hand'; }
-  .player-info { flex-direction:column; align-items:flex-start; gap:3px; font-size:9px; }
-  .player-info .cost-text {font-size:9px;padding:3px;}
-  .aux-strip,.zone--cpu .aux-strip {gap:3px;}
-  .aux-strip .zone-label {font-size:8px;}
-  .zone-count {font-size:14px;}
-  .log-toggle {min-height:32px;}
+  .battle-viewport { max-width:1100px; grid-template-columns:minmax(0,1fr); grid-template-rows:48px minmax(min-content,1fr) 6px minmax(min-content,1fr) max-content 38px; }
+  .zone--cpu,.tutorial-active .zone--cpu { grid-template-columns:minmax(0,1fr) 180px; grid-template-rows:24px minmax(min-content,1fr); grid-template-areas:'info info' 'field aux'; }
+  .zone--human { grid-template-columns:minmax(0,1fr) 150px minmax(160px,.7fr); grid-template-rows:24px minmax(min-content,1fr); grid-template-areas:'info info info' 'field aux hand'; }
+  .player-info,.player-info .cost-text { flex-direction:row; font-size:10px; }
+  .zone--human .zone-group--hand { position:static; width:auto; height:auto; }
+  .zone-group--field .zone-label,.zone--human .zone-group--hand > .zone-label { display:flex; }
+  .zone--human .zone-group--hand > .zone-label::after { display:none; }
+  .aux-strip,.zone--cpu .aux-strip { grid-template-columns:repeat(2,minmax(0,1fr)); align-content:center; overflow:visible; }
+  .aux-strip .zone-group { min-height:35px; height:auto; }
+  .zone--cpu .aux-strip .zone-group--hand { grid-column:1/-1; }
+  .control-bar { flex-direction:column; align-items:stretch; }
+  .control-bar .btn-row { width:100%; }
+  .control-bar .action-btn-wide { flex:1; }
+  .lobby.pass-box { width:100%; max-width:900px; }
+  .lobby-content { display:grid; grid-template-columns:1fr 1fr; column-gap:28px; align-content:start; }
+  .lobby-brand { grid-column:1/-1; }
+  .lobby-hero { padding-top:12px; }
+  .lobby-hero h2 { font-size:24px; }
+  .hero-cards { height:190px; }
+  .hero-cards .specimen-art { width:94px; left:calc(50% - 47px); }
+  .lobby-actions { align-self:center; }
+  .lobby .app-nav { padding-top:3px; padding-bottom:calc(3px + env(safe-area-inset-bottom)); }
+  .lobby .app-nav a { flex-direction:row; gap:8px; min-height:44px; }
 }
