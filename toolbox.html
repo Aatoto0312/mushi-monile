@@ -4,17 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
-  <title>蟲神器Toolbox</title>
+  <title>蟲の図鑑・デッキ | 蟲神器</title>
+  <meta name="theme-color" content="#122c29">
   <link rel="stylesheet" href="toolbox/toolbox.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="toolbox/astra-toolbox.css">
 </head>
 <body>
   <header class="toolbox-header">
     <div>
-      <p class="eyebrow">MUSHI JINGI</p>
-      <h1>蟲神器Toolbox</h1>
-      <p class="subtitle">カード一覧・デッキ作成</p>
+      <p class="eyebrow">MUSHI JINGI · COLLECTION</p>
+      <h1 id="collection-title">蟲の図鑑</h1>
+      <p class="subtitle" id="collection-subtitle">一匹ずつ知る。自分だけの組み合わせを見つける。</p>
     </div>
-    <span class="phase-badge">v1</span>
+    <a class="collection-home" href="index.html" aria-label="ホームへ">蟲</a>
   </header>
 
   <main>
@@ -24,7 +27,7 @@
         <span>カード検索</span>
         <input id="search-input" type="search" placeholder="カード名・カード番号で検索" autocomplete="off">
       </label>
-      <div class="filter-grid">
+      <details class="filter-panel"><summary>絞り込み・並べ替え <span id="filter-summary">すべてのカード</span></summary><div class="filter-grid">
         <label>弾<select id="set-filter"><option value="">すべて</option></select></label>
         <label>種類<select id="type-filter"><option value="">すべて</option></select></label>
         <label>色<select id="color-filter"><option value="">すべて</option></select></label>
@@ -34,14 +37,16 @@
         <label>並べ替え<select id="sort-select"><option value="officialNumber">カード番号</option><option value="name">名前</option><option value="cost">コスト</option><option value="hp">HP</option></select></label>
       </div>
       <button id="clear-filters" class="clear-button" type="button">条件をクリア</button>
+      </details>
     </section>
 
     <div class="result-heading">
-      <h2 id="cards-heading">カード一覧</h2>
+      <h2 id="cards-heading">標本一覧</h2>
       <span id="result-count" aria-live="polite">読込中</span>
     </div>
     <div id="load-error" class="message error-message" hidden></div>
     <div id="empty-message" class="message" hidden>条件に一致するカードはありません。</div>
+    <div id="catalog-deck-bar" class="catalog-deck-bar"><span>編集中 <strong id="catalog-deck-name"></strong></span><button type="button" data-view="decks">デッキを見る <b id="catalog-deck-count">0 / 20</b> →</button></div>
     <section id="card-list" class="card-list" aria-label="カード一覧" aria-busy="true"></section>
     </section>
 
@@ -81,13 +86,15 @@
         <span id="deck-entry-count">0種類</span>
       </div>
       <div id="empty-deck-message" class="message">カード画面からカードを追加してください。</div>
+      <button type="button" data-view="cards" class="add-from-catalog">＋ 図鑑からカードを選ぶ</button>
       <section id="deck-list" class="deck-list" aria-label="採用カード一覧"></section>
     </section>
   </main>
 
-  <nav class="bottom-nav" aria-label="Toolboxナビゲーション">
-    <button type="button" data-view="cards" class="active" aria-current="page"><span>カード</span></button>
-    <button type="button" data-view="decks"><span>デッキ</span><b id="nav-deck-total">0</b></button>
+  <nav class="bottom-nav app-nav" aria-label="メインナビゲーション">
+    <a href="index.html"><span class="nav-icon" aria-hidden="true">⌂</span>ホーム</a>
+    <button type="button" data-view="cards" class="active" aria-current="page"><span class="nav-icon" aria-hidden="true">▦</span><span>蟲の図鑑</span></button>
+    <button type="button" data-view="decks"><span class="nav-icon" aria-hidden="true">▱</span><span>デッキ <b id="nav-deck-total">0</b></span></button>
   </nav>
 
   <dialog id="card-detail" class="detail-dialog" aria-labelledby="detail-title">
@@ -99,6 +106,9 @@
     <div id="detail-content" class="detail-content"></div>
   </dialog>
 
+  <div id="collection-toast" class="ui-toast" role="status" aria-live="polite" hidden></div>
+  <script src="shared/card-art-manifest.js"></script>
+  <script src="shared/card-visuals.js"></script>
   <script src="js/cards/card-definition.js"></script>
   <script src="js/cards/card-registry.js"></script>
   <script src="js/cards/starter-cards.js?v=full-catalog-v1"></script>

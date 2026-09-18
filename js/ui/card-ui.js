@@ -134,9 +134,11 @@
   function renderFieldInsect(instance, state) {
     var def = getDef(instance) || {};
     var summary = modifierSummary(instance, state);
-    var el = document.createElement('div');
+    var el = document.createElement('button');
+    el.type = 'button';
     var effectiveColorClass = COLOR_CLASS[summary.currentColor] || COLOR_CLASS.COLORLESS;
     el.className = 'battle-card field-card ' + effectiveColorClass;
+    if (global.MushiCardVisuals) el.appendChild(global.MushiCardVisuals.create(def, { decorative: true }));
     if (instance.attackedThisTurn) { el.classList.add('is-attacked'); }
     el.dataset.instanceId = instance.instanceId;
 
@@ -186,6 +188,7 @@
     var el = document.createElement('button');
     el.type = 'button';
     el.className = 'battle-card hand-card ' + colorClass(def);
+    if (global.MushiCardVisuals) el.appendChild(global.MushiCardVisuals.create(def, { decorative: true }));
     el.dataset.instanceId = instance.instanceId;
 
     var name = document.createElement('div');
@@ -222,6 +225,7 @@
     var el = document.createElement('button');
     el.type = 'button';
     el.className = 'battle-card spell-card ' + colorClass(def);
+    if (global.MushiCardVisuals) el.appendChild(global.MushiCardVisuals.create(def, { decorative: true }));
     el.dataset.instanceId = instance.instanceId;
 
     var name = document.createElement('div');
@@ -285,6 +289,7 @@
 
   // 汎用レンダラ（カード種別に応じて分岐）
   function renderCard(instance, zone, state) {
+    if (instance.faceDown && zone === ZONES.FIELD) return renderFaceDown(null, instance);
     var def = getDef(instance);
     if (!def) { return renderFaceDown(null, instance); }
 

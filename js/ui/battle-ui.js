@@ -71,8 +71,8 @@
         self.onDraw();
       });
     }
-    document.getElementById('game-over').addEventListener('click', function () {
-      self.newGame();
+    document.getElementById('game-over').addEventListener('click', function (event) {
+      if (event.target === this) self.newGame();
     });
     document.getElementById('btn-pass-ok').addEventListener('click', function () {
       self.hidePassOverlay();
@@ -1068,6 +1068,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
         onSelect: function () {
           try {
             setFood(self.state, playerId, instance.instanceId);
+            self.hideCardDetail();
             self.render();
           } catch (e) {
             showUserError(e);
@@ -1084,6 +1085,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
               onSelect: function () {
                 try {
                   summonInsect(self.state, playerId, instance.instanceId);
+                  self.hideCardDetail();
                   self.render();
                 } catch (e) {
                   showUserError(e);
@@ -1640,7 +1642,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     try {
       endTurn(this.state);
       this.render();
-      this.showPassOverlay();
+      if (!this.cpuMode) this.showPassOverlay();
     } catch (e) {
       showUserError(e);
     }
@@ -1720,6 +1722,12 @@ BattleUI.prototype.renderPendingEffect = function (state) {
 
     content.innerHTML = '';
     actionsEl.innerHTML = '';
+
+    if (global.MushiCardVisuals) {
+      var art = global.MushiCardVisuals.create(CardUI.getDef(instance), { eager: true });
+      art.classList.add('detail-card-art');
+      content.appendChild(art);
+    }
 
     // 基本情報
     var nameEl = document.createElement('div');

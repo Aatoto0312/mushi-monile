@@ -1,0 +1,37 @@
+:root {
+  --forest: #122c29; --forest-deep: #0b1d1c; --forest-soft: #1e3b35;
+  --brass: #c7ad76; --cream: #f4f0e5; --ink: #213a33; --muted: #66766c;
+  --line: #d9dece; --surface: #fffcf5; --brand: #254e40;
+  --serif: 'Yu Mincho', 'Hiragino Mincho ProN', 'Noto Serif JP', Georgia, serif;
+  --sans: 'Yu Gothic UI', 'Hiragino Kaku Gothic ProN', Meiryo, system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { font-family: var(--sans); -webkit-tap-highlight-color: transparent; }
+button, a, input, select, summary { touch-action: manipulation; }
+button, input, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+button:disabled { cursor: default; opacity: .45; }
+:focus-visible { outline: 3px solid #bd9045; outline-offset: 3px; }
+[hidden] { display: none !important; }
+.specimen-art { display: block; position: relative; overflow: hidden; aspect-ratio: 350 / 490; border-radius: 9px; background: #e4e1d1; }
+.specimen-art img { display: block; width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 1; }
+.art-fallback { position: absolute; inset: 0; display: grid; place-content: center; padding: 12px; text-align: center; font-family: var(--serif); font-weight: 700; color: #50644f; background: repeating-linear-gradient(0deg, transparent, transparent 23px, #61775914 24px); }
+.art-loaded .art-fallback { visibility: hidden; }
+.art-unavailable .art-fallback::after { content: '画像を読み込めませんでした'; font: 10px/1.6 var(--sans); margin-top: 12px; }
+.section-kicker, .eyebrow { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
+.app-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: min(100%, 960px); z-index: 30; display: flex; padding: 7px 12px calc(7px + env(safe-area-inset-bottom)); background: #102b28f5; border-top: 1px solid #c7ad7650; backdrop-filter: blur(16px); }
+.app-nav a, .app-nav button { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px; min-height: 48px; border: 0; border-radius: 8px; color: #b7c9bd; background: transparent; text-decoration: none; font-size: 11px; }
+.app-nav .nav-icon { font-size: 21px; line-height: 1.1; font-family: Georgia, serif; }
+.app-nav .active, .app-nav [aria-current='page'] { color: #f2dfac; background: #c7ad7612; }
+.app-nav b { font-size: 10px; background: #dbc492; color: #193b30; min-width: 18px; border-radius: 8px; padding: 1px 5px; margin-left: 4px; }
+.ui-toast { position: fixed; z-index: 1500; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom)); transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); padding: 13px 20px; border: 1px solid #c7ad7670; border-radius: 12px; box-shadow: 0 8px 32px #0003; color: var(--cream); background: var(--forest); font-size: 13px; pointer-events: none; }
+@media (prefers-reduced-motion: no-preference) {
+  button, a { transition: background-color .16s, box-shadow .16s, transform .16s; }
+  button:active { transform: translateY(1px); }
+  .specimen-art img { animation: art-in .25s ease-out; }
+  @keyframes art-in { from { opacity: 0; } to { opacity: 1; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
