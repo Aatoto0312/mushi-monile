@@ -1,0 +1,88 @@
+/* Shared size budget: three readable card rows, compact chrome, optional details.
+   All measurements are CSS pixels/rem, not device-specific screen dimensions. */
+.battle-viewport { --field-height:106px; --hand-height:106px; --card-row-min:124px; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:44px 32px minmax(var(--card-row-min),1fr) minmax(var(--card-row-min),1fr) 32px minmax(var(--card-row-min),1fr) 60px; gap:2px; overflow:hidden; }
+.battle-viewport > .topbar { grid-area:1 / 1; min-height:0; padding:0 8px; }
+.topbar-left { flex-wrap:nowrap; font-size:11px; gap:6px; }
+.topbar-right { gap:2px; }
+.topbar-right .mini-btn { min-width:36px; padding:4px; }
+#cpu-thinking { position:absolute; right:8px; top:44px; z-index:5; background:var(--forest); pointer-events:none; }
+.battle-viewport > .zone { display:contents; }
+.battle-viewport > .battlefield-divider { display:none; }
+.compact-status { display:flex; align-items:center; gap:4px; min-width:0; padding:0 8px; background:#0c251dc0; color:#e5dcba; font-size:10px; }
+.zone--cpu .compact-status { grid-area:2 / 1; }
+.zone--human .compact-status { grid-area:5 / 1; }
+.compact-status .player-info { display:flex; flex-direction:row; gap:4px; min-width:0; flex:0 0 auto; font-size:9px; }
+.compact-status .pname { white-space:nowrap; }
+.compact-status .pname::before { display:none; }
+.compact-status .cost-text { padding:2px; font-size:10px; color:#ffe4a2; white-space:nowrap; }
+.compact-status .aux-strip { flex:1; display:flex; gap:0; align-items:stretch; min-width:0; height:100%; }
+.compact-status .aux-strip .zone-group { flex:1; min-width:0; min-height:0; height:100%; padding:0 2px; border:0; border-radius:0; background:none; justify-content:center; }
+.compact-status .aux-strip .zone-label { flex-direction:row; justify-content:center; gap:2px; white-space:nowrap; font-size:9px; letter-spacing:0; }
+.compact-status .zone-count { font:600 11px var(--sans); }
+.compact-status .has-direct-target .zone-label::after,.compact-status .has-pending-target .zone-label::after { display:none; }
+.compact-status .has-direct-target,.compact-status .has-pending-target { outline-offset:-2px; }
+.zone--cpu > .zone-group--field { grid-area:3 / 1; }
+.zone--human > .zone-group--field { grid-area:4 / 1; }
+.zone--human > .zone-group--hand { grid-area:6 / 1; }
+.battle-viewport .zone > .zone-group--field,.battle-viewport .zone--human > .zone-group--hand { position:relative; display:flex; flex-direction:column; min-height:var(--card-row-min); min-width:0; padding:0 8px; margin:0; width:auto; height:auto; }
+.battle-viewport .zone > .zone-group--field > .zone-label,.battle-viewport .zone--human > .zone-group--hand > .zone-label { display:flex; flex:0 0 14px; line-height:14px; margin:0; font-size:9px; }
+.zone--human .zone-group--hand > .zone-label::after { display:none; }
+.battle-viewport .field-zone,.battle-viewport .zone--human .hand-zone { min-height:110px; padding:2px; border-radius:6px; flex:1 1 auto; touch-action:pan-x; }
+.battle-viewport .field-zone .card-row,.battle-viewport .zone--human .hand-zone .card-row { min-height:106px; height:106px; padding:0; gap:6px; }
+.battle-viewport .field-zone .battle-card,.battle-viewport .zone--human .hand-zone .battle-card { width:76px; min-width:76px; max-width:76px; flex:0 0 76px; height:106px; min-height:106px; max-height:none; }
+.scroll-cue { position:absolute; z-index:8; bottom:calc(50% - 22px); width:26px; height:44px; border:1px solid #c7ad7670; border-radius:6px; color:#f8e8bc; background:#102b28ed; font-size:23px; padding:0; }
+.scroll-cue--prev { left:8px; }.scroll-cue--next { right:8px; }
+.scroll-cue[hidden] { display:none; }
+.battle-viewport > .control-bar { grid-area:7 / 1; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:14px 44px; justify-content:stretch; align-content:start; gap:0; padding:0 8px 2px; min-height:0; overflow:visible; }
+.control-bar .status-text { display:block; font-size:10px; line-height:14px; min-height:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
+.control-bar .status-text::before { content:'ⓘ '; color:var(--brass); }
+.control-bar .btn-row { display:flex; flex-wrap:nowrap; gap:4px; width:100%; min-width:0; }
+.control-bar .action-btn-wide { flex:1 1 0; min-width:0; min-height:44px; height:44px; padding:4px; font-size:12px; margin:0; }
+.battle-viewport > .log-section { display:none; }
+.compact-dialog { width:min(100% - 24px,560px); max-height:85dvh; margin:auto auto 0; padding:16px; border:1px solid var(--brass); border-radius:14px 14px 0 0; color:var(--ink); background:var(--cream); overflow:auto; }
+.compact-dialog::backdrop { background:#061914bb; }
+.compact-dialog header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.compact-dialog button { min-height:44px; }
+.compact-dialog .mini-btn { color:var(--ink); }
+.compact-dialog .log-full { position:static; transform:none; width:auto; max-height:none; box-shadow:none; border:0; padding:0; background:transparent; }
+.compact-dialog .skill-select-row { flex-direction:column; }
+.compact-dialog .skill-select-btn { flex:none; }
+.tutorial-active .control-bar .status-text { display:block; }
+.tutorial-active .tutorial-guide { display:none !important; }
+.compact-dialog .tutorial-copy { font-size:14px; line-height:1.8; }
+.compact-dialog .tutorial-exit { margin-top:12px; }
+.compact-status .self-hand-summary { display:none; }
+/* Short portrait: identity rows already label the two sides. Reclaim duplicate
+   field captions before ever reducing the cards themselves. */
+.battle-viewport.compact-tight { --card-row-min:112px; grid-template-rows:44px 32px minmax(112px,1fr) minmax(112px,1fr) 32px minmax(124px,1fr) 56px; gap:1px; }
+.compact-tight .zone > .zone-group--field > .zone-label { display:none; }
+.compact-tight .zone--human > .zone-group--hand { min-height:124px; }
+.compact-tight > .control-bar { grid-template-rows:12px 44px; padding-bottom:0; }
+.compact-tight .control-bar .status-text { line-height:12px; }
+/* Horizontal space replaces vertical stacking when browser chrome reduces height. */
+.battle-viewport.compact-landscape { max-width:1100px; grid-template-columns:minmax(0,1fr) minmax(160px,.75fr) 104px; grid-template-rows:40px 32px minmax(124px,1fr) 32px minmax(124px,1fr); gap:2px 6px; }
+.compact-landscape > .topbar { grid-area:1 / 1 / 2 / -1; }
+.compact-landscape .zone--cpu .compact-status { grid-area:2 / 1 / 3 / 3; }
+.compact-landscape .zone--cpu > .zone-group--field { grid-area:3 / 1 / 4 / 3; }
+.compact-landscape .zone--human > .zone-group--field { grid-area:5 / 1; }
+.compact-landscape .zone--human .compact-status { grid-area:4 / 1 / 5 / 3; }
+.compact-landscape .zone--human > .zone-group--hand { grid-area:5 / 2; }
+.compact-landscape > .control-bar { grid-area:2 / 3 / -1 / 4; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; padding:4px; }
+.compact-landscape .control-bar .status-text { white-space:normal; max-height:56px; line-height:14px; }
+.compact-landscape .control-bar .btn-row { flex-direction:column; flex:0 0 auto; }
+.compact-landscape .control-bar .action-btn-wide { flex:0 0 auto; width:100%; }
+.battle-viewport.compact-low { grid-template-columns:repeat(3,minmax(0,1fr)) 94px; grid-template-rows:40px 32px 32px minmax(124px,1fr); }
+.compact-low .zone--cpu .compact-status { grid-area:2 / 1 / 3 / 4; }
+.compact-low .zone--human .compact-status { grid-area:3 / 1 / 4 / 4; }
+.compact-low .zone--cpu > .zone-group--field { grid-area:4 / 1; }
+.compact-low .zone--human > .zone-group--field { grid-area:4 / 2; }
+.compact-low .zone--human > .zone-group--hand { grid-area:4 / 3; }
+.compact-low > .control-bar { grid-area:2 / 4 / -1 / 5; }
+.battle-viewport.compact-fallback { overflow-y:auto; }
+@media(min-height:800px) and (orientation:portrait) {
+ .battle-viewport .field-zone .battle-card { width:82px; min-width:82px; max-width:82px; flex-basis:82px; height:114px; min-height:114px; }
+ .battle-viewport .zone--human .hand-zone .battle-card { width:88px; min-width:88px; max-width:88px; flex-basis:88px; height:123px; min-height:123px; }
+ .battle-viewport .field-zone .card-row { height:114px; min-height:114px; }
+ .battle-viewport .zone--human .hand-zone .card-row { height:123px; min-height:123px; }
+}
+@media(orientation:landscape) { .compact-dialog { margin:auto 0 auto auto; width:min(400px,80vw); max-height:calc(100dvh - 16px); border-radius:14px 0 0 14px; } }

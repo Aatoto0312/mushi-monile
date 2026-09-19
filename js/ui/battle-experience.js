@@ -50,7 +50,7 @@
     inspector.addEventListener('click',function(e){if(e.target===inspector){var r=inspector.getBoundingClientRect();if(e.clientY<r.top||e.clientX<r.left||e.clientX>r.right)inspector.close();}});
     document.getElementById('btn-battle-help').onclick=function(){
       inspecting=null;open('盤面の見方');var grid=document.createElement('div');grid.className='help-grid';
-      [['場と手札','上が相手、下があなた。手札をタップすると詳細と現在の操作が開きます。カードが多いときは横にスクロールできます。'],['エサとコスト','エサの枚数と、今使えるコストを別々に表示しています。エサの欄を押すと公開カードを確認できます。'],['縄張り・山札・捨て札','数字は現在の枚数です。捨て場を押すと全カードを確認できます。非公開カードの内容は表示しません。'],['選択と攻撃','明るい枠は選択可能なカード、金色の枠は選択中のカードや対象です。カード上のHP・APは現在の値です。'],['対戦記録','画面下の「ログ」からこれまでの行動を確認できます。']].forEach(function(item){var p=document.createElement('p'),strong=document.createElement('strong');strong.textContent=item[0];p.appendChild(strong);p.appendChild(document.createTextNode(item[1]));grid.appendChild(p);});body.appendChild(grid);
+      [['場と手札','相手とあなたの表示で場を区別します。低い横画面では、相手の場・自分の場・手札を左から順に並べます。手札をタップすると詳細と現在の操作が開きます。カードが多いときは横にスクロールできます。'],['エサとコスト','エサの枚数と、今使えるコストを別々に表示しています。エサの欄を押すと公開カードを確認できます。'],['縄張り・山札・捨て札','数字は現在の枚数です。捨て場を押すと全カードを確認できます。非公開カードの内容は表示しません。'],['選択と攻撃','明るい枠は選択可能なカード、金色の枠は選択中のカードや対象です。カード上のHP・APは現在の値です。'],['対戦記録','ヘッダーの「ログ」からこれまでの行動を確認できます。']].forEach(function(item){var p=document.createElement('p'),strong=document.createElement('strong');strong.textContent=item[0];p.appendChild(strong);p.appendChild(document.createTextNode(item[1]));grid.appendChild(p);});body.appendChild(grid);
     };
     document.getElementById('btn-setup-back').onclick=function(){document.getElementById('deck-select-overlay').style.display='none';ui.newGame();};
     // Completing the tutorial must close its guide using the existing controller lifecycle.

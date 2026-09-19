@@ -3,7 +3,7 @@ const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright')
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
-const out=path.resolve(__dirname,'../docs/astra-responsive');
+const out=process.env.MUSHI_SCREENSHOTS||path.resolve(__dirname,'../docs/astra-compact');
 fs.mkdirSync(out,{recursive:true});
 (async()=>{
  const kind=process.env.MUSHI_BROWSER||'chromium';
@@ -26,12 +26,13 @@ fs.mkdirSync(out,{recursive:true});
   await page.locator('#btn-tutorial').click();
   for(const size of [{width:390,height:560},{width:844,height:300},{width:568,height:320},{width:667,height:375},{width:360,height:640},{width:844,height:390},{width:430,height:932},{width:390,height:664}]){
    await page.setViewportSize(size);
-   for(const count of [0,1,8])for(const hand of [1,12]){
+   for(const count of [0,1,2,3,4,5,8])for(const hand of [1,4,6,10,12]){
     await page.evaluate(({count,hand})=>{
      const u=MushiBattle.ui,s=u.state,p=s.player(s.activePlayerId);
      const make=(zone,i)=>new CardInstance({instanceId:'responsive_'+zone+i,cardId:i%2?'kabutomushi':'namitentou',ownerId:p.id||s.activePlayerId,controllerId:s.activePlayerId,zone:zone.toUpperCase(),faceDown:false,currentHp:500});
      p.field=Array.from({length:count},(_,i)=>make('field',i));p.hand=Array.from({length:hand},(_,i)=>make('hand',i));u.render();
     },{count,hand});
+    check(await page.locator('.battle-viewport').evaluate(n=>n.scrollHeight<=n.clientHeight+1),'Battle fits without vertical scroll '+JSON.stringify(size));
     for(const selector of ['#self-field-zone .battle-card','#opp-field-zone .battle-card','#self-hand-zone .battle-card']){
      const cards=page.locator(selector);if(!await cards.count())continue;
      const card=cards.last();await card.evaluate(n=>n.scrollIntoView({block:'center',inline:'center'}));
@@ -51,7 +52,7 @@ fs.mkdirSync(out,{recursive:true});
      const guide=document.querySelector('#tutorial-guide').getBoundingClientRect();
      return {hand:hand.bottom,controls:controls.top,guide:guide.top};
     });
-    check(regions.hand<=regions.controls+1&&regions.controls<=regions.guide+1,'Controls and guide do not overlap hand '+JSON.stringify({size,regions}));
+    check(size.width>size.height||regions.hand<=regions.controls+1,'Controls and guide do not overlap hand '+JSON.stringify({size,regions}));
     check(await page.locator('#btn-draw').isVisible(),'Action reachable');
     check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'No page horizontal overflow');
     if(hand===12&&count===8)await page.screenshot({path:path.join(out,kind+'-battle-'+size.width+'x'+size.height+'.png')});
@@ -75,6 +76,9 @@ fs.mkdirSync(out,{recursive:true});
   await safe.locator('#self-field-zone .battle-card').last().evaluate(n=>n.scrollIntoView({block:'center',inline:'center'}));
   const safeCard=await safe.locator('#self-field-zone .battle-card').last().boundingBox();
   check(safeCard.x>=44&&safeCard.x+safeCard.width<=623&&safeCard.height>=106,'Safe-area field card remains readable and reachable');
+  await safe.setViewportSize({width:390,height:560});
+  check(await safe.locator('.battle-viewport').evaluate(n=>n.scrollHeight<=n.clientHeight+1),'Short portrait fits with top and bottom safe area');
+  check(await safe.locator('#self-field-zone .battle-card').first().evaluate(n=>n.getBoundingClientRect().height>=106),'Short safe-area portrait preserves field height');
   await safe.screenshot({path:path.join(out,kind+'-safe-area.png')});
   await safe.close();
   console.log(kind+' RESPONSIVE CHECKS PASSED: '+checks);
