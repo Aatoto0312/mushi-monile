@@ -63,10 +63,17 @@
       if (!getPlayerZoneArray(state, move.playerId || holder.playerId, move.to)) { throw new Error('batchMoveCards: invalid destination'); }
       return { move: move, holder: holder };
     });
-    return prepared.map(function (entry) {
+    var moved = prepared.map(function (entry) {
       var move = entry.move;
-      return moveCard(state, move.instanceId, move.from, move.to, { playerId: move.playerId || entry.holder.playerId, faceDown: move.faceDown });
+      return moveCard(state, move.instanceId, move.from, move.to, { playerId: move.playerId || entry.holder.playerId, faceDown: move.faceDown, deferEntryEffects: true });
     });
+    // Exchanges must finish moving both cards before entry candidates are read.
+    prepared.forEach(function(entry, index) {
+      if (entry.move.from !== ZONES.FIELD && entry.move.to === ZONES.FIELD && global.resolveFieldEntryEffects) {
+        global.resolveFieldEntryEffects(state, moved[index].instanceId);
+      }
+    });
+    return moved;
   }
 
   // カードを移動させる。fromZone/toZone は対象プレイヤーのゾーン。
@@ -84,6 +91,12 @@
       delete card.runtimeFlags.damageShields;
     }
     var def = global.getCardDefinition ? global.getCardDefinition(card.cardId) : null;
+    if (def && def.type === CardTypes.INSECT) {
+      card.currentHp = def.baseHp;
+      card.baseHp = def.baseHp;
+      card.attackedThisTurn = false;
+      card.usedSkills = [];
+    }
     if (!def || !def.skills) { return; }
     var gitai = def.skills.find(function (s) { return s.gitai === true; });
     if (!gitai) { return; }
@@ -122,6 +135,8 @@
 
     var sourcePlayerId = holder.playerId;
     var destPlayerId = opts.playerId || sourcePlayerId;
+    // Control may change on the field; private zones always belong to the owner.
+    if (toZone !== ZONES.FIELD && holder.instance.ownerId) { destPlayerId = holder.instance.ownerId; }
 
     var fromArr = getPlayerZoneArray(state, sourcePlayerId, fromZone);
     var toArr = getPlayerZoneArray(state, destPlayerId, toZone);
@@ -164,6 +179,10 @@
         delete card.runtimeFlags.unhealableDamage;
         delete card.runtimeFlags.damageDoesNotHeal;
         delete card.runtimeFlags.destroyOnAttackTurn;
+        delete card.runtimeFlags.colorOverride;
+        delete card.runtimeFlags.colorOverrideUntil;
+        delete card.runtimeFlags.attackRestrictions;
+        delete card.runtimeFlags.destroyAtEndTurn;
         if (card.runtimeFlags.faceDownUntilTurn != null) {
           card.faceDown = false;
           delete card.runtimeFlags.faceDownUntilTurn;
@@ -174,6 +193,7 @@
     }
 
     card.zone = toZone;
+    card.controllerId = destPlayerId;
 
     if (card.zone === ZONES.FIELD) {
       card.faceDown = false;
@@ -190,6 +210,9 @@
     }
 
     toArr.push(card);
+    if (fromZone !== ZONES.FIELD && toZone === ZONES.FIELD && !opts.deferEntryEffects && global.resolveFieldEntryEffects) {
+      global.resolveFieldEntryEffects(state, card.instanceId);
+    }
     return card;
   }
 

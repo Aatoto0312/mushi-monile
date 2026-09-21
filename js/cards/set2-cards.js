@@ -24,8 +24,30 @@
       trait.id = record.id + '_trait_' + (index + 1);
       trait.effects = [];
     });
-    var connected = [3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,52,53,54,55];
+    var connected = [1,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,52,53,54,55];
+    if (number === 1) {
+      def.skills[0].effects = [{ type: 'DAMAGE_DOES_NOT_HEAL' }];
+      def.passiveAbilities[0].timing = 'ON_ENTER_FIELD';
+      def.passiveAbilities[0].optional = true;
+      def.passiveAbilities[0].effects = [{ type: 'CHOOSE_SELF_COLOR', colors: ['BLUE', 'GREEN'] }];
+    }
     if (number === 11) { def.skills[0].targetRule = 'OPPONENT_CHOOSES_TARGET'; }
+    if (number === 7) {
+      connected.push(number);
+      def.skills[1].effects = [{ type: 'CAPTURE_ATTACK_DESTROYED_TARGET', destroyAtEndTurn: true }];
+    }
+    if (number === 2) {
+      connected.push(number);
+      def.skills[1].usageLimit = 'ONCE_PER_FIELD_STAY';
+      def.skills[1].effects = [{ type: 'COPY_ALLY_COLOR_BEFORE_ATTACK' }];
+    }
+    if (number === 19) {
+      connected.push(number);
+      def.passiveAbilities[0].timing = 'ON_ENTER_FIELD';
+      def.passiveAbilities[0].optional = true;
+      def.passiveAbilities[0].effects = [{ type: 'MOVE_SELECTED', from: 'DISCARD', to: 'FIELD', count: 1,
+        requiredTag: 'セミ科', cardType: 'INSECT', prohibitAttackThisTurn: true }];
+    }
     if (number === 14 || number === 34) { def.skills[0].effects = [{ type: 'GROW_ON_TERRITORY', amount: number === 14 ? 100 : 200 }]; }
     if (number === 43) { def.skills[1].effects = [{ type: 'APPLY_STAT_MODIFIER', target: 'SELF', stat: 'HP', amount: 100, startTurnOffset: 1, endTurnOffset: 1 }]; }
     if (number === 40) { def.skills[0].effects = [{ type: 'OPTIONAL_FLIP_FOOD_ON_TERRITORY' }]; }
@@ -53,6 +75,16 @@
       def.skills[1].usageLimit = 'ONCE_PER_FIELD_STAY';
     }
     if (number === 52) { def.cardEffects = [{ type: 'SUPPRESS_OPPONENT_TERRITORY_TRIGGER' }]; }
+    if (number === 50) {
+      connected.push(number);
+      def.enhancementEffects = [{ type: 'SUMMON_ATTACHED_FROM_HAND' }, { type: 'PREVENT_HOST_ATTACK' },
+        { type: 'DESTROY_ATTACHMENT_AFTER_TURNS', turnOffset: 1 }];
+    }
+    if (number === 51) {
+      connected.push(number);
+      def.cardEffects = [{ type: 'EXCHANGE_MATCHING_FORM', nameSuffix: '（幼虫）',
+        firstZone: 'FIELD', firstDestination: 'FOOD', secondZone: 'HAND', secondDestination: 'FIELD' }];
+    }
     if ([3,5,12].indexOf(number) !== -1) { def.skills[1].usageLimit = 'ONCE_PER_FIELD_STAY'; }
     if (number === 4) { def.skills[1].effects = [{ type: 'GRANT_DAMAGE_SHIELD', startTurnOffset: 1, endTurnOffset: 1 }]; }
     if (number === 13 || number === 22) {

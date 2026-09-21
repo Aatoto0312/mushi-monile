@@ -89,7 +89,7 @@
     akiakane:            { officialNumber: '24/130', color: Attributes.RED,   cost: 2, baseHp: 500,  skillId: 'tobikakaru',   skillName: 'とびかかる', ap: 200 },
     namitentou:          { officialNumber: '30/130', color: Attributes.RED,   cost: 1, baseHp: 300,  skillId: 'kamitsubusu',  skillName: 'かみつぶす', ap: 100 },
     kanabun:             { officialNumber: '63/130', color: Attributes.BLUE,  cost: 1, baseHp: 300,  skillId: 'taiatari',     skillName: 'たいあたり', ap: 100 },
-    higurashi:           { officialNumber: '64/130', color: Attributes.BLUE,  cost: 2, baseHp: 200,  skillId: 'shiboritoru',  skillName: 'しぼりとる', ap: 200 },
+    higurashi:           { officialNumber: '64/130', color: Attributes.BLUE,  cost: 2, baseHp: 200,  skillId: 'shiboritoru',  skillName: 'しぼりとる', ap: 200, family: 'セミ科' },
     tonosamabatta:       { officialNumber: '71/130', color: Attributes.GREEN, cost: 5, baseHp: 1200, skillId: 'kuraitsuku',   skillName: 'くらいつく', ap: 700 },
     nijuuyaahoshitentou: { officialNumber: '91/130', color: Attributes.GREEN, cost: 2, baseHp: 300,  skillId: 'kamitsubusu',  skillName: 'かみつぶす', ap: 300 },
     wataaburamushi:      { officialNumber: '95/130', color: Attributes.GREEN, cost: 1, baseHp: 300,  skillId: 'suu',          skillName: 'すう', ap: 100 }
@@ -104,6 +104,7 @@
     def.color = data.color;
     def.cost = data.cost;
     def.baseHp = data.baseHp;
+    if (data.family) { def.tags.push(data.family); }
     def.skills = [{
       id: data.skillId,
       name: data.skillName,
@@ -181,7 +182,7 @@
       '実カード／カードデータ照合: 47/130、青、cost3、HP500、しぼりとる200'
     ];
     def.verificationNotes = 'スターター基本虫。通常攻撃「しぼりとる」AP200。特殊技「＜とびだす＞」は縄張りドロー時に任意発動。コスト不要、自分の場に有効な＜とびだす＞持ちがいなければ使用可。';
-    def.tags = ['starter', 'tobidasu'];
+    def.tags = ['starter', 'tobidasu', 'セミ科'];
   })();
 
   // ---- セアカゴケグモ正式化(Wave F) ----

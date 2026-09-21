@@ -8,8 +8,8 @@ runner.test('SET2 audit covers 55 unique official identities without claiming im
   var result = audit();
   runner.assertEqual(result.count, 55);
   runner.assertEqual(result.issues.length, 0);
-  runner.assertEqual(result.counts.RESEARCHED, 6);
-  runner.assertEqual(result.counts.PARTIAL, 49);
+  runner.assertEqual(result.counts.RESEARCHED, 0);
+  runner.assertEqual(result.counts.PARTIAL, 55);
   runner.assertEqual(result.counts.PLAYABLE, 0);
   runner.assertEqual(result.cards.filter(function (c) { return c.type === 'INSECT'; }).length, 45);
   runner.assertEqual(result.cards.filter(function (c) { return c.type === 'SPELL'; }).length, 5);

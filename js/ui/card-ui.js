@@ -289,7 +289,7 @@
 
   // 汎用レンダラ（カード種別に応じて分岐）
   function renderCard(instance, zone, state) {
-    if (instance.faceDown && zone === ZONES.FIELD) return renderFaceDown(null, instance);
+    if (instance.faceDown && (zone === ZONES.FIELD || zone === ZONES.FOOD)) return renderFaceDown(null, instance);
     var def = getDef(instance);
     if (!def) { return renderFaceDown(null, instance); }
 

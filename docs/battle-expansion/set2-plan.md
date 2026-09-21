@@ -195,3 +195,41 @@ passed; Chromium and WebKit each passed baseline flows 58, compact actions 42,
 responsive checks 4,368 and incremental SET2 Human paths 29. The runtime and CPU
 connection smoke cover all 49 PARTIAL definitions. Main/origin/main remain
 `170c2b36fe994b1fd597dac67e3e0b4ad816380b`; no publication is performed.
+
+## All SET2 definitions connected (2026-09-22, still PARTIAL)
+
+All 55 definitions now have mechanic wiring. Status remains PLAYABLE 0,
+PARTIAL 55, BLOCKED 0, RESEARCHED 0. This is not a Complete checkpoint.
+
+- Shared field-entry dispatch covers summon, revival and zone exchange; queued
+  entry effects preserve serializable selection continuations.
+- 1: optional blue/green entry choice, declining, turn expiry and CPU/UI choice.
+- 2: another visible ally's effective color is selected before attack damage,
+  including colorless; once-per-field-stay usage and required ally legality.
+- 7: attack destruction capture, original owner versus field controller,
+  entry-before-territory continuation, retaliation and replacement boundaries.
+- 19: optional family-filtered discard revival, chained emperor entries,
+  exchange candidates and an actual attack prohibition for the revived insect.
+- 50: enhancement-driven hand summon, restriction follows the attachment,
+  and attachment expiry at the next opponent turn end.
+- 51: matching larva/adult pair selection, validated before movement, no new
+  available cost, original-owner food destination and removal of delayed death.
+
+Starter Minminzemi/Higurashi and SET1 Kumazemi/Aburazemi gained the `セミ科`
+family tag from local KB CARD_CATALOG/SET1_CATALOG. The existing shared starter
+identity data and fixed snapshot were updated for those two tags only; no stats,
+effects or rarity were changed and no comparison allowlist was relaxed.
+
+Human tests exercise every newly added selection shape in portrait/landscape.
+The discard drawer originally did not dispatch shared CARD_SELECTION; fixed.
+Hidden food originally leaked identity in its drawer; added a regression and
+card-back rendering. Pending choices can no longer be bypassed with endTurn.
+
+Verification before the hidden-food presentation fix: full 662, shared 72;
+Chromium/WebKit each baseline 58, compact actions 42, responsive 4,368, new
+Human paths 49. Recheck the incremental Human suite after that fix.
+
+Still required before PLAYABLE: per-card metadata/effect evidence, every skill
+path (connection smoke uses the first ordinary attack), exhaustive CPU/Human
+controller coverage, sequential multi-entry effects, and remaining existing
+SET1 effect-timing/attachment interactions. Later SETs remain unimplemented.

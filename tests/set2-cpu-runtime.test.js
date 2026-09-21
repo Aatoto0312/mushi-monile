@@ -11,6 +11,12 @@ global.cardRegistry.getBySet('BOOSTER_SET_2').filter(function(d){return d.implem
   if(def.type!=='INSECT')h.putInsectOnField(s,'P1','set1_003');
   h.putInsectOnField(s,'P2','set1_003',{hp:10000});
   if(original.id==='set2_055')h.addToFoodRaw(s,'P1',global.getCardDefinition('set1_117'));
+  if(original.id==='set2_051'){
+   h.putInsectOnField(s,'P1','namiageha_larva');h.addToHandRaw(s,'P1',global.getCardDefinition('namiageha'));s.player('P1').availableCost=0;
+  }
+  if(original.id==='set2_050'){
+   h.addToHandRaw(s,'P1',global.getCardDefinition('set1_001'));s.player('P1').availableCost=4;
+  }
   var cpu=new global.CpuAgent('P1',{rng:function(){return 0;}}),opponent=new global.CpuAgent('P2',{rng:function(){return 0;}});
   var action=cpu.decideMainPhaseAction(s);runner.assertEqual(action.instanceId,held.instanceId,'CPU must actually choose this card');runner.assert(cpu.executeAction(s,action));
   for(var i=0;i<20&&s.activePlayerId==='P1'&&!s.winner;i++){

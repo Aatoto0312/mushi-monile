@@ -26,6 +26,9 @@ global.cardRegistry.getBySet('BOOSTER_SET_2').filter(function (def) {
     h.ensureCost(state, 'P1', 20);
     if (def.type === 'INSECT') {
       global.summonInsect(state, 'P1', held.instanceId);
+      if (state.pendingEffect && state.pendingEffect.type === 'CHOICE_SELECTION') {
+        global.resolveChoiceSelection(state, 'P1', state.pendingEffect.options[0].value);
+      }
       runner.assertEqual(held.zone, 'FIELD');
       runner.assertEqual(state.player('P1').availableCost, 20 - def.cost);
       var target = h.putInsectOnField(state, 'P2', 'set1_003', { hp: 10000 });
@@ -34,10 +37,16 @@ global.cardRegistry.getBySet('BOOSTER_SET_2').filter(function (def) {
         runner.assert(held.attackedThisTurn, 'attack completes');
       } else { runner.assertEqual(global.getLegalAttackTargets(state, held.instanceId).length, 0, 'non-attacker has no attack actions'); }
     } else if (def.type === 'ENHANCEMENT') {
-      var host = h.putInsectOnField(state, 'P1', 'set1_003');
+      var host = definition.id === 'set2_050' ? h.addToHandRaw(state, 'P1', global.getCardDefinition('set1_003')) : h.putInsectOnField(state, 'P1', 'set1_003');
       global.useEnhancement(state, 'P1', held.instanceId, host.instanceId);
       runner.assertEqual(host.attachments[0], held);
       runner.assertEqual(state.player('P1').availableCost, 20 - def.cost);
+    } else if (definition.id === 'set2_051') {
+      var larva = h.putInsectOnField(state, 'P1', 'namiageha_larva');
+      var adult = h.addToHandRaw(state, 'P1', global.getCardDefinition('namiageha'));
+      global.useSpell(state, 'P1', held.instanceId);
+      global.resolveCardSelection(state, 'P1', [larva.instanceId, adult.instanceId], true);
+      runner.assertEqual(larva.zone, 'FOOD'); runner.assertEqual(adult.zone, 'FIELD');
     } else if (definition.id === 'set2_052') {
       global.useSpell(state, 'P1', held.instanceId);
       runner.assertEqual(held.zone, 'DISCARD');

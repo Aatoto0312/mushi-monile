@@ -52,10 +52,14 @@
       var spellTargetIdx = Math.floor(this.rng() * pending.options.length);
       return { type: 'RESOLVE_SPELL_TARGET_SELECTION', instanceId: pending.options[spellTargetIdx] };
     }
+    if (pending.type === 'CHOICE_SELECTION') {
+      return pending.options.length ? { type: 'RESOLVE_CHOICE_SELECTION', value: pending.options[0].value } : null;
+    }
     if (pending.type === 'CARD_SELECTION') {
       if (!pending.options || pending.options.length < pending.minSelections) return null;
       var count = pending.exactSelections != null ? pending.exactSelections : pending.maxSelections;
       var selected=(pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count);
+      if (pending.allowedCombinations && pending.allowedCombinations.length) { selected = pending.allowedCombinations[0].slice(); }
       if(pending.selectionPurpose==='TRANSFER_OWN_ATTACHMENT'&&selected.length===2){var holder=global.findAttachment(state,selected[0]);var destinations=pending.selectionGroups[1].filter(function(id){return !holder||id!==holder.host.instanceId;});if(destinations.length)selected[1]=destinations[0];}
       return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
     }
@@ -95,6 +99,11 @@
       // 各効果のtargetが OPPONENT_FIELD_INSECT で、かつ相手場に表向きの対象が
       // 存在する場合のみ使用可能とする(それ以外は必ず例外を起こすため候補から外す)。
       var effects = def.cardEffects || [];
+      if (effects.some(function(effect) {
+        var selection = global.getComplexSpellSelection(state, self.playerId, inst.instanceId, effect);
+        return selection && (selection.options.length < (selection.exactSelections || selection.minSelections || 1) ||
+          (selection.groups && selection.groups.some(function(group) { return !group.length; })));
+      })) { return false; }
       if (effects.some(function (effect) { return effect && effect.requiresTarget; }) &&
           !global.getSpellTargetCandidates(state, self.playerId, inst.instanceId).length) { return false; }
       var dmgEffects = effects.filter(function (eff) {
@@ -132,13 +141,13 @@
         return false;
       }
       // 自分の場に表向きの虫がいるか
-      var validTargets = player.field.filter(function (c) { return !c.faceDown; });
+      var validTargets = global.getEnhancementTargetCandidates(state, self.playerId, inst.instanceId);
       return validTargets.length > 0;
     });
 
     if (playableEnhancements.length > 0) {
       var chosenEnh = playableEnhancements[Math.floor(this.rng() * playableEnhancements.length)];
-      var validTargets = player.field.filter(function (c) { return !c.faceDown; });
+      var validTargets = global.getEnhancementTargetCandidates(state, self.playerId, chosenEnh.instanceId);
       var targetInsect = validTargets[Math.floor(this.rng() * validTargets.length)];
       return {
         type: 'USE_ENHANCEMENT',
@@ -255,6 +264,10 @@
       }
       if (action.type === 'RESOLVE_SPELL_TARGET_SELECTION') {
         global.resolveSpellTargetSelection(state, this.playerId, action.instanceId);
+        return true;
+      }
+      if (action.type === 'RESOLVE_CHOICE_SELECTION') {
+        global.resolveChoiceSelection(state, this.playerId, action.value);
         return true;
       }
       if (action.type === 'RESOLVE_CARD_SELECTION') {
