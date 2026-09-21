@@ -77,7 +77,7 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.INSECT) return false;
       if (!def.isPlayable()) return false;
-      return player.availableCost >= (def.cost != null ? def.cost : 0);
+      return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, def);
     });
 
     if (playableInsects.length > 0) {
@@ -93,7 +93,7 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.SPELL) return false;
       if (!def.isPlayable()) return false;
-      if (player.availableCost < (def.cost != null ? def.cost : 0)) return false;
+      if (player.availableCost < global.getEffectiveCardCost(state, self.playerId, def)) return false;
 
       // 対象指定をCPUが安全に解決できないDEAL_DAMAGE_TO_TARGETは除外。
       // 各効果のtargetが OPPONENT_FIELD_INSECT で、かつ相手場に表向きの対象が
@@ -134,7 +134,6 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.ENHANCEMENT) return false;
       if (!def.isPlayable()) return false;
-      if (player.availableCost < (def.cost != null ? def.cost : 0)) return false;
       // COLOR_OVERRIDE系はCPUが色選択を安全に行えないため除外
       var enhEffects = def.enhancementEffects || [];
       if (enhEffects.some(function (eff) { return eff && eff.type === 'COLOR_OVERRIDE'; })) {
@@ -142,12 +141,17 @@
       }
       // 自分の場に表向きの虫がいるか
       var validTargets = global.getEnhancementTargetCandidates(state, self.playerId, inst.instanceId);
-      return validTargets.length > 0;
+      return validTargets.some(function (target) {
+        return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, def, { targetInstanceId: target.instanceId });
+      });
     });
 
     if (playableEnhancements.length > 0) {
       var chosenEnh = playableEnhancements[Math.floor(this.rng() * playableEnhancements.length)];
-      var validTargets = global.getEnhancementTargetCandidates(state, self.playerId, chosenEnh.instanceId);
+      var chosenEnhDef = global.getCardDefinition(chosenEnh.cardId);
+      var validTargets = global.getEnhancementTargetCandidates(state, self.playerId, chosenEnh.instanceId).filter(function (target) {
+        return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, chosenEnhDef, { targetInstanceId: target.instanceId });
+      });
       var targetInsect = validTargets[Math.floor(this.rng() * validTargets.length)];
       return {
         type: 'USE_ENHANCEMENT',

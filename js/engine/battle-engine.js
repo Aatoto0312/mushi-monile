@@ -504,6 +504,43 @@
     return player.availableCost;
   }
 
+  function getEffectiveCardCost(state, playerId, definition, context) {
+    context = context || {};
+    if (!definition) { return 0; }
+    var cost = definition.cost != null ? definition.cost : 0;
+    var player = state.player(playerId);
+    (definition.costModifiers || []).forEach(function (modifier) {
+      if (modifier.type === 'PER_FACE_UP_FOOD_COLOR') {
+        var count = player.food.filter(function (card) {
+          var foodDef = !card.faceDown && getCardDefinition(card.cardId);
+          return foodDef && foodDef.color === modifier.color;
+        }).length;
+        cost += Math.floor(count / modifier.per) * modifier.amount;
+      }
+      if (modifier.type === 'OWN_FIELD_EMPTY' && !player.field.some(function (card) { return !card.faceDown; })) {
+        cost += modifier.amount;
+      }
+      if (modifier.minimum != null) { cost = Math.max(modifier.minimum, cost); }
+    });
+    state.playerOrder.forEach(function (controllerId) {
+      state.player(controllerId).field.forEach(function (source) {
+        if (source.faceDown) { return; }
+        var sourceDef = getCardDefinition(source.cardId);
+        (sourceDef && sourceDef.passiveAbilities || []).forEach(function (ability) {
+          (ability.effects || []).forEach(function (effect) {
+            if (effect.type !== 'CARD_COST_MODIFIER' || (effect.cardType && effect.cardType !== definition.type)) { return; }
+            if (effect.affects !== 'ALL_PLAYERS' && controllerId !== playerId) { return; }
+            if (effect.printedCostMax != null && definition.cost > effect.printedCostMax) { return; }
+            if (effect.target === 'SELF' && context.targetInstanceId !== source.instanceId) { return; }
+            cost += effect.amount;
+            if (effect.minimum != null) { cost = Math.max(effect.minimum, cost); }
+          });
+        });
+      });
+    });
+    return Math.max(0, cost);
+  }
+
   // セットフェイズ → メインフェイズへの遷移。コストを獲得する。
   // メインフェイズに既にいる場合は2度目のコスト獲得を拒否する。
   function enterMainPhase(state) {
@@ -530,8 +567,9 @@
       return [];
     }
     var methods = [];
-    if (player.availableCost >= (def.cost != null ? def.cost : 0)) {
-      methods.push({ type: 'NORMAL', cost: def.cost != null ? def.cost : 0 });
+    var effectiveCost = getEffectiveCardCost(state, playerId, def);
+    if (player.availableCost >= effectiveCost) {
+      methods.push({ type: 'NORMAL', cost: effectiveCost });
     }
     (def.summonAlternatives || []).forEach(function (alternative) {
       if (alternative.type !== 'SACRIFICE_OWN_FIELD') { return; }
@@ -571,7 +609,8 @@
       createCardSelection(state, { playerId: playerId, options: summonCandidates.map(function(c){return c.instanceId;}), exactSelections: alternative.count, candidateZones:[ZONES.FIELD], selectionPurpose:'ALTERNATIVE_SUMMON_COST', continuation:{type:'SUMMON_ALTERNATIVE',sourceInstanceId:handInstanceId} });
       return { pending:true };
     }
-    if (!summonOptions.alternative && player.availableCost < def.cost) {
+    var summonCost = getEffectiveCardCost(state, playerId, def);
+    if (!summonOptions.alternative && player.availableCost < summonCost) {
       throw new Error('コストが不足しています');
     }
     if (summonOptions.alternative) {
@@ -579,7 +618,7 @@
       summonOptions.selectedIds.forEach(function(id){ var target=findInZone(state,playerId,ZONES.FIELD,id); if(!target||target.faceDown) throw new Error('代替コスト対象が不正です'); });
       summonOptions.selectedIds.forEach(function(id){ destroyInsect(state,id,'SACRIFICE',handInstanceId,null,{skipTerritoryDraw:true}); });
     } else {
-      player.availableCost -= def.cost;
+      player.availableCost -= summonCost;
     }
 
     moveCard(state, handInstanceId, ZONES.HAND, ZONES.FIELD, { playerId: playerId });
@@ -590,7 +629,7 @@
     held.faceDown = false;
     held.enteredFieldTurn = state.turnNumber;
 
-    log(state, state.turnNumber, playerId + ' は ' + def.name + ' を召喚した | コスト' + def.cost + ' | 残りコスト: ' + player.availableCost);
+    log(state, state.turnNumber, playerId + ' は ' + def.name + ' を召喚した | コスト' + summonCost + ' | 残りコスト: ' + player.availableCost);
     return held;
   }
 
@@ -1067,7 +1106,8 @@
     if (!def.isPlayable()) {
       throw new Error('このカードはまだ使用可能になっていません');
     }
-    if (player.availableCost < def.cost) {
+    var spellCost = getEffectiveCardCost(state, playerId, def);
+    if (player.availableCost < spellCost) {
       throw new Error('コストが不足しています');
     }
 
@@ -1110,7 +1150,7 @@
     // 解決開始。エラー時は使用直前の状態へ復旧する。
     try {
       // ---- PAY_COST ----
-      player.availableCost -= def.cost;
+      player.availableCost -= spellCost;
 
       var result = {
         spellInstance: held,
@@ -1175,7 +1215,8 @@
     if (!def.isPlayable()) {
       throw new Error('このカードはまだ使用可能になっていません');
     }
-    if (player.availableCost < def.cost) {
+    var enhancementCost = getEffectiveCardCost(state, playerId, def, { targetInstanceId: targetInstanceId });
+    if (player.availableCost < enhancementCost) {
       throw new Error('コストが不足しています');
     }
     var summons = (def.enhancementEffects || []).some(function(effect) { return effect.type === 'SUMMON_ATTACHED_FROM_HAND'; });
@@ -1213,7 +1254,7 @@
     }
 
     // ---- PAY_COST ----
-    player.availableCost -= def.cost;
+    player.availableCost -= enhancementCost;
 
     if (summons) {
       moveCard(state, target.instanceId, ZONES.HAND, ZONES.FIELD, { playerId: playerId, deferEntryEffects: true });
@@ -1278,6 +1319,15 @@
     if (state.activePlayerId !== holder.playerId) { return []; }
     if (state.phase !== Phases.MAIN_PHASE) { return []; }
     var attacker = holder.instance;
+    var attackerDef = getCardDefinition(attacker.cardId);
+    var attackRequirements = attackerDef.attackRequirements || [];
+    if (attackRequirements.some(function (requirement) {
+      if (requirement.type !== 'FACE_UP_FOOD_COLOR_COUNT') { return false; }
+      return state.player(holder.playerId).food.filter(function (card) {
+        var foodDef = !card.faceDown && getCardDefinition(card.cardId);
+        return foodDef && foodDef.color === requirement.color;
+      }).length < requirement.minimum;
+    })) { return []; }
     if (attacker.zone !== ZONES.FIELD) { return []; }
     if (skillId) {
       var requestedSkill = getCardDefinition(attacker.cardId).skills.find(function(skill) { return skill.id === skillId; });
@@ -1324,6 +1374,17 @@
     });
 
     var legalPool = forcing.length > 0 ? forcing : targetable;
+
+    var selectedRequirementSkill = skillId && (attackerDef.skills || []).filter(function (skill) { return skill.id === skillId; })[0];
+    var skillRequirements = selectedRequirementSkill && selectedRequirementSkill.requirements || [];
+    if (skillRequirements.some(function (requirement) {
+      return requirement.type === 'OWN_FIELD_CARD_ID' && !state.player(holder.playerId).field.some(function (card) {
+        return !card.faceDown && card.cardId === requirement.cardId;
+      });
+    })) { return []; }
+    if (skillRequirements.some(function (requirement) { return requirement.type === 'TARGET_HAS_ATTACHMENT'; })) {
+      legalPool = legalPool.filter(function (defender) { return (defender.attachments || []).length > 0; });
+    }
 
     legalPool.forEach(function (defender) {
       targets.push({ targetType: 'INSECT', instance: defender, playerId: opponentId });
@@ -2346,6 +2407,7 @@ function endTurn(state) {
   global.completeCardSelection = completeCardSelection;
   global.setFood = setFood;
   global.gainCost = gainCost;
+  global.getEffectiveCardCost = getEffectiveCardCost;
   global.enterMainPhase = enterMainPhase;
   global.getAvailableSummonMethods = getAvailableSummonMethods;
   global.summonInsect = summonInsect;

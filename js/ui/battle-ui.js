@@ -1163,7 +1163,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
         });
       } else if (def.type === CardTypes.SPELL) {
         actions.push({
-          label: '術を使う (コスト ' + (def.cost != null ? def.cost : 0) + ')',
+          label: '術を使う (コスト ' + global.getEffectiveCardCost(this.state, playerId, def) + ')',
           onSelect: function () {
             try {
               useSpell(self.state, playerId, instance.instanceId);

@@ -49,6 +49,11 @@
         baseAp = player.discard.length * rule.multiplier;
       } else if (rule.type === 'OWN_FIELD_COUNT') {
         baseAp = player.field.filter(function (card) { return !card.faceDown; }).length * rule.multiplier;
+      } else if (rule.type === 'OWN_FIELD_COLOR_COUNT') {
+        baseAp = player.field.filter(function (card) {
+          var def = !card.faceDown && global.getCardDefinition(card.cardId);
+          return def && def.color === rule.color;
+        }).length * rule.multiplier;
       } else if (rule.type === 'PARTNER_PRESENT') {
         baseAp = rule.base + (player.field.some(function (card) {
           return !card.faceDown && card.cardId === rule.cardId;

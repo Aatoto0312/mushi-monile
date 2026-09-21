@@ -83,6 +83,8 @@ function requireAll() {
     ,require('./set2-opponent-target.test.js')
     ,require('./set2-all-attack-skills.test.js')
     ,require('./set2-existing-mechanics.test.js')
+    ,require('./set3-cost-modifiers.test.js')
+    ,require('./set3-attack-legality.test.js')
   ];
 }
 

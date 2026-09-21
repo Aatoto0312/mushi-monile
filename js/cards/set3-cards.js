@@ -1,0 +1,48 @@
+(function (root, factory) {
+  'use strict';
+  var records = typeof module === 'object' && module.exports ? require('./full-catalog-data.js') : root.MushijingiFullCatalogData;
+  var api = factory(root, records);
+  if (typeof module === 'object' && module.exports) { module.exports = api; }
+  root.MushijingiSet3Cards = api;
+  if (root.cardRegistry) { api.register(root.cardRegistry); }
+}(typeof globalThis !== 'undefined' ? globalThis : this, function (root, records) {
+  'use strict';
+  function definitionFromRecord(record) {
+    var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
+    def.skills.forEach(function (skill, index) {
+      skill.id = record.id + '_skill_' + (index + 1);
+      skill.timing = 'ATTACK'; skill.effects = []; skill.additionalCost = [];
+    });
+    def.passiveAbilities.forEach(function (trait, index) {
+      trait.id = record.id + '_trait_' + (index + 1); trait.effects = [];
+    });
+    var number = Number(record.officialNumber.split('/')[0]);
+    if ([2,4,5,10,13,16].indexOf(number) !== -1) {
+      def.costModifiers = [{ type: 'PER_FACE_UP_FOOD_COLOR', color: 'BLUE', per: 2, amount: -1, minimum: 0 }];
+    }
+    if (number === 3) {
+      def.passiveAbilities[0].effects = [{ type: 'CARD_COST_MODIFIER', cardType: 'SPELL', printedCostMax: 1, amount: 1, affects: 'ALL_PLAYERS' }];
+    }
+    if (number === 18 || number === 25) {
+      def.passiveAbilities[0].effects = [{ type: 'CARD_COST_MODIFIER', cardType: 'ENHANCEMENT', target: 'SELF', amount: -1, minimum: 0 }];
+    }
+    if (number === 19) { def.costModifiers = [{ type: 'OWN_FIELD_EMPTY', amount: -1, minimum: 0 }]; }
+    if (number === 1) { def.skills[1].requirements = [{ type: 'TARGET_HAS_ATTACHMENT' }]; }
+    if (number === 8) { def.skills[1].requirements = [{ type: 'OWN_FIELD_CARD_ID', cardId: 'set3_009' }]; }
+    if (number === 9) { def.skills[1].requirements = [{ type: 'OWN_FIELD_CARD_ID', cardId: 'set3_008' }]; }
+    if (number === 28) { def.passiveAbilities[0].effects = [{ type: 'CANNOT_ATTACK' }]; }
+    if (number === 32 || number === 35) {
+      def.attackRequirements = [{ type: 'FACE_UP_FOOD_COLOR_COUNT', color: 'GREEN', minimum: number === 32 ? 3 : 2 }];
+    }
+    if (number === 40) { def.skills[0].dynamicAp = { type: 'OWN_FIELD_COLOR_COUNT', color: 'GREEN', multiplier: 300 }; }
+    def.implementationStatus = root.CardStatus.PARTIAL;
+    def.implementationNotes = 'SET3 audit in progress; release gates have not passed.';
+    return def;
+  }
+  function register(registry) {
+    records.filter(function (record) { return record.set === 'BOOSTER_SET_3'; }).forEach(function (record) {
+      if (!registry.has(record.id)) { registry.register(definitionFromRecord(record)); }
+    });
+  }
+  return { definitionFromRecord: definitionFromRecord, register: register };
+}));
