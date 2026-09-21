@@ -31,9 +31,9 @@
   // 虫の現在の最大HPを計算する。将来HP強化カードの実装余地のため独立関数にしている。
   // instance.baseHp は召喚時の初期HP。modifiers による補正を加算する設計。
   // stat-modifier.js の calculateMaxHp も利用可能ならそれを優先(attachment HP 含む)。
-  function calculateCurrentMaxHp(instance) {
+  function calculateCurrentMaxHp(instance, state) {
     if (typeof global.calculateMaxHp === 'function') {
-      return global.calculateMaxHp(instance);
+      return global.calculateMaxHp(instance, state);
     }
     var base = instance.baseHp != null ? instance.baseHp : 0;
     var modifier = (instance.modifiers && instance.modifiers.hpBonus) || 0;

@@ -92,8 +92,8 @@ runner.test('Minomushi3 自分虫へattach', function () {
   runner.assertEqual(target.attachments[0].instanceId, enhancement.instanceId, 'それが装着したカード');
 });
 
-// Minomushi4: HP+500 (装着時 currentHp は変化しない＝公式未確認のため安全側で実装)
-runner.test('Minomushi4 HP+500 装着時 currentHp は変化しない', function () {
+// HP changes preserve received damage (official SET6 Q&A: loss of HP bonuses).
+runner.test('Minomushi4 HP+500 装着時も受けたダメージ量は維持する', function () {
   var state = h.newGame({ rng: h.firstPlayerRng });
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
@@ -113,7 +113,7 @@ runner.test('Minomushi4 HP+500 装着時 currentHp は変化しない', function
   var hpAfter = global.calculateMaxHp(target);
 
   runner.assertEqual(hpAfter, hpBefore + 500, '最大HPが +500 (800→1300)');
-  runner.assertEqual(target.currentHp, 600, 'currentHp は変化しない (600 のまま)');
+  runner.assertEqual(target.currentHp, 1100, '最大HP1300 - 受けていた200ダメージ');
 });
 
 // Minomushi5: 相手虫には使用不可
@@ -158,8 +158,8 @@ runner.test('Minomushi6 同じ虫へ複数attachment可能', function () {
   runner.assertEqual(hp, target.baseHp + 500 + 500, 'HP+1000 (2枚分)');
 });
 
-// Minomushi6b: 複数装着時の currentHp 変化なし
-runner.test('Minomushi6b 複数装着時 currentHp 変化なし', function () {
+// Minomushi6b: 複数装着しても受けたダメージ量は維持
+runner.test('Minomushi6b 複数装着時も受けたダメージ量を維持', function () {
   var state = h.newGame({ rng: h.firstPlayerRng });
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
   h.addToFoodRaw(state, 'P1', h.defById('test_red_1'));
@@ -176,7 +176,7 @@ runner.test('Minomushi6b 複数装着時 currentHp 変化なし', function () {
 
   var hp = global.calculateMaxHp(target);
   runner.assertEqual(hp, target.baseHp + 500 + 500, '最大HP+1000');
-  runner.assertEqual(target.currentHp, 600, 'currentHp は 600 のまま');
+  runner.assertEqual(target.currentHp, 1600, 'currentHp は HP増加合計1000を反映');
 });
 
 // Minomushi7: 虫が破壊されたら隠れ蓑もDISCARD

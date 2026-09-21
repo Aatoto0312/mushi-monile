@@ -95,6 +95,8 @@
       // 各効果のtargetが OPPONENT_FIELD_INSECT で、かつ相手場に表向きの対象が
       // 存在する場合のみ使用可能とする(それ以外は必ず例外を起こすため候補から外す)。
       var effects = def.cardEffects || [];
+      if (effects.some(function (effect) { return effect && effect.requiresTarget; }) &&
+          !global.getSpellTargetCandidates(state, self.playerId, inst.instanceId).length) { return false; }
       var dmgEffects = effects.filter(function (eff) {
         return eff && eff.type === 'DEAL_DAMAGE_TO_TARGET';
       });
@@ -154,6 +156,7 @@
       var def = global.getCardDefinition(inst.cardId);
       var skills = (def && def.skills) ? def.skills.filter(function (skill) {
         if (skill.timing !== 'ATTACK') return false;
+        if (!global.getLegalAttackTargets(state, inst.instanceId, skill.id).length) return false;
         return !global.skillRequiresSacrifice(skill) || global.getSacrificeCandidates(state, inst.instanceId).length > 0;
       }) : [];
       return skills.length > 0;
@@ -161,14 +164,15 @@
 
     if (attackerCandidates.length > 0) {
       var chosenAttacker = attackerCandidates[Math.floor(this.rng() * attackerCandidates.length)];
-      var targets = global.getLegalAttackTargets(state, chosenAttacker.instanceId);
-      var chosenTarget = targets[Math.floor(this.rng() * targets.length)];
       var def = global.getCardDefinition(chosenAttacker.cardId);
       var attackSkills = (def && def.skills) ? def.skills.filter(function(s) {
         if (s.timing !== 'ATTACK') return false;
+        if (!global.getLegalAttackTargets(state, chosenAttacker.instanceId, s.id).length) return false;
         return !global.skillRequiresSacrifice(s) || global.getSacrificeCandidates(state, chosenAttacker.instanceId).length > 0;
       }) : [];
       var skillId = (attackSkills.length > 0) ? attackSkills[0].id : null;
+      var targets = global.getLegalAttackTargets(state, chosenAttacker.instanceId, skillId);
+      var chosenTarget = targets[Math.floor(this.rng() * targets.length)];
       var sacrificeId = null;
       if (attackSkills.length > 0 && global.skillRequiresSacrifice(attackSkills[0])) {
         var sacrificeCandidates = global.getSacrificeCandidates(state, chosenAttacker.instanceId);
@@ -282,6 +286,13 @@
         return true;
       }
       if (action.type === 'ATTACK') {
+        var attackHolder = global.findAnywhere(state, action.attackerInstanceId);
+        var attackDef = attackHolder && global.getCardDefinition(attackHolder.instance.cardId);
+        var selectedSkill = attackDef && attackDef.skills.filter(function (skill) { return skill.id === action.skillId; })[0];
+        if (selectedSkill && (selectedSkill.effects || []).some(function (effect) { return effect.type === 'ATTACK_MULTIPLE_TARGETS'; })) {
+          global.beginMultiTargetAttackSelection(state, action.attackerInstanceId, action.skillId);
+          return true;
+        }
         global.performAttack(state, action.attackerInstanceId, action.targetInstanceId, action.targetType, action.skillId, action.chosenSacrificeInstanceId);
         return true;
       }

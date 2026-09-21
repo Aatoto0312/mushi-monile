@@ -667,9 +667,10 @@
     fieldInstances.forEach(function (inst) {
       var el = CardUI.renderCard(inst, ZONES.FIELD, self.state);
       var pending = getPendingEffect(self.state);
-      if (pending && pending.type === 'SPELL_TARGET_SELECTION' && pending.options.indexOf(inst.instanceId) !== -1) {
+      if (pending && (pending.type === 'SPELL_TARGET_SELECTION' || pending.type === 'CARD_SELECTION') && pending.options.indexOf(inst.instanceId) !== -1) {
         el.classList.add('legal-target');
       }
+      if (pending && (pending.selectedIds || []).indexOf(inst.instanceId) !== -1) { el.classList.add('is-pending-selected'); }
       el.addEventListener('click', function () {
         self.onFieldCardTap(playerId, inst, el);
       });
@@ -835,8 +836,8 @@
     var btnDraw = document.getElementById('btn-draw');
 
     // CPUターン中は人間側の操作を無効化
-    var isCpuTurn = this.cpuMode && s.activePlayerId === 'P2';
     var cardSelection=global.getPendingEffect(s);
+    var isCpuTurn = this.cpuMode && (cardSelection ? cardSelection.playerId : s.activePlayerId) === 'P2';
     if(cardSelection&&cardSelection.type==='CARD_SELECTION'&&!isCpuTurn){
       if(btnSet)btnSet.style.display='none';if(btnMain)btnMain.style.display='none';if(btnDraw)btnDraw.style.display='none';
       if(btnEnd){btnEnd.style.display='block';btnEnd.textContent='選択を決定 ('+(cardSelection.selectedIds||[]).length+'/'+cardSelection.maxSelections+')';btnEnd.disabled=(cardSelection.selectedIds||[]).length<cardSelection.minSelections;}
@@ -913,23 +914,29 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     if (!pending) {
       if (statusText.textContent === 'あなたの縄張りを1枚選択してください' ||
           statusText.textContent === 'とびだすを使用するか選択してください' ||
-          statusText.textContent === '術の対象にする相手の虫を選択してください' ||
+          statusText.textContent === '術の対象カードを選択してください' ||
           statusText.textContent === 'あなたの行動待ちです' ||
           statusText.textContent === 'CPUが選択中...' ||
+          statusText.textContent.indexOf('攻撃を受ける側：') === 0 ||
+          statusText.textContent.indexOf('相手のエサを') === 0 ||
           statusText.textContent.indexOf('代替召喚のため、') === 0) {
         statusText.textContent = '';
       }
       return;
     }
 
-    var activeHumanId = this.cpuMode ? 'P1' : state.activePlayerId;
+    var activeHumanId = this.cpuMode ? 'P1' : pending.playerId;
     if (pending.playerId === activeHumanId) {
       if (pending.type === 'TERRITORY_DRAW_SELECTION') {
         statusText.textContent = 'あなたの縄張りを1枚選択してください';
       } else if (pending.type === 'DISCARD_INSECT_SELECTION') {
         statusText.textContent = '手札に戻す虫を捨て場から選択してください';
       } else if (pending.type === 'SPELL_TARGET_SELECTION') {
-        statusText.textContent = '術の対象にする相手の虫を選択してください';
+        statusText.textContent = '術の対象カードを選択してください';
+      } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'OPPONENT_ATTACK_TARGET') {
+        statusText.textContent = '攻撃を受ける側：対象の虫を1体選んでください';
+      } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'FLIP_OPPONENT_FOOD') {
+        statusText.textContent = '相手のエサを1枚まで選択し、決定してください（選ばずに決定も可能）';
       } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'ALTERNATIVE_SUMMON_COST') {
         statusText.textContent = '代替召喚のため、自分の虫を' + pending.maxSelections + '体選んでください（' + (pending.selectedIds || []).length + '/' + pending.maxSelections + '）';
       } else if (pending.type === 'TERRITORY_DRAW_CHOICE') {
@@ -1142,12 +1149,12 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       (this.actionState.mode === 'enhanceTarget' ? 'ENHANCEMENT_TARGET' : 'FIELD_CARD');
     if (!this._tutorialAllows(tutorialAction, { instanceId: instance.instanceId })) return;
     // CPUターン中は人間側の操作を無効化
-    if (this.cpuMode && this.state.activePlayerId === 'P2') {
+    var pending = getPendingEffect(this.state);
+    if (this.cpuMode && (pending ? pending.playerId : this.state.activePlayerId) === 'P2') {
       return;
     }
-    var pending = getPendingEffect(this.state);
     if (pending) {
-      if (pending.type === 'CARD_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) { try { global.selectPendingCard(this.state,playerId,instance.instanceId); this.render(); } catch(e) { showUserError(e); } return; }
+      if (pending.type === 'CARD_SELECTION' && pending.options.indexOf(instance.instanceId) !== -1) { try { global.selectPendingCard(this.state,pending.playerId,instance.instanceId); this.render(); } catch(e) { showUserError(e); } return; }
       if (pending.type === 'SPELL_TARGET_SELECTION' && pending.playerId === this.state.activePlayerId &&
           pending.options.indexOf(instance.instanceId) !== -1) {
         try {
@@ -1497,7 +1504,24 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   };
 
   BattleUI.prototype.beginAttackTargetSelection = function (playerId, attacker) {
-    var targets = getLegalAttackTargets(this.state, attacker.instanceId);
+    var def = getCardDefinition(attacker.cardId);
+    var selectedSkill = (def.skills || []).filter(function (skill) { return skill.id === this.actionState.skillId; }, this)[0];
+    if (selectedSkill && (selectedSkill.effects || []).some(function (effect) { return effect.type === 'ATTACK_MULTIPLE_TARGETS'; })) {
+      try {
+        global.beginMultiTargetAttackSelection(this.state, attacker.instanceId, selectedSkill.id);
+        this.actionState.mode = 'idle';
+        this.render();
+      } catch (error) { showUserError(error); }
+      return;
+    }
+    var targets = getLegalAttackTargets(this.state, attacker.instanceId, this.actionState.skillId);
+    if (selectedSkill && selectedSkill.targetRule === 'OPPONENT_CHOOSES_TARGET' && targets.length > 1) {
+      try {
+        global.performAttack(this.state, attacker.instanceId, targets[0].instance.instanceId, 'INSECT', selectedSkill.id);
+        this.actionState.mode = 'idle'; this.render();
+      } catch (error) { showUserError(error); }
+      return;
+    }
     if (targets.length === 0) {
       alert('攻撃対象が存在しません');
       return;

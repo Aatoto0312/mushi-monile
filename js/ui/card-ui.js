@@ -64,7 +64,7 @@
   function modifierSummary(instance, state) {
     var def = getDef(instance) || {};
     var baseHp = instance.baseHp != null ? instance.baseHp : (def.baseHp || 0);
-    var maxHp = typeof global.calculateMaxHp === 'function' ? global.calculateMaxHp(instance) : baseHp;
+    var maxHp = typeof global.calculateMaxHp === 'function' ? global.calculateMaxHp(instance, state) : baseHp;
     var baseAp = firstAttackAp(def.skills);
     var currentAp = baseAp == null ? null : effectiveAp(instance, state);
     var originalColor = def.color;

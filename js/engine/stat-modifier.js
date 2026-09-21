@@ -43,7 +43,7 @@
       if (rule.type === 'FOOD_COLOR_COUNT') {
         baseAp = player.food.filter(function (card) {
           var def = global.getCardDefinition(card.cardId);
-          return def && def.color === rule.color;
+          return !card.faceDown && def && def.color === rule.color;
         }).length * rule.multiplier;
       } else if (rule.type === 'DISCARD_COUNT') {
         baseAp = player.discard.length * rule.multiplier;
@@ -71,10 +71,10 @@
 
   // 虫の現在の最大HPを返す。
   // baseHp + 既存 hpBonus 修飾 + 紐付く強化カードの HP 修飾 を合算する。
-  function calculateMaxHp(instance) {
+  function calculateMaxHp(instance, state) {
     var base = instance.baseHp != null ? instance.baseHp : 0;
     var hpBonus = (instance.modifiers && instance.modifiers.hpBonus) || 0;
-    var sum = base + hpBonus;
+    var sum = base + hpBonus + (state ? getStatModifierTotal(state, instance, 'HP') : 0);
     // 紐付く強化カードの HP 修飾
     var attachments = instance.attachments || [];
     for (var i = 0; i < attachments.length; i++) {
@@ -98,7 +98,9 @@
     var startTurn = mod.startTurn;
     var endTurn = mod.endTurn;
     if (startTurn == null) { startTurn = state.turnNumber + (mod.startOffset || 0); }
-    if (endTurn == null) {
+    if (mod.duration === 'FIELD_STAY') {
+      endTurn = null;
+    } else if (endTurn == null) {
       endTurn = (mod.endOffset != null)
         ? state.turnNumber + mod.endOffset
         : startTurn;
@@ -114,6 +116,9 @@
     };
     if (!instance.statModifiers) { instance.statModifiers = []; }
     instance.statModifiers.push(entry);
+    if (entry.stat === 'HP' && isStatModifierActive(state, entry) && instance.currentHp != null) {
+      instance.currentHp += entry.amount || 0;
+    }
     return entry;
   }
 
@@ -123,7 +128,9 @@
     if (!instance.statModifiers) { return; }
     instance.statModifiers = instance.statModifiers.filter(function (m) {
       if (clearAll) { return false; }
-      return isStatModifierActive(state, m);
+      // Not active yet is different from expired: next-own-turn effects must
+      // survive the intervening opponent turn. Activation is checked on read.
+      return m.endTurn == null || state.turnNumber <= m.endTurn;
     });
   }
 

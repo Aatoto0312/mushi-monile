@@ -1,0 +1,9 @@
+'use strict';
+require('./engine-loader.js');
+var h=require('./helpers.js'),Runner=require('./lib.js'),runner=new Runner();
+var raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_031')));raw.id='test_retaliation_031';raw.set=null;raw.implementationStatus='test';var def=new global.CardDefinition(raw);global.cardRegistry.register(def);
+function fixture(){var s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.turnNumber=3;s.player('P1').territory=[];s.player('P2').territory=[];var t=h.putInsectOnField(s,'P2',def.id,{hp:100}),a=h.putInsectOnField(s,'P1','set1_003');return {s:s,t:t,a:a};}
+runner.test('Milkweed retaliation destroys attacker without drawing attacker territory',function(){var f=fixture();h.addToTerritoryRaw(f.s,'P1',global.getCardDefinition('set1_003'));global.performAttack(f.s,f.a.instanceId,f.t.instanceId,'INSECT');runner.assertEqual(f.t.zone,'DISCARD');runner.assertEqual(f.a.zone,'DISCARD');runner.assertEqual(f.s.player('P1').territory.length,1);runner.assertEqual(f.s.pendingEffect,null);});
+runner.test('Retaliation does not trigger on spell destruction',function(){var f=fixture();global.destroyInsect(f.s,f.t.instanceId,'SPELL',f.a.instanceId);runner.assertEqual(f.a.zone,'FIELD');runner.assertEqual(f.s.pendingEffect,null);});
+runner.test('Shell replacement prevents retaliation when host is not destroyed',function(){var f=fixture(),shell=h.addToHandRaw(f.s,'P2',global.getCardDefinition('set1_102'));f.s.activePlayerId='P2';h.ensureCost(f.s,'P2',10);global.useEnhancement(f.s,'P2',shell.instanceId,f.t.instanceId);f.s.activePlayerId='P1';global.performAttack(f.s,f.a.instanceId,f.t.instanceId,'INSECT');runner.assertEqual(f.t.zone,'FIELD');runner.assertEqual(f.a.zone,'FIELD');runner.assertEqual(shell.zone,'DISCARD');});
+module.exports=runner;if(require.main===module)runner.runAll();

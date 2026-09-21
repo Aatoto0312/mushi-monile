@@ -2612,7 +2612,7 @@
     var hpRules = {13:200,70:300,75:200,86:200,87:200,99:200};
     if (hpRules[number]) {
       skill = def.skills.filter(function (s) { return s.effectText && s.effectText.indexOf('HPを') !== -1; })[0];
-      skill.effects = [{ type: 'APPLY_STAT_MODIFIER', id: 'set1_hp_up_' + number, stat: 'HP', amount: hpRules[number], startTurnOffset: 1, endTurnOffset: 1 }];
+      skill.effects = [{ type: 'APPLY_STAT_MODIFIER', target: 'SELF', id: 'set1_hp_up_' + number, stat: 'HP', amount: hpRules[number], startTurnOffset: 1, endTurnOffset: 1 }];
       markTested(def, '汎用APPLY_STAT_MODIFIER(HP)。');
     }
     if (number === 100) {
@@ -2628,7 +2628,7 @@
       markTested(def, '既存attachment COLOR_OVERRIDE。');
     })(({112:'RED',113:'BLUE',114:'GREEN'})[number]);
     if (number === 117) {
-      def.cardEffects = [{ type: 'DEAL_DAMAGE_TO_TARGET', target: 'OPPONENT_FIELD_INSECT', amount: 999999999, ignoreAttributeMultiplier: true, description: '相手の虫1体を破壊する。' }];
+        def.cardEffects = [{ type: 'DESTROY_TARGET', target: 'OPPONENT_FIELD_INSECT', requiresTarget: true, description: '相手の虫1体を破壊する。' }];
       markTested(def, '既存spell target/destroy pipeline。');
     }
     if (number === 122) {

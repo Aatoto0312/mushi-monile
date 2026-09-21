@@ -79,6 +79,10 @@
   // 相手ターンで有効化する(2026年1月15日の公式裁定に準拠)。
   function setupFieldEntry(state, card, fromZone) {
     card.enteredFieldTurn = state.turnNumber;
+    if (card.runtimeFlags) {
+      delete card.runtimeFlags.damagePreventionTurns;
+      delete card.runtimeFlags.damageShields;
+    }
     var def = global.getCardDefinition ? global.getCardDefinition(card.cardId) : null;
     if (!def || !def.skills) { return; }
     var gitai = def.skills.find(function (s) { return s.gitai === true; });
@@ -156,6 +160,15 @@
       }
       // 一時的な statModifier を全消去 (場を離れたら消える)
       pruneStatModifiers(state, card, true);
+      if (card.runtimeFlags) {
+        delete card.runtimeFlags.unhealableDamage;
+        delete card.runtimeFlags.damageDoesNotHeal;
+        delete card.runtimeFlags.destroyOnAttackTurn;
+        if (card.runtimeFlags.faceDownUntilTurn != null) {
+          card.faceDown = false;
+          delete card.runtimeFlags.faceDownUntilTurn;
+        }
+      }
       // 紐付く強化カード(attachment)を所有者の DISCARD へ移動
       discardAllAttachments(state, card);
     }

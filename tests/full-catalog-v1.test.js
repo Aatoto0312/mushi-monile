@@ -27,7 +27,8 @@ runner.test('Full catalog registers every Knowledge Base card without hard-coded
   Object.keys(expectedBySet).forEach(function (set) {
     runner.assertEqual(actual.filter(function (card) { return card.set === set; }).length, expectedBySet[set], set + ' count');
   });
-  runner.assertEqual(actual.length, catalog.fromRegistry(global.cardRegistry).length + data.length, 'registered total follows source data');
+  var expectedIds = new Set(catalog.fromRegistry(global.cardRegistry).map(function (card) { return card.cardId; }).concat(data.map(function (card) { return card.id; })));
+  runner.assertEqual(actual.length, expectedIds.size, 'registered total follows unique source identities');
   runner.assertEqual(new Set(actual.map(function (card) { return card.cardId; })).size, actual.length, 'card IDs unique');
 });
 
