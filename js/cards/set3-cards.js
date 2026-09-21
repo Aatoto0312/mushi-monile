@@ -35,6 +35,20 @@
       def.attackRequirements = [{ type: 'FACE_UP_FOOD_COLOR_COUNT', color: 'GREEN', minimum: number === 32 ? 3 : 2 }];
     }
     if (number === 40) { def.skills[0].dynamicAp = { type: 'OWN_FIELD_COLOR_COUNT', color: 'GREEN', multiplier: 300 }; }
+    if (number === 34) {
+      def.skills.push({ id: 'gitai', name: '擬態', baseAp: null, timing: 'PASSIVE', effects: [], gitai: true });
+    }
+    if (number === 44) {
+      def.skills.push({ id: record.id + '_lure', name: def.passiveAbilities[0].name, baseAp: null, timing: 'PASSIVE', effects: [], targetRule: 'FORCE_ATTACK_TO_SELF_GROUP' });
+    }
+    if (number === 46 || number === 47) {
+      var amount = number === 46 ? 700 : 200;
+      def.enhancementEffects = ['HP','AP'].map(function (stat) { return { type:'STAT_MODIFIER', stat:stat, amount:amount }; });
+      def.enhancementEffects.push({ type:'OPTIONAL_ATTACH_FROM_TERRITORY' });
+    }
+    if (number === 55) {
+      def.cardEffects = [{ type:'APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD', stat:'AP', amount:500, startTurnOffset:0, endTurnOffset:0 }];
+    }
     def.implementationStatus = root.CardStatus.PARTIAL;
     def.implementationNotes = 'SET3 audit in progress; release gates have not passed.';
     return def;

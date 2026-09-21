@@ -85,6 +85,7 @@ function requireAll() {
     ,require('./set2-existing-mechanics.test.js')
     ,require('./set3-cost-modifiers.test.js')
     ,require('./set3-attack-legality.test.js')
+    ,require('./set3-definitions.test.js')
   ];
 }
 
