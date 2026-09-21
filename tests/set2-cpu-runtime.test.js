@@ -27,4 +27,15 @@ global.cardRegistry.getBySet('BOOSTER_SET_2').filter(function(d){return d.implem
   runner.assertEqual(s.pendingEffect,null);runner.assert(s.activePlayerId==='P2'||s.winner,'turn continues or Battle ends');runner.assert(held.zone!=='HAND','card was used');
  });
 });
+runner.test('CPU can select a legal second attack skill',function(){
+ var s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.player('P1').hand=[];s.player('P1').field=[];s.player('P2').field=[];s.player('P2').territory=[];
+ var attacker=h.putInsectOnField(s,'P1','set2_002'), ally=h.putInsectOnField(s,'P1','set1_003'), target=h.putInsectOnField(s,'P2','set1_003',{hp:10000});
+ ally.attackedThisTurn=true;
+ var def=global.getCardDefinition(attacker.cardId), cpu=new global.CpuAgent('P1',{rng:function(){return 0.999;}});
+ var action=cpu.decideMainPhaseAction(s);
+ runner.assertEqual(action.type,'ATTACK');
+ runner.assertEqual(action.attackerInstanceId,attacker.instanceId);
+ runner.assertEqual(action.targetInstanceId,target.instanceId);
+ runner.assertEqual(action.skillId,def.skills[1].id);
+});
 module.exports=runner;if(require.main===module)runner.runAll();

@@ -299,6 +299,36 @@
       return;
     }
     if (continuation.type === 'DESTROYED_CARD_FOLLOWUP') { finishDestroyedCard(state, continuation); return; }
+    if (continuation.type === 'SERIAL_ZONE_MOVES') {
+      var remainingMoves = (continuation.moves || []).slice();
+      if (!remainingMoves.length) { return; }
+      var nextMove = remainingMoves.shift();
+      var currentHolder = findAnywhere(state, nextMove.instanceId);
+      // A preceding trigger may legally move or destroy a later candidate. In
+      // that case it is no longer eligible for the original move, so skip it
+      // rather than reviving it from a stale snapshot.
+      if (!currentHolder || currentHolder.zone !== nextMove.from ||
+          (nextMove.sourcePlayerId && currentHolder.playerId !== nextMove.sourcePlayerId)) {
+        resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves });
+        return;
+      }
+      var serialMoved = moveCard(state, nextMove.instanceId, nextMove.from, nextMove.to, {
+        playerId: nextMove.playerId || currentHolder.playerId,
+        faceDown: nextMove.faceDown,
+        deferEntryEffects: true
+      });
+      if (nextMove.runtimeFlags) {
+        serialMoved.runtimeFlags = serialMoved.runtimeFlags || {};
+        Object.keys(nextMove.runtimeFlags).forEach(function(flag) {
+          serialMoved.runtimeFlags[flag] = nextMove.runtimeFlags[flag];
+        });
+      }
+      if (nextMove.from !== ZONES.FIELD && nextMove.to === ZONES.FIELD) {
+        resolveFieldEntryEffects(state, serialMoved.instanceId);
+      }
+      resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves });
+      return;
+    }
     if (continuation.type === 'FIELD_ENTRY_EFFECT') {
       var entryEffect = continuation.effect;
       if (entryEffect.type === 'CHOOSE_SELF_COLOR') {
@@ -923,7 +953,19 @@
         if (!selected.length || selected.some(function(c){return !c || c.faceDown;})) throw new Error('移動対象が不正です');
         var firstColor=getCardDefinition(selected[0].cardId).color;
         if (selected.some(function(c){var d=getCardDefinition(c.cardId);return d.type!==CardTypes.INSECT||d.color!==firstColor;})) throw new Error('同じ色の虫を選択してください');
-        batchMoveCards(state, selected.map(function(c){return {instanceId:c.instanceId,from:effect.from,to:effect.to,playerId:playerId};})).forEach(function(c){var d=getCardDefinition(c.cardId);c.currentHp=d.baseHp;c.baseHp=d.baseHp;c.attackedThisTurn=false;if(effect.destroyAtEndTurn)c.runtimeFlags.destroyAtEndTurn=state.turnNumber;});
+        resumeAfterSelection(state, {
+          type: 'SERIAL_ZONE_MOVES',
+          moves: selected.map(function(c) {
+            return {
+              instanceId: c.instanceId,
+              sourcePlayerId: playerId,
+              playerId: playerId,
+              from: effect.from,
+              to: effect.to,
+              runtimeFlags: effect.destroyAtEndTurn ? { destroyAtEndTurn: state.turnNumber } : null
+            };
+          })
+        });
       }
       if (effect.type === 'EXCHANGE_INSECTS') {
         if (chosenIds.length !== 2) throw new Error('交換する2枚を選択してください');

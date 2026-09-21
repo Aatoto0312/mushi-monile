@@ -179,11 +179,12 @@
         if (!global.getLegalAttackTargets(state, chosenAttacker.instanceId, s.id).length) return false;
         return !global.skillRequiresSacrifice(s) || global.getSacrificeCandidates(state, chosenAttacker.instanceId).length > 0;
       }) : [];
-      var skillId = (attackSkills.length > 0) ? attackSkills[0].id : null;
+      var chosenSkill = attackSkills.length > 0 ? attackSkills[Math.floor(this.rng() * attackSkills.length)] : null;
+      var skillId = chosenSkill ? chosenSkill.id : null;
       var targets = global.getLegalAttackTargets(state, chosenAttacker.instanceId, skillId);
       var chosenTarget = targets[Math.floor(this.rng() * targets.length)];
       var sacrificeId = null;
-      if (attackSkills.length > 0 && global.skillRequiresSacrifice(attackSkills[0])) {
+      if (chosenSkill && global.skillRequiresSacrifice(chosenSkill)) {
         var sacrificeCandidates = global.getSacrificeCandidates(state, chosenAttacker.instanceId);
         sacrificeId = sacrificeCandidates[0].instanceId;
       }

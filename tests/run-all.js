@@ -81,6 +81,7 @@ function requireAll() {
     ,require('./hp-modifier-damage.test.js')
     ,require('./set2-territory-growth.test.js')
     ,require('./set2-opponent-target.test.js')
+    ,require('./set2-all-attack-skills.test.js')
   ];
 }
 

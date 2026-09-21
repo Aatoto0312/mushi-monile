@@ -26,4 +26,17 @@ runner.test('Destruction replacement prevents capture',function(){
  f.s.player('P2').hand.splice(f.s.player('P2').hand.indexOf(shell),1);shell.zone='FIELD';f.b.attachments.push(shell);
  attack(f);runner.assert(f.s.player('P2').field.includes(f.b));runner.assertEqual(shell.zone,'DISCARD');runner.assert(!f.b.runtimeFlags.destroyAtEndTurn);
 });
+runner.test('Captured insect attacks its original controller as the capturer controlled card',function(){
+ var f=fixture();attack(f);var originalAlly=h.putInsectOnField(f.s,'P2','set1_004',{hp:3000});
+ var legal=global.getLegalAttackTargets(f.s,f.b.instanceId,global.getCardDefinition(f.b.cardId).skills[0].id);
+ runner.assert(legal.some(function(target){return target.instance&&target.instance.instanceId===originalAlly.instanceId;}));
+ global.performAttack(f.s,f.b.instanceId,originalAlly.instanceId,'INSECT',global.getCardDefinition(f.b.cardId).skills[0].id);
+ runner.assert(f.b.attackedThisTurn);
+});
+runner.test('Captured insect can replace its scheduled destruction and remain controlled',function(){
+ var f=fixture();attack(f);var shell=h.addToHandRaw(f.s,'P1',global.getCardDefinition('set1_102'));
+ f.s.player('P1').hand.splice(f.s.player('P1').hand.indexOf(shell),1);shell.zone='FIELD';f.b.attachments.push(shell);
+ global.endTurn(f.s);
+ runner.assert(f.s.player('P1').field.includes(f.b));runner.assertEqual(f.b.ownerId,'P2');runner.assertEqual(shell.zone,'DISCARD');
+});
 module.exports=runner;if(require.main===module)runner.runAll().then(function(r){if(r.failed)process.exitCode=1;});
