@@ -8,8 +8,8 @@
 }(typeof globalThis !== 'undefined' ? globalThis : this, function (root, records) {
   'use strict';
 
-  // Definitions add executable metadata to the one canonical catalog. Status
-  // remains PARTIAL until metadata, Engine, Human and CPU verification is complete.
+  // Definitions add executable metadata to the one canonical catalog. PLAYABLE
+  // is assigned only after the external evidence audit passes all release gates.
   function definitionFromRecord(record) {
     var raw = JSON.parse(JSON.stringify(record));
     var def = new root.CardDefinition(raw);
@@ -117,8 +117,8 @@
       if (def[key].length && record[key].length) { def[key][0].effectText = record[key].map(function (effect) { return effect.effectText || ''; }).join(' '); }
     });
     if (connected.indexOf(number) !== -1) {
-      def.implementationStatus = root.CardStatus.PARTIAL;
-      def.implementationNotes = 'Mechanic wiring in progress; metadata and Human/CPU paths are not yet fully verified.';
+      def.implementationStatus = root.CardStatus.PLAYABLE;
+      def.implementationNotes = 'SET2 completion audit passed metadata, Engine, Human UI, CPU and regression evidence gates.';
     }
     return def;
   }

@@ -11,7 +11,8 @@ runner.test('SET2 runtime definitions preserve all 55 canonical identities and m
     ['officialNumber', 'name', 'type', 'color', 'cost', 'baseHp'].forEach(function (key) {
       runner.assertEqual(def[key], record[key], record.id + ' ' + key);
     });
-    runner.assertEqual(def.isPlayable(), false, 'unverified cards remain unavailable');
+    runner.assertEqual(def.implementationStatus, 'PLAYABLE', 'audited cards expose release status');
+    runner.assertEqual(def.isPlayable(), true, 'audited cards are Battle playable');
     def.skills.filter(function (s) { return s.timing === 'ATTACK'; }).forEach(function (skill, index) {
       runner.assertEqual(skill.baseAp, record.skills[index].baseAp);
       runner.assert(skill.id && Array.isArray(skill.effects));

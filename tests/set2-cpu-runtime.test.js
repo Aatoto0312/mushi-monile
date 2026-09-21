@@ -3,7 +3,7 @@ require('./engine-loader.js');require('../js/engine/cpu-agent.js');
 var h=require('./helpers.js'),Runner=require('./lib.js'),runner=new Runner();
 // Connection smoke, not an effect-specific release gate. Each production
 // definition is copied verbatim except its identity and unreleased status.
-global.cardRegistry.getBySet('BOOSTER_SET_2').filter(function(d){return d.implementationStatus==='PARTIAL';}).forEach(function(original){
+global.cardRegistry.getBySet('BOOSTER_SET_2').forEach(function(original){
  var raw=JSON.parse(JSON.stringify(original));raw.id='test_cpu_'+raw.id;raw.set=null;raw.implementationStatus='test';var def=new global.CardDefinition(raw);global.cardRegistry.register(def);
  runner.test(original.id+' CPU uses definition and continues without unresolved selection',function(){
   var s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.turnNumber=3;s.player('P1').hand=[];s.player('P1').field=[];s.player('P2').field=[];s.player('P2').territory=[];

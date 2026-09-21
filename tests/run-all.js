@@ -82,6 +82,7 @@ function requireAll() {
     ,require('./set2-territory-growth.test.js')
     ,require('./set2-opponent-target.test.js')
     ,require('./set2-all-attack-skills.test.js')
+    ,require('./set2-existing-mechanics.test.js')
   ];
 }
 

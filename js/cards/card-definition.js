@@ -23,6 +23,7 @@
     SPEC_COMPLETE: 'SPEC_COMPLETE',
     IMPLEMENTED: 'IMPLEMENTED',
     TESTED: 'TESTED',
+    PLAYABLE: 'PLAYABLE',
     // テスト専用データ用(既存の test_* カード)
     TEST: 'test'
   };
@@ -75,6 +76,7 @@
       SPEC_COMPLETE: 2,
       IMPLEMENTED: 3,
       TESTED: 4
+      ,PLAYABLE: 4
     };
     var current = this.implementationStatus;
     var threshold = 2; // SPEC_COMPLETE

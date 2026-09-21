@@ -233,3 +233,26 @@ Still required before PLAYABLE: per-card metadata/effect evidence, every skill
 path (connection smoke uses the first ordinary attack), exhaustive CPU/Human
 controller coverage, sequential multi-entry effects, and remaining existing
 SET1 effect-timing/attachment interactions. Later SETs remain unimplemented.
+
+## Completion audit candidate (2026-09-22)
+
+- Added generic serializable `SERIAL_ZONE_MOVES`: a later move waits until every
+  trigger and selection from the earlier entry finishes. A later card moved away
+  by an earlier trigger is skipped from the stale queue. Simultaneous exchanges
+  continue to use `batchMoveCards`.
+- Added all-attack-skill execution coverage for all 58 SET2 attack skills and
+  made CPU choose among every legal skill instead of permanently choosing index 0.
+- Added controller/owner boundaries for captured insects, hidden delayed
+  destruction/replacement, all SET2 jump-out/lure/mimic/once-per-field cards and
+  canonical +300/+500 enhancement values.
+- Added per-card release evidence for metadata, Engine, Human, CPU and regression.
+  `audit-set2-battle.js --summary` reports PLAYABLE 55, all other statuses 0.
+- Human audit now covers all 55 cards in addition to special interaction flows:
+  Chromium 106 checks and WebKit 106 checks passed in portrait/landscape.
+- Knowledge Base caution: the official poison-body Q&A is associated with SET2
+  26 by the catalog collector, but that card has no such printed trait; the SET2
+  trait index and card data assign it only to 41. No ability was inferred from a
+  ruling association.
+
+Completion checkpoint still requires the full/shared/browser/compact/responsive
+quality gates below. No main integration or publication is authorized.

@@ -56,5 +56,20 @@ runner.test('Ordered multi summon resolves each entry effect before moving the n
   runner.assertEqual(first.runtimeFlags.destroyAtEndTurn, state.turnNumber);
   runner.assertEqual(second.runtimeFlags.destroyAtEndTurn, state.turnNumber);
 });
+runner.test('Ordered move skips a later card moved away by an earlier entry continuation', function() {
+  var state = h.newGame({ rng: h.firstPlayerRng }); h.toMainPhase(state);
+  state.player('P1').hand = []; state.player('P1').food = [];
+  var firstDef = new global.CardDefinition({ id:'test_serial_entry_mover',name:'Serial mover',type:'INSECT',color:'RED',cost:1,baseHp:500,implementationStatus:'test',
+    skills:[{id:'serial_hit',name:'hit',timing:'ATTACK',baseAp:100,effects:[]}],
+    passiveAbilities:[{id:'serial_move',name:'move',timing:'ON_ENTER_FIELD',optional:false,effects:[{type:'MOVE_SELECTED',from:'FOOD',to:'HAND',count:1,cardType:'INSECT'}]}] });
+  var secondDef = new global.CardDefinition({ id:'test_serial_later',name:'Serial later',type:'INSECT',color:'RED',cost:1,baseHp:500,implementationStatus:'test',skills:[{id:'later_hit',name:'hit',timing:'ATTACK',baseAp:100,effects:[]}] });
+  global.cardRegistry.register(firstDef); global.cardRegistry.register(secondDef);
+  var first=h.addToFoodRaw(state,'P1',firstDef),second=h.addToFoodRaw(state,'P1',secondDef);
+  var spell=h.addToHandRaw(state,'P1',global.getCardDefinition('set1_116'));h.ensureCost(state,'P1',10);
+  global.useSpell(state,'P1',spell.instanceId);global.resolveCardSelection(state,'P1',[first.instanceId,second.instanceId],true);
+  runner.assertEqual(first.zone,'FIELD');runner.assertEqual(second.zone,'FOOD');
+  global.resolveCardSelection(state,'P1',[second.instanceId],true);
+  runner.assertEqual(second.zone,'HAND');runner.assertEqual(state.pendingEffect,null);
+});
 module.exports = runner;
 if (require.main === module) runner.runAll().then(function(r) { if (r.failed) process.exitCode = 1; });

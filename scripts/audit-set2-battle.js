@@ -14,7 +14,7 @@ var imageVerification = {
 };
 
 function audit(evidence) {
-  evidence = evidence || {};
+  evidence = Object.assign({}, require('./set2-battle-evidence.js'), evidence || {});
   var issues = [];
   var cards = records.filter(function (card) { return card.set === 'BOOSTER_SET_2'; }).map(function (card) {
     var number = Number(card.officialNumber.split('/')[0]);

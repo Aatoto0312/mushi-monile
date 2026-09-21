@@ -14,4 +14,15 @@ runner.test('Hiding resolves immediately without territory and field exit cancel
  var f=fixture(9),target=h.putInsectOnField(f.s,'P2','set1_003',{hp:1000});global.performAttack(f.s,f.a.instanceId,target.instanceId,'INSECT',f.skill.id);runner.assert(f.a.faceDown);
  global.moveCard(f.s,f.a.instanceId,'FIELD','HAND',{playerId:'P1'});runner.assert(!f.a.faceDown);runner.assertEqual(f.a.runtimeFlags.faceDownUntilTurn,undefined);
 });
+runner.test('A hidden temporary summon is still destroyed at end of turn and enters discard face up',function(){
+ var f=fixture(9),target=h.putInsectOnField(f.s,'P2','set1_003',{hp:1000});f.a.runtimeFlags.destroyAtEndTurn=f.s.turnNumber;
+ global.performAttack(f.s,f.a.instanceId,target.instanceId,'INSECT',f.skill.id);runner.assert(f.a.faceDown);
+ global.endTurn(f.s);runner.assertEqual(f.a.zone,'DISCARD');runner.assert(!f.a.faceDown);
+});
+runner.test('A shell replaces hidden temporary summon destruction without revealing it early',function(){
+ var f=fixture(9),target=h.putInsectOnField(f.s,'P2','set1_003',{hp:1000}),shell=h.addToHandRaw(f.s,'P1',global.getCardDefinition('set1_102'));
+ f.s.player('P1').hand.splice(f.s.player('P1').hand.indexOf(shell),1);shell.zone='FIELD';f.a.attachments.push(shell);f.a.runtimeFlags.destroyAtEndTurn=f.s.turnNumber;
+ global.performAttack(f.s,f.a.instanceId,target.instanceId,'INSECT',f.skill.id);global.endTurn(f.s);
+ runner.assertEqual(f.a.zone,'FIELD');runner.assert(f.a.faceDown);runner.assertEqual(shell.zone,'DISCARD');
+});
 module.exports=runner;if(require.main===module)runner.runAll();

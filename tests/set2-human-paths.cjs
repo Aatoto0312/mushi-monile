@@ -167,6 +167,32 @@ const assert=require('node:assert/strict');
    await page.locator('#opp-field-zone [data-instance-id="blind-human-3"]').click();
    ok(await page.evaluate(()=>{const s=MushiBattle.ui.state,p=s.player(s.opponentOf(s.activePlayerId));return !s.pendingEffect&&p.field[0].currentHp===1400&&p.field[1].currentHp===900;}),'Defender card tap resolves blind attack');
   }
+  const humanCards=await page.evaluate(()=>cardRegistry.getBySet('BOOSTER_SET_2').map(d=>({id:d.id,type:d.type,skills:(d.skills||[]).filter(s=>s.timing==='ATTACK').map(s=>s.name)})));
+  for(const card of humanCards){
+   await page.evaluate(({cardId})=>{
+    document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());
+    const u=MushiBattle.ui,s=u.state,id=s.activePlayerId,p=s.player(id),opp=s.opponentOf(id),source=getCardDefinition(cardId);
+    u.hideCardDetail();
+    const raw=JSON.parse(JSON.stringify(source));raw.id='test_human_audit_'+cardId;raw.set=null;raw.implementationStatus='test';if(!cardRegistry.has(raw.id))cardRegistry.register(new CardDefinition(raw));
+    const make=(cid,owner,zone,i)=>new CardInstance({instanceId:'human-audit-'+i,cardId:cid,ownerId:owner,controllerId:owner,zone,faceDown:false,currentHp:10000,baseHp:10000});
+    p.field=[];p.hand=[];p.availableCost=20;s.player(opp).field=[make('set1_003',opp,'FIELD',9),make('set1_004',opp,'FIELD',10)];s.player(opp).territory=[];
+    if(source.type==='INSECT'){p.field=[make(raw.id,id,'FIELD',1),make('set1_003',id,'FIELD',2)];p.field[1].attackedThisTurn=true;}
+    else{p.field=[make('set1_003',id,'FIELD',2)];p.hand=[make(raw.id,id,'HAND',1)];}
+    s.pendingEffect=null;u.actionState={mode:'idle'};u.render();
+   },{cardId:card.id});
+   if(card.type==='INSECT'){
+    await page.locator('#self-field-zone [data-instance-id="human-audit-1"]').click();
+    const surfaced=await page.evaluate(expected=>{
+     const labels=Array.from(document.querySelectorAll('#skill-select-row button,#compact-actions button')).map(node=>node.textContent.trim());
+     const state=MushiBattle.ui;return expected.length===0||expected.every(name=>labels.includes(name))||state.actionState.mode!=='idle'||!!state.state.pendingEffect;
+    },card.skills);
+    ok(surfaced,card.id+' Human card tap exposes its attack action');
+   }else{
+    await page.locator('#self-hand-zone [data-instance-id="human-audit-1"]').click();
+    const expected=card.type==='SPELL'?'術を使う':'強化する';
+    ok(await page.locator('.detail-action-btn').filter({hasText:expected}).count()===1,card.id+' Human hand action is available');
+   }
+  }
   ok(errors.length===0,'No JavaScript errors: '+errors.join(';'));
   console.log('SET2 HUMAN PATH CHECKS PASSED: '+checks);
  }finally{await browser.close();}

@@ -4,13 +4,13 @@ var TestRunner = require('./lib.js');
 var audit = require('../scripts/audit-set2-battle.js');
 var runner = new TestRunner();
 
-runner.test('SET2 audit covers 55 unique official identities without claiming implementation', function () {
+runner.test('SET2 audit covers 55 unique official identities with all release evidence gates', function () {
   var result = audit();
   runner.assertEqual(result.count, 55);
   runner.assertEqual(result.issues.length, 0);
   runner.assertEqual(result.counts.RESEARCHED, 0);
-  runner.assertEqual(result.counts.PARTIAL, 55);
-  runner.assertEqual(result.counts.PLAYABLE, 0);
+  runner.assertEqual(result.counts.PARTIAL, 0);
+  runner.assertEqual(result.counts.PLAYABLE, 55);
   runner.assertEqual(result.cards.filter(function (c) { return c.type === 'INSECT'; }).length, 45);
   runner.assertEqual(result.cards.filter(function (c) { return c.type === 'SPELL'; }).length, 5);
   runner.assertEqual(result.cards.filter(function (c) { return c.type === 'ENHANCEMENT'; }).length, 5);

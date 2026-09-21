@@ -6,9 +6,7 @@ var runner = new TestRunner();
 
 // Test copies bypass only the release-status gate, never the action/target/cost
 // rules. Production definitions remain PARTIAL until all release gates pass.
-global.cardRegistry.getBySet('BOOSTER_SET_2').filter(function (def) {
-  return def.implementationStatus === 'PARTIAL';
-}).forEach(function (definition) {
+global.cardRegistry.getBySet('BOOSTER_SET_2').forEach(function (definition) {
   var raw = JSON.parse(JSON.stringify(definition));
   raw.id = 'test_runtime_' + definition.id;
   raw.set = null;
