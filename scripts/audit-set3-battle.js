@@ -4,7 +4,7 @@ require('../js/cards/card-definition.js');
 var definitions = require('../js/cards/set3-cards.js');
 
 function audit(evidence) {
-  evidence = evidence || {};
+  evidence = Object.assign({}, require('./set3-battle-evidence.js'), evidence || {});
   var issues = [];
   var cards = records.filter(function (card) { return card.set === 'BOOSTER_SET_3'; }).map(function (card) {
     var def = definitions.definitionFromRecord(card);

@@ -322,8 +322,7 @@
       if(!trackedMoves.length)return;
       var trackedMove=trackedMoves.shift(),trackedHolder=findAnywhere(state,trackedMove.instanceId);
       if(!trackedHolder||trackedHolder.zone!==ZONES.DISCARD){resumeAfterSelection(state,{type:'TRACKED_REVIVAL_SEQUENCE',moves:trackedMoves,attachmentInstanceId:continuation.attachmentInstanceId,hostInstanceId:continuation.hostInstanceId});return;}
-      var revived=moveCard(state,trackedMove.instanceId,ZONES.DISCARD,ZONES.FIELD,{playerId:continuation.playerId,deferEntryEffects:true});
-      revived.runtimeFlags=revived.runtimeFlags||{};revived.runtimeFlags.suppressKeywordSkills=true;revived.runtimeFlags.trackedByAttachmentIds=(revived.runtimeFlags.trackedByAttachmentIds||[]).concat([continuation.attachmentInstanceId]);
+      var revived=moveCard(state,trackedMove.instanceId,ZONES.DISCARD,ZONES.FIELD,{playerId:continuation.playerId,deferEntryEffects:true,runtimeFlags:{suppressKeywordSkills:true,trackedByAttachmentIds:[continuation.attachmentInstanceId]}});
       if(revived.instanceId===continuation.hostInstanceId){
         var resolvingAttachment=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.attachmentInstanceId);
         if(resolvingAttachment){var resolving=state.player(continuation.playerId).resolving;resolving.splice(resolving.indexOf(resolvingAttachment),1);resolvingAttachment.zone=ZONES.FIELD;revived.attachments=revived.attachments||[];revived.attachments.push(resolvingAttachment);}
@@ -358,7 +357,8 @@
       var serialMoved = moveCard(state, nextMove.instanceId, nextMove.from, nextMove.to, {
         playerId: nextMove.playerId || currentHolder.playerId,
         faceDown: nextMove.faceDown,
-        deferEntryEffects: true
+        deferEntryEffects: true,
+        runtimeFlags: nextMove.runtimeFlags
       });
       if (nextMove.runtimeFlags) {
         serialMoved.runtimeFlags = serialMoved.runtimeFlags || {};
@@ -1416,6 +1416,8 @@
     var source = findInZone(state, playerId, ZONES.HAND, sourceId);
     var definition = source && getCardDefinition(source.cardId);
     if (!definition || definition.type !== CardTypes.ENHANCEMENT) { return []; }
+    var trackedRevival=(definition.enhancementEffects||[]).some(function(effect){return effect.type==='REVIVE_TWO_TRACKED_INSECTS';});
+    if(trackedRevival){var discardTargets=insectCards(state.player(playerId).discard);return discardTargets.length>=2?discardTargets:[];}
     var summons = (definition.enhancementEffects || []).some(function(effect) { return effect.type === 'SUMMON_ATTACHED_FROM_HAND'; });
     return insectCards(state.player(playerId)[summons ? 'hand' : 'field']).filter(function(card){
       var hostDef=getCardDefinition(card.cardId);

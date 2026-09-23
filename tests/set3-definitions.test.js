@@ -3,13 +3,13 @@ require('./engine-loader.js');
 var TestRunner=require('./lib.js'); var runner=new TestRunner();
 var records=require('../js/cards/full-catalog-data.js').filter(function(c){return c.set==='BOOSTER_SET_3';});
 
-runner.test('SET3 runtime preserves all 60 canonical identities and remains unreleased during audit',function(){
+runner.test('SET3 runtime preserves all 60 canonical identities and is released after completion audit',function(){
   runner.assertEqual(records.length,60);
   records.forEach(function(record,index){
     var def=global.getCardDefinition(record.id); runner.assert(def,record.id);
     runner.assertEqual(def.officialNumber,(index+1)+'/60');
     ['name','type','color','cost','baseHp'].forEach(function(key){runner.assertEqual(def[key],record[key],record.id+' '+key);});
-    runner.assertEqual(def.implementationStatus,'PARTIAL'); runner.assertEqual(def.isPlayable(),false);
+    runner.assertEqual(def.implementationStatus,'PLAYABLE'); runner.assertEqual(def.isPlayable(),true);
   });
 });
 

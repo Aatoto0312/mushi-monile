@@ -1,6 +1,6 @@
 # SET3 Battle audit / mechanic matrix
 
-Status: implementation audit in progress. No SET3 card is PLAYABLE yet.
+Status: completion candidate. All 60 cards have card-level evidence; final quality gate in progress.
 Authority: `docs/mushijingi-knowledge/SET3_CATALOG.md`, official SET3 Q&A,
 and `docs/mushijingi-knowledge/ENGINE_REQUIREMENTS.md`. Canonical metadata stays
 in `js/cards/full-catalog-data.js`.

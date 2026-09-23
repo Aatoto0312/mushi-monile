@@ -98,6 +98,7 @@
       card.usedSkills = [];
     }
     if (!def || !def.skills) { return; }
+    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills){return;}
     var gitai = def.skills.find(function (s) { return s.gitai === true; });
     if (!gitai) { return; }
     // 保護が予約される「次の相手ターン」のターン番号を計算。
@@ -205,6 +206,8 @@
 
     card.zone = toZone;
     card.controllerId = destPlayerId;
+
+    if(opts.runtimeFlags){card.runtimeFlags=card.runtimeFlags||{};Object.keys(opts.runtimeFlags).forEach(function(flag){card.runtimeFlags[flag]=opts.runtimeFlags[flag];});}
 
     if (card.zone === ZONES.FIELD) {
       card.faceDown = false;

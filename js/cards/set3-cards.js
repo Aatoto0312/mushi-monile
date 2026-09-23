@@ -90,8 +90,8 @@
     if(number===54){def.cardEffects=[{type:'VARIABLE_COST_DAMAGE',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,damagePerCost:300}];}
     if(number===51){def.cardEffects=[{type:'ALTERNATIVE_TERRITORY_COST',count:2},{type:'DESTROY_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true}];}
     if(number===60){def.cardEffects=[{type:'GRANT_TERRITORY_TRIGGER_BY_FAMILY_SUFFIX_UNTIL_EMPTY',familySuffixes:['バッタ科','イナゴ科'],skillId:'tobidasu'}];}
-    def.implementationStatus = root.CardStatus.PARTIAL;
-    def.implementationNotes = 'SET3 audit in progress; release gates have not passed.';
+    def.implementationStatus = root.CardStatus.PLAYABLE;
+    def.implementationNotes = 'SET3 completion audit passed: metadata, effect-specific Engine, Human UI, CPU and regression evidence are tracked in scripts/set3-battle-evidence.js.';
     return def;
   }
   function register(registry) {

@@ -998,7 +998,10 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   // この端末で人が解決すべき縄張りドロー選択か判定する。
   // CPU戦: P1だけが人間(P2はCPUが自動解決)。Hotseat/チュートリアル: どちらのplayerIdも人間が解決する。
   BattleUI.prototype._resolveTerritoryPickerPending = function (pending) {
-    if (!pending || pending.type !== 'TERRITORY_DRAW_SELECTION') {
+    var isDraw = pending && pending.type === 'TERRITORY_DRAW_SELECTION';
+    var isCardSelection = pending && pending.type === 'CARD_SELECTION' &&
+      (pending.candidateZones || []).indexOf('TERRITORY') !== -1;
+    if (!isDraw && !isCardSelection) {
       return null;
     }
     if (this.cpuMode && pending.playerId !== 'P1') {
@@ -1030,7 +1033,9 @@ BattleUI.prototype.renderPendingEffect = function (state) {
 
     var title = document.getElementById('territory-picker-title');
     if (title) {
-      title.textContent = '縄張りを1枚選択してください（現在 ' + territory.length + '枚）';
+      title.textContent = target.type === 'CARD_SELECTION' ?
+        '縄張りを' + target.maxSelections + '枚選択してください（' + (target.selectedIds || []).length + '/' + target.maxSelections + '）' :
+        '縄張りを1枚選択してください（現在 ' + territory.length + '枚）';
     }
     picker.style.display = 'flex';
   };
@@ -1338,7 +1343,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   // 防御側の縄張り選択
   BattleUI.prototype.onTerritoryCardTap = function (playerId, territoryInstance) {
     var pending = getPendingEffect(this.state);
-    if (!pending || pending.type !== 'TERRITORY_DRAW_SELECTION') {
+    if (!pending || (pending.type !== 'TERRITORY_DRAW_SELECTION' && pending.type !== 'CARD_SELECTION')) {
       return;
     }
     if (pending.playerId !== playerId) {
@@ -1346,7 +1351,8 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     }
 
     try {
-      resolveTerritoryDrawSelection(this.state, playerId, territoryInstance.instanceId);
+      if(pending.type==='CARD_SELECTION') { selectPendingCard(this.state,playerId,territoryInstance.instanceId); }
+      else { resolveTerritoryDrawSelection(this.state, playerId, territoryInstance.instanceId); }
       this.render();
     } catch (e) {
       showUserError(e);

@@ -95,7 +95,9 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.SPELL) return false;
       if (!def.isPlayable()) return false;
-      if (player.availableCost < global.getEffectiveCardCost(state, self.playerId, def)) return false;
+      var effectiveCost=global.getEffectiveCardCost(state,self.playerId,def);
+      var territoryAlternative=(def.cardEffects||[]).filter(function(effect){return effect.type==='ALTERNATIVE_TERRITORY_COST';})[0];
+      if (player.availableCost < effectiveCost && !(territoryAlternative&&player.territory.length>=(territoryAlternative.count||0))) return false;
 
       // 対象指定をCPUが安全に解決できないDEAL_DAMAGE_TO_TARGETは除外。
       // 各効果のtargetが OPPONENT_FIELD_INSECT で、かつ相手場に表向きの対象が
