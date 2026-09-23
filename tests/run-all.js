@@ -94,6 +94,8 @@ function requireAll() {
     ,require('./set3-discard-order.test.js')
     ,require('./set3-continuous-stats.test.js')
     ,require('./set3-attachment-rules.test.js')
+    ,require('./set3-food-reveal.test.js')
+    ,require('./set3-hide-spell.test.js')
   ];
 }
 

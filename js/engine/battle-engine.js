@@ -853,6 +853,10 @@
       var oppAtt=[]; opponent.field.forEach(function(host){(host.attachments||[]).forEach(function(att){oppAtt.push(att);});});
       return { options:oppAtt, exactSelections:1, zones:['ATTACHMENT'] };
     }
+    if(effect.type==='FLIP_OWN_FOOD_FACE_UP'){
+      var hiddenFood=player.food.filter(function(card){return card.faceDown;});
+      return {options:hiddenFood,minSelections:effect.minSelections,maxSelections:effect.maxSelections,zones:[ZONES.FOOD]};
+    }
     return null;
   }
 
@@ -1018,6 +1022,11 @@
         if (!restricted.instance.runtimeFlags.attackRestrictions) { restricted.instance.runtimeFlags.attackRestrictions = []; }
         restricted.instance.runtimeFlags.attackRestrictions.push({ sourceInstanceId: instance.instanceId, startTurn: state.turnNumber + (effect.startTurnOffset || 0), endTurn: state.turnNumber + (effect.endTurnOffset || 0), whileSourceOnField: false });
       }
+      if(effect.type==='HIDE_TARGET'){
+        var hiddenTarget=chosenTargetInstanceId&&findInZone(state,playerId,ZONES.FIELD,chosenTargetInstanceId);
+        if(!hiddenTarget||hiddenTarget.faceDown)throw new Error('表向きの自分の虫を選んでください');
+        hiddenTarget.faceDown=true;hiddenTarget.runtimeFlags=hiddenTarget.runtimeFlags||{};hiddenTarget.runtimeFlags.faceDownUntilTurn=state.turnNumber+(effect.endTurnOffset||0);
+      }
       if (effect.type === 'ADD_SELF_AS_FACE_UP_TERRITORY') {
         finalZone = ZONES.TERRITORY;
         instance.runtimeFlags = instance.runtimeFlags || {};
@@ -1050,6 +1059,9 @@
             };
           })
         });
+      }
+      if(effect.type==='FLIP_OWN_FOOD_FACE_UP'){
+        chosenIds.forEach(function(id){var food=findInZone(state,playerId,ZONES.FOOD,id);if(!food||!food.faceDown)throw new Error('裏向きの自分のエサを選んでください');food.faceDown=false;});
       }
       if (effect.type === 'EXCHANGE_INSECTS') {
         if (chosenIds.length !== 2) throw new Error('交換する2枚を選択してください');
@@ -1367,6 +1379,7 @@
     if (state.activePlayerId !== holder.playerId) { return []; }
     if (state.phase !== Phases.MAIN_PHASE) { return []; }
     var attacker = holder.instance;
+    if(attacker.faceDown){return [];}
     var attackerDef = getCardDefinition(attacker.cardId);
     var attackRequirements = attackerDef.attackRequirements || [];
     if (attackRequirements.some(function (requirement) {

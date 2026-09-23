@@ -69,6 +69,8 @@
     if (number === 55) {
       def.cardEffects = [{ type:'APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD', stat:'AP', amount:500, startTurnOffset:0, endTurnOffset:0 }];
     }
+    if(number===57){def.cardEffects=[{type:'FLIP_OWN_FOOD_FACE_UP',minSelections:0,maxSelections:3}];}
+    if(number===53){def.cardEffects=[{type:'HIDE_TARGET',target:'OWN_FIELD_INSECT',requiresTarget:true,endTurnOffset:1}];}
     def.implementationStatus = root.CardStatus.PARTIAL;
     def.implementationNotes = 'SET3 audit in progress; release gates have not passed.';
     return def;

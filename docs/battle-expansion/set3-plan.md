@@ -45,3 +45,7 @@ in `js/cards/full-catalog-data.js`.
   one-attachment/doubled-stat rules for 20. A SET2 capture regression exposed a
   reduced turn-state compatibility bug; the shared stat resolver now handles the
   real controller state during delayed end-turn cleanup.
+- Added optional up-to-three hidden-food reveal for 57 and next-opponent-turn-end
+  hiding for 53. The latter exposed that a face-down source could still request
+  legal attack targets; shared attack legality now rejects hidden attackers and
+  SET2 hiding regressions remain green.
