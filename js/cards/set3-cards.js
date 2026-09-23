@@ -36,6 +36,7 @@
     }
     if (number === 28) { def.passiveAbilities[0].effects = [{ type: 'CANNOT_ATTACK' }]; }
     if (number === 29) { def.summonAlternatives=[{type:'SACRIFICE_OWN_FIELD',count:1,requiredNameSuffix:'（幼虫）'}]; }
+    if (number === 30) { def.passiveAbilities[0].timing='ON_ENTER_FIELD';def.passiveAbilities[0].effects=[{type:'DESTROY_SELF_AT_END_TURN_UNLESS_ATTACHED'}]; }
     if (number === 32 || number === 35) {
       def.attackRequirements = [{ type: 'FACE_UP_FOOD_COLOR_COUNT', color: 'GREEN', minimum: number === 32 ? 3 : 2 }];
     }
@@ -47,6 +48,7 @@
     if (number === 34) {
       def.skills.push({ id: 'gitai', name: '擬態', baseAp: null, timing: 'PASSIVE', effects: [], gitai: true });
     }
+    if (number === 37) { def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].effects=[{type:'MOVE_CARD',target:'SOURCE',from:'DISCARD',to:'FOOD'}]; }
     if (number === 44) {
       def.skills.push({ id: record.id + '_lure', name: def.passiveAbilities[0].name, baseAp: null, timing: 'PASSIVE', effects: [], targetRule: 'FORCE_ATTACK_TO_SELF_GROUP' });
     }

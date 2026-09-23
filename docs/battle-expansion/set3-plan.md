@@ -36,3 +36,5 @@ in `js/cards/full-catalog-data.js`.
   no territory acquisition on effect destruction.
 - Added filtered alternative summon cost for 29; only an own visible larva is a
   legal sacrifice and normal available cost remains unchanged.
+- Added conditional end-turn self-destruction for 30 and attack/spell destruction
+  routing to owner food for 37, preserving the later territory continuation.

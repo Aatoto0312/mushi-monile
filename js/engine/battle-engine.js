@@ -362,6 +362,10 @@
           continuation:{type:'ENTRY_DAMAGE',sourceInstanceId:continuation.sourceInstanceId,targetPlayerId:state.opponentOf(continuation.playerId),
             amount:entryEffect.amount,suppressTerritoryDraw:!!entryEffect.suppressTerritoryDraw}});
       }
+      if (entryEffect.type === 'DESTROY_SELF_AT_END_TURN_UNLESS_ATTACHED') {
+        var scheduledSelf=findAnywhere(state,continuation.sourceInstanceId);
+        if(scheduledSelf&&scheduledSelf.zone===ZONES.FIELD){scheduledSelf.instance.runtimeFlags=scheduledSelf.instance.runtimeFlags||{};scheduledSelf.instance.runtimeFlags.destroyAtEndTurnUnlessAttached=state.turnNumber;}
+      }
       return;
     }
     if (continuation.type === 'TERRITORY_ATTACK_EFFECTS') {
@@ -2262,7 +2266,8 @@ function endTurn(state) {
     var delayedAttachments = [];
     state.playerOrder.forEach(function (pid) {
       state.player(pid).field.forEach(function (card) {
-        if (card.runtimeFlags && card.runtimeFlags.destroyAtEndTurn === state.turnNumber) { delayedDestructions.push(card.instanceId); }
+        if (card.runtimeFlags && (card.runtimeFlags.destroyAtEndTurn === state.turnNumber ||
+          (card.runtimeFlags.destroyAtEndTurnUnlessAttached === state.turnNumber && !(card.attachments||[]).length))) { delayedDestructions.push(card.instanceId); }
         (card.attachments || []).forEach(function(attachment) {
           if (attachment.runtimeFlags && attachment.runtimeFlags.destroyAtEndTurn === state.turnNumber) { delayedAttachments.push(attachment.instanceId); }
         });

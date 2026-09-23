@@ -89,6 +89,8 @@ function requireAll() {
     ,require('./set3-pre-attack-food.test.js')
     ,require('./set3-entry-damage.test.js')
     ,require('./set3-alternative-summon.test.js')
+    ,require('./set3-end-turn-condition.test.js')
+    ,require('./set3-destruction-routing.test.js')
   ];
 }
 

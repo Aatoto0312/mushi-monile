@@ -1,0 +1,4 @@
+'use strict';require('./engine-loader.js');var TestRunner=require('./lib.js');var h=require('./helpers.js');var runner=new TestRunner();
+runner.test('SET3 black beetle dies at end turn only while it has no enhancement',function(){var s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);var bare=h.putInsectOnField(s,'P1','set3_030');global.resolveFieldEntryEffects(s,bare.instanceId);global.endTurn(s);runner.assertEqual(bare.zone,'DISCARD');});
+runner.test('SET3 black beetle survives end turn with an enhancement',function(){var s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);var host=h.putInsectOnField(s,'P1','set3_030');host.attachments=[new global.CardInstance({instanceId:s.nextInstanceId(),cardId:'minomushi_no_kakuremino',ownerId:'P1',zone:'FIELD'})];global.resolveFieldEntryEffects(s,host.instanceId);global.endTurn(s);runner.assertEqual(host.zone,'FIELD');});
+module.exports=runner;if(require.main===module){runner.runAll();}
