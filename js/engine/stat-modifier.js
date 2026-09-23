@@ -45,6 +45,12 @@
       if(rule.type==='OWN_TERRITORY_COUNT'){total+=player.territory.length*rule.multiplier;}
       if(rule.type==='SOLE_VISIBLE_OWN_INSECT'&&player.field.filter(function(c){return !c.faceDown;}).length===1){total+=rule.amount;}
       if(rule.type==='RUNTIME_COUNTER'){total+=(instance.runtimeFlags&&instance.runtimeFlags[rule.flag])||0;}
+      if(rule.type==='OWN_FOOD_MINIMUM'&&player.food.length>=rule.minimum){total+=rule.amount;}
+      if(rule.type==='HAS_ATTACHMENT'&&(instance.attachments||[]).length>0){total+=rule.amount;}
+      if(rule.type==='OWN_DISCARD_COLORS'){
+        var present={};player.discard.forEach(function(card){var discarded=global.getCardDefinition(card.cardId);if(discarded){present[discarded.color]=true;}});
+        if((rule.colors||[]).every(function(color){return present[color];})){total+=rule.amount;}
+      }
     });
     return total;
   }

@@ -418,6 +418,18 @@
         var scheduledSelf=findAnywhere(state,continuation.sourceInstanceId);
         if(scheduledSelf&&scheduledSelf.zone===ZONES.FIELD){scheduledSelf.instance.runtimeFlags=scheduledSelf.instance.runtimeFlags||{};scheduledSelf.instance.runtimeFlags.destroyAtEndTurnUnlessAttached=state.turnNumber;}
       }
+      if (entryEffect.type === 'DESTROY_OWN_FOOD_OR_SELF_ON_ENTRY') {
+        var entryOwner=state.player(continuation.playerId);
+        var visibleFood=entryOwner.food.filter(function(card){return !card.faceDown;});
+        if(!visibleFood.length){
+          var unpaidSource=findInZone(state,continuation.playerId,ZONES.FIELD,continuation.sourceInstanceId);
+          if(unpaidSource){destroyInsect(state,unpaidSource.instanceId,'ABILITY',unpaidSource.instanceId,null,{skipTerritoryDraw:true});}
+          return;
+        }
+        createCardSelection(state,{playerId:continuation.playerId,options:visibleFood.map(function(card){return card.instanceId;}),
+          exactSelections:1,candidateZones:[ZONES.FOOD],selectionPurpose:'ENTRY_FOOD_DESTRUCTION',
+          continuation:{type:'DESTROY_ENTRY_FOOD',sourceInstanceId:continuation.sourceInstanceId,playerId:continuation.playerId}});
+      }
       return;
     }
     if (continuation.type === 'TERRITORY_ATTACK_EFFECTS') {
@@ -602,6 +614,21 @@
       if (modifier.type === 'OWN_FIELD_EMPTY' && !player.field.some(function (card) { return !card.faceDown; })) {
         cost += modifier.amount;
       }
+      if (modifier.type === 'PER_DISCARD_TRAIT') {
+        var traitCount = player.discard.filter(function (card) {
+          var discardedDef = getCardDefinition(card.cardId);
+          return discardedDef && (discardedDef.passiveAbilities || []).some(function (ability) { return ability.name === modifier.traitName; });
+        }).length;
+        cost += Math.floor(traitCount / (modifier.per || 1)) * modifier.amount;
+      }
+      if (modifier.type === 'PER_OPPONENT_FACE_UP_FOOD_COLOR') {
+        var opponent = state.player(state.opponentOf(playerId));
+        var opponentCount = opponent.food.filter(function (card) {
+          var opponentFoodDef = !card.faceDown && getCardDefinition(card.cardId);
+          return opponentFoodDef && opponentFoodDef.color === modifier.color;
+        }).length;
+        cost += Math.floor(opponentCount / modifier.per) * modifier.amount;
+      }
       if (modifier.minimum != null) { cost = Math.max(modifier.minimum, cost); }
     });
     state.playerOrder.forEach(function (controllerId) {
@@ -613,6 +640,7 @@
             if (effect.type !== 'CARD_COST_MODIFIER' || (effect.cardType && effect.cardType !== definition.type)) { return; }
             if (effect.affects !== 'ALL_PLAYERS' && controllerId !== playerId) { return; }
             if (effect.printedCostMax != null && definition.cost > effect.printedCostMax) { return; }
+            if (effect.minimumPrintedSkills != null && ((definition.skills || []).length + (definition.passiveAbilities || []).length) < effect.minimumPrintedSkills) { return; }
             if (effect.target === 'SELF' && context.targetInstanceId !== source.instanceId) { return; }
             cost += effect.amount;
             if (effect.minimum != null) { cost = Math.max(effect.minimum, cost); }
@@ -730,6 +758,11 @@
     if (!holder || holder.zone !== ZONES.FIELD) { return; }
     var definition = getCardDefinition(holder.instance.cardId);
     if(holder.instance.runtimeFlags&&holder.instance.runtimeFlags.suppressKeywordSkills){return;}
+    var entrySuppressed=state.playerOrder.some(function(playerId){return state.player(playerId).field.some(function(source){
+      if(source.faceDown){return false;}var sourceDefinition=getCardDefinition(source.cardId);
+      return (sourceDefinition&&sourceDefinition.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SUPPRESS_ENTER_FIELD_TRAITS';});});
+    });});
+    if(entrySuppressed){return;}
     (definition.passiveAbilities || []).filter(function(ability) { return ability.timing === 'ON_ENTER_FIELD'; }).forEach(function(ability) {
       (ability.effects || []).forEach(function(effect) {
         resumeAfterSelection(state, { type: 'FIELD_ENTRY_EFFECT', playerId: holder.playerId,
@@ -886,6 +919,11 @@
     if (c.type === 'DISCARD_SELECTED_HAND') {
       ids.forEach(function(id){var card=findInZone(state,c.targetPlayerId,ZONES.HAND,id);if(!card){throw new Error('手札のカードを選んでください');}moveCard(state,id,ZONES.HAND,ZONES.DISCARD,{playerId:c.targetPlayerId});});
       return ids;
+    }
+    if(c.type==='DESTROY_ENTRY_FOOD'){
+      var entryFood=findInZone(state,c.playerId,ZONES.FOOD,ids[0]);
+      if(!entryFood||entryFood.faceDown){throw new Error('表向きの自分のエサを選んでください');}
+      moveCard(state,entryFood.instanceId,ZONES.FOOD,ZONES.DISCARD,{playerId:c.playerId});return entryFood;
     }
     if (c.type === 'USE_SPELL') { return useSpell(state, pending.playerId, c.sourceInstanceId, ids); }
     if (c.type === 'USE_SPELL_TERRITORY_PAYMENT') {
@@ -1671,6 +1709,8 @@
   function hasTargetRule(state, instance, rule) {
     if (!instance || instance.faceDown) { return false; }
     if(instance.runtimeFlags&&instance.runtimeFlags.suppressKeywordSkills){return false;}
+    if (rule === 'FORCE_ATTACK_TO_SELF_GROUP' && instance.runtimeFlags &&
+        instance.runtimeFlags.forceAttackTargetUntilTurn === state.turnNumber) { return true; }
     var def = getCardDefinition(instance.cardId);
     if (!def || !def.skills) { return false; }
     var ownRule = def.skills.some(function (skill) {
@@ -1851,6 +1891,7 @@
       if (!defender) {
         throw new Error('対象の虫が場にいません');
       }
+      if (skill.bonusApAgainstAttached && (defender.attachments || []).length) { apVal += skill.bonusApAgainstAttached; result.apVal = apVal; }
       var attackerColor = getEffectiveColor(attacker);
       var defenderColor = getEffectiveColor(defender);
       var multiplier = getAttackMultiplier(state, attackerColor, defender);
@@ -1909,6 +1950,10 @@
               endTurn: state.turnNumber + (effect.endTurnOffset || 0),
               whileSourceOnField: effect.whileSourceOnField === true
             });
+          }
+          if (effect.type === 'FORCE_ATTACK_TO_SOURCE_NEXT_OPPONENT_TURN' && attacker.zone === ZONES.FIELD) {
+            attacker.runtimeFlags = attacker.runtimeFlags || {};
+            attacker.runtimeFlags.forceAttackTargetUntilTurn = state.turnNumber + 1;
           }
           if (effect.type === 'TURN_FACE_DOWN' && targetType === 'INSECT') {
             // すくい投げ等: 対象を裏向きにする (ターン終了時まで)
@@ -2084,7 +2129,8 @@
       if (attacker.zone !== ZONES.FIELD) { break; }
       var target=findInZone(state,state.opponentOf(continuation.playerId),ZONES.FIELD,targetInstanceIds[i]);
       if(!target||target.faceDown) { continue; }
-      var result={attackerInstanceId:attackerInstanceId,attacker:attacker,def:def,skill:skill,targetType:'INSECT',baseAp:skill.baseAp||0,apVal:getEffectiveAP(state,attacker,skill.baseAp||0,skill),multiplier:1,damageDealt:0,defenderDestroyed:false};
+      var multiAp=getEffectiveAP(state,attacker,skill.baseAp||0,skill);if(skill.bonusApAgainstAttached&&(defender.attachments||[]).length){multiAp+=skill.bonusApAgainstAttached;}
+      var result={attackerInstanceId:attackerInstanceId,attacker:attacker,def:def,skill:skill,targetType:'INSECT',baseAp:skill.baseAp||0,apVal:multiAp,multiplier:1,damageDealt:0,defenderDestroyed:false};
       result.multiplier=getAttackMultiplier(state,getEffectiveColor(attacker),target); result.finalAp=result.apVal*result.multiplier;
       applyDamage(state,attacker,target,Math.max(0,result.finalAp),'ATTACK',attacker.instanceId,target.instanceId,result);
       results.push(result);
@@ -2473,6 +2519,11 @@
     }
     if(effect.type==='OPTIONAL_SUPPRESS_OWN_TERRITORY'){
       var choicePlayer=sourceCard.controllerId||sourceCard.ownerId;state.pendingEffect={type:'CHOICE_SELECTION',playerId:choicePlayer,controller:choicePlayer,prompt:'縄張りを引かないことを選びますか',options:[{value:'SUPPRESS',label:'引かない'},{value:'ALLOW',label:'引く'}],continuation:{type:'SUPPRESS_DESTROYED_TERRITORY'}};
+    }
+    if(effect.type==='OPTIONAL_FLIP_OPPONENT_FOOD_ON_DESTROYED'){
+      var flipController=sourceCard.controllerId||sourceCard.ownerId,flipOpponent=state.opponentOf(flipController);
+      var flipCandidates=state.player(flipOpponent).food.filter(function(card){return !card.faceDown;});
+      if(flipCandidates.length){createCardSelection(state,{playerId:flipController,options:flipCandidates.map(function(card){return card.instanceId;}),minSelections:0,maxSelections:Math.min(effect.maxSelections||1,flipCandidates.length),candidateZones:[ZONES.FOOD],selectionPurpose:'FLIP_OPPONENT_FOOD',continuation:{type:'FLIP_SELECTED_FOOD',targetPlayerId:flipOpponent}});}
     }
     
     // MOVE_CARD: カード移動

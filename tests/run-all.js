@@ -108,6 +108,9 @@ function requireAll() {
     ,require('./set3-all-attack-skills.test.js')
     ,require('./set3-runtime-smoke.test.js')
     ,require('./set3-cpu-runtime.test.js')
+    ,require('./set4-definitions.test.js')
+    ,require('./set4-cost-modifiers.test.js')
+    ,require('./set4-entry-mechanics.test.js')
   ];
 }
 
