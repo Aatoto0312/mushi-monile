@@ -111,6 +111,8 @@ function requireAll() {
     ,require('./set4-definitions.test.js')
     ,require('./set4-cost-modifiers.test.js')
     ,require('./set4-entry-mechanics.test.js')
+    ,require('./set4-kabau.test.js')
+    ,require('./set4-targeting.test.js')
   ];
 }
 

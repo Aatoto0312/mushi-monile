@@ -1041,10 +1041,21 @@
         candidates = state.player(playerId).hand.filter(function (card) { var d = getCardDefinition(card.cardId); return (!effect.excludeSource || card.instanceId !== handInstanceId) && d && d.type === CardTypes.INSECT; });
       }
     });
-    return candidates.filter(function (card) {
+    candidates=candidates.filter(function (card) {
       var holder = findAnywhere(state, card.instanceId);
       return !holder || holder.zone !== ZONES.FIELD || holder.playerId === playerId || !hasPassiveEffect(card, 'OPPONENT_SPELL_TARGET_IMMUNITY');
     });
+    var opponentLures=state.player(state.opponentOf(playerId)).field.filter(function(card){return hasCardOrAttachmentEffect(card,'FORCE_OPPONENT_SPELL_TARGET_TO_SELF_GROUP');});
+    if(opponentLures.length&&candidates.some(function(card){return findAnywhere(state,card.instanceId).playerId!==playerId;})){
+      candidates=candidates.filter(function(card){return opponentLures.indexOf(card)!==-1;});
+    }
+    return candidates;
+  }
+
+  function hasCardOrAttachmentEffect(card,type){
+    if(!card||card.faceDown){return false;}
+    if(hasPassiveEffect(card,type)){return true;}
+    return (card.attachments||[]).some(function(attachment){var def=getCardDefinition(attachment.cardId);return (def&&def.enhancementEffects||[]).some(function(effect){return effect.type===type;});});
   }
 
   function hasPassiveEffect(card, type) {
@@ -2602,15 +2613,18 @@ function endTurn(state) {
     player.availableCost = 0;
     var delayedDestructions = [];
     var delayedAttachments = [];
+    var delayedReturns = [];
     state.playerOrder.forEach(function (pid) {
       state.player(pid).field.forEach(function (card) {
         if (card.runtimeFlags && (card.runtimeFlags.destroyAtEndTurn === state.turnNumber ||
           (card.runtimeFlags.destroyAtEndTurnUnlessAttached === state.turnNumber && !(card.attachments||[]).length))) { delayedDestructions.push(card.instanceId); }
+        if(card.runtimeFlags&&card.runtimeFlags.returnToOwnerHandAtEndTurn===state.turnNumber){delayedReturns.push(card.instanceId);}
         (card.attachments || []).forEach(function(attachment) {
           if (attachment.runtimeFlags && attachment.runtimeFlags.destroyAtEndTurn === state.turnNumber) { delayedAttachments.push(attachment.instanceId); }
         });
       });
     });
+    delayedReturns.forEach(function(instanceId){var returning=findAnywhere(state,instanceId);if(returning&&returning.zone===ZONES.FIELD){moveCard(state,instanceId,ZONES.FIELD,ZONES.HAND,{playerId:returning.playerId});}});
     delayedDestructions.forEach(function (instanceId) {
       destroyInsect(state, instanceId, 'EFFECT', null, null, { skipTerritoryDraw: true });
     });
@@ -2730,6 +2744,13 @@ function endTurn(state) {
     if (choice === 'USE_TOBIDASU') {
       // FIELD へ
       finalizeTerritoryDraw(state, ownerId, card, 'FIELD');
+      var territoryDef=getCardDefinition(card.cardId);
+      var territorySkill=territoryDef&&(territoryDef.skills||[]).filter(function(skill){return skill.id===pending.skillId;})[0];
+      if(territorySkill&&(territorySkill.effects||[]).some(function(effect){return effect.type==='KABAU_TERRITORY_ENTRY';})){
+        card.runtimeFlags=card.runtimeFlags||{};
+        card.runtimeFlags.forceAttackTargetUntilTurn=state.turnNumber;
+        card.runtimeFlags.returnToOwnerHandAtEndTurn=state.turnNumber;
+      }
     } else {
       // HAND へ
       finalizeTerritoryDraw(state, ownerId, card, 'HAND');
