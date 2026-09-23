@@ -49,3 +49,9 @@ in `js/cards/full-catalog-data.js`.
   hiding for 53. The latter exposed that a face-down source could still request
   legal attack targets; shared attack legality now rejects hidden attackers and
   SET2 hiding regressions remain green.
+- Added serial hand-to-field summoning for 50, serial per-player hand trimming
+  for 56, trigger-suppressed own territory acquisition for 52, and turn-windowed
+  cost modifiers for 58/59. All pending shapes are JSON-safe continuations.
+- Captured mimic entry exposed an owner/controller bug in shared field-entry
+  protection scheduling. Protection now follows the current controller's next
+  opponent turn; Starter/SET1 mimic and SET2 capture regressions remain covered.

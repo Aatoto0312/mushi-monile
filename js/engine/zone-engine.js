@@ -101,11 +101,11 @@
     var gitai = def.skills.find(function (s) { return s.gitai === true; });
     if (!gitai) { return; }
     // 保護が予約される「次の相手ターン」のターン番号を計算。
-    // 場へ出た瞬間のアクティブプレイヤーが所有者(自分のターン)なら +1、
+    // 場へ出た瞬間のアクティブプレイヤーが操作プレイヤー(自分のターン)なら +1、
     // 相手(相手ターン)なら +2(自分のターンを1手挟む)。
-    var ownerId = card.ownerId;
+    var controllerId = card.controllerId || card.ownerId;
     if (!card.runtimeFlags) { card.runtimeFlags = {}; }
-    if (state.activePlayerId === ownerId) {
+    if (state.activePlayerId === controllerId) {
       card.runtimeFlags.gitaiProtectedTurn = state.turnNumber + 1;
     } else {
       card.runtimeFlags.gitaiProtectedTurn = state.turnNumber + 2;

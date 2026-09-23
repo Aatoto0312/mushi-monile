@@ -1,0 +1,3 @@
+'use strict';require('./engine-loader.js');var TestRunner=require('./lib.js');var h=require('./helpers.js');var runner=new TestRunner();
+runner.test('captured mimic protection uses current controller opponent turn rather than owner',function(){var s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);var card=h.addToHandRaw(s,'P2',global.getCardDefinition('set3_034'));global.moveCard(s,card.instanceId,'HAND','DISCARD',{playerId:'P2'});global.moveCard(s,card.instanceId,'DISCARD','FIELD',{playerId:'P1'});runner.assertEqual(card.ownerId,'P2');runner.assertEqual(card.controllerId,'P1');runner.assertEqual(card.runtimeFlags.gitaiProtectedTurn,s.turnNumber+1);});
+module.exports=runner;if(require.main===module){runner.runAll();}

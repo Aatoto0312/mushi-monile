@@ -96,6 +96,11 @@ function requireAll() {
     ,require('./set3-attachment-rules.test.js')
     ,require('./set3-food-reveal.test.js')
     ,require('./set3-hide-spell.test.js')
+    ,require('./set3-bee-summon.test.js')
+    ,require('./set3-hand-trim.test.js')
+    ,require('./set3-territory-spell.test.js')
+    ,require('./set3-temporary-cost.test.js')
+    ,require('./set3-controller-entry.test.js')
   ];
 }
 

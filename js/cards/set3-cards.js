@@ -71,6 +71,11 @@
     }
     if(number===57){def.cardEffects=[{type:'FLIP_OWN_FOOD_FACE_UP',minSelections:0,maxSelections:3}];}
     if(number===53){def.cardEffects=[{type:'HIDE_TARGET',target:'OWN_FIELD_INSECT',requiresTarget:true,endTurnOffset:1}];}
+    if(number===50){def.cardEffects=[{type:'SUMMON_HAND_BY_FAMILY_SUFFIX',familySuffix:'バチ科',minSelections:0,maxSelections:2,destroyAtEndTurn:true}];}
+    if(number===56){def.cardEffects=[{type:'EACH_PLAYER_DISCARD_DOWN_TO',threshold:5,limit:4}];}
+    if(number===52){def.cardEffects=[{type:'DRAW_OWN_TERRITORY',suppressTerritoryTrigger:true}];}
+    if(number===58){def.cardEffects=[{type:'DISCOUNT_NEXT_CARD_TYPE',cardType:'ENHANCEMENT',amount:1,endTurnOffset:0}];}
+    if(number===59){def.cardEffects=[{type:'TAX_OPPONENT_CARD_TYPE',cardType:'SPELL',amount:1,startTurnOffset:1,endTurnOffset:1}];}
     def.implementationStatus = root.CardStatus.PARTIAL;
     def.implementationNotes = 'SET3 audit in progress; release gates have not passed.';
     return def;

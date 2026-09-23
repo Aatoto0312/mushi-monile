@@ -302,6 +302,11 @@
     }
     if (continuation.type === 'DESTROYED_CARD_FOLLOWUP') { finishDestroyedCard(state, continuation); return; }
     if (continuation.type === 'DESTROYED_TERRITORY_FOLLOWUP') { finishDestroyedTerritory(state, continuation.context); return; }
+    if(continuation.type==='DISCARD_HAND_DOWN_SEQUENCE'){
+      var discardPlayers=(continuation.playerIds||[]).slice();if(!discardPlayers.length)return;var discardId=discardPlayers.shift(),discardPlayer=state.player(discardId),needed=Math.max(0,discardPlayer.hand.length-continuation.limit);
+      if(needed){createCardSelection(state,{playerId:discardId,options:discardPlayer.hand.map(function(c){return c.instanceId;}),exactSelections:needed,candidateZones:[ZONES.HAND],selectionPurpose:'DISCARD_HAND_DOWN_TO',continuation:{type:'DISCARD_SELECTED_HAND',targetPlayerId:discardId}});state.pendingEffect.afterResolution={type:'DISCARD_HAND_DOWN_SEQUENCE',playerIds:discardPlayers,limit:continuation.limit};}
+      else{resumeAfterSelection(state,{type:'DISCARD_HAND_DOWN_SEQUENCE',playerIds:discardPlayers,limit:continuation.limit});}return;
+    }
     if (continuation.type === 'SERIAL_ZONE_MOVES') {
       var remainingMoves = (continuation.moves || []).slice();
       if (!remainingMoves.length) { return; }
@@ -557,6 +562,8 @@
         });
       });
     });
+    if(definition.type===CardTypes.ENHANCEMENT&&player.nextEnhancementDiscount&&state.turnNumber<=player.nextEnhancementDiscount.endTurn){cost-=player.nextEnhancementDiscount.amount;}
+    (player.runtimeCostModifiers||[]).forEach(function(modifier){if(definition.type===modifier.cardType&&state.turnNumber>=modifier.startTurn&&state.turnNumber<=modifier.endTurn){cost+=modifier.amount;}});
     return Math.max(0, cost);
   }
 
@@ -857,6 +864,10 @@
       var hiddenFood=player.food.filter(function(card){return card.faceDown;});
       return {options:hiddenFood,minSelections:effect.minSelections,maxSelections:effect.maxSelections,zones:[ZONES.FOOD]};
     }
+    if(effect.type==='SUMMON_HAND_BY_FAMILY_SUFFIX'){
+      var familyCandidates=insectCards(player.hand).filter(function(card){return getCardDefinition(card.cardId).tags.some(function(tag){return tag.slice(-effect.familySuffix.length)===effect.familySuffix;});});
+      return {options:familyCandidates,minSelections:effect.minSelections,maxSelections:effect.maxSelections,zones:[ZONES.HAND]};
+    }
     return null;
   }
 
@@ -1062,6 +1073,22 @@
       }
       if(effect.type==='FLIP_OWN_FOOD_FACE_UP'){
         chosenIds.forEach(function(id){var food=findInZone(state,playerId,ZONES.FOOD,id);if(!food||!food.faceDown)throw new Error('裏向きの自分のエサを選んでください');food.faceDown=false;});
+      }
+      if(effect.type==='SUMMON_HAND_BY_FAMILY_SUFFIX'){
+        var serial=chosenIds.map(function(id){var card=findInZone(state,playerId,ZONES.HAND,id),cardDef=card&&getCardDefinition(card.cardId);if(!cardDef||cardDef.type!==CardTypes.INSECT||!cardDef.tags.some(function(tag){return tag.slice(-effect.familySuffix.length)===effect.familySuffix;}))throw new Error('対象の科の虫を選んでください');return {instanceId:id,sourcePlayerId:playerId,playerId:playerId,from:ZONES.HAND,to:ZONES.FIELD,runtimeFlags:effect.destroyAtEndTurn?{destroyAtEndTurn:state.turnNumber}:null};});
+        resumeAfterSelection(state,{type:'SERIAL_ZONE_MOVES',moves:serial});
+      }
+      if(effect.type==='EACH_PLAYER_DISCARD_DOWN_TO'){
+        resumeAfterSelection(state,{type:'DISCARD_HAND_DOWN_SEQUENCE',playerIds:state.playerOrder.filter(function(pid){return state.player(pid).hand.length>=effect.threshold;}),limit:effect.limit});
+      }
+      if(effect.type==='DRAW_OWN_TERRITORY'){
+        if(state.player(playerId).territory.length){triggerTerritoryDrawSelection(state,playerId,{suppressTerritoryTrigger:!!effect.suppressTerritoryTrigger});}
+      }
+      if(effect.type==='DISCOUNT_NEXT_CARD_TYPE'&&effect.cardType==='ENHANCEMENT'){
+        state.player(playerId).nextEnhancementDiscount={amount:effect.amount,endTurn:state.turnNumber+(effect.endTurnOffset||0)};
+      }
+      if(effect.type==='TAX_OPPONENT_CARD_TYPE'){
+        var taxed=state.player(state.opponentOf(playerId));taxed.runtimeCostModifiers=taxed.runtimeCostModifiers||[];taxed.runtimeCostModifiers.push({cardType:effect.cardType,amount:effect.amount,startTurn:state.turnNumber+(effect.startTurnOffset||0),endTurn:state.turnNumber+(effect.endTurnOffset||0)});
       }
       if (effect.type === 'EXCHANGE_INSECTS') {
         if (chosenIds.length !== 2) throw new Error('交換する2枚を選択してください');
@@ -1315,6 +1342,7 @@
 
     // ---- PAY_COST ----
     player.availableCost -= enhancementCost;
+    if(player.nextEnhancementDiscount&&state.turnNumber<=player.nextEnhancementDiscount.endTurn){player.nextEnhancementDiscount=null;}
 
     if (summons) {
       moveCard(state, target.instanceId, ZONES.HAND, ZONES.FIELD, { playerId: playerId, deferEntryEffects: true });
