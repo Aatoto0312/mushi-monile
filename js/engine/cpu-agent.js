@@ -53,7 +53,9 @@
       return { type: 'RESOLVE_SPELL_TARGET_SELECTION', instanceId: pending.options[spellTargetIdx] };
     }
     if (pending.type === 'CHOICE_SELECTION') {
-      return pending.options.length ? { type: 'RESOLVE_CHOICE_SELECTION', value: pending.options[0].value } : null;
+      if(!pending.options.length)return null;
+      var choice=pending.selectionPurpose==='VARIABLE_COST_PAYMENT'?pending.options[pending.options.length-1]:pending.options[0];
+      return { type: 'RESOLVE_CHOICE_SELECTION', value: choice.value };
     }
     if (pending.type === 'CARD_SELECTION') {
       if (!pending.options || pending.options.length < pending.minSelections) return null;

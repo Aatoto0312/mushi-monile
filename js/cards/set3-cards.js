@@ -77,6 +77,7 @@
     if(number===52){def.cardEffects=[{type:'DRAW_OWN_TERRITORY',suppressTerritoryTrigger:true}];}
     if(number===58){def.cardEffects=[{type:'DISCOUNT_NEXT_CARD_TYPE',cardType:'ENHANCEMENT',amount:1,endTurnOffset:0}];}
     if(number===59){def.cardEffects=[{type:'TAX_OPPONENT_CARD_TYPE',cardType:'SPELL',amount:1,startTurnOffset:1,endTurnOffset:1}];}
+    if(number===54){def.cardEffects=[{type:'VARIABLE_COST_DAMAGE',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,damagePerCost:300}];}
     def.implementationStatus = root.CardStatus.PARTIAL;
     def.implementationNotes = 'SET3 audit in progress; release gates have not passed.';
     return def;

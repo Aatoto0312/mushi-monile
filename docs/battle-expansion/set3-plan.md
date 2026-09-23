@@ -58,3 +58,6 @@ in `js/cards/full-catalog-data.js`.
 - Added controller-owned optional territory suppression for 43. The choice is
   suspended inside destruction processing and mutates only the serialized
   destruction follow-up before it resumes.
+- Added target-then-payment continuation for variable-cost damage on 54. Printed
+  cost remains zero, generated available cost caps the selectable payment, and
+  CPU chooses through the same serializable choice shape.

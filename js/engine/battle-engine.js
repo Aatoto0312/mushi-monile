@@ -708,7 +708,9 @@
     if (!pending.options.some(function(option) { return option.value === value; })) { throw new Error('選択肢が不正です'); }
     var continuation = pending.continuation;
     if (!continuation) { throw new Error('未対応の選択継続です'); }
-    if(continuation.type==='SUPPRESS_DESTROYED_TERRITORY'){
+    if(continuation.type==='USE_SPELL_VARIABLE_COST'){
+      var paid=Number(value);state.pendingEffect=null;return useSpell(state,playerId,continuation.sourceInstanceId,continuation.targetInstanceId,{variablePayment:paid});
+    } else if(continuation.type==='SUPPRESS_DESTROYED_TERRITORY'){
       if(value==='SUPPRESS'&&pending.afterResolution&&pending.afterResolution.context){pending.afterResolution.context.skipTerritoryDraw=true;}
     } else if(continuation.type==='SET_SELF_COLOR'){
       var holder = findAnywhere(state, continuation.sourceInstanceId);
@@ -929,7 +931,8 @@
     return ignoreWeakness ? 1 : getAttributeMultiplier(attackerColor, getEffectiveColor(defender));
   }
 
-  function resolveSpellEffects(state, playerId, instance, def, chosenTargetInstanceId) {
+  function resolveSpellEffects(state, playerId, instance, def, chosenTargetInstanceId, spellOptions) {
+    spellOptions = spellOptions || {};
     var effects = def.cardEffects || [];
     var finalZone = ZONES.DISCARD;
     effects.forEach(function (effect) {
@@ -1016,6 +1019,12 @@
             options: insectCandidates.map(function (candidate) { return candidate.instanceId; })
           };
         }
+      }
+      if(effect.type==='VARIABLE_COST_DAMAGE'){
+        var variableTarget=findInZone(state,state.opponentOf(playerId),ZONES.FIELD,chosenTargetInstanceId);
+        if(!variableTarget||variableTarget.faceDown)throw new Error('表向きの相手虫を選んでください');
+        var variableDamage=(spellOptions.variablePayment||0)*effect.damagePerCost;
+        applyDamage(state,instance,variableTarget,variableDamage,'SPELL',instance.instanceId,variableTarget.instanceId,{effectId:effect.type,multiplier:1,apVal:variableDamage});
       }
       if (effect.type === 'RESET_ATTACK') {
         var resetTarget = chosenTargetInstanceId && findAnywhere(state, chosenTargetInstanceId);
@@ -1174,7 +1183,8 @@
   // 最終的な移動先は cardEffects によって決まり、基本は DISCARD。
   // VALIDATE 失敗は状態変更ゼロ。PAY_COST以降の内部エラーは rollback で
   // 「使用直前」へ復旧する。
-  function useSpell(state, playerId, handInstanceId, chosenTargetInstanceId) {
+  function useSpell(state, playerId, handInstanceId, chosenTargetInstanceId, spellOptions) {
+    spellOptions = spellOptions || {};
     // ---- VALIDATE ----
     assertNoPendingEffect(state);
     assertActivePlayer(state, playerId);
@@ -1231,6 +1241,13 @@
       }
     }
 
+    var variableCostEffect=(def.cardEffects||[]).filter(function(effect){return effect.type==='VARIABLE_COST_DAMAGE';})[0];
+    if(variableCostEffect&&spellOptions.variablePayment==null){
+      var paymentOptions=[];for(var payment=0;payment<=player.availableCost-spellCost;payment++){paymentOptions.push({value:String(payment),label:String(payment)+'コスト'});}
+      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,selectionPurpose:'VARIABLE_COST_PAYMENT',prompt:'追加で支払うコストを選んでください',options:paymentOptions,continuation:{type:'USE_SPELL_VARIABLE_COST',sourceInstanceId:handInstanceId,targetInstanceId:chosenTargetInstanceId}};
+      return {pending:true};
+    }
+
     // 使用直前の状態を記録(rollback用)。
     var snapshot = {
       availableCost: player.availableCost,
@@ -1240,7 +1257,7 @@
     // 解決開始。エラー時は使用直前の状態へ復旧する。
     try {
       // ---- PAY_COST ----
-      player.availableCost -= spellCost;
+      player.availableCost -= spellCost + (spellOptions.variablePayment || 0);
 
       var result = {
         spellInstance: held,
@@ -1253,7 +1270,7 @@
       moveCard(state, handInstanceId, ZONES.HAND, ZONES.RESOLVING, { playerId: playerId });
 
       // 最終移動先を cardEffects から決定
-      var finalZone = resolveSpellEffects(state, playerId, held, def, chosenTargetInstanceId);
+      var finalZone = resolveSpellEffects(state, playerId, held, def, chosenTargetInstanceId, spellOptions);
 
       // ---- FINALIZE: RESOLVING → 最終移動先 ----
       moveCard(state, held.instanceId, ZONES.RESOLVING, finalZone, { playerId: playerId });
