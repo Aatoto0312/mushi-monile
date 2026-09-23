@@ -113,6 +113,7 @@ function requireAll() {
     ,require('./set4-entry-mechanics.test.js')
     ,require('./set4-kabau.test.js')
     ,require('./set4-targeting.test.js')
+    ,require('./set4-attack-effects.test.js')
   ];
 }
 

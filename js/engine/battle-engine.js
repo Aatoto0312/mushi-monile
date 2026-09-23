@@ -1966,6 +1966,13 @@
             attacker.runtimeFlags = attacker.runtimeFlags || {};
             attacker.runtimeFlags.forceAttackTargetUntilTurn = state.turnNumber + 1;
           }
+          if(effect.type==='SET_ATTACK_TARGET_COLOR_UNTIL_END_TURN'&&targetType==='INSECT'&&defender.zone===ZONES.FIELD){
+            defender.runtimeFlags=defender.runtimeFlags||{};defender.runtimeFlags.colorOverride=effect.color;defender.runtimeFlags.colorOverrideUntil='UNTIL_END_OF_TURN';
+          }
+          if(effect.type==='TAX_OPPONENT_CARD_TYPE_AFTER_ATTACK'){
+            var attackTaxPlayer=state.player(opponentId);attackTaxPlayer.runtimeCostModifiers=attackTaxPlayer.runtimeCostModifiers||[];
+            attackTaxPlayer.runtimeCostModifiers.push({cardType:effect.cardType,amount:effect.amount,startTurn:state.turnNumber+(effect.startTurnOffset||0),endTurn:state.turnNumber+(effect.endTurnOffset||0)});
+          }
           if (effect.type === 'TURN_FACE_DOWN' && targetType === 'INSECT') {
             // すくい投げ等: 対象を裏向きにする (ターン終了時まで)
             defender.faceDown = true;

@@ -25,6 +25,7 @@ Source baseline: the 64-card catalog and official SET4 Q&A recorded by the local
 | 6, 8, 13 | `軍隊連携`, shared skills, delayed lure | new generic mechanic required | pending |
 | 7, 17, 26, 28, 30, 35, 39, 40, 42, 43, 45 | attack/trait special rules | audit and implementation pending | pending |
 | 26, 51 | opponent spell-target lure | implemented | `set4-targeting.test.js` |
+| 8, 17, 28 | attack color change, next-turn spell tax, once-per-stay | implemented | `set4-attack-effects.test.js` |
 | 46-50 | territory attachment and printed stat modifiers | implemented; card evidence pending | `set4-targeting.test.js` |
 | 52-54 | advanced attachment behavior | audit and implementation pending | pending |
 | 55-64 | spell selections, exchanges, mass destruction, attachment distribution | audit and implementation pending | pending |
