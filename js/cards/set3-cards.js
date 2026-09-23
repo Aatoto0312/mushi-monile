@@ -30,11 +30,20 @@
     if (number === 1) { def.skills[1].requirements = [{ type: 'TARGET_HAS_ATTACHMENT' }]; }
     if (number === 8) { def.skills[1].requirements = [{ type: 'OWN_FIELD_CARD_ID', cardId: 'set3_009' }]; }
     if (number === 9) { def.skills[1].requirements = [{ type: 'OWN_FIELD_CARD_ID', cardId: 'set3_008' }]; }
+    if (number === 6 || number === 7) {
+      def.skills[1].usageLimit = 'ONCE_PER_FIELD_STAY';
+      def.skills[1].effects = [{ type:'OPTIONAL_FLIP_OPPONENT_FOOD_BEFORE_DAMAGE' }];
+    }
     if (number === 28) { def.passiveAbilities[0].effects = [{ type: 'CANNOT_ATTACK' }]; }
+    if (number === 29) { def.summonAlternatives=[{type:'SACRIFICE_OWN_FIELD',count:1,requiredNameSuffix:'（幼虫）'}]; }
     if (number === 32 || number === 35) {
       def.attackRequirements = [{ type: 'FACE_UP_FOOD_COLOR_COUNT', color: 'GREEN', minimum: number === 32 ? 3 : 2 }];
     }
     if (number === 40) { def.skills[0].dynamicAp = { type: 'OWN_FIELD_COLOR_COUNT', color: 'GREEN', multiplier: 300 }; }
+    if (number === 39 || number === 42 || number === 45) {
+      def.passiveAbilities[0].timing='ON_ENTER_FIELD'; def.passiveAbilities[0].optional=true;
+      def.passiveAbilities[0].effects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',amount:number===39?300:number===42?200:100,ignoreAttributeMultiplier:true,suppressTerritoryDraw:true}];
+    }
     if (number === 34) {
       def.skills.push({ id: 'gitai', name: '擬態', baseAp: null, timing: 'PASSIVE', effects: [], gitai: true });
     }

@@ -30,3 +30,9 @@ in `js/cards/full-catalog-data.js`.
   tax, empty-field discount and enhancement-to-host discount.
 - CPU and Human labels/actions must use the same resolver. No status promotion is
   allowed until per-card metadata, Engine, Human, CPU and regression evidence is recorded.
+- Added pre-damage optional food concealment for 6/7 as a serializable Human/CPU
+  card selection, including decline and once-per-field-stay legality.
+- Added optional entry damage for 39/42/45 with visible-opponent targeting and
+  no territory acquisition on effect destruction.
+- Added filtered alternative summon cost for 29; only an own visible larva is a
+  legal sacrifice and normal available cost remains unchanged.

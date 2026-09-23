@@ -86,6 +86,9 @@ function requireAll() {
     ,require('./set3-cost-modifiers.test.js')
     ,require('./set3-attack-legality.test.js')
     ,require('./set3-definitions.test.js')
+    ,require('./set3-pre-attack-food.test.js')
+    ,require('./set3-entry-damage.test.js')
+    ,require('./set3-alternative-summon.test.js')
   ];
 }
 

@@ -354,6 +354,14 @@
           continuation: { type: 'MOVE_SELECTED', from: entryEffect.from, to: entryEffect.to, grantCost: entryEffect.grantCost,
             cardType: entryEffect.cardType, requiredTag: entryEffect.requiredTag, prohibitAttackThisTurn: entryEffect.prohibitAttackThisTurn } });
       }
+      if (entryEffect.type === 'DEAL_DAMAGE_TO_TARGET' && entryEffect.target === 'OPPONENT_FIELD_INSECT') {
+        var entryTargets = state.player(state.opponentOf(continuation.playerId)).field.filter(function(card){return !card.faceDown;});
+        if (!entryTargets.length) { return; }
+        createCardSelection(state,{playerId:continuation.playerId,options:entryTargets.map(function(card){return card.instanceId;}),
+          minSelections:continuation.optional?0:1,maxSelections:1,candidateZones:[ZONES.FIELD],selectionPurpose:'ON_ENTER_FIELD_DAMAGE',
+          continuation:{type:'ENTRY_DAMAGE',sourceInstanceId:continuation.sourceInstanceId,targetPlayerId:state.opponentOf(continuation.playerId),
+            amount:entryEffect.amount,suppressTerritoryDraw:!!entryEffect.suppressTerritoryDraw}});
+      }
       return;
     }
     if (continuation.type === 'TERRITORY_ATTACK_EFFECTS') {
@@ -573,7 +581,10 @@
     }
     (def.summonAlternatives || []).forEach(function (alternative) {
       if (alternative.type !== 'SACRIFICE_OWN_FIELD') { return; }
-      var candidates = player.field.filter(function (card) { return !card.faceDown; });
+      var candidates = player.field.filter(function (card) {
+        var candidateDef=!card.faceDown&&getCardDefinition(card.cardId);
+        return candidateDef && (!alternative.requiredNameSuffix || candidateDef.name.slice(-alternative.requiredNameSuffix.length)===alternative.requiredNameSuffix);
+      });
       if (candidates.length >= alternative.count) {
         methods.push({ type: 'ALTERNATIVE', alternativeType: alternative.type, count: alternative.count });
       }
@@ -605,7 +616,10 @@
     }
     var alternative = (def.summonAlternatives || [])[0];
     if (summonOptions.alternative && alternative && !summonOptions.selectedIds) {
-      var summonCandidates = player.field.filter(function (card) { return !card.faceDown; });
+      var summonCandidates = player.field.filter(function (card) {
+        var candidateDef=!card.faceDown&&getCardDefinition(card.cardId);
+        return candidateDef && (!alternative.requiredNameSuffix || candidateDef.name.slice(-alternative.requiredNameSuffix.length)===alternative.requiredNameSuffix);
+      });
       createCardSelection(state, { playerId: playerId, options: summonCandidates.map(function(c){return c.instanceId;}), exactSelections: alternative.count, candidateZones:[ZONES.FIELD], selectionPurpose:'ALTERNATIVE_SUMMON_COST', continuation:{type:'SUMMON_ALTERNATIVE',sourceInstanceId:handInstanceId} });
       return { pending:true };
     }
@@ -615,7 +629,7 @@
     }
     if (summonOptions.alternative) {
       if (!alternative || !summonOptions.selectedIds || summonOptions.selectedIds.length !== alternative.count) { throw new Error('代替召喚コストが不正です'); }
-      summonOptions.selectedIds.forEach(function(id){ var target=findInZone(state,playerId,ZONES.FIELD,id); if(!target||target.faceDown) throw new Error('代替コスト対象が不正です'); });
+      summonOptions.selectedIds.forEach(function(id){ var target=findInZone(state,playerId,ZONES.FIELD,id),targetDef=target&&getCardDefinition(target.cardId); if(!target||target.faceDown||(alternative.requiredNameSuffix&&targetDef.name.slice(-alternative.requiredNameSuffix.length)!==alternative.requiredNameSuffix)) throw new Error('代替コスト対象が不正です'); });
       summonOptions.selectedIds.forEach(function(id){ destroyInsect(state,id,'SACRIFICE',handInstanceId,null,{skipTerritoryDraw:true}); });
     } else {
       player.availableCost -= summonCost;
@@ -742,6 +756,22 @@
         if (!food || food.faceDown) { throw new Error('表向きのエサを選んでください'); }
         food.faceDown = true;
       });
+      return ids;
+    }
+    if (c.type === 'ATTACK_PRE_FLIP') {
+      ids.forEach(function(id) {
+        var food = findInZone(state, c.targetPlayerId, ZONES.FOOD, id);
+        if (!food || food.faceDown) { throw new Error('表向きのエサを選んでください'); }
+        food.faceDown = true;
+      });
+      return performAttack(state, c.attackerInstanceId, c.targetInstanceId, c.targetType, c.skillId, null, { preEffectsResolved:true });
+    }
+    if (c.type === 'ENTRY_DAMAGE') {
+      if (!ids.length) { return ids; }
+      var sourceHolder=findAnywhere(state,c.sourceInstanceId);
+      var target=findInZone(state,c.targetPlayerId,ZONES.FIELD,ids[0]);
+      if (!target || target.faceDown) { throw new Error('表向きの相手虫を選んでください'); }
+      applyDamage(state,sourceHolder&&sourceHolder.instance,target,c.amount,'EFFECT',c.sourceInstanceId,target.instanceId,{suppressTerritoryDraw:!!c.suppressTerritoryDraw,effectId:'ENTRY_DAMAGE',multiplier:1,apVal:c.amount});
       return ids;
     }
     if (c.type === 'USE_SPELL') { return useSpell(state, pending.playerId, c.sourceInstanceId, ids); }
@@ -1499,6 +1529,16 @@
       }
     } else {
       throw new Error('不正な攻撃対象タイプです: ' + targetType);
+    }
+
+    if (!attackOptions.preEffectsResolved && (skill.effects || []).some(function(effect) { return effect.type === 'OPTIONAL_FLIP_OPPONENT_FOOD_BEFORE_DAMAGE'; })) {
+      var preAttackFood = state.player(state.opponentOf(ap)).food.filter(function(card) { return !card.faceDown; });
+      if (preAttackFood.length) {
+        createCardSelection(state, { playerId:ap, options:preAttackFood.map(function(card){return card.instanceId;}), minSelections:0, maxSelections:1,
+          candidateZones:[ZONES.FOOD], selectionPurpose:'PRE_ATTACK_FLIP_OPPONENT_FOOD', continuation:{type:'ATTACK_PRE_FLIP', targetPlayerId:state.opponentOf(ap),
+            attackerInstanceId:attackerInstanceId,targetInstanceId:targetInstanceId,targetType:targetType,skillId:skill.id} });
+        return { pending:true };
+      }
     }
 
     // 追加コスト支払い
