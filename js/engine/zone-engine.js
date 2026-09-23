@@ -123,6 +123,14 @@
     if (flags && flags.gitaiProtectedTurn === state.turnNumber) {
       return false;
     }
+    if(flags&&flags.preventAttackTargetTurn===state.turnNumber){return false;}
+    if ((instance.attachments || []).some(function(attachment) {
+      var def=global.getCardDefinition&&global.getCardDefinition(attachment.cardId);
+      return def&&(def.enhancementEffects||[]).some(function(effect) {
+        return effect.type==='PREVENT_HOST_ATTACK_TARGET_NEXT_OPPONENT_TURN' && attachment.runtimeFlags &&
+          attachment.runtimeFlags.preventHostAttackTargetTurn===state.turnNumber;
+      });
+    })) { return false; }
     return true;
   }
 
@@ -183,6 +191,9 @@
         delete card.runtimeFlags.colorOverrideUntil;
         delete card.runtimeFlags.attackRestrictions;
         delete card.runtimeFlags.destroyAtEndTurn;
+        delete card.runtimeFlags.suppressKeywordSkills;
+        delete card.runtimeFlags.trackedByAttachmentIds;
+        delete card.runtimeFlags.territoryDrawApBonus;
         if (card.runtimeFlags.faceDownUntilTurn != null) {
           card.faceDown = false;
           delete card.runtimeFlags.faceDownUntilTurn;

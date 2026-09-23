@@ -61,3 +61,13 @@ in `js/cards/full-catalog-data.js`.
 - Added target-then-payment continuation for variable-cost damage on 54. Printed
   cost remains zero, generated available cost caps the selectable payment, and
   CPU chooses through the same serializable choice shape.
+- Added defender exchange for 31 as a suspended attack continuation: the old
+  defender and visible food insect move atomically, entry effects finish, then
+  damage resumes against that exact incoming instance. Private-zone ownership,
+  lure/gitai timing, invalid food and JSON restoration have focused coverage.
+- Added tracked revival enhancement state for 48, next-opponent-turn protection
+  and attack-destruction return for 49, selected territory alternative payment
+  for 51, and the game-duration family-suffix territory trigger grant for 60.
+- Added remaining continuous/entry mechanics for 21, 22, 24 and 33, plus the
+  optional territory attachment path for 46/47. These remain PARTIAL until the
+  card-by-card Human/CPU evidence gate is complete.

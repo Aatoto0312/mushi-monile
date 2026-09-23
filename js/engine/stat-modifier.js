@@ -44,6 +44,7 @@
       if((rule.stats||[]).indexOf(stat)===-1){return;}
       if(rule.type==='OWN_TERRITORY_COUNT'){total+=player.territory.length*rule.multiplier;}
       if(rule.type==='SOLE_VISIBLE_OWN_INSECT'&&player.field.filter(function(c){return !c.faceDown;}).length===1){total+=rule.amount;}
+      if(rule.type==='RUNTIME_COUNTER'){total+=(instance.runtimeFlags&&instance.runtimeFlags[rule.flag])||0;}
     });
     return total;
   }
@@ -172,6 +173,9 @@
       }
       if (owner) {
         owner.discard.push(att);
+      }
+      if (global.resolveAttachmentDiscarded) {
+        global.resolveAttachmentDiscarded(state, att);
       }
     }
   }

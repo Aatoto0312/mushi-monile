@@ -103,6 +103,8 @@ function requireAll() {
     ,require('./set3-controller-entry.test.js')
     ,require('./set3-territory-decline.test.js')
     ,require('./set3-variable-cost.test.js')
+    ,require('./set3-defender-exchange.test.js')
+    ,require('./set3-advanced-cards.test.js')
   ];
 }
 
