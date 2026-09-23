@@ -707,12 +707,18 @@
     }
     if (!pending.options.some(function(option) { return option.value === value; })) { throw new Error('選択肢が不正です'); }
     var continuation = pending.continuation;
-    if (!continuation || continuation.type !== 'SET_SELF_COLOR') { throw new Error('未対応の選択継続です'); }
-    var holder = findAnywhere(state, continuation.sourceInstanceId);
-    if (value !== 'DECLINE' && holder && holder.zone === ZONES.FIELD) {
-      holder.instance.runtimeFlags = holder.instance.runtimeFlags || {};
-      holder.instance.runtimeFlags.colorOverride = value;
-      holder.instance.runtimeFlags.colorOverrideUntil = 'UNTIL_END_OF_TURN';
+    if (!continuation) { throw new Error('未対応の選択継続です'); }
+    if(continuation.type==='SUPPRESS_DESTROYED_TERRITORY'){
+      if(value==='SUPPRESS'&&pending.afterResolution&&pending.afterResolution.context){pending.afterResolution.context.skipTerritoryDraw=true;}
+    } else if(continuation.type==='SET_SELF_COLOR'){
+      var holder = findAnywhere(state, continuation.sourceInstanceId);
+      if (value !== 'DECLINE' && holder && holder.zone === ZONES.FIELD) {
+        holder.instance.runtimeFlags = holder.instance.runtimeFlags || {};
+        holder.instance.runtimeFlags.colorOverride = value;
+        holder.instance.runtimeFlags.colorOverrideUntil = 'UNTIL_END_OF_TURN';
+      }
+    } else {
+      throw new Error('未対応の選択継続です');
     }
     state.pendingEffect = null;
     resumeAfterSelection(state, pending.afterResolution);
@@ -2262,6 +2268,9 @@
     if(effect.type==='OPPONENT_DISCARD_HAND'){
       var controllerId=sourceCard.controllerId||sourceCard.ownerId,discardPlayerId=state.opponentOf(controllerId),discardHand=state.player(discardPlayerId).hand;
       if(discardHand.length){createCardSelection(state,{playerId:discardPlayerId,options:discardHand.map(function(c){return c.instanceId;}),exactSelections:Math.min(effect.count||1,discardHand.length),candidateZones:[ZONES.HAND],selectionPurpose:'OPPONENT_HAND_DISCARD',continuation:{type:'DISCARD_SELECTED_HAND',targetPlayerId:discardPlayerId}});}
+    }
+    if(effect.type==='OPTIONAL_SUPPRESS_OWN_TERRITORY'){
+      var choicePlayer=sourceCard.controllerId||sourceCard.ownerId;state.pendingEffect={type:'CHOICE_SELECTION',playerId:choicePlayer,controller:choicePlayer,prompt:'縄張りを引かないことを選びますか',options:[{value:'SUPPRESS',label:'引かない'},{value:'ALLOW',label:'引く'}],continuation:{type:'SUPPRESS_DESTROYED_TERRITORY'}};
     }
     
     // MOVE_CARD: カード移動

@@ -101,6 +101,7 @@ function requireAll() {
     ,require('./set3-territory-spell.test.js')
     ,require('./set3-temporary-cost.test.js')
     ,require('./set3-controller-entry.test.js')
+    ,require('./set3-territory-decline.test.js')
   ];
 }
 

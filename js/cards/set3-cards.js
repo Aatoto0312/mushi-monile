@@ -58,6 +58,7 @@
       def.skills.push({ id: 'gitai', name: '擬態', baseAp: null, timing: 'PASSIVE', effects: [], gitai: true });
     }
     if (number === 37) { def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].effects=[{type:'MOVE_CARD',target:'SOURCE',from:'DISCARD',to:'FOOD'}]; }
+    if(number===43){def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].effects=[{type:'OPTIONAL_SUPPRESS_OWN_TERRITORY'}];}
     if (number === 44) {
       def.skills.push({ id: record.id + '_lure', name: def.passiveAbilities[0].name, baseAp: null, timing: 'PASSIVE', effects: [], targetRule: 'FORCE_ATTACK_TO_SELF_GROUP' });
     }

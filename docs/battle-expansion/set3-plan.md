@@ -55,3 +55,6 @@ in `js/cards/full-catalog-data.js`.
 - Captured mimic entry exposed an owner/controller bug in shared field-entry
   protection scheduling. Protection now follows the current controller's next
   opponent turn; Starter/SET1 mimic and SET2 capture regressions remain covered.
+- Added controller-owned optional territory suppression for 43. The choice is
+  suspended inside destruction processing and mutates only the serialized
+  destruction follow-up before it resumes.
