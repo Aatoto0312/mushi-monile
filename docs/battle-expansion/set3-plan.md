@@ -38,3 +38,10 @@ in `js/cards/full-catalog-data.js`.
   legal sacrifice and normal available cost remains unchanged.
 - Added conditional end-turn self-destruction for 30 and attack/spell destruction
   routing to owner food for 37, preserving the later territory continuation.
+- Added controller-aware hand discard continuations for 11/15/17. Official order
+  is covered: 17 discards before territory, while 11 discards after acquisition.
+  Captured cards use their current controller to identify the opponent.
+- Added continuous controller territory/sole-field stat rules for 12/26 and the
+  one-attachment/doubled-stat rules for 20. A SET2 capture regression exposed a
+  reduced turn-state compatibility bug; the shared stat resolver now handles the
+  real controller state during delayed end-turn cleanup.

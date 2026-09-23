@@ -91,6 +91,9 @@ function requireAll() {
     ,require('./set3-alternative-summon.test.js')
     ,require('./set3-end-turn-condition.test.js')
     ,require('./set3-destruction-routing.test.js')
+    ,require('./set3-discard-order.test.js')
+    ,require('./set3-continuous-stats.test.js')
+    ,require('./set3-attachment-rules.test.js')
   ];
 }
 

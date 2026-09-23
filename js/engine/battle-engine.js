@@ -266,7 +266,9 @@
       throw new Error('選択された縄張りが存在しません');
     }
 
+    var territoryHpSnapshots=state.player(playerId).field.map(function(fieldCard){return {card:fieldCard,maxHp:calculateMaxHp(fieldCard,state)};});
     moveCard(state, instanceId, ZONES.TERRITORY, ZONES.RESOLVING, { playerId: playerId });
+    territoryHpSnapshots.forEach(function(snapshot){snapshot.card.currentHp+=calculateMaxHp(snapshot.card,state)-snapshot.maxHp;});
     state.pendingEffect = null;
 
     log(state, state.turnNumber, playerId + ' は縄張りを選択した');
@@ -299,6 +301,7 @@
       return;
     }
     if (continuation.type === 'DESTROYED_CARD_FOLLOWUP') { finishDestroyedCard(state, continuation); return; }
+    if (continuation.type === 'DESTROYED_TERRITORY_FOLLOWUP') { finishDestroyedTerritory(state, continuation.context); return; }
     if (continuation.type === 'SERIAL_ZONE_MOVES') {
       var remainingMoves = (continuation.moves || []).slice();
       if (!remainingMoves.length) { return; }
@@ -380,6 +383,10 @@
             addStatModifier(state, source.instance, { sourceInstanceId: source.instance.instanceId,
               stat: stat, amount: effect.amount, duration: 'FIELD_STAY' });
           });
+        }
+        if (effect.type === 'DISCARD_OPPONENT_HAND_ON_TERRITORY') {
+          var discardPlayer=state.player(continuation.territoryPlayerId);
+          if(discardPlayer.hand.length){createCardSelection(state,{playerId:continuation.territoryPlayerId,options:discardPlayer.hand.map(function(c){return c.instanceId;}),exactSelections:effect.count||1,candidateZones:[ZONES.HAND],selectionPurpose:'OPPONENT_HAND_DISCARD',continuation:{type:'DISCARD_SELECTED_HAND',targetPlayerId:continuation.territoryPlayerId}});}
         }
       });
       if (attackSkill && (attackSkill.effects || []).some(function(effect) { return effect.type === 'OPTIONAL_FLIP_FOOD_ON_TERRITORY'; })) {
@@ -776,6 +783,10 @@
       var target=findInZone(state,c.targetPlayerId,ZONES.FIELD,ids[0]);
       if (!target || target.faceDown) { throw new Error('表向きの相手虫を選んでください'); }
       applyDamage(state,sourceHolder&&sourceHolder.instance,target,c.amount,'EFFECT',c.sourceInstanceId,target.instanceId,{suppressTerritoryDraw:!!c.suppressTerritoryDraw,effectId:'ENTRY_DAMAGE',multiplier:1,apVal:c.amount});
+      return ids;
+    }
+    if (c.type === 'DISCARD_SELECTED_HAND') {
+      ids.forEach(function(id){var card=findInZone(state,c.targetPlayerId,ZONES.HAND,id);if(!card){throw new Error('手札のカードを選んでください');}moveCard(state,id,ZONES.HAND,ZONES.DISCARD,{playerId:c.targetPlayerId});});
       return ids;
     }
     if (c.type === 'USE_SPELL') { return useSpell(state, pending.playerId, c.sourceInstanceId, ids); }
@@ -1221,7 +1232,10 @@
     var definition = source && getCardDefinition(source.cardId);
     if (!definition || definition.type !== CardTypes.ENHANCEMENT) { return []; }
     var summons = (definition.enhancementEffects || []).some(function(effect) { return effect.type === 'SUMMON_ATTACHED_FROM_HAND'; });
-    return insectCards(state.player(playerId)[summons ? 'hand' : 'field']);
+    return insectCards(state.player(playerId)[summons ? 'hand' : 'field']).filter(function(card){
+      var hostDef=getCardDefinition(card.cardId);
+      return hostDef.attachmentLimit==null || (card.attachments||[]).length<hostDef.attachmentLimit;
+    });
   }
   // 自分の虫に強化カードを装着する。
   // 強化カードは HAND から対象虫の attachments へ移動する。
@@ -2113,6 +2127,13 @@
     var defenderPlayerId = context.defenderPlayerId;
     resolveOnDestroyedTriggers(state, destroyedCard, sourceType, sourceInstanceId, context.attachmentsSnapshot);
 
+    if(state.pendingEffect){resumeAfterSelection(state,{type:'DESTROYED_TERRITORY_FOLLOWUP',context:context});return destroyedCard;}
+    return finishDestroyedTerritory(state,context);
+  }
+
+  function finishDestroyedTerritory(state, context) {
+    var destroyedCard=context.destroyedCard,sourceType=context.sourceType,sourceInstanceId=context.sourceInstanceId,defenderPlayerId=context.defenderPlayerId;
+
     // 攻撃由来の破壊のみ、相手(破壊された側)が縄張りから1枚を手札へ加える
     if (sourceType === 'ATTACK' && !context.skipTerritoryDraw) {
       var suppressed = state.player(defenderPlayerId).field.some(function(card){return (card.attachments||[]).some(function(att){var d=getCardDefinition(att.cardId);return d&&(d.enhancementEffects||[]).some(function(e){return e.type==='SUPPRESS_TERRITORY_DRAW_WHILE_ATTACHED';});});});
@@ -2176,7 +2197,9 @@
   function checkCondition(state, card, condition, sourceType, sourceInstanceId) {
     if (!condition) { return true; }
     if (condition.type === 'DESTROYED_BY_ATTACK') {
-      return sourceType === 'ATTACK';
+      if(sourceType!=='ATTACK'){return false;}
+      if(condition.opponentHandMinimum!=null){var controller=card.controllerId||card.ownerId;return state.player(state.opponentOf(controller)).hand.length>=condition.opponentHandMinimum;}
+      return true;
     }
     if (condition.type === 'DESTROYED_BY_OPPONENT_ATTACK') {
       return sourceType === 'ATTACK' && sourceInstanceId && 
@@ -2194,6 +2217,10 @@
         marked.instance.runtimeFlags = marked.instance.runtimeFlags || {};
         marked.instance.runtimeFlags.destroyOnAttackTurn = state.turnNumber + (state.activePlayerId === sourceCard.ownerId ? 2 : 1);
       }
+    }
+    if(effect.type==='OPPONENT_DISCARD_HAND'){
+      var controllerId=sourceCard.controllerId||sourceCard.ownerId,discardPlayerId=state.opponentOf(controllerId),discardHand=state.player(discardPlayerId).hand;
+      if(discardHand.length){createCardSelection(state,{playerId:discardPlayerId,options:discardHand.map(function(c){return c.instanceId;}),exactSelections:Math.min(effect.count||1,discardHand.length),candidateZones:[ZONES.HAND],selectionPurpose:'OPPONENT_HAND_DISCARD',continuation:{type:'DISCARD_SELECTED_HAND',targetPlayerId:discardPlayerId}});}
     }
     
     // MOVE_CARD: カード移動
@@ -2348,7 +2375,8 @@ function endTurn(state) {
     allPlayers.forEach(function (pid) {
       var pl = state.player(pid);
       pl.field.slice().forEach(function (c) {
-        var previousMaxHp = calculateMaxHp(c, { turnNumber: state.turnNumber - 1 });
+        var previousTurnState = { turnNumber: state.turnNumber - 1, playerOrder: state.playerOrder, player: state.player.bind(state) };
+        var previousMaxHp = calculateMaxHp(c, previousTurnState);
         c.currentHp += calculateMaxHp(c, state) - previousMaxHp;
         global.pruneStatModifiers(state, c, false);
         if (c.currentHp <= 0) { destroyInsect(state, c.instanceId, 'EFFECT', null, null, { skipTerritoryDraw: true }); }

@@ -27,12 +27,21 @@
       def.passiveAbilities[0].effects = [{ type: 'CARD_COST_MODIFIER', cardType: 'ENHANCEMENT', target: 'SELF', amount: -1, minimum: 0 }];
     }
     if (number === 19) { def.costModifiers = [{ type: 'OWN_FIELD_EMPTY', amount: -1, minimum: 0 }]; }
+    if(number===20){def.attachmentLimit=1;def.attachmentStatMultiplier=2;}
+    if(number===12){def.continuousStatModifiers=[{type:'OWN_TERRITORY_COUNT',stats:['HP','AP'],multiplier:-100}];}
+    if(number===26){def.continuousStatModifiers=[{type:'SOLE_VISIBLE_OWN_INSECT',stats:['AP'],amount:100}];}
     if (number === 1) { def.skills[1].requirements = [{ type: 'TARGET_HAS_ATTACHMENT' }]; }
     if (number === 8) { def.skills[1].requirements = [{ type: 'OWN_FIELD_CARD_ID', cardId: 'set3_009' }]; }
     if (number === 9) { def.skills[1].requirements = [{ type: 'OWN_FIELD_CARD_ID', cardId: 'set3_008' }]; }
     if (number === 6 || number === 7) {
       def.skills[1].usageLimit = 'ONCE_PER_FIELD_STAY';
       def.skills[1].effects = [{ type:'OPTIONAL_FLIP_OPPONENT_FOOD_BEFORE_DAMAGE' }];
+    }
+    if (number === 11) { def.skills[1].usageLimit='ONCE_PER_FIELD_STAY';def.skills[1].effects=[{type:'DISCARD_OPPONENT_HAND_ON_TERRITORY',count:1}]; }
+    if (number === 15 || number === 17) {
+      def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].condition={type:'DESTROYED_BY_ATTACK'};
+      if(number===15){def.passiveAbilities[0].condition.opponentHandMinimum=5;}
+      def.passiveAbilities[0].effects=[{type:'OPPONENT_DISCARD_HAND',count:1}];
     }
     if (number === 28) { def.passiveAbilities[0].effects = [{ type: 'CANNOT_ATTACK' }]; }
     if (number === 29) { def.summonAlternatives=[{type:'SACRIFICE_OWN_FIELD',count:1,requiredNameSuffix:'（幼虫）'}]; }

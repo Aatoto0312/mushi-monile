@@ -34,6 +34,20 @@
     return true;
   }
 
+  function getContinuousStatTotal(state, instance, stat) {
+    if (!state || !state.playerOrder || typeof state.player !== 'function' || !global.getCardDefinition) { return 0; }
+    var controllerId = null;
+    state.playerOrder.some(function(pid){if(state.player(pid).field.indexOf(instance)!==-1){controllerId=pid;return true;}return false;});
+    if (!controllerId) { controllerId=instance.ownerId; }
+    var player=state.player(controllerId),def=global.getCardDefinition(instance.cardId),total=0;
+    (def&&def.continuousStatModifiers||[]).forEach(function(rule){
+      if((rule.stats||[]).indexOf(stat)===-1){return;}
+      if(rule.type==='OWN_TERRITORY_COUNT'){total+=player.territory.length*rule.multiplier;}
+      if(rule.type==='SOLE_VISIBLE_OWN_INSECT'&&player.field.filter(function(c){return !c.faceDown;}).length===1){total+=rule.amount;}
+    });
+    return total;
+  }
+
   // 有効な AP 修飾を合算した総AP量を返す。
   // baseAp は通常、技の baseAp。攻撃のたびに再計算される。
   function getEffectiveAP(state, instance, baseAp, skill) {
@@ -60,14 +74,16 @@
         }) ? rule.bonus : 0);
       }
     }
-    var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP');
+    var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP') + getContinuousStatTotal(state,instance,'AP');
     var attachments = instance.attachments || [];
+    var hostDefinition=global.getCardDefinition?global.getCardDefinition(instance.cardId):null;
+    var attachmentMultiplier=hostDefinition&&hostDefinition.attachmentStatMultiplier||1;
     for (var i = 0; i < attachments.length; i++) {
       var def = global.getCardDefinition ? global.getCardDefinition(attachments[i].cardId) : null;
       var effects = def && def.enhancementEffects ? def.enhancementEffects : [];
       for (var j = 0; j < effects.length; j++) {
         if (effects[j] && effects[j].stat === 'AP') {
-          total += effects[j].amount || 0;
+          total += (effects[j].amount || 0)*attachmentMultiplier;
         }
       }
     }
@@ -79,9 +95,11 @@
   function calculateMaxHp(instance, state) {
     var base = instance.baseHp != null ? instance.baseHp : 0;
     var hpBonus = (instance.modifiers && instance.modifiers.hpBonus) || 0;
-    var sum = base + hpBonus + (state ? getStatModifierTotal(state, instance, 'HP') : 0);
+    var sum = base + hpBonus + (state ? getStatModifierTotal(state, instance, 'HP') + getContinuousStatTotal(state,instance,'HP') : 0);
     // 紐付く強化カードの HP 修飾
     var attachments = instance.attachments || [];
+    var hostDefinition=global.getCardDefinition?global.getCardDefinition(instance.cardId):null;
+    var attachmentMultiplier=hostDefinition&&hostDefinition.attachmentStatMultiplier||1;
     for (var i = 0; i < attachments.length; i++) {
       var att = attachments[i];
       var def = global.getCardDefinition ? global.getCardDefinition(att.cardId) : null;
@@ -89,7 +107,7 @@
       for (var j = 0; j < def.enhancementEffects.length; j++) {
         var e = def.enhancementEffects[j];
         if (e && e.stat === 'HP') {
-          sum += (e.amount || 0);
+          sum += (e.amount || 0)*attachmentMultiplier;
         }
       }
     }
