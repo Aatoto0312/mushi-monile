@@ -63,10 +63,17 @@
       if (!getPlayerZoneArray(state, move.playerId || holder.playerId, move.to)) { throw new Error('batchMoveCards: invalid destination'); }
       return { move: move, holder: holder };
     });
-    return prepared.map(function (entry) {
+    var moved = prepared.map(function (entry) {
       var move = entry.move;
-      return moveCard(state, move.instanceId, move.from, move.to, { playerId: move.playerId || entry.holder.playerId, faceDown: move.faceDown });
+      return moveCard(state, move.instanceId, move.from, move.to, { playerId: move.playerId || entry.holder.playerId, faceDown: move.faceDown, deferEntryEffects: true });
     });
+    // Exchanges must finish moving both cards before entry candidates are read.
+    prepared.forEach(function(entry, index) {
+      if (entry.move.from !== ZONES.FIELD && entry.move.to === ZONES.FIELD && global.resolveFieldEntryEffects) {
+        global.resolveFieldEntryEffects(state, moved[index].instanceId);
+      }
+    });
+    return moved;
   }
 
   // カードを移動させる。fromZone/toZone は対象プレイヤーのゾーン。
@@ -79,16 +86,27 @@
   // 相手ターンで有効化する(2026年1月15日の公式裁定に準拠)。
   function setupFieldEntry(state, card, fromZone) {
     card.enteredFieldTurn = state.turnNumber;
+    if (card.runtimeFlags) {
+      delete card.runtimeFlags.damagePreventionTurns;
+      delete card.runtimeFlags.damageShields;
+    }
     var def = global.getCardDefinition ? global.getCardDefinition(card.cardId) : null;
+    if (def && def.type === CardTypes.INSECT) {
+      card.currentHp = def.baseHp;
+      card.baseHp = def.baseHp;
+      card.attackedThisTurn = false;
+      card.usedSkills = [];
+    }
     if (!def || !def.skills) { return; }
+    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills){return;}
     var gitai = def.skills.find(function (s) { return s.gitai === true; });
     if (!gitai) { return; }
     // 保護が予約される「次の相手ターン」のターン番号を計算。
-    // 場へ出た瞬間のアクティブプレイヤーが所有者(自分のターン)なら +1、
+    // 場へ出た瞬間のアクティブプレイヤーが操作プレイヤー(自分のターン)なら +1、
     // 相手(相手ターン)なら +2(自分のターンを1手挟む)。
-    var ownerId = card.ownerId;
+    var controllerId = card.controllerId || card.ownerId;
     if (!card.runtimeFlags) { card.runtimeFlags = {}; }
-    if (state.activePlayerId === ownerId) {
+    if (state.activePlayerId === controllerId) {
       card.runtimeFlags.gitaiProtectedTurn = state.turnNumber + 1;
     } else {
       card.runtimeFlags.gitaiProtectedTurn = state.turnNumber + 2;
@@ -106,6 +124,14 @@
     if (flags && flags.gitaiProtectedTurn === state.turnNumber) {
       return false;
     }
+    if(flags&&flags.preventAttackTargetTurn===state.turnNumber){return false;}
+    if ((instance.attachments || []).some(function(attachment) {
+      var def=global.getCardDefinition&&global.getCardDefinition(attachment.cardId);
+      return def&&(def.enhancementEffects||[]).some(function(effect) {
+        return effect.type==='PREVENT_HOST_ATTACK_TARGET_NEXT_OPPONENT_TURN' && attachment.runtimeFlags &&
+          attachment.runtimeFlags.preventHostAttackTargetTurn===state.turnNumber;
+      });
+    })) { return false; }
     return true;
   }
 
@@ -118,6 +144,8 @@
 
     var sourcePlayerId = holder.playerId;
     var destPlayerId = opts.playerId || sourcePlayerId;
+    // Control may change on the field; private zones always belong to the owner.
+    if (toZone !== ZONES.FIELD && holder.instance.ownerId) { destPlayerId = holder.instance.ownerId; }
 
     var fromArr = getPlayerZoneArray(state, sourcePlayerId, fromZone);
     var toArr = getPlayerZoneArray(state, destPlayerId, toZone);
@@ -156,11 +184,30 @@
       }
       // 一時的な statModifier を全消去 (場を離れたら消える)
       pruneStatModifiers(state, card, true);
+      if (card.runtimeFlags) {
+        delete card.runtimeFlags.unhealableDamage;
+        delete card.runtimeFlags.damageDoesNotHeal;
+        delete card.runtimeFlags.destroyOnAttackTurn;
+        delete card.runtimeFlags.colorOverride;
+        delete card.runtimeFlags.colorOverrideUntil;
+        delete card.runtimeFlags.attackRestrictions;
+        delete card.runtimeFlags.destroyAtEndTurn;
+        delete card.runtimeFlags.suppressKeywordSkills;
+        delete card.runtimeFlags.trackedByAttachmentIds;
+        delete card.runtimeFlags.territoryDrawApBonus;
+        if (card.runtimeFlags.faceDownUntilTurn != null) {
+          card.faceDown = false;
+          delete card.runtimeFlags.faceDownUntilTurn;
+        }
+      }
       // 紐付く強化カード(attachment)を所有者の DISCARD へ移動
       discardAllAttachments(state, card);
     }
 
     card.zone = toZone;
+    card.controllerId = destPlayerId;
+
+    if(opts.runtimeFlags){card.runtimeFlags=card.runtimeFlags||{};Object.keys(opts.runtimeFlags).forEach(function(flag){card.runtimeFlags[flag]=opts.runtimeFlags[flag];});}
 
     if (card.zone === ZONES.FIELD) {
       card.faceDown = false;
@@ -177,6 +224,9 @@
     }
 
     toArr.push(card);
+    if (fromZone !== ZONES.FIELD && toZone === ZONES.FIELD && !opts.deferEntryEffects && global.resolveFieldEntryEffects) {
+      global.resolveFieldEntryEffects(state, card.instanceId);
+    }
     return card;
   }
 

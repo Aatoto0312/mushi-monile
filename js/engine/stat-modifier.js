@@ -34,6 +34,28 @@
     return true;
   }
 
+  function getContinuousStatTotal(state, instance, stat) {
+    if (!state || !state.playerOrder || typeof state.player !== 'function' || !global.getCardDefinition) { return 0; }
+    var controllerId = null;
+    state.playerOrder.some(function(pid){if(state.player(pid).field.indexOf(instance)!==-1){controllerId=pid;return true;}return false;});
+    if (!controllerId) { controllerId=instance.ownerId; }
+    if(global.areInsectKeywordSkillsSuppressed&&global.areInsectKeywordSkillsSuppressed(state,instance)){return 0;}
+    var player=state.player(controllerId),def=global.getCardDefinition(instance.cardId),total=0;
+    (def&&def.continuousStatModifiers||[]).forEach(function(rule){
+      if((rule.stats||[]).indexOf(stat)===-1){return;}
+      if(rule.type==='OWN_TERRITORY_COUNT'){total+=player.territory.length*rule.multiplier;}
+      if(rule.type==='SOLE_VISIBLE_OWN_INSECT'&&player.field.filter(function(c){return !c.faceDown;}).length===1){total+=rule.amount;}
+      if(rule.type==='RUNTIME_COUNTER'){total+=(instance.runtimeFlags&&instance.runtimeFlags[rule.flag])||0;}
+      if(rule.type==='OWN_FOOD_MINIMUM'&&player.food.length>=rule.minimum){total+=rule.amount;}
+      if(rule.type==='HAS_ATTACHMENT'&&(instance.attachments||[]).length>0){total+=rule.amount;}
+      if(rule.type==='OWN_DISCARD_COLORS'){
+        var present={};player.discard.forEach(function(card){var discarded=global.getCardDefinition(card.cardId);if(discarded){present[discarded.color]=true;}});
+        if((rule.colors||[]).every(function(color){return present[color];})){total+=rule.amount;}
+      }
+    });
+    return total;
+  }
+
   // 有効な AP 修飾を合算した総AP量を返す。
   // baseAp は通常、技の baseAp。攻撃のたびに再計算される。
   function getEffectiveAP(state, instance, baseAp, skill) {
@@ -43,26 +65,35 @@
       if (rule.type === 'FOOD_COLOR_COUNT') {
         baseAp = player.food.filter(function (card) {
           var def = global.getCardDefinition(card.cardId);
-          return def && def.color === rule.color;
+          return !card.faceDown && def && def.color === rule.color;
         }).length * rule.multiplier;
       } else if (rule.type === 'DISCARD_COUNT') {
         baseAp = player.discard.length * rule.multiplier;
       } else if (rule.type === 'OWN_FIELD_COUNT') {
         baseAp = player.field.filter(function (card) { return !card.faceDown; }).length * rule.multiplier;
+      } else if (rule.type === 'OWN_FIELD_COLOR_COUNT') {
+        baseAp = player.field.filter(function (card) {
+          var def = !card.faceDown && global.getCardDefinition(card.cardId);
+          return def && def.color === rule.color;
+        }).length * rule.multiplier;
+      } else if(rule.type==='OWN_FIELD_FAMILY_SUFFIX_COUNT'){
+        baseAp=player.field.filter(function(card){var def=!card.faceDown&&global.getCardDefinition(card.cardId);return def&&(def.tags||[]).some(function(tag){return tag.slice(-rule.familySuffix.length)===rule.familySuffix;});}).length*rule.multiplier;
       } else if (rule.type === 'PARTNER_PRESENT') {
         baseAp = rule.base + (player.field.some(function (card) {
           return !card.faceDown && card.cardId === rule.cardId;
         }) ? rule.bonus : 0);
       }
     }
-    var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP');
+    var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP') + getContinuousStatTotal(state,instance,'AP');
     var attachments = instance.attachments || [];
+    var hostDefinition=global.getCardDefinition?global.getCardDefinition(instance.cardId):null;
+    var attachmentMultiplier=hostDefinition&&hostDefinition.attachmentStatMultiplier||1;
     for (var i = 0; i < attachments.length; i++) {
       var def = global.getCardDefinition ? global.getCardDefinition(attachments[i].cardId) : null;
       var effects = def && def.enhancementEffects ? def.enhancementEffects : [];
       for (var j = 0; j < effects.length; j++) {
         if (effects[j] && effects[j].stat === 'AP') {
-          total += effects[j].amount || 0;
+          total += (effects[j].amount || 0)*attachmentMultiplier;
         }
       }
     }
@@ -71,12 +102,14 @@
 
   // 虫の現在の最大HPを返す。
   // baseHp + 既存 hpBonus 修飾 + 紐付く強化カードの HP 修飾 を合算する。
-  function calculateMaxHp(instance) {
+  function calculateMaxHp(instance, state) {
     var base = instance.baseHp != null ? instance.baseHp : 0;
     var hpBonus = (instance.modifiers && instance.modifiers.hpBonus) || 0;
-    var sum = base + hpBonus;
+    var sum = base + hpBonus + (state ? getStatModifierTotal(state, instance, 'HP') + getContinuousStatTotal(state,instance,'HP') : 0);
     // 紐付く強化カードの HP 修飾
     var attachments = instance.attachments || [];
+    var hostDefinition=global.getCardDefinition?global.getCardDefinition(instance.cardId):null;
+    var attachmentMultiplier=hostDefinition&&hostDefinition.attachmentStatMultiplier||1;
     for (var i = 0; i < attachments.length; i++) {
       var att = attachments[i];
       var def = global.getCardDefinition ? global.getCardDefinition(att.cardId) : null;
@@ -84,7 +117,7 @@
       for (var j = 0; j < def.enhancementEffects.length; j++) {
         var e = def.enhancementEffects[j];
         if (e && e.stat === 'HP') {
-          sum += (e.amount || 0);
+          sum += (e.amount || 0)*attachmentMultiplier;
         }
       }
     }
@@ -98,7 +131,9 @@
     var startTurn = mod.startTurn;
     var endTurn = mod.endTurn;
     if (startTurn == null) { startTurn = state.turnNumber + (mod.startOffset || 0); }
-    if (endTurn == null) {
+    if (mod.duration === 'FIELD_STAY') {
+      endTurn = null;
+    } else if (endTurn == null) {
       endTurn = (mod.endOffset != null)
         ? state.turnNumber + mod.endOffset
         : startTurn;
@@ -114,6 +149,9 @@
     };
     if (!instance.statModifiers) { instance.statModifiers = []; }
     instance.statModifiers.push(entry);
+    if (entry.stat === 'HP' && isStatModifierActive(state, entry) && instance.currentHp != null) {
+      instance.currentHp += entry.amount || 0;
+    }
     return entry;
   }
 
@@ -123,7 +161,9 @@
     if (!instance.statModifiers) { return; }
     instance.statModifiers = instance.statModifiers.filter(function (m) {
       if (clearAll) { return false; }
-      return isStatModifierActive(state, m);
+      // Not active yet is different from expired: next-own-turn effects must
+      // survive the intervening opponent turn. Activation is checked on read.
+      return m.endTurn == null || state.turnNumber <= m.endTurn;
     });
   }
 
@@ -142,6 +182,9 @@
       }
       if (owner) {
         owner.discard.push(att);
+      }
+      if (global.resolveAttachmentDiscarded) {
+        global.resolveAttachmentDiscarded(state, att);
       }
     }
   }

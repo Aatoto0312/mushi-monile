@@ -26,6 +26,12 @@
       if(!instances.length&&publicZone){body.appendChild(paragraph('ここにはまだカードがありません。'));return;}
       var grid=document.createElement('div');grid.className='inspector-grid';body.appendChild(grid);
       instances.forEach(function(inst){
+        if (inst.faceDown) {
+          var hidden=window.CardUI.renderFaceDown(null,inst);
+          hidden.classList.add('inspector-card');hidden.disabled=true;
+          hidden.setAttribute('aria-label','裏向きのエサ');hidden.appendChild(document.createTextNode('裏向きのエサ'));
+          grid.appendChild(hidden);return;
+        }
         var def=window.CardUI.getDef(inst),button=document.createElement('button');
         button.type='button';button.className='inspector-card';
         var original=document.querySelector('#'+side+'-'+zone+'-zone [data-instance-id="'+inst.instanceId+'"]');

@@ -27,7 +27,8 @@ runner.test('Full catalog registers every Knowledge Base card without hard-coded
   Object.keys(expectedBySet).forEach(function (set) {
     runner.assertEqual(actual.filter(function (card) { return card.set === set; }).length, expectedBySet[set], set + ' count');
   });
-  runner.assertEqual(actual.length, catalog.fromRegistry(global.cardRegistry).length + data.length, 'registered total follows source data');
+  var expectedIds = new Set(catalog.fromRegistry(global.cardRegistry).map(function (card) { return card.cardId; }).concat(data.map(function (card) { return card.id; })));
+  runner.assertEqual(actual.length, expectedIds.size, 'registered total follows unique source identities');
   runner.assertEqual(new Set(actual.map(function (card) { return card.cardId; })).size, actual.length, 'card IDs unique');
 });
 
@@ -128,15 +129,32 @@ runner.test('Every future set has safe Card Detail data and no internal leaks', 
   });
 });
 
-runner.test('Future cards are deckable and storable but never Battle-ready', function () {
+runner.test('Audited SET2-SET3 and SET4 alpha cards are Battle-ready while unaudited cards remain unavailable', function () {
   var cards = catalog.fromRegistry(buildRegistry());
-  var future = cards.filter(function (card) { return /^BOOSTER_SET_[2-7]$/.test(card.set); });
-  var deck = core.createDeck({ deckId: 'deck:full-catalog', deckName: '全弾', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
+  var set2 = cards.filter(function (card) { return card.set === 'BOOSTER_SET_2'; });
+  var future = cards.filter(function (card) { return /^BOOSTER_SET_[3-7]$/.test(card.set); });
+  var deck = core.createDeck({ deckId: 'deck:set2-playable', deckName: '第2弾', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
   for (var i = 0; i < 10; i += 1) {
-    deck = core.addCatalogCard(deck, future[i]);
-    deck = core.addCatalogCard(deck, future[i]);
+    deck = core.addCatalogCard(deck, set2[i]);
+    deck = core.addCatalogCard(deck, set2[i]);
   }
   var validation = core.validateDeck(deck, cards);
+  runner.assert(validation.battleReady, 'SET2 deck can battle');
+  var set3 = cards.filter(function (card) { return card.set === 'BOOSTER_SET_3'; });
+  var set3Deck = core.createDeck({ deckId: 'deck:set3-playable', deckName: '第3弾', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
+  for (var k = 0; k < 10; k += 1) { set3Deck = core.addCatalogCard(set3Deck, set3[k]); set3Deck = core.addCatalogCard(set3Deck, set3[k]); }
+  runner.assert(core.validateDeck(set3Deck, cards).battleReady, 'SET3 deck can battle');
+  var set4Playable = cards.filter(function (card) { return card.set === 'BOOSTER_SET_4' && card.playable; });
+  var set4Deck = core.createDeck({ deckId: 'deck:set4-alpha', deckName: '第4弾α', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
+  for (var a = 0; a < 10; a += 1) { set4Deck = core.addCatalogCard(set4Deck, set4Playable[a]); set4Deck = core.addCatalogCard(set4Deck, set4Playable[a]); }
+  runner.assert(core.validateDeck(set4Deck, cards).battleReady, 'audited SET4 alpha deck can battle');
+  future = cards.filter(function (card) { return /^BOOSTER_SET_[5-7]$/.test(card.set) || (card.set === 'BOOSTER_SET_4' && !card.playable); });
+  var futureDeck = core.createDeck({ deckId: 'deck:future', deckName: '未実装弾', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
+  for (var j = 0; j < 10; j += 1) {
+    futureDeck = core.addCatalogCard(futureDeck, future[j]);
+    futureDeck = core.addCatalogCard(futureDeck, future[j]);
+  }
+  validation = core.validateDeck(futureDeck, cards);
   runner.assert(validation.storable, 'future deck saves');
   runner.assert(!validation.battleReady, 'future deck cannot battle');
   runner.assert(validation.warnings.some(function (warning) { return warning.indexOf('対戦未対応') !== -1; }), 'natural reason');

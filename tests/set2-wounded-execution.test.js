@@ -1,0 +1,9 @@
+'use strict';
+require('./engine-loader.js');
+var h=require('./helpers.js'),Runner=require('./lib.js'),runner=new Runner();
+var raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_017')));raw.id='test_execution_017';raw.set=null;raw.implementationStatus='test';var def=new global.CardDefinition(raw);global.cardRegistry.register(def);
+function fixture(hp){var s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.turnNumber=3;s.player('P2').territory=[];return {s:s,a:h.putInsectOnField(s,'P1',def.id),t:h.putInsectOnField(s,'P2','set1_003',{hp:hp})};}
+runner.test('Execution destroys a previously wounded insect with zero damage and draws territory',function(){var f=fixture(1200);h.addToTerritoryRaw(f.s,'P2',global.getCardDefinition('set1_003'));global.performAttack(f.s,f.a.instanceId,f.t.instanceId,'INSECT',def.skills[1].id);runner.assertEqual(f.t.zone,'DISCARD');runner.assertEqual(f.s.pendingEffect.type,'TERRITORY_DRAW_SELECTION');});
+runner.test('Execution checks wounds before its boosted damage',function(){var f=fixture(1400);global.addStatModifier(f.s,f.a,{stat:'AP',amount:500});global.performAttack(f.s,f.a.instanceId,f.t.instanceId,'INSECT',def.skills[1].id);runner.assertEqual(f.t.zone,'FIELD');runner.assertEqual(f.t.currentHp,400);});
+runner.test('Execution cannot directly attack, while normal skill still can',function(){var f=fixture(1400);f.s.player('P2').field=[];runner.assertEqual(global.getLegalAttackTargets(f.s,f.a.instanceId,def.skills[1].id).length,0);runner.assertEqual(global.getLegalAttackTargets(f.s,f.a.instanceId,def.skills[0].id).length,1);var failed=false;try{global.performAttack(f.s,f.a.instanceId,null,'LEADER',def.skills[1].id);}catch(e){failed=true;}runner.assert(failed);runner.assert(!f.a.attackedThisTurn);});
+module.exports=runner;if(require.main===module)runner.runAll();

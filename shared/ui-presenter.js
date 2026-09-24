@@ -68,7 +68,11 @@
     if (card.rarity != null && card.rarity !== '') { basics.push({ label: 'レアリティ', value: String(card.rarity) }); }
     basics.push({ label: '対戦対応', value: label(card.implementationStatus, 'implementationStatus') });
 
-    var skills = (card.skills || []).map(function (skill) {
+    var skills = (card.skills || []).filter(function (skill) {
+      // Runtime adapters may also expose a trait as a passive/trigger skill.
+      // Keep its single player-facing description in the traits section.
+      return !skill || skill.baseAp != null || !(card.passiveAbilities || []).some(function (trait) { return trait.name === skill.name; });
+    }).map(function (skill) {
       var texts = [];
       var direct = effectText(skill, formatter, 'formatCardEffect');
       if (direct) { texts.push(direct); }

@@ -666,7 +666,7 @@
     "baseHp": 800,
     "skills": [
       {
-        "name": "※神の吸引",
+        "name": "神の吸引",
         "baseAp": 1000,
         "effectText": null
       }
@@ -938,7 +938,7 @@
         "effectText": null
       },
       {
-        "name": "シカツンバサミ",
+        "name": "シカツノバサミ",
         "baseAp": 0,
         "effectText": "次の自分のターンの間、この虫の攻撃力を400増やす。"
       }
@@ -1607,7 +1607,7 @@
     "baseHp": 800,
     "skills": [
       {
-        "name": "くいちぎ",
+        "name": "くいちぎる",
         "baseAp": 500,
         "effectText": null
       }

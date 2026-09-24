@@ -164,6 +164,12 @@ runner.test('TestDA5 skillIdを指定すると対応する技で攻撃する', f
   runner.assertEqual(result.skill.id, 'tsuno_tosshin', '使用した技はツノ突進');
   runner.assertTrue(result.wasTerritoryDraw, '縄張りドロー発生');
 
+  // 最初の攻撃の縄張り取得を完了してから次の技を検証する。
+  global.resolveTerritoryDrawSelection(state, 'P2', state.player('P2').territory[0].instanceId);
+  if (state.pendingEffect && state.pendingEffect.type === 'TERRITORY_DRAW_CHOICE') {
+    global.resolvePendingTerritoryChoice(state, 'TAKE_TO_HAND');
+  }
+  runner.assertEqual(state.pendingEffect, null, '先の攻撃の選択は解決済み');
   // ターンをリセットして再攻撃
   insect.attackedThisTurn = false;
 

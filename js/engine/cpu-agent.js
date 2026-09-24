@@ -52,10 +52,16 @@
       var spellTargetIdx = Math.floor(this.rng() * pending.options.length);
       return { type: 'RESOLVE_SPELL_TARGET_SELECTION', instanceId: pending.options[spellTargetIdx] };
     }
+    if (pending.type === 'CHOICE_SELECTION') {
+      if(!pending.options.length)return null;
+      var choice=pending.selectionPurpose==='VARIABLE_COST_PAYMENT'?pending.options[pending.options.length-1]:pending.options[0];
+      return { type: 'RESOLVE_CHOICE_SELECTION', value: choice.value };
+    }
     if (pending.type === 'CARD_SELECTION') {
       if (!pending.options || pending.options.length < pending.minSelections) return null;
       var count = pending.exactSelections != null ? pending.exactSelections : pending.maxSelections;
       var selected=(pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count);
+      if (pending.allowedCombinations && pending.allowedCombinations.length) { selected = pending.allowedCombinations[0].slice(); }
       if(pending.selectionPurpose==='TRANSFER_OWN_ATTACHMENT'&&selected.length===2){var holder=global.findAttachment(state,selected[0]);var destinations=pending.selectionGroups[1].filter(function(id){return !holder||id!==holder.host.instanceId;});if(destinations.length)selected[1]=destinations[0];}
       return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
     }
@@ -73,7 +79,7 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.INSECT) return false;
       if (!def.isPlayable()) return false;
-      return player.availableCost >= (def.cost != null ? def.cost : 0);
+      return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, def);
     });
 
     if (playableInsects.length > 0) {
@@ -89,12 +95,21 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.SPELL) return false;
       if (!def.isPlayable()) return false;
-      if (player.availableCost < (def.cost != null ? def.cost : 0)) return false;
+      var effectiveCost=global.getEffectiveCardCost(state,self.playerId,def);
+      var territoryAlternative=(def.cardEffects||[]).filter(function(effect){return effect.type==='ALTERNATIVE_TERRITORY_COST';})[0];
+      if (player.availableCost < effectiveCost && !(territoryAlternative&&player.territory.length>=(territoryAlternative.count||0))) return false;
 
       // 対象指定をCPUが安全に解決できないDEAL_DAMAGE_TO_TARGETは除外。
       // 各効果のtargetが OPPONENT_FIELD_INSECT で、かつ相手場に表向きの対象が
       // 存在する場合のみ使用可能とする(それ以外は必ず例外を起こすため候補から外す)。
       var effects = def.cardEffects || [];
+      if (effects.some(function(effect) {
+        var selection = global.getComplexSpellSelection(state, self.playerId, inst.instanceId, effect);
+        return selection && (selection.options.length < (selection.exactSelections || selection.minSelections || 1) ||
+          (selection.groups && selection.groups.some(function(group) { return !group.length; })));
+      })) { return false; }
+      if (effects.some(function (effect) { return effect && effect.requiresTarget; }) &&
+          !global.getSpellTargetCandidates(state, self.playerId, inst.instanceId).length) { return false; }
       var dmgEffects = effects.filter(function (eff) {
         return eff && eff.type === 'DEAL_DAMAGE_TO_TARGET';
       });
@@ -123,20 +138,24 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.ENHANCEMENT) return false;
       if (!def.isPlayable()) return false;
-      if (player.availableCost < (def.cost != null ? def.cost : 0)) return false;
       // COLOR_OVERRIDE系はCPUが色選択を安全に行えないため除外
       var enhEffects = def.enhancementEffects || [];
       if (enhEffects.some(function (eff) { return eff && eff.type === 'COLOR_OVERRIDE'; })) {
         return false;
       }
       // 自分の場に表向きの虫がいるか
-      var validTargets = player.field.filter(function (c) { return !c.faceDown; });
-      return validTargets.length > 0;
+      var validTargets = global.getEnhancementTargetCandidates(state, self.playerId, inst.instanceId);
+      return validTargets.some(function (target) {
+        return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, def, { targetInstanceId: target.instanceId });
+      });
     });
 
     if (playableEnhancements.length > 0) {
       var chosenEnh = playableEnhancements[Math.floor(this.rng() * playableEnhancements.length)];
-      var validTargets = player.field.filter(function (c) { return !c.faceDown; });
+      var chosenEnhDef = global.getCardDefinition(chosenEnh.cardId);
+      var validTargets = global.getEnhancementTargetCandidates(state, self.playerId, chosenEnh.instanceId).filter(function (target) {
+        return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, chosenEnhDef, { targetInstanceId: target.instanceId });
+      });
       var targetInsect = validTargets[Math.floor(this.rng() * validTargets.length)];
       return {
         type: 'USE_ENHANCEMENT',
@@ -152,8 +171,9 @@
       var legalTargets = global.getLegalAttackTargets(state, inst.instanceId);
       if (legalTargets.length === 0) return false;
       var def = global.getCardDefinition(inst.cardId);
-      var skills = (def && def.skills) ? def.skills.filter(function (skill) {
+      var skills = def ? (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state, inst) : def.skills || []).filter(function (skill) {
         if (skill.timing !== 'ATTACK') return false;
+        if (!global.getLegalAttackTargets(state, inst.instanceId, skill.id).length) return false;
         return !global.skillRequiresSacrifice(skill) || global.getSacrificeCandidates(state, inst.instanceId).length > 0;
       }) : [];
       return skills.length > 0;
@@ -161,16 +181,18 @@
 
     if (attackerCandidates.length > 0) {
       var chosenAttacker = attackerCandidates[Math.floor(this.rng() * attackerCandidates.length)];
-      var targets = global.getLegalAttackTargets(state, chosenAttacker.instanceId);
-      var chosenTarget = targets[Math.floor(this.rng() * targets.length)];
       var def = global.getCardDefinition(chosenAttacker.cardId);
-      var attackSkills = (def && def.skills) ? def.skills.filter(function(s) {
+      var attackSkills = def ? (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state, chosenAttacker) : def.skills || []).filter(function(s) {
         if (s.timing !== 'ATTACK') return false;
+        if (!global.getLegalAttackTargets(state, chosenAttacker.instanceId, s.id).length) return false;
         return !global.skillRequiresSacrifice(s) || global.getSacrificeCandidates(state, chosenAttacker.instanceId).length > 0;
       }) : [];
-      var skillId = (attackSkills.length > 0) ? attackSkills[0].id : null;
+      var chosenSkill = attackSkills.length > 0 ? attackSkills[Math.floor(this.rng() * attackSkills.length)] : null;
+      var skillId = chosenSkill ? chosenSkill.id : null;
+      var targets = global.getLegalAttackTargets(state, chosenAttacker.instanceId, skillId);
+      var chosenTarget = targets[Math.floor(this.rng() * targets.length)];
       var sacrificeId = null;
-      if (attackSkills.length > 0 && global.skillRequiresSacrifice(attackSkills[0])) {
+      if (chosenSkill && global.skillRequiresSacrifice(chosenSkill)) {
         var sacrificeCandidates = global.getSacrificeCandidates(state, chosenAttacker.instanceId);
         sacrificeId = sacrificeCandidates[0].instanceId;
       }
@@ -253,6 +275,10 @@
         global.resolveSpellTargetSelection(state, this.playerId, action.instanceId);
         return true;
       }
+      if (action.type === 'RESOLVE_CHOICE_SELECTION') {
+        global.resolveChoiceSelection(state, this.playerId, action.value);
+        return true;
+      }
       if (action.type === 'RESOLVE_CARD_SELECTION') {
         global.resolveCardSelection(state,this.playerId,action.instanceIds,true);
         return true;
@@ -282,6 +308,13 @@
         return true;
       }
       if (action.type === 'ATTACK') {
+        var attackHolder = global.findAnywhere(state, action.attackerInstanceId);
+        var attackDef = attackHolder && global.getCardDefinition(attackHolder.instance.cardId);
+        var selectedSkill = attackDef && (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state,attackHolder.instance) : attackDef.skills).filter(function (skill) { return skill.id === action.skillId; })[0];
+        if (selectedSkill && (selectedSkill.effects || []).some(function (effect) { return effect.type === 'ATTACK_MULTIPLE_TARGETS'; })) {
+          global.beginMultiTargetAttackSelection(state, action.attackerInstanceId, action.skillId);
+          return true;
+        }
         global.performAttack(state, action.attackerInstanceId, action.targetInstanceId, action.targetType, action.skillId, action.chosenSacrificeInstanceId);
         return true;
       }

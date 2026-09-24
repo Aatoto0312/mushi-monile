@@ -64,7 +64,7 @@
   function modifierSummary(instance, state) {
     var def = getDef(instance) || {};
     var baseHp = instance.baseHp != null ? instance.baseHp : (def.baseHp || 0);
-    var maxHp = typeof global.calculateMaxHp === 'function' ? global.calculateMaxHp(instance) : baseHp;
+    var maxHp = typeof global.calculateMaxHp === 'function' ? global.calculateMaxHp(instance, state) : baseHp;
     var baseAp = firstAttackAp(def.skills);
     var currentAp = baseAp == null ? null : effectiveAp(instance, state);
     var originalColor = def.color;
@@ -289,7 +289,7 @@
 
   // 汎用レンダラ（カード種別に応じて分岐）
   function renderCard(instance, zone, state) {
-    if (instance.faceDown && zone === ZONES.FIELD) return renderFaceDown(null, instance);
+    if (instance.faceDown && (zone === ZONES.FIELD || zone === ZONES.FOOD)) return renderFaceDown(null, instance);
     var def = getDef(instance);
     if (!def) { return renderFaceDown(null, instance); }
 
