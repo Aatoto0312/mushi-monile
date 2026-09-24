@@ -7,6 +7,7 @@
   if (root.cardRegistry) { api.register(root.cardRegistry); }
 }(typeof globalThis !== 'undefined' ? globalThis : this, function (root, records) {
   'use strict';
+  var alphaPlayableNumbers = [1,3,4,5,6,8,9,10,11,12,14,15,16,17,19,22,23,26,29,30,31,32,34,35,38,41,42,43,46,47,48,49,50,51,57,61];
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {
@@ -63,8 +64,11 @@
     if(number===51){def.enhancementEffects=[{type:'FORCE_OPPONENT_SPELL_TARGET_TO_SELF_GROUP'}];}
     if(number===57){def.cardEffects=[{type:'EXCHANGE_MATCHING_FORM',nameSuffix:'（幼虫）',firstZone:'FIELD',firstDestination:'DISCARD',secondZone:'DISCARD',secondDestination:'FIELD'}];}
     if(number===61){def.cardEffects=[{type:'GRANT_OPPONENT_SPELL_IMMUNITY',target:'OWN_FIELD_INSECT',requiresTarget:true,endTurnOffset:1}];}
-    def.implementationStatus = root.CardStatus.PARTIAL;
-    def.implementationNotes = 'SET4 metadata is wired; Battle completion requires the card evidence audit.';
+    var alphaPlayable = alphaPlayableNumbers.indexOf(number) !== -1;
+    def.implementationStatus = alphaPlayable ? root.CardStatus.PLAYABLE : root.CardStatus.PARTIAL;
+    def.implementationNotes = alphaPlayable
+      ? 'SET4 alpha: card text, generic mechanic, Human/CPU reachability and regression evidence are recorded in scripts/set4-battle-evidence.js.'
+      : 'SET4 alpha: Battle wiring exists, but card-specific completion evidence is incomplete; keep unavailable for Battle.';
     return def;
   }
   function register(registry) {
@@ -72,5 +76,5 @@
       if (!registry.has(record.id)) { registry.register(definitionFromRecord(record)); }
     });
   }
-  return { definitionFromRecord: definitionFromRecord, register: register };
+  return { alphaPlayableNumbers: alphaPlayableNumbers.slice(), definitionFromRecord: definitionFromRecord, register: register };
 }));

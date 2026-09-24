@@ -117,6 +117,9 @@ function requireAll() {
     ,require('./set4-army-link.test.js')
     ,require('./set4-kuchinashi.test.js')
     ,require('./set4-spell-core.test.js')
+    ,require('./set4-alpha-status.test.js')
+    ,require('./set4-alpha-runtime.test.js')
+    ,require('./set4-alpha-cpu-runtime.test.js')
   ];
 }
 

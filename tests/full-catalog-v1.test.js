@@ -129,7 +129,7 @@ runner.test('Every future set has safe Card Detail data and no internal leaks', 
   });
 });
 
-runner.test('Audited SET2-SET3 are Battle-ready while SET4-SET7 remain safely unavailable', function () {
+runner.test('Audited SET2-SET3 and SET4 alpha cards are Battle-ready while unaudited cards remain unavailable', function () {
   var cards = catalog.fromRegistry(buildRegistry());
   var set2 = cards.filter(function (card) { return card.set === 'BOOSTER_SET_2'; });
   var future = cards.filter(function (card) { return /^BOOSTER_SET_[3-7]$/.test(card.set); });
@@ -144,7 +144,11 @@ runner.test('Audited SET2-SET3 are Battle-ready while SET4-SET7 remain safely un
   var set3Deck = core.createDeck({ deckId: 'deck:set3-playable', deckName: '第3弾', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
   for (var k = 0; k < 10; k += 1) { set3Deck = core.addCatalogCard(set3Deck, set3[k]); set3Deck = core.addCatalogCard(set3Deck, set3[k]); }
   runner.assert(core.validateDeck(set3Deck, cards).battleReady, 'SET3 deck can battle');
-  future = cards.filter(function (card) { return /^BOOSTER_SET_[4-7]$/.test(card.set); });
+  var set4Playable = cards.filter(function (card) { return card.set === 'BOOSTER_SET_4' && card.playable; });
+  var set4Deck = core.createDeck({ deckId: 'deck:set4-alpha', deckName: '第4弾α', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
+  for (var a = 0; a < 10; a += 1) { set4Deck = core.addCatalogCard(set4Deck, set4Playable[a]); set4Deck = core.addCatalogCard(set4Deck, set4Playable[a]); }
+  runner.assert(core.validateDeck(set4Deck, cards).battleReady, 'audited SET4 alpha deck can battle');
+  future = cards.filter(function (card) { return /^BOOSTER_SET_[5-7]$/.test(card.set) || (card.set === 'BOOSTER_SET_4' && !card.playable); });
   var futureDeck = core.createDeck({ deckId: 'deck:future', deckName: '未実装弾', cardDataVersion: 'card-registry/1', rulesetId: 'ruleset:standard:v1' });
   for (var j = 0; j < 10; j += 1) {
     futureDeck = core.addCatalogCard(futureDeck, future[j]);

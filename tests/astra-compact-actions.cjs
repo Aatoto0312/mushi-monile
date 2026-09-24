@@ -55,6 +55,7 @@ const assert=require('node:assert/strict');
     await lane.evaluate(n=>n.scrollLeft=0);
     await group.locator('.scroll-cue--next').click();
     await page.waitForFunction(id=>document.getElementById(id).scrollLeft>0,id);
+    await group.locator('.scroll-cue--prev').waitFor({state:'visible'});
     ok(await group.locator('.scroll-cue--prev').isVisible(),id+' arrows expose hidden cards');
    }
    await fits();
