@@ -22,12 +22,14 @@ Source baseline: the 64-card catalog and official SET4 Q&A recorded by the local
 | 16 | entry food destruction or self destruction | implemented | `set4-entry-mechanics.test.js` |
 | 2, 13, 18, 20, 21, 23-25, 27, 29, 32-34, 36-38, 41, 44, 46-50 | existing mechanic mapping | connected; card evidence pending | focused tests still required |
 | 4, 9, 19, 31 | `かばう` territory entry, lure, delayed return | implemented | `set4-kabau.test.js` |
-| 6, 8, 13 | `軍隊連携`, shared skills, delayed lure | new generic mechanic required | pending |
+| 6, 8, 13 | `軍隊連携`, shared skills, delayed lure | implemented; card evidence pending | `set4-army-link.test.js` |
 | 7, 17, 26, 28, 30, 35, 39, 40, 42, 43, 45 | attack/trait special rules | audit and implementation pending | pending |
 | 26, 51 | opponent spell-target lure | implemented | `set4-targeting.test.js` |
 | 8, 17, 28 | attack color change, next-turn spell tax, once-per-stay | implemented | `set4-attack-effects.test.js` |
+| 43 | `くちなし` global insect keyword suppression | implemented; cross-set evidence pending | `set4-kuchinashi.test.js` |
 | 46-50 | territory attachment and printed stat modifiers | implemented; card evidence pending | `set4-targeting.test.js` |
 | 52-54 | advanced attachment behavior | audit and implementation pending | pending |
-| 55-64 | spell selections, exchanges, mass destruction, attachment distribution | audit and implementation pending | pending |
+| 57, 61 | matching-form exchange and delayed spell immunity | implemented | `set4-spell-core.test.js` |
+| 55, 56, 58-60, 62-64 | remaining spell selections, mass destruction, attachment distribution | audit and implementation pending | pending |
 
 No card is promoted from PARTIAL until its text, all actions, Human path, CPU path, continuation, serialization, and cross-set regression evidence pass.

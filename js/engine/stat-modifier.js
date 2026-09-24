@@ -39,6 +39,7 @@
     var controllerId = null;
     state.playerOrder.some(function(pid){if(state.player(pid).field.indexOf(instance)!==-1){controllerId=pid;return true;}return false;});
     if (!controllerId) { controllerId=instance.ownerId; }
+    if(global.areInsectKeywordSkillsSuppressed&&global.areInsectKeywordSkillsSuppressed(state,instance)){return 0;}
     var player=state.player(controllerId),def=global.getCardDefinition(instance.cardId),total=0;
     (def&&def.continuousStatModifiers||[]).forEach(function(rule){
       if((rule.stats||[]).indexOf(stat)===-1){return;}
@@ -75,6 +76,8 @@
           var def = !card.faceDown && global.getCardDefinition(card.cardId);
           return def && def.color === rule.color;
         }).length * rule.multiplier;
+      } else if(rule.type==='OWN_FIELD_FAMILY_SUFFIX_COUNT'){
+        baseAp=player.field.filter(function(card){var def=!card.faceDown&&global.getCardDefinition(card.cardId);return def&&(def.tags||[]).some(function(tag){return tag.slice(-rule.familySuffix.length)===rule.familySuffix;});}).length*rule.multiplier;
       } else if (rule.type === 'PARTNER_PRESENT') {
         baseAp = rule.base + (player.field.some(function (card) {
           return !card.faceDown && card.cardId === rule.cardId;

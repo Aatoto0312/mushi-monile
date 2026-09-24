@@ -1280,7 +1280,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     if (!def) return;
 
     // 連撃中は同じ技だけを使用する。
-    var attackSkills = (def.skills || []).filter(function (s) {
+    var attackSkills = (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(this.state, instance) : def.skills || []).filter(function (s) {
       return s.timing === 'ATTACK' && (!hasContinuous || s.id === continuous.skillId);
     });
     if (attackSkills.length === 0) {

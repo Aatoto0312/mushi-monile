@@ -171,7 +171,7 @@
       var legalTargets = global.getLegalAttackTargets(state, inst.instanceId);
       if (legalTargets.length === 0) return false;
       var def = global.getCardDefinition(inst.cardId);
-      var skills = (def && def.skills) ? def.skills.filter(function (skill) {
+      var skills = def ? (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state, inst) : def.skills || []).filter(function (skill) {
         if (skill.timing !== 'ATTACK') return false;
         if (!global.getLegalAttackTargets(state, inst.instanceId, skill.id).length) return false;
         return !global.skillRequiresSacrifice(skill) || global.getSacrificeCandidates(state, inst.instanceId).length > 0;
@@ -182,7 +182,7 @@
     if (attackerCandidates.length > 0) {
       var chosenAttacker = attackerCandidates[Math.floor(this.rng() * attackerCandidates.length)];
       var def = global.getCardDefinition(chosenAttacker.cardId);
-      var attackSkills = (def && def.skills) ? def.skills.filter(function(s) {
+      var attackSkills = def ? (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state, chosenAttacker) : def.skills || []).filter(function(s) {
         if (s.timing !== 'ATTACK') return false;
         if (!global.getLegalAttackTargets(state, chosenAttacker.instanceId, s.id).length) return false;
         return !global.skillRequiresSacrifice(s) || global.getSacrificeCandidates(state, chosenAttacker.instanceId).length > 0;
@@ -310,7 +310,7 @@
       if (action.type === 'ATTACK') {
         var attackHolder = global.findAnywhere(state, action.attackerInstanceId);
         var attackDef = attackHolder && global.getCardDefinition(attackHolder.instance.cardId);
-        var selectedSkill = attackDef && attackDef.skills.filter(function (skill) { return skill.id === action.skillId; })[0];
+        var selectedSkill = attackDef && (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state,attackHolder.instance) : attackDef.skills).filter(function (skill) { return skill.id === action.skillId; })[0];
         if (selectedSkill && (selectedSkill.effects || []).some(function (effect) { return effect.type === 'ATTACK_MULTIPLE_TARGETS'; })) {
           global.beginMultiTargetAttackSelection(state, action.attackerInstanceId, action.skillId);
           return true;

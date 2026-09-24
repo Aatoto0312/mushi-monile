@@ -634,6 +634,7 @@
     state.playerOrder.forEach(function (controllerId) {
       state.player(controllerId).field.forEach(function (source) {
         if (source.faceDown) { return; }
+        if (areInsectKeywordSkillsSuppressed(state,source)) { return; }
         var sourceDef = getCardDefinition(source.cardId);
         (sourceDef && sourceDef.passiveAbilities || []).forEach(function (ability) {
           (ability.effects || []).forEach(function (effect) {
@@ -757,7 +758,7 @@
     var holder = findAnywhere(state, instanceId);
     if (!holder || holder.zone !== ZONES.FIELD) { return; }
     var definition = getCardDefinition(holder.instance.cardId);
-    if(holder.instance.runtimeFlags&&holder.instance.runtimeFlags.suppressKeywordSkills){return;}
+    if(holder.instance.runtimeFlags&&holder.instance.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,holder.instance)){return;}
     var entrySuppressed=state.playerOrder.some(function(playerId){return state.player(playerId).field.some(function(source){
       if(source.faceDown){return false;}var sourceDefinition=getCardDefinition(source.cardId);
       return (sourceDefinition&&sourceDefinition.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SUPPRESS_ENTER_FIELD_TRAITS';});});
@@ -1043,24 +1044,25 @@
     });
     candidates=candidates.filter(function (card) {
       var holder = findAnywhere(state, card.instanceId);
-      return !holder || holder.zone !== ZONES.FIELD || holder.playerId === playerId || !hasPassiveEffect(card, 'OPPONENT_SPELL_TARGET_IMMUNITY');
+      return !holder || holder.zone !== ZONES.FIELD || holder.playerId === playerId ||
+        (!hasPassiveEffect(state,card, 'OPPONENT_SPELL_TARGET_IMMUNITY') && !(card.runtimeFlags&&card.runtimeFlags.opponentSpellImmunityUntilTurn>=state.turnNumber));
     });
-    var opponentLures=state.player(state.opponentOf(playerId)).field.filter(function(card){return hasCardOrAttachmentEffect(card,'FORCE_OPPONENT_SPELL_TARGET_TO_SELF_GROUP');});
+    var opponentLures=state.player(state.opponentOf(playerId)).field.filter(function(card){return hasCardOrAttachmentEffect(state,card,'FORCE_OPPONENT_SPELL_TARGET_TO_SELF_GROUP');});
     if(opponentLures.length&&candidates.some(function(card){return findAnywhere(state,card.instanceId).playerId!==playerId;})){
       candidates=candidates.filter(function(card){return opponentLures.indexOf(card)!==-1;});
     }
     return candidates;
   }
 
-  function hasCardOrAttachmentEffect(card,type){
+  function hasCardOrAttachmentEffect(state,card,type){
     if(!card||card.faceDown){return false;}
-    if(hasPassiveEffect(card,type)){return true;}
+    if(hasPassiveEffect(state,card,type)){return true;}
     return (card.attachments||[]).some(function(attachment){var def=getCardDefinition(attachment.cardId);return (def&&def.enhancementEffects||[]).some(function(effect){return effect.type===type;});});
   }
 
-  function hasPassiveEffect(card, type) {
+  function hasPassiveEffect(state,card, type) {
     if (!card || card.faceDown) { return false; }
-    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills){return false;}
+    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,card)){return false;}
     var def = getCardDefinition(card.cardId);
     return (def && def.passiveAbilities || []).some(function (ability) {
       return (ability.effects || []).some(function (effect) { return effect.type === type; });
@@ -1198,6 +1200,11 @@
         var hiddenTarget=chosenTargetInstanceId&&findInZone(state,playerId,ZONES.FIELD,chosenTargetInstanceId);
         if(!hiddenTarget||hiddenTarget.faceDown)throw new Error('表向きの自分の虫を選んでください');
         hiddenTarget.faceDown=true;hiddenTarget.runtimeFlags=hiddenTarget.runtimeFlags||{};hiddenTarget.runtimeFlags.faceDownUntilTurn=state.turnNumber+(effect.endTurnOffset||0);
+      }
+      if(effect.type==='GRANT_OPPONENT_SPELL_IMMUNITY'){
+        var immuneTarget=chosenTargetInstanceId&&findInZone(state,playerId,ZONES.FIELD,chosenTargetInstanceId);
+        if(!immuneTarget||immuneTarget.faceDown)throw new Error('表向きの自分の虫を選んでください');
+        immuneTarget.runtimeFlags=immuneTarget.runtimeFlags||{};immuneTarget.runtimeFlags.opponentSpellImmunityUntilTurn=state.turnNumber+(effect.endTurnOffset||0);
       }
       if (effect.type === 'ADD_SELF_AS_FACE_UP_TERRITORY') {
         finalZone = ZONES.TERRITORY;
@@ -1641,8 +1648,8 @@
       if (requestedSkill && (requestedSkill.effects || []).some(function(effect) { return effect.type === 'COPY_ALLY_COLOR_BEFORE_ATTACK'; }) &&
           !state.player(holder.playerId).field.some(function(card) { return card !== attacker && !card.faceDown; })) { return []; }
     }
-    if (hasPassiveEffect(attacker, 'CANNOT_ATTACK')) { return []; }
-    if(attacker.runtimeFlags&&attacker.runtimeFlags.enteredBySpellTurn===state.turnNumber&&state.playerOrder.some(function(pid){return state.player(pid).field.some(function(card){return hasPassiveEffect(card,'SPELL_SUMMONS_CANNOT_ATTACK_THIS_TURN');});})){return [];}
+    if (hasPassiveEffect(state,attacker, 'CANNOT_ATTACK')) { return []; }
+    if(attacker.runtimeFlags&&attacker.runtimeFlags.enteredBySpellTurn===state.turnNumber&&state.playerOrder.some(function(pid){return state.player(pid).field.some(function(card){return hasPassiveEffect(state,card,'SPELL_SUMMONS_CANNOT_ATTACK_THIS_TURN');});})){return [];}
     if ((attacker.attachments || []).some(function(attachment) {
       return (getCardDefinition(attachment.cardId).enhancementEffects || []).some(function(effect) { return effect.type === 'PREVENT_HOST_ATTACK'; });
     })) { return []; }
@@ -1719,7 +1726,7 @@
   // 将来も再利用できる。
   function hasTargetRule(state, instance, rule) {
     if (!instance || instance.faceDown) { return false; }
-    if(instance.runtimeFlags&&instance.runtimeFlags.suppressKeywordSkills){return false;}
+    if(instance.runtimeFlags&&instance.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,instance)){return false;}
     if (rule === 'FORCE_ATTACK_TO_SELF_GROUP' && instance.runtimeFlags &&
         instance.runtimeFlags.forceAttackTargetUntilTurn === state.turnNumber) { return true; }
     var def = getCardDefinition(instance.cardId);
@@ -1732,6 +1739,30 @@
       var attachmentDef = getCardDefinition(attachment.cardId);
       return !!(attachmentDef && (attachmentDef.enhancementEffects || []).some(function (effect) { return effect.targetRule === rule; }));
     });
+  }
+
+  function areInsectKeywordSkillsSuppressed(state, instance) {
+    if(!state||!instance){return false;}var targetDef=getCardDefinition(instance.cardId);
+    if(!targetDef||targetDef.type!==CardTypes.INSECT){return false;}
+    var isSuppressor=(targetDef.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SUPPRESS_ALL_OTHER_INSECT_KEYWORD_SKILLS';});});
+    if(isSuppressor){return false;}
+    return state.playerOrder.some(function(playerId){return state.player(playerId).field.some(function(card){
+      if(card.faceDown){return false;}var def=getCardDefinition(card.cardId);return (def&&def.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SUPPRESS_ALL_OTHER_INSECT_KEYWORD_SKILLS';});});
+    });});
+  }
+
+  function getEffectiveAttackSkills(state, instance) {
+    var def=getCardDefinition(instance&&instance.cardId),own=(def&&def.skills||[]).filter(function(skill){return skill.timing==='ATTACK';});
+    if(!instance||instance.faceDown||instance.runtimeFlags&&instance.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,instance)){return own;}
+    var shares=(def.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SHARE_LINKED_ALLY_ATTACK_SKILLS';});});
+    if(!shares){return own;}
+    var holder=findAnywhere(state,instance.instanceId),result=own.slice(),seen={};result.forEach(function(skill){seen[skill.name]=true;});
+    if(!holder){return result;}
+    state.player(holder.playerId).field.forEach(function(ally){
+      if(ally===instance||ally.faceDown||ally.runtimeFlags&&ally.runtimeFlags.suppressKeywordSkills){return;}
+      var allyDef=getCardDefinition(ally.cardId),linked=(allyDef&&allyDef.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SHARE_LINKED_ALLY_ATTACK_SKILLS';});});
+      if(!linked){return;}(allyDef.skills||[]).filter(function(skill){return skill.timing==='ATTACK';}).forEach(function(skill){if(!seen[skill.name]){seen[skill.name]=true;result.push(skill);}});
+    });return result;
   }
 
   // 攻撃実行。targetType は 'INSECT' | 'LEADER'
@@ -1764,7 +1795,7 @@
 
     var def = getCardDefinition(attacker.cardId);
     // 攻撃可能な技は timing === 'ATTACK' のもののみ
-    var attackSkills = def.skills.filter(function (s) { return s.timing === 'ATTACK'; });
+    var attackSkills = getEffectiveAttackSkills(state, attacker);
     if (attackSkills.length === 0) {
       throw new Error('攻撃技がありません');
     }
@@ -2110,7 +2141,7 @@
     var holder=findAnywhere(state,attackerInstanceId);
     if(!holder||holder.zone!==ZONES.FIELD||holder.playerId!==state.activePlayerId||holder.instance.attackedThisTurn) { throw new Error('攻撃できる自分の虫を選んでください'); }
     var def=getCardDefinition(holder.instance.cardId);
-    var skill=(def.skills||[]).filter(function(s){return s.id===skillId;})[0];
+    var skill=getEffectiveAttackSkills(state,holder.instance).filter(function(s){return s.id===skillId;})[0];
     var effect=skill&&(skill.effects||[]).filter(function(e){return e.type==='ATTACK_MULTIPLE_TARGETS';})[0];
     if(!effect) { throw new Error('複数対象の技ではありません'); }
     var candidates=getLegalAttackTargets(state,attackerInstanceId).filter(function(t){return t.targetType==='INSECT';});
@@ -2125,7 +2156,7 @@
     var holder=findAnywhere(state,attackerInstanceId);
     if(!holder||holder.zone!==ZONES.FIELD||holder.playerId!==state.activePlayerId) throw new Error('攻撃する虫が場にいません');
     var attacker=holder.instance, def=getCardDefinition(attacker.cardId);
-    var skill=(def.skills||[]).filter(function(s){return s.id===skillId;})[0];
+    var skill=getEffectiveAttackSkills(state,attacker).filter(function(s){return s.id===skillId;})[0];
     var multi=skill&&(skill.effects||[]).filter(function(e){return e.type==='ATTACK_MULTIPLE_TARGETS';})[0];
     if(!multi||!Array.isArray(targetInstanceIds)||targetInstanceIds.length!==multi.exactSelections||new Set(targetInstanceIds).size!==targetInstanceIds.length) throw new Error('異なる攻撃対象を指定数選択してください');
     if (attacker.attackedThisTurn) { throw new Error('既に攻撃済みです'); }
@@ -2141,7 +2172,7 @@
     var holder=findAnywhere(state,attackerInstanceId);
     if(!holder||holder.zone!==ZONES.FIELD||holder.playerId!==continuation.playerId) { return []; }
     var attacker=holder.instance,def=getCardDefinition(attacker.cardId);
-    var skill=def.skills.filter(function(s){return s.id===continuation.skillId;})[0];
+    var skill=getEffectiveAttackSkills(state,attacker).filter(function(s){return s.id===continuation.skillId;})[0];
     var results=[];
     for (var i=continuation.nextIndex;i<targetInstanceIds.length;i++) {
       if (attacker.zone !== ZONES.FIELD) { break; }
@@ -2829,6 +2860,8 @@ function endTurn(state) {
   global.getSpellTargetCandidates = getSpellTargetCandidates;
   global.resolveSpellEffects = resolveSpellEffects;
   global.getLegalAttackTargets = getLegalAttackTargets;
+  global.getEffectiveAttackSkills = getEffectiveAttackSkills;
+  global.areInsectKeywordSkillsSuppressed = areInsectKeywordSkillsSuppressed;
   global.performAttack = performAttack;
   global.performMultiTargetAttack = performMultiTargetAttack;
   global.beginMultiTargetAttackSelection = beginMultiTargetAttackSelection;

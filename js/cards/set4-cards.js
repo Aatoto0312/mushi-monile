@@ -28,6 +28,8 @@
       def.skills[1].effects=[{type:'DISCARD_OPPONENT_HAND_ON_TERRITORY',count:1}];
     }
     if (number === 5) { def.passiveAbilities[0].effects=[{type:'SUPPRESS_ENTER_FIELD_TRAITS',affects:'ALL_PLAYERS'}]; }
+    if ([6,8,13].indexOf(number) !== -1) { def.passiveAbilities[0].effects=[{type:'SHARE_LINKED_ALLY_ATTACK_SKILLS'}]; }
+    if(number===6){def.skills[0].dynamicAp={type:'OWN_FIELD_FAMILY_SUFFIX_COUNT',familySuffix:'アリ科',multiplier:200};}
     if ([4,9,19,31].indexOf(number) !== -1) {
       def.skills.push({id:record.id+'_kabau',name:'かばう',baseAp:null,timing:'TERRITORY_DRAW',optional:true,effects:[{type:'KABAU_TERRITORY_ENTRY'}]});
     }
@@ -36,7 +38,7 @@
     if (number === 14) { def.continuousStatModifiers=[{type:'OWN_DISCARD_COLORS',colors:['RED','BLUE','GREEN'],stats:['HP','AP'],amount:200}]; }
     if (number === 15) { def.passiveAbilities[0].effects=[{type:'CARD_COST_MODIFIER',cardType:'INSECT',minimumPrintedSkills:2,amount:1,affects:'ALL_PLAYERS'}]; }
     if (number === 16) { def.passiveAbilities[0].timing='ON_ENTER_FIELD';def.passiveAbilities[0].effects=[{type:'DESTROY_OWN_FOOD_OR_SELF_ON_ENTRY'}]; }
-    if (number === 18) { def.skills[1].effects=[{type:'ATTACK_MULTIPLE_TARGETS',count:2,exact:true}]; }
+    if (number === 18) { def.skills[1].effects=[{type:'ATTACK_MULTIPLE_TARGETS',exactSelections:2,ordered:true}]; }
     if (number === 17) { def.skills[1].effects=[{type:'TAX_OPPONENT_CARD_TYPE_AFTER_ATTACK',cardType:'SPELL',amount:1,startTurnOffset:1,endTurnOffset:1}]; }
     if (number === 20) { def.passiveAbilities[0].effects=[{type:'PREVENT_DAMAGE',sourceType:'ATTACK',skillNameIncludes:'毒'}]; }
     if (number === 21) { def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].condition={type:'DESTROYED_BY_ATTACK'};def.passiveAbilities[0].optional=true;def.passiveAbilities[0].effects=[{type:'OPTIONAL_FLIP_OPPONENT_FOOD_ON_DESTROYED',maxSelections:2}]; }
@@ -52,12 +54,15 @@
     if (number === 37) { def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].condition={type:'DESTROYED_BY_ATTACK'};def.passiveAbilities[0].optional=true;def.passiveAbilities[0].effects=[{type:'OPTIONAL_FLIP_OPPONENT_FOOD_ON_DESTROYED',maxSelections:1}]; }
     if (number === 38) { def.skills.push({id:record.id+'_gitai',name:'ベイツ型擬態',baseAp:null,timing:'PASSIVE',effects:[],gitai:true}); }
     if (number === 41) { def.continuousStatModifiers=[{type:'HAS_ATTACHMENT',stats:['HP','AP'],amount:100}]; }
+    if(number===43){def.passiveAbilities[0].effects=[{type:'SUPPRESS_ALL_OTHER_INSECT_KEYWORD_SKILLS'}];}
     if (number === 44) { def.skills[1].effects=[{type:'APPLY_STAT_MODIFIER',target:'SOURCE',stat:'HP',amount:200,startTurnOffset:1,endTurnOffset:1}]; }
     if (number >= 46 && number <= 50) {
       var amounts={46:400,47:700,48:600,49:1000,50:1000};
       def.enhancementEffects=[{type:'STAT_MODIFIER',stat:number<=47||number===50?'AP':'HP',amount:amounts[number]},{type:'OPTIONAL_ATTACH_FROM_TERRITORY'}];
     }
     if(number===51){def.enhancementEffects=[{type:'FORCE_OPPONENT_SPELL_TARGET_TO_SELF_GROUP'}];}
+    if(number===57){def.cardEffects=[{type:'EXCHANGE_MATCHING_FORM',nameSuffix:'（幼虫）',firstZone:'FIELD',firstDestination:'DISCARD',secondZone:'DISCARD',secondDestination:'FIELD'}];}
+    if(number===61){def.cardEffects=[{type:'GRANT_OPPONENT_SPELL_IMMUNITY',target:'OWN_FIELD_INSECT',requiresTarget:true,endTurnOffset:1}];}
     def.implementationStatus = root.CardStatus.PARTIAL;
     def.implementationNotes = 'SET4 metadata is wired; Battle completion requires the card evidence audit.';
     return def;
