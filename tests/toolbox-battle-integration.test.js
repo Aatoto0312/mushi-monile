@@ -2,6 +2,7 @@
 var TestRunner = require('./lib.js');
 require('./engine-loader.js');
 var runtime = require('../shared/deck-format/runtime.js');
+var fs = require('fs');
 var runner = new TestRunner();
 
 function set1Deck() {
@@ -48,6 +49,16 @@ runner.test('Audited SET2 deck validates and starts Battle through Toolbox hando
   var engine=new global.GameEngine();engine.newGame(result.definitions,global.expandStarterDeck(global.STARTER_DECK_RECIPES.OKAMAKIRI),{rng:function(){return 0.25;}});
   var state=engine.getState(),cards=state.player('P1').hand.concat(state.player('P1').territory,state.player('P1').deck);
   runner.assertEqual(cards.length,20);runner.assert(cards.every(function(card){return global.getCardDefinition(card.cardId).set==='BOOSTER_SET_2';}));
+});
+
+runner.test('Toolbox loads audited SET2 through SET4 definitions before catalog fallback',function(){
+  var html=fs.readFileSync(require('path').join(__dirname,'..','toolbox.html'),'utf8');
+  var loader=html.indexOf('js/cards/catalog-card-loader.js');
+  ['set2-cards.js','set3-cards.js','set4-cards.js'].forEach(function(file){
+    var index=html.indexOf('js/cards/'+file);
+    runner.assert(index!==-1,file+' loaded');
+    runner.assert(index<loader,file+' loads before catalog fallback');
+  });
 });
 
 runner.test('Invalid, unknown and unimplemented saved decks are rejected', function () {
