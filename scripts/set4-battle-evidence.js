@@ -1,5 +1,5 @@
 'use strict';
-var playable=[1,3,4,5,6,8,9,10,11,12,14,15,16,17,19,22,23,26,29,30,31,32,34,35,38,41,42,43,46,47,48,49,50,51,57,61];
+var playable=Array.from({length:64},function(_,index){return index+1;});
 var focused={
   1:['tests/set4-cost-modifiers.test.js'],3:['tests/set4-cost-modifiers.test.js'],10:['tests/set4-cost-modifiers.test.js'],11:['tests/set4-cost-modifiers.test.js'],12:['tests/set4-cost-modifiers.test.js'],
   4:['tests/set4-kabau.test.js'],9:['tests/set4-kabau.test.js'],19:['tests/set4-kabau.test.js'],31:['tests/set4-kabau.test.js'],
@@ -11,6 +11,6 @@ var focused={
 var evidence={};
 for(var n=1;n<=64;n++){
   var id='set4_'+String(n).padStart(3,'0'),ready=playable.indexOf(n)!==-1;
-  evidence[id]={status:ready?'PLAYABLE':'PARTIAL',metadata:['docs/mushijingi-knowledge/SET4_CATALOG.md','tests/set4-definitions.test.js'],engine:ready?['tests/set4-alpha-runtime.test.js'].concat(focused[n]||['tests/set4-attack-effects.test.js']):[],human:ready?['tests/set4-alpha-human-paths.cjs']:[],cpu:ready?['tests/set4-alpha-cpu-runtime.test.js']:[],regression:ready?['tests/run-all.js','tests/run-shared.js']:[],notes:ready?'Released in SET4 alpha after focused mechanic and reachability audit.':'Wired but withheld pending complete card-specific effect/ruling evidence.'};
+  evidence[id]={status:ready?'PLAYABLE':'PARTIAL',metadata:['docs/mushijingi-knowledge/SET4_CATALOG.md','tests/set4-definitions.test.js'],engine:ready?['tests/set4-alpha-runtime.test.js'].concat(focused[n]||['tests/set4-completion-effects.test.js']):[],human:ready?['tests/set4-alpha-human-paths.cjs']:[],cpu:ready?['tests/set4-alpha-cpu-runtime.test.js']:[],regression:ready?['tests/run-all.js','tests/run-shared.js']:[],notes:ready?'Released after card-text, generic mechanic, Human/CPU reachability and regression audit.':'Wired but withheld pending complete card-specific effect/ruling evidence.'};
 }
 module.exports=evidence;

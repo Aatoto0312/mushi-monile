@@ -7,7 +7,7 @@
     PLAYABLE: '対戦対応', PARTIAL: '一部対応', BLOCKED: '確認保留',
     UNAVAILABLE: '対戦未対応'
   };
-  var playableStatuses = { TESTED: true, IMPLEMENTED: true, SPEC_COMPLETE: true };
+  var playableStatuses = { PLAYABLE: true, TESTED: true, IMPLEMENTED: true, SPEC_COMPLETE: true };
 
   function setLabel(value) {
     if (value === 'STARTER') { return 'スターター'; }

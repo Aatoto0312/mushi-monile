@@ -114,6 +114,8 @@ function requireAll() {
     ,require('./set4-kabau.test.js')
     ,require('./set4-targeting.test.js')
     ,require('./set4-attack-effects.test.js')
+    ,require('./set4-completion-definitions.test.js')
+    ,require('./set4-completion-effects.test.js')
     ,require('./set4-army-link.test.js')
     ,require('./set4-kuchinashi.test.js')
     ,require('./set4-spell-core.test.js')

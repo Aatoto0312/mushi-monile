@@ -96,6 +96,7 @@
           total += (effects[j].amount || 0)*attachmentMultiplier;
         }
       }
+      (attachments[i].runtimeFlags && attachments[i].runtimeFlags.copiedStatEffects || []).forEach(function(effect){if(effect.stat==='AP'){total+=(effect.amount||0)*attachmentMultiplier;}});
     }
     return total;
   }
@@ -120,6 +121,7 @@
           sum += (e.amount || 0)*attachmentMultiplier;
         }
       }
+      (att.runtimeFlags && att.runtimeFlags.copiedStatEffects || []).forEach(function(effect){if(effect.stat==='HP'){sum+=(effect.amount||0)*attachmentMultiplier;}});
     }
     return sum;
   }
