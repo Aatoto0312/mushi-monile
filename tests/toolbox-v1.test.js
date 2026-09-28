@@ -4,6 +4,7 @@ var TestRunner = require('./lib.js');
 require('./engine-loader.js');
 var catalog = require('../shared/card-data/registry-catalog.js');
 var core = require('../toolbox/toolbox-core.js');
+var presenter = require('../shared/ui-presenter.js');
 var runner = new TestRunner();
 
 function futureCard(id, overrides) {
@@ -36,6 +37,18 @@ runner.test('Search, combined filters and dynamic options use registry-derived f
   var options = core.deriveFilterOptions(cards);
   runner.assert(options.set.indexOf('SET9') !== -1, 'future set option');
   runner.assert(options.rarity.indexOf('SR') !== -1, 'rarity option');
+});
+
+runner.test('Battle readiness filter follows canonical playable status across every set', function () {
+  var cards = catalog.fromRegistry(global.cardRegistry);
+  var ready = core.buildCatalogView(cards, { implementationStatusGroup:'PLAYABLE' }, 'officialNumber', presenter.statusGroup);
+  ['STARTER','BOOSTER_SET_1','BOOSTER_SET_2','BOOSTER_SET_3','BOOSTER_SET_4'].forEach(function(set) {
+    runner.assert(ready.some(function(card){ return card.set===set && card.playable; }), set+' playable cards visible');
+  });
+  runner.assert(!ready.some(function(card){ return !card.playable; }), 'PARTIAL cards excluded');
+  var set4Ready=core.buildCatalogView(cards,{set:'BOOSTER_SET_4',implementationStatusGroup:'PLAYABLE'},'officialNumber',presenter.statusGroup);
+  runner.assert(set4Ready.length>0,'SET4 combined filter');
+  runner.assert(set4Ready.every(function(card){return card.playable;}),'SET4 combined filter excludes partial');
 });
 
 runner.test('Catalog sort supports official number, name, cost and HP', function () {

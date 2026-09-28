@@ -7,7 +7,7 @@
   if (root.cardRegistry) { api.register(root.cardRegistry); }
 }(typeof globalThis !== 'undefined' ? globalThis : this, function (root, records) {
   'use strict';
-  var alphaPlayableNumbers = [1,3,4,5,6,8,9,10,11,12,14,15,16,17,19,22,23,26,29,30,31,32,34,35,38,41,42,43,46,47,48,49,50,51,57,61];
+  var alphaPlayableNumbers = Array.from({length:64}, function(_, index) { return index + 1; });
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {
@@ -30,6 +30,7 @@
     }
     if (number === 5) { def.passiveAbilities[0].effects=[{type:'SUPPRESS_ENTER_FIELD_TRAITS',affects:'ALL_PLAYERS'}]; }
     if ([6,8,13].indexOf(number) !== -1) { def.passiveAbilities[0].effects=[{type:'SHARE_LINKED_ALLY_ATTACK_SKILLS'}]; }
+    if(number===7){def.skills[1].usageLimit='ONCE_PER_FIELD_STAY';def.skills[1].effects=[{type:'BLIND_ROUTE_OPPONENT_HAND'}];}
     if(number===6){def.skills[0].dynamicAp={type:'OWN_FIELD_FAMILY_SUFFIX_COUNT',familySuffix:'アリ科',multiplier:200};}
     if ([4,9,19,31].indexOf(number) !== -1) {
       def.skills.push({id:record.id+'_kabau',name:'かばう',baseAp:null,timing:'TERRITORY_DRAW',optional:true,effects:[{type:'KABAU_TERRITORY_ENTRY'}]});
@@ -54,21 +55,35 @@
     if (number === 36) { def.skills[1].additionalCost=[{type:'SACRIFICE_OWN_INSECT',amount:1}]; }
     if (number === 37) { def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].condition={type:'DESTROYED_BY_ATTACK'};def.passiveAbilities[0].optional=true;def.passiveAbilities[0].effects=[{type:'OPTIONAL_FLIP_OPPONENT_FOOD_ON_DESTROYED',maxSelections:1}]; }
     if (number === 38) { def.skills.push({id:record.id+'_gitai',name:'ベイツ型擬態',baseAp:null,timing:'PASSIVE',effects:[],gitai:true}); }
+    if(number===39){def.skills[1].additionalCost=[{type:'DESTROY_OWN_ATTACHMENT',amount:1}];}
+    if(number===40){def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].condition={type:'DESTROYED_BY_ATTACK'};def.passiveAbilities[0].optional=true;def.passiveAbilities[0].effects=[{type:'OPTIONAL_RETURN_OWN_DISCARD_ENHANCEMENT',maxSelections:1}];}
     if (number === 41) { def.continuousStatModifiers=[{type:'HAS_ATTACHMENT',stats:['HP','AP'],amount:100}]; }
     if(number===43){def.passiveAbilities[0].effects=[{type:'SUPPRESS_ALL_OTHER_INSECT_KEYWORD_SKILLS'}];}
     if (number === 44) { def.skills[1].effects=[{type:'APPLY_STAT_MODIFIER',target:'SOURCE',stat:'HP',amount:200,startTurnOffset:1,endTurnOffset:1}]; }
+    if(number===45){def.skills[0].effects=[{type:'OPTIONAL_BOTTOM_DECK_OPPONENT_DISCARD',maxSelections:1,faceDown:true}];}
     if (number >= 46 && number <= 50) {
       var amounts={46:400,47:700,48:600,49:1000,50:1000};
       def.enhancementEffects=[{type:'STAT_MODIFIER',stat:number<=47||number===50?'AP':'HP',amount:amounts[number]},{type:'OPTIONAL_ATTACH_FROM_TERRITORY'}];
     }
     if(number===51){def.enhancementEffects=[{type:'FORCE_OPPONENT_SPELL_TARGET_TO_SELF_GROUP'}];}
+    if(number===52){def.enhancementEffects=[{type:'DESTROY_OPPONENT_CHOICE_AFTER_HOST_ATTACK_KILL'}];}
+    if(number===53){def.enhancementEffects=[{type:'COPY_ENHANCEMENT_STATS_TRACK_SOURCE'}];}
+    if(number===54){def.enhancementEffects=[{type:'BOTTOM_DECK_HOST_ATTACK_KILL',faceDown:true}];}
+    if(number===55){def.cardEffects=[{type:'REVIVE_MATCHING_LARVA',enteringCannotAttackThisTurn:true}];}
+    if(number===56){def.cardEffects=[{type:'EXCHANGE_OPPONENT_FIELD_FOOD'}];}
     if(number===57){def.cardEffects=[{type:'EXCHANGE_MATCHING_FORM',nameSuffix:'（幼虫）',firstZone:'FIELD',firstDestination:'DISCARD',secondZone:'DISCARD',secondDestination:'FIELD'}];}
+    if(number===58){def.cardEffects=[{type:'DESTROY_ALL_VISIBLE_INSECTS_END_TURN'}];}
+    if(number===59){def.cardEffects=[{type:'RETURN_OWN_FOOD_CARDS',cardType:'ENHANCEMENT',minSelections:0,maxSelections:2}];}
+    if(number===60){def.cardEffects=[{type:'RETURN_OWN_FOOD_AND_SELF_TO_FOOD',requiresTarget:true,target:'OWN_FOOD'}];}
     if(number===61){def.cardEffects=[{type:'GRANT_OPPONENT_SPELL_IMMUNITY',target:'OWN_FIELD_INSECT',requiresTarget:true,endTurnOffset:1}];}
+    if(number===62){def.cardEffects=[{type:'ATTACH_OWN_FOOD_ENHANCEMENTS',minSelections:1,maxSelections:2}];}
+    if(number===63){def.cardEffects=[{type:'DAMAGE_AND_CHAIN_SAME_NAME',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:500}];}
+    if(number===64){def.cardEffects=[{type:'DESTROY_OWN_ATTACHMENT_OPTIONAL_DAMAGE',amount:700}];}
     var alphaPlayable = alphaPlayableNumbers.indexOf(number) !== -1;
     def.implementationStatus = alphaPlayable ? root.CardStatus.PLAYABLE : root.CardStatus.PARTIAL;
     def.implementationNotes = alphaPlayable
-      ? 'SET4 alpha: card text, generic mechanic, Human/CPU reachability and regression evidence are recorded in scripts/set4-battle-evidence.js.'
-      : 'SET4 alpha: Battle wiring exists, but card-specific completion evidence is incomplete; keep unavailable for Battle.';
+      ? 'SET4 complete: card text, generic mechanic, Human/CPU reachability and regression evidence are recorded in scripts/set4-battle-evidence.js.'
+      : 'SET4: Battle wiring exists, but card-specific completion evidence is incomplete; keep unavailable for Battle.';
     return def;
   }
   function register(registry) {
