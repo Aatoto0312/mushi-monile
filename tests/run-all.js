@@ -122,6 +122,8 @@ function requireAll() {
     ,require('./set4-alpha-status.test.js')
     ,require('./set4-alpha-runtime.test.js')
     ,require('./set4-alpha-cpu-runtime.test.js')
+    ,require('./adversarial-set2-set4-audit.test.js')
+    ,require('./set4-independent-audit-fixes.test.js')
   ];
 }
 

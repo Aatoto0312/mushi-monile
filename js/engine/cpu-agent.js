@@ -60,7 +60,8 @@
     if (pending.type === 'CARD_SELECTION') {
       if (!pending.options || pending.options.length < pending.minSelections) return null;
       var count = pending.exactSelections != null ? pending.exactSelections : pending.maxSelections;
-      var selected=(pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count);
+      var selected=pending.hiddenSelection?[pending.options[Math.floor(this.rng()*pending.options.length)]]:
+        ((pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count));
       if (pending.allowedCombinations && pending.allowedCombinations.length) { selected = pending.allowedCombinations[0].slice(); }
       if(pending.selectionPurpose==='TRANSFER_OWN_ATTACHMENT'&&selected.length===2){var holder=global.findAttachment(state,selected[0]);var destinations=pending.selectionGroups[1].filter(function(id){return !holder||id!==holder.host.instanceId;});if(destinations.length)selected[1]=destinations[0];}
       return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
@@ -174,7 +175,7 @@
       var skills = def ? (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state, inst) : def.skills || []).filter(function (skill) {
         if (skill.timing !== 'ATTACK') return false;
         if (!global.getLegalAttackTargets(state, inst.instanceId, skill.id).length) return false;
-        return !global.skillRequiresSacrifice(skill) || global.getSacrificeCandidates(state, inst.instanceId).length > 0;
+        return global.canPaySkillAdditionalCosts ? global.canPaySkillAdditionalCosts(state,inst.instanceId,skill) : (!global.skillRequiresSacrifice(skill) || global.getSacrificeCandidates(state, inst.instanceId).length > 0);
       }) : [];
       return skills.length > 0;
     });
@@ -185,7 +186,7 @@
       var attackSkills = def ? (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(state, chosenAttacker) : def.skills || []).filter(function(s) {
         if (s.timing !== 'ATTACK') return false;
         if (!global.getLegalAttackTargets(state, chosenAttacker.instanceId, s.id).length) return false;
-        return !global.skillRequiresSacrifice(s) || global.getSacrificeCandidates(state, chosenAttacker.instanceId).length > 0;
+        return global.canPaySkillAdditionalCosts ? global.canPaySkillAdditionalCosts(state,chosenAttacker.instanceId,s) : (!global.skillRequiresSacrifice(s) || global.getSacrificeCandidates(state, chosenAttacker.instanceId).length > 0);
       }) : [];
       var chosenSkill = attackSkills.length > 0 ? attackSkills[Math.floor(this.rng() * attackSkills.length)] : null;
       var skillId = chosenSkill ? chosenSkill.id : null;
