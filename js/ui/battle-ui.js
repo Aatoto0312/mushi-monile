@@ -533,7 +533,7 @@
     this.renderZoneDeck(id + '-deck-zone', player.deck.length);
 
     // 手札 (裏向き表示)
-    this.renderZoneHand(id + '-hand-zone', player.hand.length, false, null, playerId);
+    this.renderZoneHand(id + '-hand-zone', player.hand.length, false, player.hand, playerId);
 
     // エサ (両プレイヤー表向き)
     this.renderZoneFood(id + '-food-zone', player.food.length, true, player.food, playerId);
@@ -614,10 +614,19 @@
     } else {
       // 相手の手札は内容非公開。枚数はラベルのcountバッジで表示し、
       // カードは小型スタック(最大3枚)だけ描画して縦積みを避ける。
-      var backsToRender = Math.min(count, 3);
+      var hiddenPending=getPendingEffect(self.state);
+      var isBlindChoice=hiddenPending&&hiddenPending.type==='CARD_SELECTION'&&hiddenPending.hiddenSelection&&hiddenPending.selectionPurpose==='BLIND_OPPONENT_HAND';
+      container.classList.toggle('blind-hand-picker',!!isBlindChoice);
+      var backsToRender = isBlindChoice ? count : Math.min(count, 3);
       for (var i = 0; i < backsToRender; i++) {
         var back = CardUI.renderFaceDown(null, null);
         back.classList.add('hand-back');
+        if(isBlindChoice&&handInstances&&hiddenPending.options.indexOf(handInstances[i].instanceId)!==-1){
+          (function(cardBack,hiddenCard,index){
+            cardBack.classList.add('legal-target');cardBack.setAttribute('aria-label','相手の手札 '+(index+1));
+            cardBack.addEventListener('click',function(){try{global.selectPendingCard(self.state,hiddenPending.playerId,hiddenCard.instanceId);self.render();}catch(error){showUserError(error);}});
+          })(back,handInstances[i],i);
+        }
         cardRow.appendChild(back);
       }
     }
@@ -980,6 +989,8 @@ BattleUI.prototype.renderPendingEffect = function (state) {
         statusText.textContent = '場の幼虫と、手札の同名の成虫を選んでください';
       } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'COPY_ALLY_COLOR') {
         statusText.textContent = '色を参照する、自分の別の虫を選んでください';
+      } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'BLIND_OPPONENT_HAND') {
+        statusText.textContent = '相手の裏向き手札から1枚選んでください';
       } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'SUMMON_ATTACHED_FROM_HAND') {
         statusText.textContent = '強化カードをつけて場に出す、手札の虫を選んでください';
       } else if (pending.type === 'CARD_SELECTION' && pending.selectionPurpose === 'ALTERNATIVE_SUMMON_COST') {
@@ -1281,7 +1292,8 @@ BattleUI.prototype.renderPendingEffect = function (state) {
 
     // 連撃中は同じ技だけを使用する。
     var attackSkills = (global.getEffectiveAttackSkills ? global.getEffectiveAttackSkills(this.state, instance) : def.skills || []).filter(function (s) {
-      return s.timing === 'ATTACK' && (!hasContinuous || s.id === continuous.skillId);
+      return s.timing === 'ATTACK' && (!hasContinuous || s.id === continuous.skillId) &&
+        (!global.canPaySkillAdditionalCosts || global.canPaySkillAdditionalCosts(self.state, instance.instanceId, s));
     });
     if (attackSkills.length === 0) {
       alert('攻撃技がありません');

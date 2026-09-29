@@ -1,0 +1,10 @@
+const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');
+const assert=require('node:assert/strict');
+(async()=>{const browser=await(process.env.MUSHI_BROWSER==='webkit'?webkit.launch():chromium.launch({channel:'msedge'}));const page=await browser.newPage({viewport:{width:390,height:650},isMobile:true,hasTouch:true});page.setDefaultTimeout(5000);let checks=0;try{
+ await page.goto(process.env.MUSHI_URL||'http://127.0.0.1:8766',{waitUntil:'domcontentloaded'});await page.locator('#btn-vs-human').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();if(await page.locator('#pass-overlay').isVisible())await page.locator('#btn-pass-ok').click();
+ await page.evaluate(()=>{const u=MushiBattle.ui,s=u.state,id=s.activePlayerId,opp=s.opponentOf(id),make=(cid,owner,zone,n)=>new CardInstance({instanceId:'audit-human-'+n,cardId:cid,ownerId:owner,controllerId:owner,zone,faceDown:false,currentHp:5000,baseHp:5000});s.phase=Phases.MAIN_PHASE;s.pendingEffect=null;s.player(id).field=[make('set4_007',id,'FIELD',1)];s.player(id).hand=[];s.player(opp).field=[make('set1_003',opp,'FIELD',2)];s.player(opp).hand=[make('set1_004',opp,'HAND',3),make('set4_046',opp,'HAND',4)];performAttack(s,'audit-human-1','audit-human-2','INSECT',getCardDefinition('set4_007').skills[1].id);u.render();});
+ assert.equal(await page.locator('#opp-hand-zone .hand-back').count(),2);checks++;
+ const hiddenText=await page.locator('#opp-hand-zone').innerText();assert(!hiddenText.includes('オオカマキリ')&&!hiddenText.includes('蚕玉の加護'));checks++;
+ await page.locator('#opp-hand-zone .hand-back').nth(1).click();assert(await page.evaluate(()=>!MushiBattle.ui.state.pendingEffect&&MushiBattle.ui.state.player(MushiBattle.ui.state.opponentOf(MushiBattle.ui.state.activePlayerId)).food.some(c=>c.instanceId==='audit-human-4')));checks++;
+ console.log('SET4 AUDIT HUMAN PATH CHECKS PASSED: '+checks);
+ }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

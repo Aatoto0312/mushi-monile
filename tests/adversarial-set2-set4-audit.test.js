@@ -38,6 +38,7 @@ runner.test('SET4-62 excludes enhancements whose use requirements cannot be sati
   h.ensureCost(state, 'P1', 20);
   h.putInsectOnField(state, 'P1', 'set1_003');
   var incompatible = h.addToFoodRaw(state, 'P1', getCardDefinition('set3_048'));
+  h.addToFoodRaw(state, 'P1', getCardDefinition('set4_046'));
   var spell = h.addToHandRaw(state, 'P1', getCardDefinition('set4_062'));
   useSpell(state, 'P1', spell.instanceId);
   runner.assert(state.pendingEffect.options.indexOf(incompatible.instanceId) === -1,

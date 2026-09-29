@@ -395,6 +395,36 @@ body.battle-screen {
   min-height: var(--card-h-opp-hand);
 }
 .aux-strip .hand-back { background: repeating-linear-gradient(45deg,#5d6d73,#5d6d73 6px,#4d5b60 6px,#4d5b60 12px); }
+.hand-zone.blind-hand-picker {
+  display: block !important;
+  position: fixed;
+  z-index: 720;
+  left: max(12px,env(safe-area-inset-left));
+  right: max(12px,env(safe-area-inset-right));
+  bottom: calc(72px + env(safe-area-inset-bottom));
+  width: auto;
+  max-width: 520px;
+  height: 104px;
+  min-height: 104px;
+  margin: 0 auto;
+  padding: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #cdbb82;
+  border-radius: 12px;
+  background: rgba(7,35,28,.97);
+  box-shadow: 0 12px 36px #0009;
+}
+.hand-zone.blind-hand-picker .card-row { width: max-content; min-width: 100%; height: 82px; justify-content: center; gap: 8px; }
+.hand-zone.blind-hand-picker .hand-back {
+  width: 58px;
+  min-width: 58px;
+  max-width: 58px;
+  height: 82px;
+  min-height: 82px;
+  max-height: 82px;
+  border: 2px solid #d7c58e;
+}
 .aux-strip .deck-zone { height: var(--card-h-deck-pile); min-height: var(--card-h-deck-pile); max-height: var(--card-h-deck-pile); }
 .aux-strip .deck-pile {
   position: relative;

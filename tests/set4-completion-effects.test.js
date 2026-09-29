@@ -8,7 +8,7 @@ function attach(state,playerId,host,cardId){var card=h.addToHandRaw(state,player
 runner.test('blind-route attack resolves one hidden opponent hand card before damage',function(){
  var d=copy('set4_007','test_set4_blind_route'),s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);var a=h.putInsectOnField(s,'P1',d.id,{hp:2000}),target=h.putInsectOnField(s,'P2','set1_003',{hp:5000});s.player('P2').hand=[];
  var routed=h.addToHandRaw(s,'P2',getCardDefinition('set1_004')),before=s.player('P2').hand.length;
- performAttack(s,a.instanceId,target.instanceId,'INSECT',d.skills[1].id);
+ performAttack(s,a.instanceId,target.instanceId,'INSECT',d.skills[1].id);runner.assertEqual(s.pendingEffect.selectionPurpose,'BLIND_OPPONENT_HAND');resolveCardSelection(s,'P1',[routed.instanceId],true);
  runner.assertEqual(s.player('P2').hand.length,before-1);runner.assert(s.player('P2').field.some(function(c){return c.instanceId===routed.instanceId;}));runner.assertEqual(s.pendingEffect,null);
 });
 
