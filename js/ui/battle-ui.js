@@ -616,7 +616,8 @@
       // カードは小型スタック(最大3枚)だけ描画して縦積みを避ける。
       var hiddenPending=getPendingEffect(self.state);
       var isBlindChoice=hiddenPending&&hiddenPending.type==='CARD_SELECTION'&&hiddenPending.hiddenSelection&&hiddenPending.selectionPurpose==='BLIND_OPPONENT_HAND';
-      container.classList.toggle('blind-hand-picker',!!isBlindChoice);
+      if(isBlindChoice){container.classList.add('blind-hand-picker');}
+      else{container.classList.remove('blind-hand-picker');}
       var backsToRender = isBlindChoice ? count : Math.min(count, 3);
       for (var i = 0; i < backsToRender; i++) {
         var back = CardUI.renderFaceDown(null, null);
