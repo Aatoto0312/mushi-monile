@@ -15601,6 +15601,2887 @@
       "taxonomy": "NOT_APPLICABLE",
       "rulings": "NO_OFFICIAL_QA_MATCH"
     }
+  },
+  {
+    "id": "set8_001",
+    "officialNumber": "1/64",
+    "name": "ペルビアンジャイアントオオムカデ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "LR",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 6,
+    "baseHp": 1700,
+    "skills": [
+      {
+        "name": "神の毒牙",
+        "baseAp": 1100,
+        "effectText": "このダメージは回復しない。"
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "奈落復活",
+        "effectText": "これが捨て札にあるとき、コストを6支払い、場に出してもよい。＜奈落復活＞で場に出たこれが破壊されたとき、この虫を裏向きで捨て札に置く。※裏向きの捨て札は、ないものとして扱う。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "オオムカデ科。体長300mm。南米に分布。世界最大級のムカデ。脚が変形し毒牙のようになった顎肢（がくし）を用いてクモ、ネズミなどを捕食する。力が強くプラケースのフタを噛みやぶるほど。",
+    "rulings": [
+      {
+        "id": "set8_001-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "別の蘇生効果で出した場合は通常の表向き捨て札へ移る。奈落復活で得た裏向き化は特性喪失後も存続する。破壊以外の離場には移動効果の指定を適用する。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      },
+      {
+        "id": "set8_001-qa-2",
+        "classification": "OFFICIAL_RULING",
+        "text": "奈落復活の支払いは固定6。地獄の番人の蘇生禁止を受ける。同時に発生する自分の効果は順序を選べる。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "オオムカデ科",
+      "奈落復活"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/1/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_002",
+    "officialNumber": "2/64",
+    "name": "オオルリボシヤンマ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 5,
+    "baseHp": 1100,
+    "skills": [
+      {
+        "name": "とびかかる",
+        "baseAp": 600,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "翡翠色",
+        "effectText": "これが場に出たとき青か緑の色を指定してもよい。そうしたなら、ターン終了時まで、これはその色になる。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ヤンマ科。体長76～94mm。北海道、本州、九州に分布。夏から秋に出現。同属の中で最大級の種。オスの腹部の斑紋は水色、メスは水色または黄緑色を示す。オスは水面の開けた池沼に縄張りを持つ。",
+    "rulings": [],
+    "tags": [
+      "ヤンマ科",
+      "翡翠色"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/2/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_003",
+    "officialNumber": "3/64",
+    "name": "トゲアクマツユムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 5,
+    "baseHp": 800,
+    "skills": [
+      {
+        "name": "かみちぎる",
+        "baseAp": 600,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "悪魔召喚",
+        "effectText": "これを場に出すとき、コストを支払う代わりに自分の場の強化カードがついた虫を1つ選び、破壊してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "キリギリス科。体長80mm前後。南米に分布。脚の大部分にトゲを持つキリギリス。「悪魔のキリギリス」という異名を持つ。他のキリギリスを含め、様々な昆虫を捕食する。",
+    "rulings": [
+      {
+        "id": "set8_003-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "悪魔召喚の破壊が置換された場合でも、代替召喚を行える。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "キリギリス科",
+      "悪魔召喚"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/3/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_004",
+    "officialNumber": "4/64",
+    "name": "ハナカマキリ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "UR",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 3,
+    "baseHp": 900,
+    "skills": [
+      {
+        "name": "カマ斬撃",
+        "baseAp": 200,
+        "effectText": ""
+      },
+      {
+        "name": "蟷螂蘭舞",
+        "baseAp": 400,
+        "effectText": "この技はこれに強化カードがついていないと使用できない。攻撃後、相手の場に虫がいれば、もう1度だけ使用できる。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ハナカマキリ科。体長40～60mm。東南アジアに分布。花弁に似た体を持ち、花に擬態して訪れる昆虫を捕食するカマキリ。幼虫はランの花に似るが、成虫になるとやや似なくなり飛翔が可能になる。",
+    "rulings": [
+      {
+        "id": "set8_004-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "追加攻撃が認められていても、強化を失った後は蟷螂蘭舞の使用条件を満たさない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ハナカマキリ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/4/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_005",
+    "officialNumber": "5/64",
+    "name": "キララシロカネグモ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 2,
+    "baseHp": 400,
+    "skills": [
+      {
+        "name": "かむ",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "かがやく糸",
+        "effectText": "これがコストを支払い場に出たとき、捨て札から糸と書かれた強化カードを1つ選び手札に戻してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アシナガグモ科。体長オス4～6mm、メス6～9mm。北海道から九州に分布。草地や林縁部などに水平円網を張る。腹部は金色のうろこ状模様で覆われるが、刺激を受けると褐色に変化する。",
+    "rulings": [
+      {
+        "id": "set8_005-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "名前の「糸」を参照する。部首に糸を含むだけの名前は該当しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "アシナガグモ科",
+      "かがやく糸"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/5/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_006",
+    "officialNumber": "6/64",
+    "name": "ギガスオオアリ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 5,
+    "baseHp": 1100,
+    "skills": [
+      {
+        "name": "かみつく",
+        "baseAp": 800,
+        "effectText": ""
+      },
+      {
+        "name": "ギガスラッシャー",
+        "baseAp": 1200,
+        "effectText": "この虫は次の自分のターン、攻撃できない。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アリ科。体長20～35mm。東南アジアに分布。コロニーサイズは数万匹に達し、1コロニーは10～20mの間隔で8～17個ほどの巣を持つ。主に夜行性で、甘露や鳥の糞、節足動物を主食とする。",
+    "rulings": [],
+    "tags": [
+      "アリ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/6/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_007",
+    "officialNumber": "7/64",
+    "name": "ミナミミイデラゴミムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 4,
+    "baseHp": 900,
+    "skills": [
+      {
+        "name": "かみつぶす",
+        "baseAp": 600,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "爆熱充填",
+        "effectText": "これが場に出たとき、自分の捨て札に爆熱と書かれたカードがあるなら、相手の虫を1つ選び600のダメージを与えてもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "オサムシ科。体長17～20mm。愛知県、三重県、宮崎県および南西諸島に分布。水田などの湿地に多く、夜間に地面を歩き回る。ミイデラゴミムシに似るが、頭部や胸部の模様などが異なる。",
+    "rulings": [
+      {
+        "id": "set8_007-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "爆熱の参照はカード名を対象とし、技名だけに書かれていても該当しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "オサムシ科",
+      "爆熱充填"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/7/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_008",
+    "officialNumber": "8/64",
+    "name": "ミイデラゴミムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "UR",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 4,
+    "baseHp": 800,
+    "skills": [
+      {
+        "name": "かみつぶす",
+        "baseAp": 600,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "毒霧拡散",
+        "effectText": "これが場に出たとき、相手のすべての虫に200のダメージを与えてもよい。※このダメージは色による影響を受けない。※この効果により虫が破壊されたとき、相手は縄張りを引かない。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "オサムシ科。体長11～18mm。北海道から九州、奄美大島以北の南西諸島に分布。捕食者などから刺激を受けると爆発音と共に100℃近い高温のガスを尻から出すため「へっぴり虫」と呼ばれる。",
+    "rulings": [],
+    "tags": [
+      "オサムシ科",
+      "毒霧拡散"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/8/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_009",
+    "officialNumber": "9/64",
+    "name": "コガタスズメバチ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 4,
+    "baseHp": 400,
+    "skills": [
+      {
+        "name": "かみきる",
+        "baseAp": 500,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "とびだす",
+        "effectText": "これを縄張りから引いたとき、自分の場に＜とびだす＞の技を持つ虫がいなければ、これを場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "スズメバチ科。体長21～29mm。北海道から南西諸島に分布。オオスズメバチと模様が似るが、体のサイズが小さく、頭部前面の特徴的な突出部分で見分けられる。軒下や樹木に営巣する。",
+    "rulings": [],
+    "tags": [
+      "スズメバチ科",
+      "とびだす"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/9/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_010",
+    "officialNumber": "10/64",
+    "name": "キバハリアリ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 3,
+    "baseHp": 500,
+    "skills": [
+      {
+        "name": "はさむ",
+        "baseAp": 400,
+        "effectText": ""
+      },
+      {
+        "name": "激痛針",
+        "baseAp": 100,
+        "effectText": "この技は1度だけ使用できる。この技により、相手が縄張りを引いたとき、相手は手札を1枚選び捨て札に置く。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アリ科。体長6～40mm。オーストラリアに分布。優れた視覚で昆虫などを探し毒針で仕留める。樹液や甘露も摂取する。毒は強力で人が刺されるとアナフィラキシーショックにより命に関わることもある。",
+    "rulings": [],
+    "tags": [
+      "アリ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/10/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_011",
+    "officialNumber": "11/64",
+    "name": "イエロージャイアントヒヨケムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 5,
+    "baseHp": 1100,
+    "skills": [
+      {
+        "name": "かむ",
+        "baseAp": 700,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "バグハンター",
+        "effectText": "これがコストを支払い場に出たとき、相手のコスト2以下の虫を1つ選び、破壊してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ヒヨケムシ科。体長40～70mm。アフリカに分布。俊敏な動きと強大なハサミ型の鋏角で小動物を捕食する。触肢と呼ばれる腕のような部位の先に粘着する部分があり、獲物を捕らえることもできる。",
+    "rulings": [],
+    "tags": [
+      "ヒヨケムシ科",
+      "バグハンター"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/11/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_012",
+    "officialNumber": "12/64",
+    "name": "ツメジムカデ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 2,
+    "baseHp": 500,
+    "skills": [
+      {
+        "name": "毒のキバ",
+        "baseAp": 200,
+        "effectText": "このダメージは回復しない。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ナガズジムカデ科。体長40mm。本州から南西諸島に分布。頭部がやや長く、主に土の中で生活するムカデ。細長い体で土や枯れ葉の隙間に潜り込み、朽ち木や落ち葉の下で小昆虫を捕食する。",
+    "rulings": [],
+    "tags": [
+      "ナガズジムカデ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/12/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_013",
+    "officialNumber": "13/64",
+    "name": "アリヅカコオロギ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 2,
+    "baseHp": 400,
+    "skills": [
+      {
+        "name": "かみつく",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "アリマネ",
+        "effectText": "この虫は自分の場にいるコスト2以下の～アリ科が持つ、＜＞の技でない技を使用できる。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アリヅカコオロギ科。体長2.5～4mm。北海道から九州に分布。アリの巣内に住み着くコオロギ。アリの体の匂いを自分の体に染み付けて仲間のふりをし、アリの卵や集めた餌を盗み食いする。",
+    "rulings": [],
+    "tags": [
+      "アリヅカコオロギ科",
+      "アリマネ"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/13/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_014",
+    "officialNumber": "14/64",
+    "name": "ニホンカワトンボ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "RED",
+    "cost": 1,
+    "baseHp": 200,
+    "skills": [
+      {
+        "name": "とびかかる",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "川渡り",
+        "effectText": "相手の青のエサが3つ以上あるとき、この虫のコストを1減らす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "カワトンボ科。体長47～68mm。北海道から九州に分布。翅には橙・淡橙・無色の3型があり、地域によって異なる。体色は金属光沢を持つ緑色だが、成熟したオスは白粉を吹く。清流沿いなどに生息。",
+    "rulings": [],
+    "tags": [
+      "カワトンボ科",
+      "川渡り"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/14/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_015",
+    "officialNumber": "15/64",
+    "name": "コーカサスオオカブト",
+    "set": "BOOSTER_SET_8",
+    "rarity": "LR",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 6,
+    "baseHp": 1800,
+    "skills": [
+      {
+        "name": "神のツノ突破",
+        "baseAp": 1000,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "ファランクス",
+        "effectText": "これがコストを支払い場に出たとき、この虫のコスト以下の＜ファランクス＞を持つ虫を手札から1枚選び、場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "コガネムシ科。体長60～120mm。スマトラ島、ジャワ島、マレー半島、インドシナ半島に分布。3本のツノが特徴的なカブトムシ。名前のコーカサスは白い雪を意味する古代スキタイ語に由来する。",
+    "rulings": [
+      {
+        "id": "set8_015-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "コガネムシ科",
+      "ファランクス"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/15/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_016",
+    "officialNumber": "16/64",
+    "name": "アトラスオオカブト",
+    "set": "BOOSTER_SET_8",
+    "rarity": "UR",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 5,
+    "baseHp": 1300,
+    "skills": [
+      {
+        "name": "ツノ突破",
+        "baseAp": 700,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "ファランクス",
+        "effectText": "これがコストを支払い場に出たとき、この虫のコスト以下の＜ファランクス＞を持つ虫を手札から1枚選び、場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "コガネムシ科。体長60～110mm。東南アジアに分布。3本のツノを持つ大型種。コーカサスに似るが、頭角中央の突起はなく、小個体は頭角先端の突起が左右に開くことで区別できる。",
+    "rulings": [
+      {
+        "id": "set8_016-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "コガネムシ科",
+      "ファランクス"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/16/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_017",
+    "officialNumber": "17/64",
+    "name": "インペラトールホソアカクワガタ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 4,
+    "baseHp": 500,
+    "skills": [
+      {
+        "name": "はさむ",
+        "baseAp": 900,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "皇帝",
+        "effectText": "これが表向きでエサ場にあるとき、自分の虫は＜王様＞の効果を失い、これ1つにつき自分の＜王様＞を持つ虫のコストを1減らす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "クワガタムシ科。体長30～90mm。ニューギニア島に分布。種名はラテン語で皇帝の意味。金属光沢と体長に近いほど長く発達する大アゴが特徴。標高の高い山地に生息し、同属の中でも大型の人気種。",
+    "rulings": [],
+    "tags": [
+      "クワガタムシ科",
+      "皇帝"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/17/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_018",
+    "officialNumber": "18/64",
+    "name": "モーレンカンプオオカブト",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 4,
+    "baseHp": 900,
+    "skills": [
+      {
+        "name": "ツノ突進",
+        "baseAp": 500,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "ファランクス",
+        "effectText": "これがコストを支払い場に出たとき、この虫のコスト以下の＜ファランクス＞を持つ虫を手札から1枚選び、場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "コガネムシ科。体長60～115mm。ボルネオ島とラウト島の固有種。名は同島で研究した独昆虫学者メーレンカンプに由来。コーカサスに似るが前胸背板がより狭く、光沢が強いのが特徴。",
+    "rulings": [
+      {
+        "id": "set8_018-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "コガネムシ科",
+      "ファランクス"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/18/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_019",
+    "officialNumber": "19/64",
+    "name": "アカボシゴマダラ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 4,
+    "baseHp": 800,
+    "skills": [
+      {
+        "name": "すいつくす",
+        "baseAp": 600,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "転生強化",
+        "effectText": "羽化と書かれた術か技の効果により場に出たとき、体力と攻撃力を400増やす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "タテハチョウ科。前翅長40～53mm。ベトナム、中国、台湾、朝鮮半島に分布。日本本土の個体群は国外由来で、特定外来生物に指定されている。一方、奄美大島には固有亜種が自然分布する。",
+    "rulings": [
+      {
+        "id": "set8_019-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "転生強化で既に与えた400補正は、後の特性喪失でも残る。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "タテハチョウ科",
+      "転生強化"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/19/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_020",
+    "officialNumber": "20/64",
+    "name": "ケンタウルスオオカブト",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 4,
+    "baseHp": 900,
+    "skills": [
+      {
+        "name": "ツノ突進",
+        "baseAp": 600,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "ケンタウルス",
+        "effectText": "これは術カードの対象にならない。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "コガネムシ科。体長50～90mm。アフリカに分布する唯一の大型種で主にカメルーンなどで観察されている。オスは胸部に一本の長いツノを持つ。名はギリシャ神話のケンタウロスに由来。",
+    "rulings": [],
+    "tags": [
+      "コガネムシ科",
+      "ケンタウルス"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/20/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_021",
+    "officialNumber": "21/64",
+    "name": "ミカドアゲハ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 3,
+    "baseHp": 500,
+    "skills": [
+      {
+        "name": "すいつくす",
+        "baseAp": 400,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "転生強化",
+        "effectText": "羽化と書かれた術か技の効果により場に出たとき、体力と攻撃力を400増やす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アゲハチョウ科。前翅長40～50mm。本州（愛知以西）から沖縄に分布。黒地に青緑色の帯を持つ大型のアゲハ。アオスジアゲハに似るが、本種の方が翅の色が薄い。山地の神社や渓流沿いで見られる。",
+    "rulings": [],
+    "tags": [
+      "アゲハチョウ科",
+      "転生強化"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/21/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_022",
+    "officialNumber": "22/64",
+    "name": "エンガノオオカブト",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 3,
+    "baseHp": 600,
+    "skills": [
+      {
+        "name": "ツノ突進",
+        "baseAp": 400,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "ファランクス",
+        "effectText": "これがコストを支払い場に出たとき、この虫のコスト以下の＜ファランクス＞を持つ虫を手札から1枚選び、場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "コガネムシ科。体長40～69mm。スマトラ南西部沖のエンガノ島に分布。オスはアトラスオオカブトやコーカサスオオカブトの小型個体に似るが、胸角の発達具合や頭角先端の突起の形で区別できる。",
+    "rulings": [
+      {
+        "id": "set8_022-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "コガネムシ科",
+      "ファランクス"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/22/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_023",
+    "officialNumber": "23/64",
+    "name": "オオハキリバチ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 3,
+    "baseHp": 600,
+    "skills": [
+      {
+        "name": "かみきる",
+        "baseAp": 400,
+        "effectText": ""
+      },
+      {
+        "name": "素材集め",
+        "baseAp": 0,
+        "effectText": "これを破壊し、コストを1発生させる。※ダメージを与える前に破壊する。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ハキリバチ科。体長13～25mm。北海道から九州に分布。大型のハキリバチで、竹筒などに営巣し、巣材に泥と松脂を使う。クズ等の花から花粉と蜜を集め、花粉団子として幼虫の餌とする。",
+    "rulings": [
+      {
+        "id": "set8_023-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "素材集めの自己破壊とコスト増加を先に行い、その後0ダメージを解決する。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ハキリバチ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/23/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_024",
+    "officialNumber": "24/64",
+    "name": "ヤマトハキリバチ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "かみきる",
+        "baseAp": 300,
+        "effectText": ""
+      },
+      {
+        "name": "素材集め",
+        "baseAp": 0,
+        "effectText": "これを破壊し、コストを1発生させる。※ダメージを与える前に破壊する。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ハキリバチ科。体長10～13mm。北海道から九州に分布。初夏、地中の巣穴に複数の部屋を作って花粉団子を詰め、幼虫の餌とする。部屋の仕切りに、近場から齧り取って来た木の葉を使う。",
+    "rulings": [],
+    "tags": [
+      "ハキリバチ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/24/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_025",
+    "officialNumber": "25/64",
+    "name": "アカエゾゼミ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 4,
+    "baseHp": 900,
+    "skills": [
+      {
+        "name": "しぼりとる",
+        "baseAp": 400,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "鳴く",
+        "effectText": "相手はこれ以外の虫を攻撃できない。※この技を持つ虫が複数いるとき、相手はどれかを選んで攻撃する。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "セミ科。体長58～65mm。北海道から九州に分布。赤褐色の体を持つ美しいセミで、山地のブナなどの広葉樹に止まって「ビー」という声を響かせる。よく似たエゾゼミに比べ、生息域は限られる。",
+    "rulings": [],
+    "tags": [
+      "セミ科",
+      "鳴く"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/25/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_026",
+    "officialNumber": "26/64",
+    "name": "ジュウサンネンゼミ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "しぼりとる",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "とびでる",
+        "effectText": "この虫が虫の攻撃により破壊されたとき、引いた縄張りがゼミ科ならそれを場に出してもよい。※＜とびだす＞を持つ虫が場にいるとき、＜とびだす＞を持つ虫を引いても場に出せる。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "セミ科。体長30～35mm。北米に分布。13年周期で大量発生する周期ゼミの一種で、集団で大合唱する。17年周期で発生する「ジュウシチネンゼミ」とまとめて「素数ゼミ」とも呼ばれる。",
+    "rulings": [],
+    "tags": [
+      "セミ科",
+      "とびでる"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/26/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_027",
+    "officialNumber": "27/64",
+    "name": "ミドリシジミ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 2,
+    "baseHp": 400,
+    "skills": [
+      {
+        "name": "すいとる",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "エメラルドフラッシュ",
+        "effectText": "虫の攻撃により、これを縄張りから引いたとき、これを相手に見せてから手札に加えてもよい。そうしたなら、自分はもう1枚縄張りを引く。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "シジミチョウ科。前翅長20mm前後。北海道から九州に分布。オスの翅は金緑色に輝く。平地から山地にかけて食樹であるハンノキ群落などに生息する。オスは黄昏時に食樹上で占有行動を示す。",
+    "rulings": [
+      {
+        "id": "set8_027-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "技による追加の縄張り取得は攻撃由来ではなく、同じ技の取得効果は連鎖しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "シジミチョウ科",
+      "エメラルドフラッシュ"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/27/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_028",
+    "officialNumber": "28/64",
+    "name": "ヒメカブト",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "ツノ突進",
+        "baseAp": 300,
+        "effectText": ""
+      },
+      {
+        "name": "カブト戻し",
+        "baseAp": 200,
+        "effectText": "攻撃後、この技を受けた虫についている強化カードを1つ選び手札に戻してもよい。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "コガネムシ科。体長35～85mm。東南アジアに分布。日本産より長い胸角が特徴。スマトラ島ではマメ科植物の枝を自ら削り、汁を吸う姿が観察されている。気性が荒く、戦う際に鳴き声を出す。",
+    "rulings": [
+      {
+        "id": "set8_028-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "白銀蜘蛛の糸を手札に返す行為は破壊ではなく、破壊時効果を誘発しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "コガネムシ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/28/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_029",
+    "officialNumber": "29/64",
+    "name": "ヒメウラナミジャノメ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 1,
+    "baseHp": 100,
+    "skills": [
+      {
+        "name": "すいとる",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "蛇の目",
+        "effectText": "これがコストを支払い場に出たとき、相手の赤か青か緑のエサを1つ選び、裏向きにしてもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "タテハチョウ科。前翅長18～24mm。北海道から九州に分布。様々な草地で見られる。翅に複数の眼状紋を持つ。種小名のargusはギリシャ神話の「百眼の巨人アルゴス」に由来すると考えられる。",
+    "rulings": [],
+    "tags": [
+      "タテハチョウ科",
+      "蛇の目"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/29/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_030",
+    "officialNumber": "30/64",
+    "name": "パンダアリバチ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "BLUE",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "かみきる",
+        "baseAp": 300,
+        "effectText": ""
+      },
+      {
+        "name": "モノクロ針",
+        "baseAp": 0,
+        "effectText": "この技は無色の虫にしか使用できない。この技を受けた虫の体力が減っていたなら、それを破壊する。※このとき相手は縄張りを引く。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アリバチ科。体長10mm前後。南米西部に分布。アリのような姿をしたハチで、メスには翅がない。パンダのような白と黒の色は捕食者への警告色と考えられる。攻撃を受けたときに摩擦音を発する。",
+    "rulings": [],
+    "tags": [
+      "アリバチ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/30/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_031",
+    "officialNumber": "31/64",
+    "name": "サルオガセツユムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "LR",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 6,
+    "baseHp": 1600,
+    "skills": [
+      {
+        "name": "いばらの鎧",
+        "baseAp": 1000,
+        "effectText": ""
+      },
+      {
+        "name": "神隠し",
+        "baseAp": 900,
+        "effectText": "この技は1度だけ使用できる。攻撃後、自分の虫を1つ選び裏向きにする。これが場を離れたとき、その虫を表向きにする。その虫が裏向きのままなら、次の相手のターン終了時に表向きにする。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "キリギリス科。体長30～40mm。コスタリカとパナマに分布。地衣類のサルオガセに擬態した姿を持ち、鋭く硬いトゲに覆われている。熱帯雲霧林林冠部に生える地衣類を食べながら暮らしている。",
+    "rulings": [
+      {
+        "id": "set8_031-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "神隠しでは自分の虫1体を必ず裏返す。自身も選べる。独立した遅延破壊は裏返しても残る。全体ダメージ時に裏向きだった虫には後から遡って適用しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "キリギリス科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/31/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_032",
+    "officialNumber": "32/64",
+    "name": "ヨナグニサン（幼虫）",
+    "set": "BOOSTER_SET_8",
+    "rarity": "UR",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 6,
+    "baseHp": 1600,
+    "skills": [
+      {
+        "name": "大食らい",
+        "baseAp": 1000,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "はらぺこ",
+        "effectText": "この虫の攻撃により、相手が縄張りを引いたとき、自分のエサが6つ以上あるなら、相手は手札、エサ、縄張りのなかから1枚選び、捨て札に置く。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ヤママユガ科。体長130mm前後。石垣島、西表島、与那国島に分布。成虫ともに日本最大級であり沖縄県の天然記念物。幼虫はアカギやモクタチバナなどの葉を食べる。突起にロウ状物質をまとっている。",
+    "rulings": [
+      {
+        "id": "set8_032-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "はらぺこの判定前にくちなしがなくなれば誘発する。手札・エサ・縄張りを合わせて1枚選ぶ。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ヤママユガ科",
+      "はらぺこ"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/32/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_033",
+    "officialNumber": "33/64",
+    "name": "トノサマバッタ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "UR",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 5,
+    "baseHp": 1100,
+    "skills": [
+      {
+        "name": "とびはねる",
+        "baseAp": 800,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "相変異",
+        "effectText": "自分の緑のエサ2つにつき、これのコストを1減らす。これが場にいるかぎり、自分と相手のすべてのエサの色は無色になる。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "バッタ科。体長40～60mm。北海道から南西諸島に分布。幼虫期の密度に応じて色や形が変化する「相変異」が生じ、過密状態では黒っぽく翅の長い成虫になり、大群で移動し植物を食い荒らす。",
+    "rulings": [
+      {
+        "id": "set8_033-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "相変異の虫を裏返すとエサは元の色へ戻り、再び表になると無色化が再適用される。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "バッタ科",
+      "相変異"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/33/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_034",
+    "officialNumber": "34/64",
+    "name": "カツオゾウムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "たいあたり",
+        "baseAp": 300,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "初ガツオ",
+        "effectText": "これが初めて受ける術カードの修正値を2倍にする。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ゾウムシ科。体長10～12mm。北海道から沖縄に分布。体は橙褐色の粉に覆われている。体色と細長い体形が削る前の鰹節に似ている。イタドリやミゾソバなどタデ科の植物を食べる。",
+    "rulings": [
+      {
+        "id": "set8_034-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "最初の能力値を変更する術が倍化対象。先に能力値に関係しない術を使っていても消費しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ゾウムシ科",
+      "初ガツオ"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/34/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_035",
+    "officialNumber": "35/64",
+    "name": "オウサマミツギリゾウムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 5,
+    "baseHp": 1500,
+    "skills": [
+      {
+        "name": "くいあさる",
+        "baseAp": 1000,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "王様",
+        "effectText": "これは場に出たターン攻撃できない。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ミツギリゾウムシ科。体長55～85mm。東南アジアに分布。世界最大級のミツギリゾウムシで、頭部が非常に長く、オスは先端に発達した大アゴを持つ。ジャングル内の倒木や樹皮下で観察される。",
+    "rulings": [],
+    "tags": [
+      "ミツギリゾウムシ科",
+      "王様"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/35/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_036",
+    "officialNumber": "36/64",
+    "name": "アカボシゴマダラ（幼虫）",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 3,
+    "baseHp": 500,
+    "skills": [
+      {
+        "name": "かじる",
+        "baseAp": 300,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "転生羽化",
+        "effectText": "これが相手により破壊されたとき、これと同名の（幼虫）と書かれていない虫を手札から1枚選び場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "タテハチョウ科。体長40mm前後。ベトナム、中国、台湾、朝鮮半島に分布。ゴマダラチョウの幼虫に似るが、背面の突起が4対かつ腹部先端が閉じていることで識別できる。エノキの葉を食べる。",
+    "rulings": [
+      {
+        "id": "set8_036-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "相手の術による破壊でも転生羽化は働く。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "タテハチョウ科",
+      "転生羽化"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/36/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_037",
+    "officialNumber": "37/64",
+    "name": "クロカタゾウムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "UR",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 3,
+    "baseHp": 800,
+    "skills": [
+      {
+        "name": "くいあさる",
+        "baseAp": 300,
+        "effectText": ""
+      },
+      {
+        "name": "かたくなる",
+        "baseAp": 0,
+        "effectText": "次の相手のターン、これは術カードの対象にならず、色による2倍のダメージを受けない。"
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ゾウムシ科。体長13mm前後。八重山諸島に分布。極めて堅牢な外骨格を持ち、その硬化には細胞内共生細菌ナルドネラが重要な働きを果たす。後翅が退化しているため、飛翔能力を失っている。",
+    "rulings": [],
+    "tags": [
+      "ゾウムシ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/37/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_038",
+    "officialNumber": "38/64",
+    "name": "ミカドアゲハ（幼虫）",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "かじる",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "転生羽化",
+        "effectText": "これが相手により破壊されたとき、これと同名の（幼虫）と書かれていない虫を手札から1枚選び場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アゲハチョウ科。体長40mm前後。本州（愛知以西）から沖縄に分布。神社などに植栽されているオガタマノキやタイサンボクの葉を食べる。アオスジアゲハに似るが、眼状紋をつなぐ帯がない。",
+    "rulings": [],
+    "tags": [
+      "アゲハチョウ科",
+      "転生羽化"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/38/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_039",
+    "officialNumber": "39/64",
+    "name": "コウテイブローチハムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 1,
+    "baseHp": 100,
+    "skills": [
+      {
+        "name": "くいあさる",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "皇帝",
+        "effectText": "これが表向きでエサ場にあるとき、自分の虫は＜王様＞の効果を失い、これ1つにつき自分の＜王様＞を持つ虫のコストを1減らす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ハムシ科。体長18mm前後。ブラジルに分布。ブローチのような形をしたハムシの一種。ブラジルの限られた地域に分布する。ブローチハムシの中でも大型かつ美しいことで人気がある。",
+    "rulings": [
+      {
+        "id": "set8_039-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "皇帝がエサに残っている間だけ王様を無効化する。離れると王様の攻撃制限が復活する。効果を失っても<>技の分類は保持する。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ハムシ科",
+      "皇帝"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/39/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_040",
+    "officialNumber": "40/64",
+    "name": "ハサミツノカメムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 3,
+    "baseHp": 400,
+    "skills": [
+      {
+        "name": "くいつく",
+        "baseAp": 400,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "毒汁噴出",
+        "effectText": "これを縄張りから引いたとき、この縄張りを引かせた虫に、800のダメージを与えてもよい。そうしたなら、これを捨て札に置く。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ツノカメムシ科。体長17～19mm。北海道から九州に分布。体色は鮮やかな緑色だが、胸部側方のツノとオスのハサミ状突起は美しい紅色で目立つ。ミズキなど樹木の汁を吸って生活する。",
+    "rulings": [],
+    "tags": [
+      "ツノカメムシ科",
+      "毒汁噴出"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/40/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_041",
+    "officialNumber": "41/64",
+    "name": "クサギカメムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "くいつく",
+        "baseAp": 200,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "毒汁噴出",
+        "effectText": "これを縄張りから引いたとき、この縄張りを引かせた虫に、400のダメージを与えてもよい。そうしたなら、これを捨て札に置く。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "カメムシ科。体長14～18mm。北海道から沖縄に分布。様々な植物から吸汁するが、果実も吸汁するため農業害虫とされる。また家屋へ侵入して集団越冬をする場合があるため、衛生害虫でもある。",
+    "rulings": [],
+    "tags": [
+      "カメムシ科",
+      "毒汁噴出"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/41/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_042",
+    "officialNumber": "42/64",
+    "name": "ヤマトシロアリソルジャー",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 3,
+    "baseHp": 500,
+    "skills": [
+      {
+        "name": "分解",
+        "baseAp": 500,
+        "effectText": "攻撃後、自分の捨て札の表向きのカードを最大2つ選び、裏向きにしてもよい。※裏向きの捨て札は、ないものとして扱う。"
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "コロニー",
+        "effectText": "自分の捨て札の裏向きのカード1つにつき、この虫の体力と攻撃力を200増やす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ミゾガシラシロアリ科。体長3～6mm。北海道からトカラ列島に分布。湿った木材を好み、建物の木材部も食害する。ソルジャーは防衛を担う階級で、発達した大アゴで外敵からコロニーを守る。",
+    "rulings": [
+      {
+        "id": "set8_042-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "分解の裏向き化は任意なので表の捨て札がなくても使用可能。コロニーは裏向き捨て札のみを数える。反撃で攻撃者が消えても攻撃後処理は続く。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ミゾガシラシロアリ科",
+      "コロニー"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/42/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_043",
+    "officialNumber": "43/64",
+    "name": "ヤマトシロアリワーカー",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 2,
+    "baseHp": 300,
+    "skills": [
+      {
+        "name": "分解",
+        "baseAp": 300,
+        "effectText": "攻撃後、自分の捨て札の表向きのカードを最大2つ選び、裏向きにしてもよい。※裏向きの捨て札は、ないものとして扱う。"
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "コロニー",
+        "effectText": "自分の捨て札の裏向きのカード1つにつき、この虫の体力と攻撃力を200増やす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ミゾガシラシロアリ科。体長3～5mm。北海道からトカラ列島に分布。湿った木材を好み、建物の木材部も食害する。ワーカーはコロニーのほとんどを占める階級で、採餌や巣の構築などの役割を担う。",
+    "rulings": [
+      {
+        "id": "set8_043-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "分解の裏向き化は任意なので表の捨て札がなくても使用可能。コロニーは裏向き捨て札のみを数える。反撃で攻撃者が消えても攻撃後処理は続く。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ミゾガシラシロアリ科",
+      "コロニー"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/43/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_044",
+    "officialNumber": "44/64",
+    "name": "ヤマトシロアリニンフ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 1,
+    "baseHp": 100,
+    "skills": [
+      {
+        "name": "分解",
+        "baseAp": 100,
+        "effectText": "攻撃後、自分の捨て札の表向きのカードを最大2つ選び、裏向きにしてもよい。※裏向きの捨て札は、ないものとして扱う。"
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "コロニー",
+        "effectText": "自分の捨て札の裏向きのカード1つにつき、この虫の体力と攻撃力を200増やす。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "ミゾガシラシロアリ科。体長4～7mm。北海道からトカラ列島に分布。湿った木材を好み、建物の木材部も食害する。ニンフは翅の元になる部分が発達しており、翅アリや副生殖虫になる前の若虫。",
+    "rulings": [
+      {
+        "id": "set8_044-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "分解の裏向き化は任意なので表の捨て札がなくても使用可能。コロニーは裏向き捨て札のみを数える。反撃で攻撃者が消えても攻撃後処理は続く。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "ミゾガシラシロアリ科",
+      "コロニー"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/44/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_045",
+    "officialNumber": "45/64",
+    "name": "アレクサンドラトリバネアゲハ（幼虫）",
+    "set": "BOOSTER_SET_8",
+    "rarity": "UR",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 3,
+    "baseHp": 400,
+    "skills": [
+      {
+        "name": "かじる",
+        "baseAp": 300,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [
+      {
+        "name": "成虫招き",
+        "effectText": "これがコストを支払い場に出たとき、この虫と同名の（幼虫）と書かれていない虫を手札から1枚選び場に出してもよい。"
+      }
+    ],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アゲハチョウ科。体長約120mm前後。パプアニューギニアに分布。鮮やかなオレンジ色の斑紋を持つ黒色の幼虫。毒を含むウマノスズクサ科植物を食べ、毒を溜めることで外敵から身を守る。",
+    "rulings": [
+      {
+        "id": "set8_045-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "成虫招きは手札から自身のコストを支払って出た場合のみ。効果による登場では発動しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [
+      "アゲハチョウ科",
+      "成虫招き"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/45/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_046",
+    "officialNumber": "46/64",
+    "name": "モモアカアブラムシ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "INSECT",
+    "color": "GREEN",
+    "cost": 1,
+    "baseHp": 400,
+    "skills": [
+      {
+        "name": "すう",
+        "baseAp": 100,
+        "effectText": ""
+      }
+    ],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [],
+    "description": "アブラムシ科。体長2mm前後。北海道から沖縄に分布。体色は赤色・緑色・淡黄色・褐色などばらつきがある。寄主範囲が非常に広く、モモだけでなくキャベツ、ピーマンなど多くの農作物に寄生する。",
+    "rulings": [],
+    "tags": [
+      "アブラムシ科"
+    ],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/46/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_047",
+    "officialNumber": "47/64",
+    "name": "鬼蜻蜓の簪",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 3,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "これがコストを支払い場に出たとき、相手の虫を1つ選び裏向きにする。これが場を離れたとき、その虫を表向きにする。"
+      }
+    ],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/47/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_048",
+    "officialNumber": "48/64",
+    "name": "百足の具足",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "これは～ムカデ科の虫にしかつけられない。この虫の体力と攻撃力を400増やす。これをつけたとき、捨て札に百足の具足があれば、それを同じ虫につけてもよい。"
+      }
+    ],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/48/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_049",
+    "officialNumber": "49/64",
+    "name": "黄金虫の六文銭",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "この虫の体力と攻撃力を100増やす。これがついた虫が虫の攻撃により破壊されたとき、これを山札の1番下に置いてもよい。そうしたなら、山札からカードを1枚引く。"
+      }
+    ],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/49/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_050",
+    "officialNumber": "50/64",
+    "name": "幻惑の蛍袋",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "この虫の体力と攻撃力を100増やす。これがついた虫が場にいるとき、各プレイヤーは捨て札から虫を場に出せない。"
+      }
+    ],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/50/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_051",
+    "officialNumber": "51/64",
+    "name": "影武者の魔鏡",
+    "set": "BOOSTER_SET_8",
+    "rarity": "LR",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 1,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "自分の虫を2つ選び、どちらかにこれをつける。相手はこれがついた虫以外攻撃できない。これがついた虫は、つけなかった虫の元の色と体力と技、名前と解説文になる。つけなかった虫が場を離れたとき、これを破壊する。"
+      }
+    ],
+    "description": null,
+    "rulings": [
+      {
+        "id": "set8_051-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "使用には自分の場の虫2体が必要。最後に付けた魔鏡の情報上書きを優先する。付け替え先でも最初に参照した虫を維持し、元の装着先は元の情報へ戻る。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      },
+      {
+        "id": "set8_051-qa-2",
+        "classification": "OFFICIAL_RULING",
+        "text": "既に付与された攻撃禁止・遅延破壊・HP/AP補正は情報上書きで消えない。参照元が離れると魔鏡だけを破壊し、装着虫は残る。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      },
+      {
+        "id": "set8_051-qa-3",
+        "classification": "OFFICIAL_RULING",
+        "text": "解説文に含まれる科もコピーする。攻撃を受けない効果は攻撃誘導より優先する。情報変更は後のものが優先され、解除後は先の効果が再び適用される。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      },
+      {
+        "id": "set8_051-qa-4",
+        "classification": "OFFICIAL_RULING",
+        "text": "コピーによる登場時特性獲得は登場を意味しない。破壊時特性は現在のコピー情報だけを適用する。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      },
+      {
+        "id": "set8_051-qa-5",
+        "classification": "OFFICIAL_RULING",
+        "text": "「使用」する効果なら使えるが、単純に「つける」効果からは使えない。ドラゴン蟷螂拳で使う場合も2体を必要とし、技の使用者へ装着する。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/51/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_052",
+    "officialNumber": "52/64",
+    "name": "亀虫の盾甲冑",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "この虫の体力を400増やす。これがエサ場にあるとき、自分の甲冑と書かれた強化カードがついている虫が相手の術カードの対象になったなら、これを裏向きにしてもよい。そうしたなら、対象になった虫はその術カードの効果を受けない。"
+      }
+    ],
+    "description": null,
+    "rulings": [
+      {
+        "id": "set8_052-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "虫への術耐性は装着強化自身を対象とする術には適用しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/52/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_053",
+    "officialNumber": "53/64",
+    "name": "傀儡の冬虫夏草",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 1,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "自分の捨て札にあるコスト3以下の虫を1つ選び、これをつけて場に出す。この効果により場に出た虫は体力と攻撃力が100減り、技の効果を失う。これが破壊されたとき、その虫を破壊する。"
+      }
+    ],
+    "description": null,
+    "rulings": [
+      {
+        "id": "set8_053-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "蘇生虫のHPが100であれば100減少によって破壊され、縄張りは取得しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/53/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_054",
+    "officialNumber": "54/64",
+    "name": "玉虫の色真似巻",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "ENHANCEMENT",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [],
+    "enhancementEffects": [
+      {
+        "effectText": "自分の虫を2つ選び、どちらかにこれをつける。これがついた虫は、これをつけなかった虫の色になる。"
+      }
+    ],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/54/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_055",
+    "officialNumber": "55/64",
+    "name": "蟲術の息吹",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "SPELL",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "ターン終了時まで、次に使う術カードのコストを1減らす。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/55/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_056",
+    "officialNumber": "56/64",
+    "name": "半死の道連れ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "SPELL",
+    "color": null,
+    "cost": 3,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "この効果は術カードの対象にならない虫を選ぶことができる。自分と相手は、自身の場にいる虫の数が半分（端数切捨て）になるように破壊する。※3つのとき、2つ選び破壊する。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [
+      {
+        "id": "set8_056-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "双方が残す虫の数は半分切捨て。1体ならその1体を破壊する。片側が空でも使用可能。裏向き虫は数えない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      },
+      {
+        "id": "set8_056-qa-2",
+        "classification": "OFFICIAL_RULING",
+        "text": "破壊置換・破壊防止を適用し、失敗した虫の代わりは選ばない。虫への術耐性や対象誘導はこのプレイヤーへの効果に影響しない。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      },
+      {
+        "id": "set8_056-qa-3",
+        "classification": "OFFICIAL_RULING",
+        "text": "双方の破壊は同時。誘発効果の解決はターンプレイヤー側から進める。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/56/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_057",
+    "officialNumber": "57/64",
+    "name": "水月の激流",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "SPELL",
+    "color": null,
+    "cost": 3,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "自分と相手のすべての虫に300のダメージを与え、このターンを終了する。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/57/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_058",
+    "officialNumber": "58/64",
+    "name": "神楽の烈風",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "SPELL",
+    "color": null,
+    "cost": 4,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "自分と相手のすべての虫に1200のダメージを与え、このターンを終了する。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/58/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_059",
+    "officialNumber": "59/64",
+    "name": "火花の嵐",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "SPELL",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "相手の虫を1つ選び、100のダメージを与える。自分の捨て札に火花の嵐があるなら、「相手の虫を1つ選び、100のダメージを与える。」をさらに2回繰り返す。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/59/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_060",
+    "officialNumber": "60/64",
+    "name": "蛹の冬籠り",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "SPELL",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "自分の手札からカードを1枚選び、捨て札に置く。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/60/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_061",
+    "officialNumber": "61/64",
+    "name": "断界の虫送り",
+    "set": "BOOSTER_SET_8",
+    "rarity": "SR",
+    "type": "SPELL",
+    "color": null,
+    "cost": 4,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "相手の虫を1つ選び、裏向きで相手のエサ場に置く。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/61/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_062",
+    "officialNumber": "62/64",
+    "name": "冥府の導き",
+    "set": "BOOSTER_SET_8",
+    "rarity": "LR",
+    "type": "SPELL",
+    "color": null,
+    "cost": 2,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "自分の捨て札から虫を1つ選び場に出す。ターン終了時にそれを裏向きで捨て札に置く。※裏向きの捨て札は、ないものとして扱う。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/62/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
+  },
+  {
+    "id": "set8_063",
+    "officialNumber": "63/64",
+    "name": "蚕の口封じ",
+    "set": "BOOSTER_SET_8",
+    "rarity": "N",
+    "type": "SPELL",
+    "color": null,
+    "cost": 2,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "次の相手のターン終了時まで、相手の虫は＜＞の技を失う。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [
+      {
+        "id": "set8_063-qa-1",
+        "classification": "OFFICIAL_RULING",
+        "text": "<>技の喪失は相手の虫の全ゾーンへ適用する。",
+        "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      }
+    ],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/63/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/",
+      "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "OFFICIAL_RULING"
+    }
+  },
+  {
+    "id": "set8_064",
+    "officialNumber": "64/64",
+    "name": "金色の腕",
+    "set": "BOOSTER_SET_8",
+    "rarity": "R",
+    "type": "SPELL",
+    "color": null,
+    "cost": 0,
+    "baseHp": null,
+    "skills": [],
+    "passiveAbilities": [],
+    "cardEffects": [
+      {
+        "effectText": "自分の虫を1つ選ぶ。次の相手のターン終了時まで、その虫の体力を800増やす。"
+      }
+    ],
+    "enhancementEffects": [],
+    "description": null,
+    "rulings": [],
+    "tags": [],
+    "implementationStatus": "RESEARCHED",
+    "sourceLevel": "C",
+    "sourceRefs": [
+      "https://mushijingi.com/card/MUSHI8/64/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+      "https://mushijingi.jimdofree.com/"
+    ],
+    "verificationNotes": {
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "rulings": "NEEDS_RULING"
+    }
   }
 ]);
 }));

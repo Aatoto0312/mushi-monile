@@ -32,6 +32,7 @@
       cardEffects: clone(definition.cardEffects || []),
       enhancementEffects: clone(definition.enhancementEffects || []),
       rulings: clone(definition.rulings || []),
+      description: definition.description || null,
       tags: clone(definition.tags || []),
       sourceRefs: clone(definition.sourceRefs || []),
       verificationNotes: definition.verificationNotes || null

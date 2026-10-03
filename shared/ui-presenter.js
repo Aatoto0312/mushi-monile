@@ -104,7 +104,7 @@
     if (!effects.length && ((card.cardEffects || []).length || (card.enhancementEffects || []).length)) {
       effects.push('効果の説明はありません。');
     }
-    return { basics: basics, skills: skills, traits: traits, effects: effects, rulings: playerFacingRulings(card.rulings) };
+    return { basics: basics, skills: skills, traits: traits, effects: effects, description: readableText(card.description), rulings: playerFacingRulings(card.rulings) };
   }
 
   var api = { label: label, setLabel: setLabel, statusGroup: statusGroup, safeEffectText: safeEffectText, safeErrorMessage: safeErrorMessage, playerFacingRulings: playerFacingRulings, presentCardDetail: presentCardDetail };

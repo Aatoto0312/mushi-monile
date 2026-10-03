@@ -2002,5 +2002,261 @@
   "BOOSTER_SET_1:130": {
     "image": "https://mushijingi.com/images/card/130.jpg",
     "source": "https://mushijingi.com/card/MUSHI/130/"
+  },
+  "BOOSTER_SET_8:1": {
+    "image": "https://mushijingi.com/images/card/502.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/1/"
+  },
+  "BOOSTER_SET_8:2": {
+    "image": "https://mushijingi.com/images/card/503.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/2/"
+  },
+  "BOOSTER_SET_8:3": {
+    "image": "https://mushijingi.com/images/card/504.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/3/"
+  },
+  "BOOSTER_SET_8:4": {
+    "image": "https://mushijingi.com/images/card/505.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/4/"
+  },
+  "BOOSTER_SET_8:5": {
+    "image": "https://mushijingi.com/images/card/506.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/5/"
+  },
+  "BOOSTER_SET_8:6": {
+    "image": "https://mushijingi.com/images/card/507.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/6/"
+  },
+  "BOOSTER_SET_8:7": {
+    "image": "https://mushijingi.com/images/card/508.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/7/"
+  },
+  "BOOSTER_SET_8:8": {
+    "image": "https://mushijingi.com/images/card/509.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/8/"
+  },
+  "BOOSTER_SET_8:9": {
+    "image": "https://mushijingi.com/images/card/510.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/9/"
+  },
+  "BOOSTER_SET_8:10": {
+    "image": "https://mushijingi.com/images/card/511.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/10/"
+  },
+  "BOOSTER_SET_8:11": {
+    "image": "https://mushijingi.com/images/card/512.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/11/"
+  },
+  "BOOSTER_SET_8:12": {
+    "image": "https://mushijingi.com/images/card/513.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/12/"
+  },
+  "BOOSTER_SET_8:13": {
+    "image": "https://mushijingi.com/images/card/514.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/13/"
+  },
+  "BOOSTER_SET_8:14": {
+    "image": "https://mushijingi.com/images/card/515.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/14/"
+  },
+  "BOOSTER_SET_8:15": {
+    "image": "https://mushijingi.com/images/card/516.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/15/"
+  },
+  "BOOSTER_SET_8:16": {
+    "image": "https://mushijingi.com/images/card/517.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/16/"
+  },
+  "BOOSTER_SET_8:17": {
+    "image": "https://mushijingi.com/images/card/518.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/17/"
+  },
+  "BOOSTER_SET_8:18": {
+    "image": "https://mushijingi.com/images/card/519.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/18/"
+  },
+  "BOOSTER_SET_8:19": {
+    "image": "https://mushijingi.com/images/card/520.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/19/"
+  },
+  "BOOSTER_SET_8:20": {
+    "image": "https://mushijingi.com/images/card/521.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/20/"
+  },
+  "BOOSTER_SET_8:21": {
+    "image": "https://mushijingi.com/images/card/522.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/21/"
+  },
+  "BOOSTER_SET_8:22": {
+    "image": "https://mushijingi.com/images/card/523.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/22/"
+  },
+  "BOOSTER_SET_8:23": {
+    "image": "https://mushijingi.com/images/card/524.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/23/"
+  },
+  "BOOSTER_SET_8:24": {
+    "image": "https://mushijingi.com/images/card/525.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/24/"
+  },
+  "BOOSTER_SET_8:25": {
+    "image": "https://mushijingi.com/images/card/526.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/25/"
+  },
+  "BOOSTER_SET_8:26": {
+    "image": "https://mushijingi.com/images/card/527.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/26/"
+  },
+  "BOOSTER_SET_8:27": {
+    "image": "https://mushijingi.com/images/card/528.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/27/"
+  },
+  "BOOSTER_SET_8:28": {
+    "image": "https://mushijingi.com/images/card/529.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/28/"
+  },
+  "BOOSTER_SET_8:29": {
+    "image": "https://mushijingi.com/images/card/530.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/29/"
+  },
+  "BOOSTER_SET_8:30": {
+    "image": "https://mushijingi.com/images/card/531.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/30/"
+  },
+  "BOOSTER_SET_8:31": {
+    "image": "https://mushijingi.com/images/card/532.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/31/"
+  },
+  "BOOSTER_SET_8:32": {
+    "image": "https://mushijingi.com/images/card/533.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/32/"
+  },
+  "BOOSTER_SET_8:33": {
+    "image": "https://mushijingi.com/images/card/534.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/33/"
+  },
+  "BOOSTER_SET_8:34": {
+    "image": "https://mushijingi.com/images/card/535.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/34/"
+  },
+  "BOOSTER_SET_8:35": {
+    "image": "https://mushijingi.com/images/card/536.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/35/"
+  },
+  "BOOSTER_SET_8:36": {
+    "image": "https://mushijingi.com/images/card/537.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/36/"
+  },
+  "BOOSTER_SET_8:37": {
+    "image": "https://mushijingi.com/images/card/538.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/37/"
+  },
+  "BOOSTER_SET_8:38": {
+    "image": "https://mushijingi.com/images/card/539.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/38/"
+  },
+  "BOOSTER_SET_8:39": {
+    "image": "https://mushijingi.com/images/card/540.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/39/"
+  },
+  "BOOSTER_SET_8:40": {
+    "image": "https://mushijingi.com/images/card/541.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/40/"
+  },
+  "BOOSTER_SET_8:41": {
+    "image": "https://mushijingi.com/images/card/542.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/41/"
+  },
+  "BOOSTER_SET_8:42": {
+    "image": "https://mushijingi.com/images/card/543.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/42/"
+  },
+  "BOOSTER_SET_8:43": {
+    "image": "https://mushijingi.com/images/card/544.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/43/"
+  },
+  "BOOSTER_SET_8:44": {
+    "image": "https://mushijingi.com/images/card/545.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/44/"
+  },
+  "BOOSTER_SET_8:45": {
+    "image": "https://mushijingi.com/images/card/546.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/45/"
+  },
+  "BOOSTER_SET_8:46": {
+    "image": "https://mushijingi.com/images/card/547.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/46/"
+  },
+  "BOOSTER_SET_8:47": {
+    "image": "https://mushijingi.com/images/card/548.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/47/"
+  },
+  "BOOSTER_SET_8:48": {
+    "image": "https://mushijingi.com/images/card/549.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/48/"
+  },
+  "BOOSTER_SET_8:49": {
+    "image": "https://mushijingi.com/images/card/550.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/49/"
+  },
+  "BOOSTER_SET_8:50": {
+    "image": "https://mushijingi.com/images/card/551.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/50/"
+  },
+  "BOOSTER_SET_8:51": {
+    "image": "https://mushijingi.com/images/card/552.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/51/"
+  },
+  "BOOSTER_SET_8:52": {
+    "image": "https://mushijingi.com/images/card/553.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/52/"
+  },
+  "BOOSTER_SET_8:53": {
+    "image": "https://mushijingi.com/images/card/554.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/53/"
+  },
+  "BOOSTER_SET_8:54": {
+    "image": "https://mushijingi.com/images/card/555.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/54/"
+  },
+  "BOOSTER_SET_8:55": {
+    "image": "https://mushijingi.com/images/card/556.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/55/"
+  },
+  "BOOSTER_SET_8:56": {
+    "image": "https://mushijingi.com/images/card/557.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/56/"
+  },
+  "BOOSTER_SET_8:57": {
+    "image": "https://mushijingi.com/images/card/558.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/57/"
+  },
+  "BOOSTER_SET_8:58": {
+    "image": "https://mushijingi.com/images/card/559.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/58/"
+  },
+  "BOOSTER_SET_8:59": {
+    "image": "https://mushijingi.com/images/card/560.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/59/"
+  },
+  "BOOSTER_SET_8:60": {
+    "image": "https://mushijingi.com/images/card/561.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/60/"
+  },
+  "BOOSTER_SET_8:61": {
+    "image": "https://mushijingi.com/images/card/562.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/61/"
+  },
+  "BOOSTER_SET_8:62": {
+    "image": "https://mushijingi.com/images/card/563.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/62/"
+  },
+  "BOOSTER_SET_8:63": {
+    "image": "https://mushijingi.com/images/card/564.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/63/"
+  },
+  "BOOSTER_SET_8:64": {
+    "image": "https://mushijingi.com/images/card/565.jpg",
+    "source": "https://mushijingi.com/card/MUSHI8/64/"
   }
 }; })(typeof window !== "undefined" ? window : globalThis);

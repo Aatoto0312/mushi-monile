@@ -44,7 +44,7 @@ fs.mkdirSync(shots,{recursive:true});
     }
     await page.setViewportSize({width:390,height:844});
     await page.locator('.lobby .app-nav a[href="toolbox.html"]').click();
-    await page.waitForFunction(()=>document.querySelectorAll('#card-list .card-row').length===501);
+    await page.waitForFunction(()=>document.querySelectorAll('#card-list .card-row').length===565);
     ok(await page.locator('.filter-panel').getAttribute('open')===null,'Filters start collapsed');
     await layout('Catalog');await shot('02-catalog-390');
     await page.locator('#search-input').fill('存在しないカードzz');

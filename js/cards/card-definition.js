@@ -58,6 +58,7 @@
     this.enhancementEffects = opts.enhancementEffects || [];
 
     this.rulings = opts.rulings || [];
+    this.description = opts.description || null;
     this.tags = opts.tags || [];
 
     this.implementationStatus = opts.implementationStatus || CardStatus.NOT_RESEARCHED;

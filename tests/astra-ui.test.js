@@ -17,7 +17,7 @@ assert(!JSON.stringify(hidden).includes('カブトムシ'),'Hidden card name mus
 assert.equal(MushiCardVisuals.artwork({set:'STARTER',officialNumber:'40/130'}).image,MushiCardVisuals.artwork({set:'BOOSTER_SET_1',officialNumber:'40/130'}).image);
 assert.equal(MushiCardVisuals.artwork({set:'UNKNOWN',officialNumber:'40/130'}),null,'Unknown cards must not borrow unrelated artwork');
 assert.equal(MushiCardVisuals.artwork({set:'STARTER',officialNumber:null}),null);
-assert.equal(Object.keys(MushiCardArt).length,501);
+assert.equal(Object.keys(MushiCardArt).length,565);
 require('../js/ui/battle-ui.js');
 const helpers=require('./helpers.js');
 const state=helpers.newGame({rng:helpers.firstPlayerRng});

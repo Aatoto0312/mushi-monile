@@ -1,0 +1,10 @@
+{
+  "checkedFields": [
+    "name",
+    "rarity",
+    "cost",
+    "HP",
+    "spell/enhancement effect"
+  ],
+  "differences": []
+}

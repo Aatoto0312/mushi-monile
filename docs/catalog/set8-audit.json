@@ -1,0 +1,1419 @@
+{
+  "setId": "BOOSTER_SET_8",
+  "title": "不滅の戦陣",
+  "jan": "4550746086609",
+  "reviewedAt": "2026-10-03",
+  "sources": {
+    "product": "https://mushijingi.jimdofree.com/",
+    "qa": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/",
+    "primaryProduct": "https://jp.daisonet.com/products/4550746086609",
+    "supplementary": [
+      "https://mushijingi.com/",
+      "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/"
+    ]
+  },
+  "rulingClassifications": [
+    "OFFICIAL_RULING",
+    "USER_RULING",
+    "NEEDS_RULING"
+  ],
+  "issues": [],
+  "cards": [
+    {
+      "id": "set8_001",
+      "canonicalCardId": "set8_001",
+      "printingId": "registry:set8_001",
+      "officialNumber": "1/64",
+      "name": "ペルビアンジャイアントオオムカデ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_001-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "別の蘇生効果で出した場合は通常の表向き捨て札へ移る。奈落復活で得た裏向き化は特性喪失後も存続する。破壊以外の離場には移動効果の指定を適用する。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        },
+        {
+          "id": "set8_001-qa-2",
+          "classification": "OFFICIAL_RULING",
+          "text": "奈落復活の支払いは固定6。地獄の番人の蘇生禁止を受ける。同時に発生する自分の効果は順序を選べる。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/1/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_002",
+      "canonicalCardId": "set8_002",
+      "printingId": "registry:set8_002",
+      "officialNumber": "2/64",
+      "name": "オオルリボシヤンマ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/2/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_003",
+      "canonicalCardId": "set8_003",
+      "printingId": "registry:set8_003",
+      "officialNumber": "3/64",
+      "name": "トゲアクマツユムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_003-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "悪魔召喚の破壊が置換された場合でも、代替召喚を行える。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/3/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_004",
+      "canonicalCardId": "set8_004",
+      "printingId": "registry:set8_004",
+      "officialNumber": "4/64",
+      "name": "ハナカマキリ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_004-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "追加攻撃が認められていても、強化を失った後は蟷螂蘭舞の使用条件を満たさない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/4/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_005",
+      "canonicalCardId": "set8_005",
+      "printingId": "registry:set8_005",
+      "officialNumber": "5/64",
+      "name": "キララシロカネグモ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_005-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "名前の「糸」を参照する。部首に糸を含むだけの名前は該当しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/5/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_006",
+      "canonicalCardId": "set8_006",
+      "printingId": "registry:set8_006",
+      "officialNumber": "6/64",
+      "name": "ギガスオオアリ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/6/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_007",
+      "canonicalCardId": "set8_007",
+      "printingId": "registry:set8_007",
+      "officialNumber": "7/64",
+      "name": "ミナミミイデラゴミムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_007-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "爆熱の参照はカード名を対象とし、技名だけに書かれていても該当しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/7/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_008",
+      "canonicalCardId": "set8_008",
+      "printingId": "registry:set8_008",
+      "officialNumber": "8/64",
+      "name": "ミイデラゴミムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/8/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_009",
+      "canonicalCardId": "set8_009",
+      "printingId": "registry:set8_009",
+      "officialNumber": "9/64",
+      "name": "コガタスズメバチ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/9/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_010",
+      "canonicalCardId": "set8_010",
+      "printingId": "registry:set8_010",
+      "officialNumber": "10/64",
+      "name": "キバハリアリ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/10/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_011",
+      "canonicalCardId": "set8_011",
+      "printingId": "registry:set8_011",
+      "officialNumber": "11/64",
+      "name": "イエロージャイアントヒヨケムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/11/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_012",
+      "canonicalCardId": "set8_012",
+      "printingId": "registry:set8_012",
+      "officialNumber": "12/64",
+      "name": "ツメジムカデ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/12/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_013",
+      "canonicalCardId": "set8_013",
+      "printingId": "registry:set8_013",
+      "officialNumber": "13/64",
+      "name": "アリヅカコオロギ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/13/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_014",
+      "canonicalCardId": "set8_014",
+      "printingId": "registry:set8_014",
+      "officialNumber": "14/64",
+      "name": "ニホンカワトンボ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/14/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_015",
+      "canonicalCardId": "set8_015",
+      "printingId": "registry:set8_015",
+      "officialNumber": "15/64",
+      "name": "コーカサスオオカブト",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_015-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/15/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_016",
+      "canonicalCardId": "set8_016",
+      "printingId": "registry:set8_016",
+      "officialNumber": "16/64",
+      "name": "アトラスオオカブト",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_016-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/16/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_017",
+      "canonicalCardId": "set8_017",
+      "printingId": "registry:set8_017",
+      "officialNumber": "17/64",
+      "name": "インペラトールホソアカクワガタ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/17/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_018",
+      "canonicalCardId": "set8_018",
+      "printingId": "registry:set8_018",
+      "officialNumber": "18/64",
+      "name": "モーレンカンプオオカブト",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_018-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/18/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_019",
+      "canonicalCardId": "set8_019",
+      "printingId": "registry:set8_019",
+      "officialNumber": "19/64",
+      "name": "アカボシゴマダラ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_019-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "転生強化で既に与えた400補正は、後の特性喪失でも残る。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/19/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_020",
+      "canonicalCardId": "set8_020",
+      "printingId": "registry:set8_020",
+      "officialNumber": "20/64",
+      "name": "ケンタウルスオオカブト",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/20/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_021",
+      "canonicalCardId": "set8_021",
+      "printingId": "registry:set8_021",
+      "officialNumber": "21/64",
+      "name": "ミカドアゲハ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/21/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_022",
+      "canonicalCardId": "set8_022",
+      "printingId": "registry:set8_022",
+      "officialNumber": "22/64",
+      "name": "エンガノオオカブト",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_022-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "ファランクスは元のコスト5以下を参照する。自身のコストを払った手札からの登場のみが起点。効果登場した虫から連鎖しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/22/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_023",
+      "canonicalCardId": "set8_023",
+      "printingId": "registry:set8_023",
+      "officialNumber": "23/64",
+      "name": "オオハキリバチ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_023-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "素材集めの自己破壊とコスト増加を先に行い、その後0ダメージを解決する。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/23/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_024",
+      "canonicalCardId": "set8_024",
+      "printingId": "registry:set8_024",
+      "officialNumber": "24/64",
+      "name": "ヤマトハキリバチ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/24/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_025",
+      "canonicalCardId": "set8_025",
+      "printingId": "registry:set8_025",
+      "officialNumber": "25/64",
+      "name": "アカエゾゼミ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/25/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_026",
+      "canonicalCardId": "set8_026",
+      "printingId": "registry:set8_026",
+      "officialNumber": "26/64",
+      "name": "ジュウサンネンゼミ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/26/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_027",
+      "canonicalCardId": "set8_027",
+      "printingId": "registry:set8_027",
+      "officialNumber": "27/64",
+      "name": "ミドリシジミ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_027-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "技による追加の縄張り取得は攻撃由来ではなく、同じ技の取得効果は連鎖しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/27/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_028",
+      "canonicalCardId": "set8_028",
+      "printingId": "registry:set8_028",
+      "officialNumber": "28/64",
+      "name": "ヒメカブト",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_028-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "白銀蜘蛛の糸を手札に返す行為は破壊ではなく、破壊時効果を誘発しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/28/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_029",
+      "canonicalCardId": "set8_029",
+      "printingId": "registry:set8_029",
+      "officialNumber": "29/64",
+      "name": "ヒメウラナミジャノメ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/29/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_030",
+      "canonicalCardId": "set8_030",
+      "printingId": "registry:set8_030",
+      "officialNumber": "30/64",
+      "name": "パンダアリバチ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/30/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_031",
+      "canonicalCardId": "set8_031",
+      "printingId": "registry:set8_031",
+      "officialNumber": "31/64",
+      "name": "サルオガセツユムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_031-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "神隠しでは自分の虫1体を必ず裏返す。自身も選べる。独立した遅延破壊は裏返しても残る。全体ダメージ時に裏向きだった虫には後から遡って適用しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/31/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_032",
+      "canonicalCardId": "set8_032",
+      "printingId": "registry:set8_032",
+      "officialNumber": "32/64",
+      "name": "ヨナグニサン（幼虫）",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_032-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "はらぺこの判定前にくちなしがなくなれば誘発する。手札・エサ・縄張りを合わせて1枚選ぶ。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/32/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_033",
+      "canonicalCardId": "set8_033",
+      "printingId": "registry:set8_033",
+      "officialNumber": "33/64",
+      "name": "トノサマバッタ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_033-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "相変異の虫を裏返すとエサは元の色へ戻り、再び表になると無色化が再適用される。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/33/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_034",
+      "canonicalCardId": "set8_034",
+      "printingId": "registry:set8_034",
+      "officialNumber": "34/64",
+      "name": "カツオゾウムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_034-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "最初の能力値を変更する術が倍化対象。先に能力値に関係しない術を使っていても消費しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/34/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_035",
+      "canonicalCardId": "set8_035",
+      "printingId": "registry:set8_035",
+      "officialNumber": "35/64",
+      "name": "オウサマミツギリゾウムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/35/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_036",
+      "canonicalCardId": "set8_036",
+      "printingId": "registry:set8_036",
+      "officialNumber": "36/64",
+      "name": "アカボシゴマダラ（幼虫）",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_036-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "相手の術による破壊でも転生羽化は働く。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/36/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_037",
+      "canonicalCardId": "set8_037",
+      "printingId": "registry:set8_037",
+      "officialNumber": "37/64",
+      "name": "クロカタゾウムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/37/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_038",
+      "canonicalCardId": "set8_038",
+      "printingId": "registry:set8_038",
+      "officialNumber": "38/64",
+      "name": "ミカドアゲハ（幼虫）",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/38/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_039",
+      "canonicalCardId": "set8_039",
+      "printingId": "registry:set8_039",
+      "officialNumber": "39/64",
+      "name": "コウテイブローチハムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_039-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "皇帝がエサに残っている間だけ王様を無効化する。離れると王様の攻撃制限が復活する。効果を失っても<>技の分類は保持する。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/39/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_040",
+      "canonicalCardId": "set8_040",
+      "printingId": "registry:set8_040",
+      "officialNumber": "40/64",
+      "name": "ハサミツノカメムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/40/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_041",
+      "canonicalCardId": "set8_041",
+      "printingId": "registry:set8_041",
+      "officialNumber": "41/64",
+      "name": "クサギカメムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/41/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_042",
+      "canonicalCardId": "set8_042",
+      "printingId": "registry:set8_042",
+      "officialNumber": "42/64",
+      "name": "ヤマトシロアリソルジャー",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_042-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "分解の裏向き化は任意なので表の捨て札がなくても使用可能。コロニーは裏向き捨て札のみを数える。反撃で攻撃者が消えても攻撃後処理は続く。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/42/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_043",
+      "canonicalCardId": "set8_043",
+      "printingId": "registry:set8_043",
+      "officialNumber": "43/64",
+      "name": "ヤマトシロアリワーカー",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_043-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "分解の裏向き化は任意なので表の捨て札がなくても使用可能。コロニーは裏向き捨て札のみを数える。反撃で攻撃者が消えても攻撃後処理は続く。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/43/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_044",
+      "canonicalCardId": "set8_044",
+      "printingId": "registry:set8_044",
+      "officialNumber": "44/64",
+      "name": "ヤマトシロアリニンフ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_044-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "分解の裏向き化は任意なので表の捨て札がなくても使用可能。コロニーは裏向き捨て札のみを数える。反撃で攻撃者が消えても攻撃後処理は続く。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/44/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_045",
+      "canonicalCardId": "set8_045",
+      "printingId": "registry:set8_045",
+      "officialNumber": "45/64",
+      "name": "アレクサンドラトリバネアゲハ（幼虫）",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_045-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "成虫招きは手札から自身のコストを支払って出た場合のみ。効果による登場では発動しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/45/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_046",
+      "canonicalCardId": "set8_046",
+      "printingId": "registry:set8_046",
+      "officialNumber": "46/64",
+      "name": "モモアカアブラムシ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/46/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_047",
+      "canonicalCardId": "set8_047",
+      "printingId": "registry:set8_047",
+      "officialNumber": "47/64",
+      "name": "鬼蜻蜓の簪",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/47/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_048",
+      "canonicalCardId": "set8_048",
+      "printingId": "registry:set8_048",
+      "officialNumber": "48/64",
+      "name": "百足の具足",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/48/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_049",
+      "canonicalCardId": "set8_049",
+      "printingId": "registry:set8_049",
+      "officialNumber": "49/64",
+      "name": "黄金虫の六文銭",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/49/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_050",
+      "canonicalCardId": "set8_050",
+      "printingId": "registry:set8_050",
+      "officialNumber": "50/64",
+      "name": "幻惑の蛍袋",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/50/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_051",
+      "canonicalCardId": "set8_051",
+      "printingId": "registry:set8_051",
+      "officialNumber": "51/64",
+      "name": "影武者の魔鏡",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_051-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "使用には自分の場の虫2体が必要。最後に付けた魔鏡の情報上書きを優先する。付け替え先でも最初に参照した虫を維持し、元の装着先は元の情報へ戻る。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        },
+        {
+          "id": "set8_051-qa-2",
+          "classification": "OFFICIAL_RULING",
+          "text": "既に付与された攻撃禁止・遅延破壊・HP/AP補正は情報上書きで消えない。参照元が離れると魔鏡だけを破壊し、装着虫は残る。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        },
+        {
+          "id": "set8_051-qa-3",
+          "classification": "OFFICIAL_RULING",
+          "text": "解説文に含まれる科もコピーする。攻撃を受けない効果は攻撃誘導より優先する。情報変更は後のものが優先され、解除後は先の効果が再び適用される。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        },
+        {
+          "id": "set8_051-qa-4",
+          "classification": "OFFICIAL_RULING",
+          "text": "コピーによる登場時特性獲得は登場を意味しない。破壊時特性は現在のコピー情報だけを適用する。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        },
+        {
+          "id": "set8_051-qa-5",
+          "classification": "OFFICIAL_RULING",
+          "text": "「使用」する効果なら使えるが、単純に「つける」効果からは使えない。ドラゴン蟷螂拳で使う場合も2体を必要とし、技の使用者へ装着する。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/51/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_052",
+      "canonicalCardId": "set8_052",
+      "printingId": "registry:set8_052",
+      "officialNumber": "52/64",
+      "name": "亀虫の盾甲冑",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_052-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "虫への術耐性は装着強化自身を対象とする術には適用しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/52/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_053",
+      "canonicalCardId": "set8_053",
+      "printingId": "registry:set8_053",
+      "officialNumber": "53/64",
+      "name": "傀儡の冬虫夏草",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_053-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "蘇生虫のHPが100であれば100減少によって破壊され、縄張りは取得しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/53/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_054",
+      "canonicalCardId": "set8_054",
+      "printingId": "registry:set8_054",
+      "officialNumber": "54/64",
+      "name": "玉虫の色真似巻",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/54/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_055",
+      "canonicalCardId": "set8_055",
+      "printingId": "registry:set8_055",
+      "officialNumber": "55/64",
+      "name": "蟲術の息吹",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/55/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_056",
+      "canonicalCardId": "set8_056",
+      "printingId": "registry:set8_056",
+      "officialNumber": "56/64",
+      "name": "半死の道連れ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_056-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "双方が残す虫の数は半分切捨て。1体ならその1体を破壊する。片側が空でも使用可能。裏向き虫は数えない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        },
+        {
+          "id": "set8_056-qa-2",
+          "classification": "OFFICIAL_RULING",
+          "text": "破壊置換・破壊防止を適用し、失敗した虫の代わりは選ばない。虫への術耐性や対象誘導はこのプレイヤーへの効果に影響しない。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        },
+        {
+          "id": "set8_056-qa-3",
+          "classification": "OFFICIAL_RULING",
+          "text": "双方の破壊は同時。誘発効果の解決はターンプレイヤー側から進める。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/56/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_057",
+      "canonicalCardId": "set8_057",
+      "printingId": "registry:set8_057",
+      "officialNumber": "57/64",
+      "name": "水月の激流",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/57/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_058",
+      "canonicalCardId": "set8_058",
+      "printingId": "registry:set8_058",
+      "officialNumber": "58/64",
+      "name": "神楽の烈風",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/58/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_059",
+      "canonicalCardId": "set8_059",
+      "printingId": "registry:set8_059",
+      "officialNumber": "59/64",
+      "name": "火花の嵐",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/59/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_060",
+      "canonicalCardId": "set8_060",
+      "printingId": "registry:set8_060",
+      "officialNumber": "60/64",
+      "name": "蛹の冬籠り",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/60/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_061",
+      "canonicalCardId": "set8_061",
+      "printingId": "registry:set8_061",
+      "officialNumber": "61/64",
+      "name": "断界の虫送り",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/61/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_062",
+      "canonicalCardId": "set8_062",
+      "printingId": "registry:set8_062",
+      "officialNumber": "62/64",
+      "name": "冥府の導き",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/62/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    },
+    {
+      "id": "set8_063",
+      "canonicalCardId": "set8_063",
+      "printingId": "registry:set8_063",
+      "officialNumber": "63/64",
+      "name": "蚕の口封じ",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [
+        {
+          "id": "set8_063-qa-1",
+          "classification": "OFFICIAL_RULING",
+          "text": "<>技の喪失は相手の虫の全ゾーンへ適用する。",
+          "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+        }
+      ],
+      "rulingStatus": "OFFICIAL_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/63/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ]
+    },
+    {
+      "id": "set8_064",
+      "canonicalCardId": "set8_064",
+      "printingId": "registry:set8_064",
+      "officialNumber": "64/64",
+      "name": "金色の腕",
+      "basicCardData": "SECONDARY_CORROBORATED",
+      "primaryCardText": "UNKNOWN",
+      "status": "RESEARCHED",
+      "rulings": [],
+      "rulingStatus": "NEEDS_RULING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/64/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ]
+    }
+  ],
+  "sourceConflicts": [
+    {
+      "status": "CONFLICT",
+      "field": "product rarity totals",
+      "single": {
+        "LR": 5,
+        "UR": 7,
+        "SR": 14,
+        "R": 17,
+        "N": 21
+      },
+      "box": {
+        "LR": 5,
+        "UR": 8,
+        "SR": 12,
+        "R": 18,
+        "N": 21
+      },
+      "resolution": "Use independently tallied card-level values; do not silently correct the BOX source.",
+      "sources": [
+        "https://jp.daisonet.com/products/4550746086609",
+        "https://jp.daisonet.com/products/4550746087767"
+      ]
+    }
+  ],
+  "unknowns": [
+    "Primary publisher card-text verification remains UNKNOWN for all 64 records; secondary corroboration is not official verification."
+  ],
+  "generalRulings": [
+    {
+      "classification": "OFFICIAL_RULING",
+      "topic": "face-down discard",
+      "summary": "Face-down discard is excluded from ordinary selection and counts unless explicitly referenced.",
+      "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    },
+    {
+      "classification": "OFFICIAL_RULING",
+      "topic": "leaving field",
+      "summary": "Movement to another zone counts as leaving; turning face-up or face-down within the field does not.",
+      "sourceRef": "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+    }
+  ]
+}

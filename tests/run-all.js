@@ -61,6 +61,7 @@ function requireAll() {
     ,require('./battle-user-deck-ui.test.js')
     ,require('./product-audit-ui.test.js')
     ,require('./full-catalog-v1.test.js')
+    ,require('./set8-catalog.test.js')
     ,require('./human-test-fix-01.test.js')
     ,require('./set2-modifier-lifetime.test.js')
     ,require('./set2-audit.test.js')
