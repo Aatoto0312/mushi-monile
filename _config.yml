@@ -3,7 +3,6 @@ exclude:
   - docs
   - tests
   - scripts
-  - prototype
   - .ai-worker
   - node_modules
   - README.md
