@@ -5,7 +5,7 @@
   host.innerHTML=`<main class="arena live-arena" aria-label="B案 共通対戦盤面">
    <header class="player opponent"><span class="avatar">◈</span><b data-role="other-name">相手</b><div class="stats" data-role="other-stats"></div><button data-role="menu">☰</button></header>
    <section class="field enemy"><div class="lane-title">相手の場 <small>横へスワイプ ›</small></div><div id="enemy" class="cards" data-role="other-field"></div></section>
-   <section class="ribbon" aria-live="polite"><span data-role="phase"></span><b data-role="instruction"></b><button data-role="direct" hidden>直接攻撃</button><button data-role="back" hidden>戻る</button><button data-role="cancel" hidden>キャンセル</button></section>
+   <section class="ribbon" aria-live="polite"><span data-role="turn"></span><b data-role="instruction"></b><span data-role="phase"></span><div class="target-controls" data-role="target-controls" hidden><button data-role="direct" hidden>直接攻撃</button><button data-role="back" hidden>戻る</button><button data-role="cancel" hidden>キャンセル</button></div></section>
    <section class="field own"><div class="lane-title">自分の場 <small>横へスワイプ ›</small></div><div id="own" class="cards" data-role="own-field"></div></section>
    <section class="player self"><span class="avatar">✧</span><b data-role="own-name">あなた</b><div class="stats" data-role="own-stats"></div></section>
    <section class="hand"><button id="hand-toggle" data-role="hand-toggle" aria-expanded="false"></button><div id="hand" class="cards" data-role="hand"></div></section>
@@ -91,16 +91,16 @@
   function zones(player,zone){const body=open(player.id+' / '+zone,'公開範囲のカード');if(zone==='deck'){body.textContent='山札の内容と順序は非公開です。';return;}const list=document.createElement('div');list.className='zone-list';for(const dto of player[zone]||[]){const c=P.publicCard(dto,definition),b=button(c.name,()=>details(c));b.append(image(c));list.append(b);}body.append(list);}
   function stats(role,player){const el=$(role);el.replaceChildren();const cost=document.createElement('span');cost.textContent='コスト';const value=document.createElement('b');value.textContent=player.availableCost;cost.append(value);el.append(cost);for(const [zone,label] of [['hand','手'],['deck','山'],['territory','縄'],['food','エサ'],['discard','捨']]){const b=button('',()=>zones(player,zone));b.append(document.createTextNode(label));const n=document.createElement('b');n.textContent=player.counts[zone];b.append(n);el.append(b);}}
   function draw(){
-   if(!ctx||!vm)return;arena.classList.toggle('hand-expanded',expanded);arena.dataset.mode=targetGroup?'target':'idle';
+   if(!ctx||!vm)return;if(!vm.own.hand.length)expanded=false;arena.classList.toggle('hand-expanded',expanded);arena.dataset.mode=targetGroup?'target':'idle';
    for(const [role,cards] of [['other-field',vm.other.field],['own-field',vm.own.field],['hand',vm.own.hand]]){const lane=$(role),left=lane.scrollLeft;lane.dataset.count=cards.length;lane.replaceChildren(...cards.map(unit));lane.scrollLeft=left;}
    const b=view.battle;stats('other-stats',vm.other);stats('own-stats',vm.own);$('own-name').textContent=vm.spectator?'P1':ctx.names?.own||'あなた';$('other-name').textContent=vm.spectator?'P2':ctx.names?.other||'相手';
-   $('phase').textContent='TURN '+b.turn+' / '+({SET_PHASE:'SET',MAIN_PHASE:'MAIN',DRAW_PHASE:'DRAW',GAME_OVER:'END'}[b.phase]||b.phase);
+   $('turn').textContent='TURN '+b.turn;$('phase').textContent=({SET_PHASE:'SET',MAIN_PHASE:'MAIN',DRAW_PHASE:'DRAW',GAME_OVER:'END'}[b.phase]||b.phase);
    let instruction=vm.spectator?'観戦中':b.activePlayerId===b.viewerId?'あなたの番':'相手の番';
    if(targetGroup)instruction=targetGroup.name+'：光る対象を選択';
    if(view.room.phase!=='PLAYING')instruction=view.room.phase==='ENDED'?'対戦終了'+(view.room.result?.winner?' / '+(ctx.resultLabel||view.room.result.winner+'の勝利'):''):'試合中断：'+(view.room.reason||view.room.phase);
    else if(!ctx.connected)instruction='通信が切断されました。再接続中…';else if(view.room.paused)instruction='相手の再接続を待っています（最大5分）';else if(ctx.busy)instruction='操作を送信中…';else if(b.blockedReason)instruction='処理を継続できません：'+b.blockedReason;else if(vm.decision)instruction='効果の選択を行ってください';else if(vm.actions.some(a=>['CHOICE','TERRITORY_CHOICE'].includes(a.kind)))instruction='操作一覧から効果を選択してください';
-   $('instruction').textContent=instruction;
-   $('hand-toggle').textContent=(expanded?'⌄ 収納':'⌃ 展開')+' · 手札 '+vm.own.counts.hand+'枚';$('hand-toggle').setAttribute('aria-expanded',String(expanded));$('hand-toggle').disabled=!!targetGroup;
+   $('instruction').textContent=instruction;$('instruction').title=instruction;$('target-controls').hidden=!targetGroup;
+   $('hand-toggle').textContent=(expanded?'⌄ 収納':'⌃ 展開')+' · 手札 '+vm.own.counts.hand+'枚';$('hand-toggle').setAttribute('aria-expanded',String(expanded));$('hand-toggle').disabled=!!targetGroup||!vm.own.hand.length;
    $('back').hidden=$('cancel').hidden=!targetGroup;
    $('direct').hidden=!targetGroup||!targetGroup.actions.some(a=>!a.targetRef);$('direct').disabled=!enabled();$('direct').onclick=()=>targetGroup&&resolveVariant(targetGroup.actions.filter(a=>!a.targetRef));
    const end=vm.actions.find(a=>a.kind==='END'),next=vm.actions.find(a=>['MAIN','DRAW','TO_SET'].includes(a.kind));const mainAction=end||next;

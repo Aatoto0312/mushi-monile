@@ -1,4 +1,4 @@
-@import url('../prototype-b/style.css?v=cpu-b-v2-1');
+@import url('../prototype-b/style.css?v=b-responsive-v1');
 /* Scope layout changes to the independent page; prototype-b remains untouched. */
 #board{display:block;min-height:0;flex:1;overflow:hidden}
 #b-battle{height:100%;min-height:0}
@@ -40,4 +40,60 @@
 #overlay[open]{display:flex;flex-direction:column;padding:14px;overflow:auto}
 #overlay-body{overflow:auto;min-height:0}
 @media(orientation:landscape){.live-arena .stats{gap:4px}.live-arena .stats button{flex-direction:row;gap:3px;min-height:28px}.live-arena .stats button b{font-size:12px}.live-arena .avatar{display:none}}
-@media(max-height:540px) and (orientation:portrait){#board{min-height:560px;overflow:visible}html,body{overflow:auto}#online-app{height:auto;min-height:100dvh}}
+
+
+/* Responsive live board: each control owns a grid row; no overlapping hand drawer. */
+.battle-shell{--b-safe-top:env(safe-area-inset-top,0px);--b-safe-bottom:env(safe-area-inset-bottom,0px);--b-safe-left:env(safe-area-inset-left,0px);--b-safe-right:env(safe-area-inset-right,0px)}
+#online-app.battle-shell,#cpu-b-shell.battle-shell{height:100vh;height:100svh;height:100dvh;box-sizing:border-box;padding:var(--b-safe-top) 0 0}
+.battle-shell>.online-header{padding-inline:max(8px,var(--b-safe-left)) max(8px,var(--b-safe-right))}
+.battle-shell>#board{container-type:size;container-name:battleViewport;min-height:0;overflow:hidden}
+.live-arena,.live-arena.hand-expanded,.live-arena[data-mode='target']{--b-status:44px;--b-rail:50px;--b-hand:clamp(72px,13cqh,100px);display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'opponent' 'enemy' 'hud' 'own' 'self' 'hand' 'actions';grid-template-rows:var(--b-status) minmax(72px,1fr) auto minmax(72px,1.15fr) var(--b-status) var(--b-hand) var(--b-rail);gap:4px;padding:6px max(10px,var(--b-safe-right)) max(6px,var(--b-safe-bottom)) max(10px,var(--b-safe-left));height:100%;min-height:0;overflow:hidden}
+.live-arena.hand-expanded{--b-hand:clamp(128px,calc(50cqh - var(--b-status) - var(--b-status) - 32px - 4px),230px)}
+.live-arena[data-mode='target']{--b-hand:clamp(60px,12cqh,88px)}
+.live-arena>.opponent{grid-area:opponent}.live-arena>.enemy{grid-area:enemy}.live-arena>.ribbon{grid-area:hud}.live-arena>.own{grid-area:own}.live-arena>.self{grid-area:self}.live-arena>.rail{grid-area:actions}
+.live-arena>.player{min-width:0;padding:3px 6px;gap:6px;min-height:0}
+.live-arena .player>button{width:36px;min-width:36px;min-height:36px;height:36px;padding:2px}
+.live-arena .stats{gap:4px;min-width:0}.live-arena .stats button{min-width:26px;min-height:36px}
+.live-arena .ribbon{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;grid-template-areas:'turn instruction phase' 'targets targets targets';align-content:center;align-items:center;column-gap:6px;row-gap:2px;min-height:32px;min-width:0;padding:4px 8px;flex-wrap:nowrap;text-align:center}
+.live-arena .ribbon>[data-role='turn']{grid-area:turn;font:14px/1.2 Georgia,serif;letter-spacing:.2px;white-space:nowrap;width:auto}
+.live-arena .ribbon>[data-role='turn']:after{content:'│';padding-left:6px;color:#b4be91}
+.live-arena .ribbon>[data-role='phase']{grid-area:phase;width:auto;white-space:nowrap;font:12px/1.2 sans-serif;letter-spacing:0}
+.live-arena .ribbon>[data-role='phase']:before{content:'│';padding-right:6px;color:#b4be91}
+.live-arena .ribbon>[data-role='instruction']{grid-area:instruction;min-width:0;width:auto;flex:none;font-size:11px;line-height:1.25;overflow-wrap:anywhere}
+.live-arena .target-controls{grid-area:targets;display:flex;justify-content:center;gap:5px}
+.live-arena .target-controls button{min-height:36px;font-size:11px;padding:5px 9px}
+.live-arena>.hand,.live-arena.hand-expanded>.hand{grid-area:hand;position:relative;inset:auto;height:auto;min-height:0;margin:0;padding:3px 4px;display:grid;grid-template-rows:40px minmax(0,1fr);gap:3px;z-index:auto;box-shadow:none;backdrop-filter:none;overflow:hidden}
+.live-arena #hand-toggle{position:static;inset:auto;justify-self:center;align-self:stretch;width:min(190px,100%);min-height:40px;height:40px;margin:0;padding:2px 8px;z-index:auto}
+.live-arena .hand>.cards,.live-arena.hand-expanded .hand>.cards{min-height:0;height:auto;padding:1px 3px;align-items:stretch;overflow-x:auto;overflow-y:hidden}
+.live-arena .hand .unit,.live-arena.hand-expanded .hand .unit{height:100%;width:112px;min-width:100px;transform:none;max-height:100%}
+.live-arena .field>.cards{height:auto;min-height:0;padding-block:1px}
+.live-arena .field>.lane-title{flex-basis:12px}
+.live-arena>.rail{position:relative;min-height:0;padding:3px;align-self:stretch;z-index:auto}
+.live-arena .rail button,.live-arena .rail #end{min-height:40px}
+@media(orientation:landscape){
+ .live-arena,.live-arena.hand-expanded,.live-arena[data-mode='target']{--b-status:36px;--b-rail:44px;grid-template-columns:minmax(0,1fr) clamp(180px,26vw,290px);grid-template-areas:'opponent hand' 'enemy hand' 'hud hand' 'own hand' 'self actions';grid-template-rows:var(--b-status) minmax(60px,1fr) auto minmax(60px,1fr) var(--b-rail);gap:3px;padding:5px max(8px,var(--b-safe-right)) max(5px,var(--b-safe-bottom)) max(8px,var(--b-safe-left));max-width:1200px}
+ .live-arena>.hand,.live-arena.hand-expanded>.hand{grid-area:hand;min-height:0;inset:auto;height:auto;margin:0;padding:3px 4px;grid-template-rows:40px minmax(0,1fr)}
+ .live-arena .ribbon{min-height:30px;padding:3px 5px;column-gap:4px}
+ .live-arena>.player{padding:1px 4px}.live-arena .stats button{min-height:30px}.live-arena .player>button{height:30px;min-height:30px;width:30px;min-width:30px}
+ .live-arena .field>.lane-title{display:none}
+ .live-arena .hand .unit,.live-arena.hand-expanded .hand .unit{height:min(100%,220px);width:112px;min-width:100px}
+ .live-arena .rail button,.live-arena .rail #end{min-height:36px}
+}
+
+@media(orientation:portrait){.live-arena:not(.hand-expanded) .hand .unit{height:164px;max-height:none}}
+.live-arena:has([data-role='hand'][data-count='0']){--b-hand:50px}
+.live-arena .hand>.cards:empty{display:none}
+
+.live-arena>.ribbon{align-self:center}
+@media(orientation:landscape) and (max-height:350px){
+ .live-arena,.live-arena.hand-expanded,.live-arena[data-mode='target']{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 170px;grid-template-areas:'opponent self hand' 'enemy own hand' 'hud hud actions';grid-template-rows:36px minmax(0,1fr) auto}
+ .live-arena>.player{gap:3px;padding-inline:4px}.live-arena .player>b{font-size:10px}.live-arena .player>button{display:none}.live-arena .stats{gap:2px}.live-arena .stats button{min-width:20px;font-size:8px}.live-arena .stats button b,.live-arena .stats>span b{font-size:12px}
+ .live-arena>.rail{display:grid;grid-template-columns:1fr 1fr;gap:3px}.live-arena .rail #end{grid-column:1/-1;grid-row:1;min-width:0}.live-arena .rail button{min-width:0}
+}
+
+@media(orientation:portrait){
+ @container battleViewport (max-height:520px){
+  .live-arena,.live-arena.hand-expanded,.live-arena[data-mode='target']{gap:2px;padding-top:4px;padding-bottom:max(4px,var(--b-safe-bottom));grid-template-rows:var(--b-status) minmax(72px,1fr) auto minmax(72px,1fr) var(--b-status) var(--b-hand) var(--b-rail)}
+  .live-arena .field>.lane-title{flex-basis:10px}
+ }
+}

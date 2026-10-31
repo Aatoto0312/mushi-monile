@@ -1,8 +1,8 @@
 {
-  "createdAt": "2026-10-31T13:03:22.111Z",
-  "assetVersion": "cpu-b-v2-1",
-  "sourceHead": "bbcac2e9989f8de8611551f45b3965e3618b231c",
-  "mainHead": "bbcac2e9989f8de8611551f45b3965e3618b231c",
+  "createdAt": "2026-10-31T13:58:12.450Z",
+  "assetVersion": "b-responsive-v1",
+  "sourceHead": "9e45092f012b966d223bc81bbe71ff259b557862",
+  "mainHead": "9e45092f012b966d223bc81bbe71ff259b557862",
   "versions": {
     "protocol": "mushi-online/1",
     "engine": "2f3e3645a649747c151b581610b63c3f3d43cb208474535410133c408069cd4f",
@@ -18,39 +18,39 @@
   "files": [
     {
       "path": "battle-ui/board.css",
-      "bytes": 2998,
-      "sha256": "94b94ec5a756fb635cfda4cee76c0e0f87a82ddb95d3552f149f42c913eb5f0c",
+      "bytes": 9285,
+      "sha256": "a7b971c0230bf4c1175e4aea83bbda31fab257076302cd85ae6f8ae80bc37a02",
       "main": "modified"
     },
     {
       "path": "battle-ui/board.js",
-      "bytes": 17192,
-      "sha256": "98fc825af1cd3b236b12c6264e8b001a3bf1c0fd349ee239fa5b537eeba9f383",
+      "bytes": 17443,
+      "sha256": "5cfc69fb72fbf83c657e941e01c93e300742ea08b2e743fe4a8869691e4146b9",
       "main": "modified"
     },
     {
       "path": "battle-ui/cpu-adapter.js",
       "bytes": 863,
       "sha256": "5647a81abaaec7b2d7eaed7a495a1af3f95fcc17167a169f359215fb527e884c",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "battle-ui/cpu-controller.js",
-      "bytes": 4866,
-      "sha256": "643ca818c741365b8900dd1b3d43a700d142d40213a48f7d176500634c3cd50e",
-      "main": "added"
+      "bytes": 4897,
+      "sha256": "40d41c65de426f33c3b9ca028d47a7389d24929df755905c2a68a50e352ede5d",
+      "main": "modified"
     },
     {
       "path": "battle-ui/cpu.css",
-      "bytes": 1262,
-      "sha256": "78504aa5f8bcafe1c02e8395a388adcaed0312de190630e3374b8194b247c68b",
-      "main": "added"
+      "bytes": 1149,
+      "sha256": "162e97860aaa11c8a2d21dd3b49e0c6a942f8f5a71ae8a53fa4ddb0c3f45a059",
+      "main": "modified"
     },
     {
       "path": "battle-ui/engine-view.js",
       "bytes": 11430,
       "sha256": "c3c3ae09589fa5eb1f425d269017248e522590c180ef581c6bf6e0f5425cdd74",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "battle-ui/presentation.js",
@@ -84,8 +84,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 15539,
-      "sha256": "e3de1cbc6f5ae275bc01c6fbefab396fd04eaa609aa6d40acd28085ff0c0b825",
+      "bytes": 15759,
+      "sha256": "1c88051639b5ccf1889ecda13ba77dcdaf50791dc9ae293ee301362fda9b02ff",
       "main": "modified"
     },
     {
@@ -236,7 +236,7 @@
       "path": "js/ui/battle-compact.js",
       "bytes": 7278,
       "sha256": "1bf6b3c91af5ece5a8adc48c9557cbad44734869f58cde912b2017aec4f994cc",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/ui/battle-experience.js",
@@ -276,14 +276,14 @@
     },
     {
       "path": "online-b.html",
-      "bytes": 3740,
-      "sha256": "52890e35c6ec23079c0d6827cd0d7b847fca2add40c29d82d5ea2db89987f356",
+      "bytes": 3871,
+      "sha256": "af52edd8f265419ffd4c1f2e562bf9f530766e227a9c7377209ea7ff917e815d",
       "main": "modified"
     },
     {
       "path": "online.html",
-      "bytes": 4227,
-      "sha256": "fd039d2a549d86f10f93072c0c91417de3f80017a2fc221eb5d298b4c178b3ac",
+      "bytes": 4317,
+      "sha256": "b256577fcb9f931cd148c2909712d871db7e99b98d57033ed8d3f568d7398ee7",
       "main": "modified"
     },
     {
@@ -318,8 +318,8 @@
     },
     {
       "path": "prototype-b/base.css",
-      "bytes": 9616,
-      "sha256": "6c39d4e4265ba270d1d4714f6bf34d89948d689d3b7cc80b89aa95a5464027be",
+      "bytes": 9621,
+      "sha256": "b1ca41b21fb80c9a3d0b6fcea8ed9500985610e400f2c3dcf6d12416959c1aba",
       "main": "modified"
     },
     {
@@ -330,8 +330,8 @@
     },
     {
       "path": "prototype-b/style.css",
-      "bytes": 12514,
-      "sha256": "aea722f36b707a8cf9d7e78b401aa60695f099ccac712b0a04dbab7be3bbfed8",
+      "bytes": 12524,
+      "sha256": "f97b8ddf62083fe5efaa7ff0d35e62d82063563d32b68b7f2d6cad0a71f9d31f",
       "main": "modified"
     },
     {
@@ -462,8 +462,8 @@
     },
     {
       "path": "toolbox.html",
-      "bytes": 7669,
-      "sha256": "8a7bcafbe871e3a45fae73ee18f974b774d1ddbec27c40760c8e587e4c8f2d47",
+      "bytes": 7774,
+      "sha256": "76e580a1fab1a31909e9b2013fa034769b34c39656a339257753b5f204ccc89f",
       "main": "modified"
     },
     {

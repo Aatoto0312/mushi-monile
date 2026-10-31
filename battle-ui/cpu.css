@@ -1,4 +1,4 @@
-@import url('./board.css?v=cpu-b-v2-1');
+@import url('./board.css?v=b-responsive-v1');
 body.cpu-b-active{height:100dvh;overflow:hidden;margin:0;background:#071a19}
 .cpu-b-active>.mobile-frame{display:none!important}
 .cpu-b-active>#card-detail-modal,.cpu-b-active>#game-over,.cpu-b-active>#territory-picker,.cpu-b-active>#damage-vector{display:none!important}
@@ -12,4 +12,3 @@ body.cpu-b-active{height:100dvh;overflow:hidden;margin:0;background:#071a19}
 #cpu-b-menu>[data-close]{position:sticky;bottom:0}
 #cpu-b-return{position:fixed;z-index:1200;top:5px;right:5px}
 #cpu-b-return[hidden]{display:none}
-@media(max-height:540px) and (orientation:portrait){#cpu-b-shell{overflow:auto}#cpu-b-shell>#board{min-height:560px}}
