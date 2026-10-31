@@ -1,0 +1,24 @@
+{
+  "questions": [
+    {
+      "id": "SET5-WATCHER-CONDITION-TIMING-001",
+      "status": "NEEDS_RULING",
+      "cardIds": ["set5_007", "set3_015"],
+      "question": "When an opponent with4 hand cards destroys Adansonhaetori while Ashinagagumo is on the defeated controller's field, can resolving Predation first (opponent territory draw→hand5) enable Flycatcher's hand-discard effect? Is the conditional hand threshold fixed at destruction/trigger registration or checked when resolving the ordered effect?",
+      "canonicalStatusPolicy": "SET5-7 stays PARTIAL, never PLAYABLE, until this interaction is established. Existing SET3-15 declaration is not a certificate for this unavailable-card combination.",
+      "currentCode": "Provisional shared legacy destruction ability resolution checks its condition when resolving. This is not asserted as the official answer for the new combination.",
+      "confirmed": "Official SET5 QA establishes two Predation watchers cause two territory draws. General official simultaneous-effect rules allow same-controller order selection. They did not establish the conditional-threshold timing in the searched material.",
+      "sourcesChecked": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第３弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/ゲームのルールについて/",
+        "https://w.atwiki.jp/mushijingi/pages/301.html",
+        "local knowledge base manual, SET3 and SET5 catalogs (read-only)"
+      ],
+      "checkedAt": "2026-10-28",
+      "userRuling": null,
+      "nextResearch": "Search later SET official rulings for explicit event-time vs resolution-time condition checks; retain unresolved question for Final Audit. Do not encode an assumed expected result."
+    }
+  ]
+}

@@ -17,6 +17,7 @@ require(path.join(base, 'cards', 'set1-cards.js'));
 require(path.join(base, 'cards', 'set2-cards.js'));
 require(path.join(base, 'cards', 'set3-cards.js'));
 require(path.join(base, 'cards', 'set4-cards.js'));
+require(path.join(base, 'cards', 'set5-cards.js'));
 require(path.join(base, 'engine', 'game-state.js'));
 require(path.join(base, 'engine', 'stat-modifier.js'));
 require(path.join(base, 'engine', 'rules.js'));

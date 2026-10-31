@@ -65,7 +65,7 @@
     });
     var moved = prepared.map(function (entry) {
       var move = entry.move;
-      return moveCard(state, move.instanceId, move.from, move.to, { playerId: move.playerId || entry.holder.playerId, faceDown: move.faceDown, deferEntryEffects: true });
+      return moveCard(state, move.instanceId, move.from, move.to, { playerId: move.playerId || entry.holder.playerId, faceDown: move.faceDown, runtimeFlags:move.runtimeFlags, deferEntryEffects: true });
     });
     // Exchanges must finish moving both cards before entry candidates are read.
     prepared.forEach(function(entry, index) {
@@ -86,6 +86,8 @@
   // 相手ターンで有効化する(2026年1月15日の公式裁定に準拠)。
   function setupFieldEntry(state, card, fromZone) {
     card.enteredFieldTurn = state.turnNumber;
+    card.runtimeFlags=card.runtimeFlags||{};
+    if(fromZone!==ZONES.FIELD)card.runtimeFlags.fieldEntrySerial=(card.runtimeFlags.fieldEntrySerial||0)+1;
     if (card.runtimeFlags) {
       delete card.runtimeFlags.damagePreventionTurns;
       delete card.runtimeFlags.damageShields;
@@ -165,6 +167,14 @@
     }
 
     var card = fromArr.splice(idx, 1)[0];
+    if(fromZone===ZONES.TERRITORY&&toZone!==ZONES.TERRITORY&&fromArr.length===0){
+      var territoryGrant=state.player(sourcePlayerId).territoryTriggerGrant;
+      if(territoryGrant)territoryGrant.active=false;
+    }
+    if(fromZone===ZONES.TERRITORY&&toZone!==ZONES.TERRITORY&&card.runtimeFlags){
+      delete card.runtimeFlags.replaceNextTerritoryDraw;
+      delete card.runtimeFlags.discardTerritoryAtEndTurn;
+    }
 
     // 場を離れる場合の共通処理
     if (fromZone === ZONES.FIELD) {
@@ -188,6 +198,7 @@
         delete card.runtimeFlags.unhealableDamage;
         delete card.runtimeFlags.damageDoesNotHeal;
         delete card.runtimeFlags.destroyOnAttackTurn;
+        delete card.runtimeFlags.destroyOnNextDamage;
         delete card.runtimeFlags.colorOverride;
         delete card.runtimeFlags.colorOverrideUntil;
         delete card.runtimeFlags.attackRestrictions;
@@ -195,13 +206,15 @@
         delete card.runtimeFlags.suppressKeywordSkills;
         delete card.runtimeFlags.trackedByAttachmentIds;
         delete card.runtimeFlags.territoryDrawApBonus;
+        delete card.runtimeFlags.fieldEntryCause;
+        delete card.runtimeFlags.enteredBySpellTurn;
         if (card.runtimeFlags.faceDownUntilTurn != null) {
           card.faceDown = false;
           delete card.runtimeFlags.faceDownUntilTurn;
         }
       }
       // 紐付く強化カード(attachment)を所有者の DISCARD へ移動
-      discardAllAttachments(state, card);
+      discardAllAttachments(state, card, {deferDestruction:!!opts.deferAttachmentDestruction});
     }
 
     card.zone = toZone;

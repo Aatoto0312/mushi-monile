@@ -1,0 +1,16 @@
+"use strict";
+const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');const assert=require('node:assert/strict');
+(async()=>{const browser=await(process.env.MUSHI_BROWSER==='webkit'?webkit.launch():chromium.launch({channel:'msedge'}));const page=await browser.newPage({viewport:{width:390,height:650},isMobile:true,hasTouch:true});page.setDefaultTimeout(5000);let checks=0;
+try{await page.goto(process.env.MUSHI_URL||'http://127.0.0.1:8765',{waitUntil:'domcontentloaded'});await page.locator('#btn-vs-human').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();if(await page.locator('#pass-overlay').isVisible())await page.locator('#btn-pass-ok').click();
+await page.evaluate(()=>{const u=MushiBattle.ui,s=u.state,pid=s.activePlayerId,d=getCardDefinition('set3_043');s.turnNumber=3;s.phase=Phases.MAIN_PHASE;s.pendingEffect=null;s.player(pid).field=[new CardInstance({instanceId:'end-turn-human',cardId:d.id,ownerId:pid,controllerId:pid,zone:'FIELD',faceDown:false,currentHp:d.baseHp,baseHp:d.baseHp,runtimeFlags:{destroyAtEndTurn:3}})];s.player(s.opponentOf(pid)).field=[];u.actionState={mode:'idle'};u.hideCardDetail();u.render();});
+const old=await page.evaluate(()=>MushiBattle.ui.state.activePlayerId);await page.locator('#btn-end-turn').click();
+assert.equal(await page.evaluate(()=>MushiBattle.ui.state.activePlayerId),old);checks++;assert.equal(await page.locator('#pass-overlay').isVisible(),false);checks++;
+await page.locator('#skill-select-row button').filter({hasText:/^引く$/}).click();assert.equal(await page.evaluate(()=>MushiBattle.ui.state.pendingEffect),null);checks++;
+assert.notEqual(await page.evaluate(()=>MushiBattle.ui.state.activePlayerId),old);checks++;assert.equal(await page.locator('#pass-overlay').isVisible(),true);checks++;
+assert((await page.locator('#pass-message').textContent()).includes(await page.evaluate(()=>MushiBattle.ui.state.activePlayerId)));checks++;
+await page.locator('#btn-pass-ok').click();
+await page.evaluate(()=>{const u=MushiBattle.ui,s=u.state,pid=s.activePlayerId,d=getCardDefinition('set3_043');s.turnNumber=5;s.phase=Phases.MAIN_PHASE;s.pendingEffect=null;const card=new CardInstance({instanceId:'end-turn-expiry-human',cardId:d.id,ownerId:pid,controllerId:pid,zone:'FIELD',faceDown:false,currentHp:100,baseHp:d.baseHp,runtimeFlags:{damageDoesNotHeal:true}});s.player(pid).field=[card];s.player(s.opponentOf(pid)).field=[];addStatModifier(s,card,{stat:'HP',amount:500,startTurn:5,endTurn:5,sourceInstanceId:card.instanceId});card.currentHp=100;u.actionState={mode:'idle'};u.render();});
+const expiryOwner=await page.evaluate(()=>MushiBattle.ui.state.activePlayerId);await page.locator('#btn-end-turn').click();assert.equal(await page.evaluate(()=>MushiBattle.ui.state.activePlayerId),expiryOwner);checks++;assert.equal(await page.locator('#pass-overlay').isVisible(),false);checks++;
+await page.locator('#skill-select-row button').filter({hasText:/^引く$/}).click();assert.notEqual(await page.evaluate(()=>MushiBattle.ui.state.activePlayerId),expiryOwner);checks++;assert.equal(await page.locator('#pass-overlay').isVisible(),true);checks++;
+console.log('END TURN HUMAN CHECKS PASSED: '+checks);
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

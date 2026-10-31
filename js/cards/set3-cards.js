@@ -18,7 +18,7 @@
     });
     var number = Number(record.officialNumber.split('/')[0]);
     if ([2,4,5,10,13,16].indexOf(number) !== -1) {
-      def.costModifiers = [{ type: 'PER_FACE_UP_FOOD_COLOR', color: 'BLUE', per: 2, amount: -1, minimum: 0 }];
+      def.costModifiers = [{ type: 'PER_FACE_UP_FOOD_COLOR', color: 'BLUE', per: 2, amount: -1, minimum: 0, requiresKeywordTrait:true }];
     }
     if (number === 3) {
       def.passiveAbilities[0].effects = [{ type: 'CARD_COST_MODIFIER', cardType: 'SPELL', printedCostMax: 1, amount: 1, affects: 'ALL_PLAYERS' }];
@@ -26,7 +26,7 @@
     if (number === 18 || number === 25) {
       def.passiveAbilities[0].effects = [{ type: 'CARD_COST_MODIFIER', cardType: 'ENHANCEMENT', target: 'SELF', amount: -1, minimum: 0 }];
     }
-    if (number === 19) { def.costModifiers = [{ type: 'OWN_FIELD_EMPTY', amount: -1, minimum: 0 }]; }
+    if (number === 19) { def.costModifiers = [{ type: 'OWN_FIELD_EMPTY', amount: -1, minimum: 0, requiresKeywordTrait:true }]; }
     if(number===20){def.attachmentLimit=1;def.attachmentStatMultiplier=2;}
     if(number===21){def.passiveAbilities[0].timing='ON_ENTER_FIELD';def.passiveAbilities[0].effects=[{type:'IGNORE_WEAKNESS_NEXT_OPPONENT_TURN'}];}
     if(number===22){def.passiveAbilities[0].effects=[{type:'SPELL_SUMMONS_CANNOT_ATTACK_THIS_TURN',affects:'ALL_PLAYERS'}];}

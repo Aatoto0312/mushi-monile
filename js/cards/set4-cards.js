@@ -19,10 +19,10 @@
     });
     var number = Number(record.officialNumber.split('/')[0]);
     if ([1, 3, 10].indexOf(number) !== -1) {
-      def.costModifiers = [{ type:'PER_DISCARD_TRAIT', traitName:'生きた化石', per:1, amount:-1, minimum:0 }];
+      def.costModifiers = [{ type:'PER_DISCARD_TRAIT', traitName:'生きた化石', per:1, amount:-1, minimum:0, requiresKeywordTrait:true }];
     }
     if ([11, 12].indexOf(number) !== -1) {
-      def.costModifiers = [{ type:'PER_OPPONENT_FACE_UP_FOOD_COLOR', color:'BLUE', per:3, amount:-1, minimum:0 }];
+      def.costModifiers = [{ type:'PER_OPPONENT_FACE_UP_FOOD_COLOR', color:'BLUE', per:3, amount:-1, minimum:0, requiresKeywordTrait:true }];
     }
     if (number === 2) {
       def.skills[1].usageLimit='ONCE_PER_FIELD_STAY';
@@ -38,7 +38,7 @@
     if (number === 13) { def.skills[0].effects=[{type:'FORCE_ATTACK_TO_SOURCE_NEXT_OPPONENT_TURN'}]; }
     if (number === 8) { def.skills[0].effects=[{type:'SET_ATTACK_TARGET_COLOR_UNTIL_END_TURN',color:'GREEN'}]; }
     if (number === 14) { def.continuousStatModifiers=[{type:'OWN_DISCARD_COLORS',colors:['RED','BLUE','GREEN'],stats:['HP','AP'],amount:200}]; }
-    if (number === 15) { def.passiveAbilities[0].effects=[{type:'CARD_COST_MODIFIER',cardType:'INSECT',minimumPrintedSkills:2,amount:1,affects:'ALL_PLAYERS'}]; }
+    if (number === 15) { def.passiveAbilities[0].effects=[{type:'CARD_COST_MODIFIER',cardType:'INSECT',minimumEffectiveSkills:2,amount:1,affects:'ALL_PLAYERS'}]; }
     if (number === 16) { def.passiveAbilities[0].timing='ON_ENTER_FIELD';def.passiveAbilities[0].effects=[{type:'DESTROY_OWN_FOOD_OR_SELF_ON_ENTRY'}]; }
     if (number === 18) { def.skills[1].effects=[{type:'ATTACK_MULTIPLE_TARGETS',exactSelections:2,ordered:true}]; }
     if (number === 17) { def.skills[1].effects=[{type:'TAX_OPPONENT_CARD_TYPE_AFTER_ATTACK',cardType:'SPELL',amount:1,startTurnOffset:1,endTurnOffset:1}]; }

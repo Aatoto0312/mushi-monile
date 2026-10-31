@@ -1,0 +1,43 @@
+@import url('../prototype-b/style.css?v=online-beta-b1');
+/* Scope layout changes to the independent page; prototype-b remains untouched. */
+#board{display:block;min-height:0;flex:1;overflow:hidden}
+#b-battle{height:100%;min-height:0}
+.live-arena,.live-arena.hand-expanded,.live-arena[data-mode='target']{height:100%;width:100%;min-height:0}
+.live-arena .lane-title{justify-content:space-between}
+.live-arena .stats{gap:5px}
+.live-arena .stats button{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;background:transparent;border:0;min-height:36px;min-width:28px;padding:0;color:#cde2d3}
+.live-arena .stats button b{font-size:14px;color:#fff}
+.live-arena .player>b{font-size:11px;flex:none}
+.live-arena .stats>span{font-size:9px;gap:0}
+.live-arena .stats>span b{color:var(--gold)}
+.live-arena .cards:empty:after{content:'場に虫はいません';margin:auto;font-size:12px;color:#d1e7cfb0;text-shadow:0 1px 4px #000}
+.live-arena .hand .cards:empty:after{content:'手札はありません'}
+.live-arena .unit .hp{white-space:nowrap;font-size:10px}
+.live-arena .hidden-art{background:repeating-linear-gradient(45deg,#234d3f,#234d3f 5px,#193d32 5px,#193d32 10px);display:grid;place-items:center;font:24px serif;border:1px solid #a9bd8c}
+.live-arena .unit[data-hidden='true']{display:block}
+.live-arena .unavailable{opacity:.4;filter:saturate(.3)}
+.live-arena .hand .unit{min-width:100px}
+.live-arena .ribbon b{overflow-wrap:anywhere}
+#b-battle .rail{gap:3px}
+#b-battle .rail>button{font-size:10px;padding:7px}
+#b-battle .rail #end{min-width:105px;font-size:11px}
+#b-battle .online-choice-list{display:flex;flex-wrap:wrap;gap:8px}
+#b-battle .online-choice-list button{min-height:60px;max-width:160px;white-space:pre-line}
+#b-battle .online-choice-list button[aria-pressed='true']{outline:2px solid #f0d376}
+#b-battle details .art{height:170px;width:122px;margin:8px 0}
+#b-battle #sheet-body>button{display:block;width:100%;text-align:left;white-space:pre-line}
+#b-battle #sheet-body>button.primary{color:#142116}
+#b-battle .zone-list{display:flex;flex-wrap:wrap;gap:8px}
+#b-battle .zone-list button{width:125px;font-size:11px}
+#b-battle .zone-list .art{height:155px}
+#b-battle #sheet-body .art .specimen-art{height:100%;width:100%}
+#b-battle .action-section button{white-space:normal}
+#b-battle .specimen-art img{animation:none}
+.live-arena .unit:disabled{opacity:.85}
+.online-header{min-height:34px}
+.online-header strong{font-size:11px}
+.online-header button{min-height:32px}
+#overlay[open]{display:flex;flex-direction:column;padding:14px;overflow:auto}
+#overlay-body{overflow:auto;min-height:0}
+@media(orientation:landscape){.live-arena .stats{gap:4px}.live-arena .stats button{flex-direction:row;gap:3px;min-height:28px}.live-arena .stats button b{font-size:12px}.live-arena .avatar{display:none}}
+@media(max-height:540px) and (orientation:portrait){#board{min-height:560px;overflow:visible}html,body{overflow:auto}#online-app{height:auto;min-height:100dvh}}

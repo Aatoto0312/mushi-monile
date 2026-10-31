@@ -48,6 +48,7 @@
       if(rule.type==='RUNTIME_COUNTER'){total+=(instance.runtimeFlags&&instance.runtimeFlags[rule.flag])||0;}
       if(rule.type==='OWN_FOOD_MINIMUM'&&player.food.length>=rule.minimum){total+=rule.amount;}
       if(rule.type==='HAS_ATTACHMENT'&&(instance.attachments||[]).length>0){total+=rule.amount;}
+      if(rule.type==='OWN_FIELD_CARD_ID'&&player.field.some(function(card){return !card.faceDown&&card.cardId===rule.cardId;})){total+=rule.amount;}
       if(rule.type==='OWN_DISCARD_COLORS'){
         var present={};player.discard.forEach(function(card){var discarded=global.getCardDefinition(card.cardId);if(discarded){present[discarded.color]=true;}});
         if((rule.colors||[]).every(function(color){return present[color];})){total+=rule.amount;}
@@ -61,11 +62,22 @@
   function getEffectiveAP(state, instance, baseAp, skill) {
     if (skill && skill.dynamicAp) {
       var rule = skill.dynamicAp;
-      var player = state.player(instance.ownerId);
+      // "Own" zones belong to the current controller. Capture does not
+      // change ownership; field membership remains authoritative after restore.
+      var controllerId = instance.controllerId || instance.ownerId;
+      state.playerOrder.some(function (playerId) {
+        if (state.player(playerId).field.some(function (card) { return card.instanceId === instance.instanceId; })) {
+          controllerId = playerId;
+          return true;
+        }
+        return false;
+      });
+      var player = state.player(controllerId);
       if (rule.type === 'FOOD_COLOR_COUNT') {
         baseAp = player.food.filter(function (card) {
           var def = global.getCardDefinition(card.cardId);
-          return !card.faceDown && def && def.color === rule.color;
+          var color = global.getEffectiveColor ? global.getEffectiveColor(card) : def && def.color;
+          return !card.faceDown && def && color === rule.color;
         }).length * rule.multiplier;
       } else if (rule.type === 'DISCARD_COUNT') {
         baseAp = player.discard.length * rule.multiplier;
@@ -171,7 +183,8 @@
 
   // 対象虫に紐付く強化カードをすべて所有者の DISCARD へ移動する。
   // 対象虫が FIELD を離れる際に呼ばれる。
-  function discardAllAttachments(state, instance) {
+  function discardAllAttachments(state, instance, options) {
+    options = options || {};
     var attachments = instance.attachments || [];
     instance.attachments = [];
     for (var i = 0; i < attachments.length; i++) {
@@ -185,7 +198,7 @@
       if (owner) {
         owner.discard.push(att);
       }
-      if (global.resolveAttachmentDiscarded) {
+      if (!options.deferDestruction && global.resolveAttachmentDiscarded) {
         global.resolveAttachmentDiscarded(state, att);
       }
     }

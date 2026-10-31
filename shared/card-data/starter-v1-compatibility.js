@@ -1,4 +1,5 @@
 'use strict';
+var metadataCorrections=require('./starter-metadata-corrections.js');
 
 var INTENTIONAL_DIFFERENCE_CODES = Object.freeze([
   'OFFICIAL_NUMBER_NORMALIZED',
@@ -8,7 +9,8 @@ var INTENTIONAL_DIFFERENCE_CODES = Object.freeze([
   'FIELD_STATE_WRAPPING',
   'SKILLS_TRAITS_SPLIT',
   'ENHANCEMENT_EFFECTS_FORMALIZED',
-  'VERIFICATION_MODEL_ADDED'
+  'VERIFICATION_MODEL_ADDED',
+  'OFFICIAL_METADATA_CORRECTION'
 ]);
 
 function same(actual, expected) {
@@ -73,6 +75,7 @@ function compareStarterV1ToLegacySnapshot(data, snapshot) {
   var verifications = indexBy(data.verifications, 'verificationId');
 
   function expectEqual(cardId, field, actual, expected) {
+    if(metadataCorrections.matches(cardId,field,expected,actual)){allow(cardId,field,'OFFICIAL_METADATA_CORRECTION');return;}
     if (!same(actual, expected)) {
       unexpected.push({ cardId: cardId, field: field, expected: expected, actual: actual });
     }

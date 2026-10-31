@@ -7,10 +7,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="robots" content="noindex,nofollow">
   <title>蟲神器</title>
-  <link rel="stylesheet" href="css/battle.css">
-  <link rel="stylesheet" href="css/design-system.css">
-  <link rel="stylesheet" href="css/astra-battle.css">
-  <link rel="stylesheet" href="css/battle-compact.css">
+  <link rel="stylesheet" href="css/battle.css?v=online-beta-b1">
+  <link rel="stylesheet" href="css/design-system.css?v=online-beta-b1">
+  <link rel="stylesheet" href="css/astra-battle.css?v=online-beta-b1">
+  <link rel="stylesheet" href="css/battle-compact.css?v=online-beta-b1">
 </head>
 <body class="battle-screen">
   <div class="mobile-frame battle-viewport">
@@ -146,6 +146,7 @@
       <div class="lobby-actions"><button id="btn-vs-cpu" class="action-btn-wide primary-play" type="button"><span><small>ひとりで腕試し</small>CPUと対戦</span><span aria-hidden="true">↗</span></button>
       <button id="btn-vs-human" class="action-btn-wide" type="button"><span><small>この端末を交互に使う</small>ふたりで対戦</span><span aria-hidden="true">↔</span></button>
       <button id="btn-tutorial" class="action-btn-wide tutorial-mode-btn" type="button" aria-label="チュートリアル 蟲神器が初めての方へ">はじめての蟲神器<span>チュートリアルで遊び方を学ぶ →</span></button></div>
+      <p><a href="online-b.html" style="color:var(--brass);font-size:13px">オンライン対戦 β →</a></p>
       </div>
       <nav class="app-nav" aria-label="メインナビゲーション"><a href="index.html" class="active" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span>ホーム</a><a href="toolbox.html"><span class="nav-icon" aria-hidden="true">▦</span>蟲の図鑑</a><a href="toolbox.html#decks"><span class="nav-icon" aria-hidden="true">▱</span>デッキ</a></nav>
     </div>
@@ -222,38 +223,39 @@
   </div>
 
   <dialog id="zone-inspector" class="zone-inspector"><header><div><span class="section-kicker">FIELD NOTES</span><h2 id="inspector-title">盤面の記録</h2></div><button id="inspector-close" type="button">閉じる</button></header><div id="inspector-body"></div></dialog>
-  <script src="shared/card-art-manifest.js?v=set8-catalog-v1"></script>
-  <script src="shared/card-visuals.js"></script>
-  <script src="js/cards/card-definition.js?v=set8-catalog-v1"></script>
-  <script src="js/cards/card-instance.js"></script>
-  <script src="js/cards/card-registry.js"></script>
-  <script src="js/cards/test-cards.js"></script>
-  <script src="js/cards/starter-cards.js"></script>
-  <script src="js/cards/set1-cards.js"></script>
-  <script src="js/cards/full-catalog-data.js?v=set8-catalog-v1"></script>
-  <script src="js/cards/set2-cards.js"></script>
-  <script src="js/cards/set3-cards.js"></script>
-  <script src="js/cards/set4-cards.js"></script>
-  <script src="shared/deck-format/runtime.js"></script>
-  <script src="shared/ui-presenter.js?v=set8-catalog-v1"></script>
-  <script src="js/engine/game-state.js"></script>
-  <script src="js/engine/rules.js"></script>
-  <script src="js/engine/stat-modifier.js"></script>
-  <script src="js/engine/zone-engine.js"></script>
-  <script src="js/engine/battle-engine.js"></script>
-  <script src="js/engine/turn-engine.js"></script>
-  <script src="js/engine/game-engine.js"></script>
-  <script src="js/engine/cpu-agent.js"></script>
-  <script src="js/engine/cpu-runner.js"></script>
-  <script src="js/ui/battle-log-ui.js"></script>
-  <script src="js/ui/cpu-toast.js"></script>
-  <script src="js/ui/card-effect-formatter.js"></script>
-  <script src="js/ui/card-ui.js"></script>
-  <script src="js/tutorial/tutorial-scenario.js"></script>
-  <script src="js/tutorial/tutorial-controller.js"></script>
-  <script src="js/ui/battle-ui.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/ui/battle-experience.js"></script>
-  <script src="js/ui/battle-compact.js"></script>
+  <script src="shared/card-art-manifest.js?v=online-beta-b1"></script>
+  <script src="shared/card-visuals.js?v=online-beta-b1"></script>
+  <script src="js/cards/card-definition.js?v=online-beta-b1"></script>
+  <script src="js/cards/card-instance.js?v=online-beta-b1"></script>
+  <script src="js/cards/card-registry.js?v=online-beta-b1"></script>
+  <script src="js/cards/test-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/starter-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set1-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/full-catalog-data.js?v=online-beta-b1"></script>
+  <script src="js/cards/set2-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set3-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set4-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set5-cards.js?v=online-beta-b1"></script>
+  <script src="shared/deck-format/runtime.js?v=online-beta-b1"></script>
+  <script src="shared/ui-presenter.js?v=online-beta-b1"></script>
+  <script src="js/engine/game-state.js?v=online-beta-b1"></script>
+  <script src="js/engine/rules.js?v=online-beta-b1"></script>
+  <script src="js/engine/stat-modifier.js?v=online-beta-b1"></script>
+  <script src="js/engine/zone-engine.js?v=online-beta-b1"></script>
+  <script src="js/engine/battle-engine.js?v=online-beta-b1"></script>
+  <script src="js/engine/turn-engine.js?v=online-beta-b1"></script>
+  <script src="js/engine/game-engine.js?v=online-beta-b1"></script>
+  <script src="js/engine/cpu-agent.js?v=online-beta-b1"></script>
+  <script src="js/engine/cpu-runner.js?v=online-beta-b1"></script>
+  <script src="js/ui/battle-log-ui.js?v=online-beta-b1"></script>
+  <script src="js/ui/cpu-toast.js?v=online-beta-b1"></script>
+  <script src="js/ui/card-effect-formatter.js?v=online-beta-b1"></script>
+  <script src="js/ui/card-ui.js?v=online-beta-b1"></script>
+  <script src="js/tutorial/tutorial-scenario.js?v=online-beta-b1"></script>
+  <script src="js/tutorial/tutorial-controller.js?v=online-beta-b1"></script>
+  <script src="js/ui/battle-ui.js?v=online-beta-b1"></script>
+  <script src="js/app.js?v=online-beta-b1"></script>
+  <script src="js/ui/battle-experience.js?v=online-beta-b1"></script>
+  <script src="js/ui/battle-compact.js?v=online-beta-b1"></script>
 </body>
 </html>

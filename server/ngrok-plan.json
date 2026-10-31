@@ -1,0 +1,7 @@
+{
+  "hostname": "banked-outgrow-parakeet.ngrok-free.dev",
+  "endpointName": "mushijingi-beta",
+  "upstream": "http://127.0.0.1:8787",
+  "websocketPath": "/ws",
+  "publicExposureApproved": false
+}

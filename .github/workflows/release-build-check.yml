@@ -1,0 +1,22 @@
+name: Release build verification
+on:
+  push:
+    branches: ['release/online-b-20261031']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - run: node scripts/verify-pages-output.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-pages-output
+          path: _site
+          retention-days: 3

@@ -1,0 +1,12 @@
+# Four SET5 entry-effect cards: basic completion evidence
+
+2026-10-28. SET5-03 マエモンカマキリ,05 アオズムカデ,32 サザンフランネルモス（幼虫）,35 ハネナガイナゴ. Individually basic PLAYABLE, not final AUDITED or SET5 Complete.
+
+- Printed scans312.jpg,314.jpg,341.jpg,344.jpg on https://mushijingi.com/images/card/ visually checked. Fan-hosted provenance is explicit. All printed attacks, attack effects, entry traits, costs, colors and HP are asserted against fixed values in tests/set5-entry-completion.test.js.
+- Official SET5 QA https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/ clarifies Offering can decline at the cost of self-destruction, choosing a nonexistent food color is legal, concealment follows current food colors, and entry recovery sees enhancements discarded before an exchange entry.
+- Reused existing generic mechanics; no new Engine branch was required for this certification group. Offering selects a hand insect or destroys source; Blue Head optionally changes to blue until end turn and its ordinary attack deals unhealable damage; Mofumofu mandates one of four colors and conceals matching insects in both food zones; Harvest optionally recovers one own printed-cost0 enhancement.
+- tests/set5-entry-completion.test.js:16 card-specific metadata/full mapping, canonical CPU summon and decision resolution/attack, real recovered enhancement use by CPU, insufficient generated cost, suppression and full JSON restoration tests.
+- Existing focused regressions retained: set5-entry-offering, set5-blue-head, set5-entry-food-color, set5-entry-retrieval; these cover declines/self-destruction, expiration/unhealable damage, stale/invalid targets, effective versus printed conditions, captured controller, and nested/shared entry ordering.
+- tests/set5-entry-completion-human.cjs:17 assertions per Chromium/WebKit. Four canonical paid summons, actual hand offering selection, color choices, both-zone concealment, legal discard recovery and attacks. Portrait/landscape BODY overflow/fatal errors checked.
+- Two complementary20-card Toolbox handoffs cover all25 currently available SET5 cards (offset0/5),13 checks each deck per browser. Catalog565; total available334; SET5 PLAYABLE25 /PARTIAL23 /UNAVAILABLE16.
+- Fresh full1481/0,shared73/0. No USER_RULING or new unresolved ruling. Main and Pages remain unchanged; physical iPhone Safari and full565 final audit are still pending.

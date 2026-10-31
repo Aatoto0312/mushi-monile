@@ -6,9 +6,9 @@
   <meta name="robots" content="noindex,nofollow">
   <title>蟲の図鑑・デッキ | 蟲神器</title>
   <meta name="theme-color" content="#122c29">
-  <link rel="stylesheet" href="toolbox/toolbox.css">
-  <link rel="stylesheet" href="css/design-system.css">
-  <link rel="stylesheet" href="toolbox/astra-toolbox.css">
+  <link rel="stylesheet" href="toolbox/toolbox.css?v=online-beta-b1">
+  <link rel="stylesheet" href="css/design-system.css?v=online-beta-b1">
+  <link rel="stylesheet" href="toolbox/astra-toolbox.css?v=online-beta-b1">
 </head>
 <body>
   <header class="toolbox-header">
@@ -71,7 +71,9 @@
           <button id="duplicate-deck" class="secondary-button" type="button">複製</button>
           <button id="delete-deck" class="danger-button" type="button">削除</button>
           <button id="battle-deck" class="primary-button" type="button">このデッキで対戦</button>
+          <button id="online-battle-deck" class="primary-button" type="button">このデッキでオンライン対戦</button>
         </div>
+        <p><a href="online-b.html">ルーム参加・観戦へ →</a></p>
         <p id="storage-message" class="storage-message" aria-live="polite"></p>
       </section>
 
@@ -107,23 +109,24 @@
   </dialog>
 
   <div id="collection-toast" class="ui-toast" role="status" aria-live="polite" hidden></div>
-  <script src="shared/card-art-manifest.js?v=set8-catalog-v1"></script>
-  <script src="shared/card-visuals.js"></script>
-  <script src="js/cards/card-definition.js?v=set8-catalog-v1"></script>
-  <script src="js/cards/card-registry.js"></script>
-  <script src="js/cards/starter-cards.js?v=set8-catalog-v1"></script>
-  <script src="js/cards/set1-cards.js"></script>
-  <script src="js/cards/full-catalog-data.js?v=set8-catalog-v1"></script>
-  <script src="js/cards/set2-cards.js"></script>
-  <script src="js/cards/set3-cards.js"></script>
-  <script src="js/cards/set4-cards.js"></script>
-  <script src="js/cards/catalog-card-loader.js?v=set8-catalog-v1"></script>
+  <script src="shared/card-art-manifest.js?v=online-beta-b1"></script>
+  <script src="shared/card-visuals.js?v=online-beta-b1"></script>
+  <script src="js/cards/card-definition.js?v=online-beta-b1"></script>
+  <script src="js/cards/card-registry.js?v=online-beta-b1"></script>
+  <script src="js/cards/starter-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set1-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/full-catalog-data.js?v=online-beta-b1"></script>
+  <script src="js/cards/set2-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set3-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set4-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/set5-cards.js?v=online-beta-b1"></script>
+  <script src="js/cards/catalog-card-loader.js?v=online-beta-b1"></script>
   <script>window.MushijingiCatalogCardLoader.registerCatalogDefinitions(window.cardRegistry, window.MushijingiFullCatalogData);</script>
-  <script src="shared/card-data/registry-catalog.js?v=set8-catalog-v1"></script>
-  <script src="js/ui/card-effect-formatter.js"></script>
-  <script src="shared/ui-presenter.js?v=set8-catalog-v1"></script>
-  <script src="shared/deck-format/runtime.js"></script>
-  <script src="toolbox/toolbox-core.js?v=set8-catalog-v1"></script>
-  <script src="toolbox/toolbox-v1-app.js?v=set8-catalog-v1"></script>
+  <script src="shared/card-data/registry-catalog.js?v=online-beta-b1"></script>
+  <script src="js/ui/card-effect-formatter.js?v=online-beta-b1"></script>
+  <script src="shared/ui-presenter.js?v=online-beta-b1"></script>
+  <script src="shared/deck-format/runtime.js?v=online-beta-b1"></script>
+  <script src="toolbox/toolbox-core.js?v=online-beta-b1"></script>
+  <script src="toolbox/toolbox-v1-app.js?v=online-beta-b1"></script>
 </body>
 </html>

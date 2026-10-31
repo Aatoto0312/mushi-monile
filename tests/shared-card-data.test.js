@@ -110,15 +110,32 @@ runner.test('Card data boundary detects duplicate rulesId', function () {
   runner.assertEqual(loadCardData().validateCardData(data).valid, false, 'duplicate rulesId');
 });
 
-runner.test('Legacy STARTER snapshot matches the fixed 24-card baseline', function () {
+runner.test('Legacy STARTER snapshot matches all 24 fixed baseline cards with exact documented metadata corrections', function () {
   var snapshotApi = loadSnapshot();
   var actual = snapshotApi.createStarterCardSnapshot(global.cardRegistry);
   var fixturePath = path.join(__dirname, 'fixtures', 'starter-card-registry.snapshot.v1.json');
   runner.assert(fs.existsSync(fixturePath), 'fixed snapshot fixture exists');
   var expected = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
-  runner.assertEqual(snapshotApi.serializeStarterCardSnapshot(actual), JSON.stringify(expected, null, 2) + '\n', 'snapshot is unchanged');
+  // Retain the historical fixture. Apply only a source-backed, exact before /
+  // after metadata delta; every other snapshot field remains compared.
+  require('../shared/card-data/starter-metadata-corrections.js').corrections.forEach(function(correction){
+    var card=expected.cards.find(function(card){return card.id===correction.canonicalCardId;});
+    runner.assertEqual(JSON.stringify(card[correction.field]),JSON.stringify(correction.from),'historical correction precondition');
+    card[correction.field]=JSON.parse(JSON.stringify(correction.to));
+  });
+  runner.assertEqual(snapshotApi.serializeStarterCardSnapshot(actual), JSON.stringify(expected, null, 2) + '\n', 'all snapshot fields match baseline plus exact source-backed corrections');
   runner.assertEqual(actual.cardCount, 24, 'only 24 official STARTER cards');
   runner.assertEqual(actual.cards.some(function (card) { return card.set === 'TEST'; }), false, 'test cards excluded');
+});
+
+runner.test('Confirmed starter family correction is synchronized and does not hide unrelated metadata differences',function(){
+  var corrections=require('../shared/card-data/starter-metadata-corrections.js'),data=require('../shared/card-data/starter-v1.js');
+  runner.assertEqual(JSON.stringify(global.getCardDefinition('tonosamabatta').tags),JSON.stringify(['starter','バッタ科']));
+  runner.assertEqual(JSON.stringify(data.identities.find(function(card){return card.canonicalCardId==='tonosamabatta';}).tags),JSON.stringify(['starter','バッタ科']));
+  runner.assert(corrections.matches('tonosamabatta','tags',['starter'],['starter','バッタ科']));
+  runner.assert(!corrections.matches('ginyanma','tags',['starter'],['starter','バッタ科']));
+  runner.assert(!corrections.matches('tonosamabatta','tags',['starter'],['starter','セミ科']));
+  runner.assert(!corrections.matches('tonosamabatta','cost',5,0));
 });
 
 module.exports = runner;

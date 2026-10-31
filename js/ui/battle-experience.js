@@ -26,15 +26,22 @@
       if(!instances.length&&publicZone){body.appendChild(paragraph('ここにはまだカードがありません。'));return;}
       var grid=document.createElement('div');grid.className='inspector-grid';body.appendChild(grid);
       instances.forEach(function(inst){
+        var original=document.querySelector('#'+side+'-'+zone+'-zone [data-instance-id="'+inst.instanceId+'"]');
         if (inst.faceDown) {
           var hidden=window.CardUI.renderFaceDown(null,inst);
-          hidden.classList.add('inspector-card');hidden.disabled=true;
+          var pending=window.getPendingEffect(ui.state);
+          var selectable=original&&pending&&(pending.type==='CARD_SELECTION'||pending.type==='SPELL_TARGET_SELECTION')&&pending.options.indexOf(inst.instanceId)!==-1;
+          hidden.classList.add('inspector-card');hidden.disabled=!selectable;
+          if(selectable){
+            hidden.classList.add('legal-target');
+            hidden.onclick=function(){inspector.close();inspecting=null;original.click();};
+          }
+          if(pending&&pending.selectedIds&&pending.selectedIds.indexOf(inst.instanceId)!==-1){hidden.classList.add('is-pending-selected');hidden.setAttribute('aria-pressed','true');}
           hidden.setAttribute('aria-label','裏向きのエサ');hidden.appendChild(document.createTextNode('裏向きのエサ'));
           grid.appendChild(hidden);return;
         }
         var def=window.CardUI.getDef(inst),button=document.createElement('button');
         button.type='button';button.className='inspector-card';
-        var original=document.querySelector('#'+side+'-'+zone+'-zone [data-instance-id="'+inst.instanceId+'"]');
         if(original&&original.classList.contains('legal-target'))button.classList.add('legal-target');
         var pending=window.getPendingEffect(ui.state),selected=pending&&pending.selectedIds&&pending.selectedIds.indexOf(inst.instanceId)!==-1;
         if(selected){button.classList.add('is-pending-selected');button.setAttribute('aria-pressed','true');}

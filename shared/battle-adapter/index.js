@@ -1,6 +1,7 @@
 'use strict';
 
 var phase2Compatibility = require('../card-data/starter-v1-compatibility.js');
+var metadataCorrections = require('../card-data/starter-metadata-corrections.js');
 
 var INTENTIONAL_DIFFERENCE_CODES = phase2Compatibility.INTENTIONAL_DIFFERENCE_CODES;
 var RUNTIME_INTENTIONAL_DIFFERENCE_CODES = Object.freeze(
@@ -257,6 +258,9 @@ function compareDefinitionsToLegacySnapshot(definitions, snapshot) {
     fields.forEach(function (field) {
       var actual = current[field] === undefined && field === 'enhancementEffects' ? null : current[field];
       if (same(actual, legacy[field])) { return; }
+      if(metadataCorrections.matches(legacy.id,field,legacy[field],actual)){
+        intentional.push({cardId:legacy.id,field:field,code:'OFFICIAL_METADATA_CORRECTION',expected:legacy[field],actual:actual});return;
+      }
       if (field === 'rarity' && legacy.rarity === null && actual !== null) {
         intentional.push({ cardId: legacy.id, field: field, code: 'RARITY_CATALOG_ENRICHMENT', expected: legacy[field], actual: actual });
         return;

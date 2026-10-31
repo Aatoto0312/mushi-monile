@@ -1,0 +1,8 @@
+{
+  "productionEnabled": true,
+  "productionEndpoint": "wss://banked-outgrow-parakeet.ngrok-free.dev/ws",
+  "allowedProductionHosts": [
+    "banked-outgrow-parakeet.ngrok-free.dev"
+  ],
+  "localEndpoint": "ws://127.0.0.1:8787/ws"
+}

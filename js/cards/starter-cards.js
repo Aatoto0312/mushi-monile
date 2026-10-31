@@ -90,7 +90,7 @@
     namitentou:          { officialNumber: '30/130', color: Attributes.RED,   cost: 1, baseHp: 300,  skillId: 'kamitsubusu',  skillName: 'かみつぶす', ap: 100 },
     kanabun:             { officialNumber: '63/130', color: Attributes.BLUE,  cost: 1, baseHp: 300,  skillId: 'taiatari',     skillName: 'たいあたり', ap: 100 },
     higurashi:           { officialNumber: '64/130', color: Attributes.BLUE,  cost: 2, baseHp: 200,  skillId: 'shiboritoru',  skillName: 'しぼりとる', ap: 200, family: 'セミ科' },
-    tonosamabatta:       { officialNumber: '71/130', color: Attributes.GREEN, cost: 5, baseHp: 1200, skillId: 'kuraitsuku',   skillName: 'くらいつく', ap: 700 },
+    tonosamabatta:       { officialNumber: '71/130', color: Attributes.GREEN, cost: 5, baseHp: 1200, skillId: 'kuraitsuku',   skillName: 'くらいつく', ap: 700, family: 'バッタ科' },
     nijuuyaahoshitentou: { officialNumber: '91/130', color: Attributes.GREEN, cost: 2, baseHp: 300,  skillId: 'kamitsubusu',  skillName: 'かみつぶす', ap: 300 },
     wataaburamushi:      { officialNumber: '95/130', color: Attributes.GREEN, cost: 1, baseHp: 300,  skillId: 'suu',          skillName: 'すう', ap: 100 }
   };

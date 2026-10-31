@@ -62,12 +62,15 @@ fs.mkdirSync(out,{recursive:true});
   // Desktop WebKit has zero env() insets. Inject nonzero values in served CSS
   // to exercise padding/layout arithmetic, not to claim real iOS emulation.
   const safe=await browser.newPage({viewport:{width:667,height:375},isMobile:true,hasTouch:true});
-  await safe.route('**/*.css',async route=>{
+  let insetStyles=0;
+  await safe.route(url=>url.pathname.endsWith('.css'),async route=>{
+   insetStyles++;
    const response=await route.fetch();
    const css=(await response.text()).replace(/env\(safe-area-inset-(top|bottom|left|right)(?:,[^)]*)?\)/g,(_,side)=>({top:'20px',bottom:'21px',left:'44px',right:'44px'})[side]);
    await route.fulfill({response,body:css});
   });
   await safe.goto(process.env.MUSHI_URL||'http://127.0.0.1:8765',{waitUntil:'domcontentloaded'});
+  check(insetStyles>0,'Safe-area CSS injection includes cache-versioned stylesheets');
   await safe.locator('#btn-tutorial').scrollIntoViewIfNeeded();
   const safeNav=await safe.locator('.app-nav').boundingBox(),entry=await safe.locator('#btn-tutorial').boundingBox();
   check(entry.y+entry.height<=safeNav.y+1,'Safe-area home navigation reserves space');

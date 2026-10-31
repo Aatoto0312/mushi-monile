@@ -24,6 +24,7 @@
     };
 
     this._lastActivePlayerId = null;
+    this._endingTurnPlayerId = null;
     this._lastBattleEventId = 0;
     this._damageVectorQueue = [];
     this._damageVectorActive = false;
@@ -55,7 +56,7 @@
     document.getElementById('btn-end-turn').addEventListener('click', function () {
       var pending=global.getPendingEffect(self.state);
       if(pending&&pending.type==='CARD_SELECTION'){
-        try{global.completeCardSelection(self.state,pending.playerId);self.render();}catch(e){showUserError(e);}return;
+        try{var attackCostStatus=global.getPendingAttackCostStatus&&global.getPendingAttackCostStatus(self.state);if(attackCostStatus&&!attackCostStatus.canContinue)global.cancelPendingAttackCost(self.state,pending.playerId);else global.completeCardSelection(self.state,pending.playerId);self.render();}catch(e){showUserError(e);}return;
       }
       self.onEndTurn();
     });
@@ -314,6 +315,7 @@
     this.logUI.clear();
     this.actionState.mode = 'idle';
     this._lastActivePlayerId = null;
+    this._endingTurnPlayerId = null;
     this._lastBattleEventId = 0;
     this._damageVectorQueue = [];
     this._damageVectorActive = false;
@@ -367,6 +369,7 @@
     };
     this._detailInstanceId = null;
     this._lastActivePlayerId = null;
+    this._endingTurnPlayerId = null;
     this._lastBattleEventId = 0;
     this._damageVectorQueue = [];
     this._damageVectorActive = false;
@@ -392,6 +395,10 @@
     if (this.tutorialController) this.tutorialController.observe();
     var s = this.state;
     var activeId = s.activePlayerId;
+    if(this._endingTurnPlayerId&&(activeId!==this._endingTurnPlayerId||s.phase===Phases.GAME_OVER)){
+      this._endingTurnPlayerId=null;
+      if(!this.cpuMode&&s.phase!==Phases.GAME_OVER)this.showPassOverlay();
+    }
 
     // CPUモード時は固定視点 (P1=下, P2=上)
     var selfId = this.cpuMode ? 'P1' : activeId;
@@ -651,12 +658,12 @@
         var pending = getPendingEffect(self.state);
         if (pending && (pending.type === 'SPELL_TARGET_SELECTION' || pending.type === 'CARD_SELECTION') && pending.options.indexOf(inst.instanceId) !== -1) { el.classList.add('legal-target'); }
         el.addEventListener('click', function () {
-          if (inst.faceDown) return;
           var current = getPendingEffect(self.state);
           if (current && current.type === 'SPELL_TARGET_SELECTION' && current.options.indexOf(inst.instanceId) !== -1) {
             global.resolveSpellTargetSelection(self.state, current.playerId, inst.instanceId); self.render(); return;
           }
           if (current && current.type === 'CARD_SELECTION' && current.options.indexOf(inst.instanceId) !== -1) { global.selectPendingCard(self.state,current.playerId,inst.instanceId); self.render(); return; }
+          if (inst.faceDown) return;
           self.showCardDetail(inst, []);
         });
         cardRow.appendChild(el);
@@ -858,7 +865,7 @@
     var isCpuTurn = this.cpuMode && (cardSelection ? cardSelection.playerId : s.activePlayerId) === 'P2';
     if(cardSelection&&cardSelection.type==='CARD_SELECTION'&&!isCpuTurn){
       if(btnSet)btnSet.style.display='none';if(btnMain)btnMain.style.display='none';if(btnDraw)btnDraw.style.display='none';
-      if(btnEnd){btnEnd.style.display='block';btnEnd.textContent='選択を決定 ('+(cardSelection.selectedIds||[]).length+'/'+cardSelection.maxSelections+')';btnEnd.disabled=(cardSelection.selectedIds||[]).length<cardSelection.minSelections;}
+      if(btnEnd){var attackCostStatus=global.getPendingAttackCostStatus&&global.getPendingAttackCostStatus(s),cancelAttack=attackCostStatus&&!attackCostStatus.canContinue;btnEnd.style.display='block';btnEnd.textContent=cancelAttack?'続行できない攻撃を取り消す':'選択を決定 ('+(cardSelection.selectedIds||[]).length+'/'+cardSelection.maxSelections+')';btnEnd.disabled=!cancelAttack&&(cardSelection.selectedIds||[]).length<cardSelection.minSelections;}
       return;
     }
     if(btnEnd)btnEnd.textContent='ターン終了';
@@ -928,6 +935,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
 
     // 縄張り選択ピッカーの表示/非表示を常に同期する（pending解除・GAME_OVER等で必ず閉じる）
     this._syncTerritoryPicker(pending);
+    this._syncAttachmentPicker(pending);
 
     var choiceRow = document.getElementById('skill-select-row');
     if (choiceRow && choiceRow.dataset.pendingChoice === 'true') {
@@ -1008,6 +1016,34 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   };
 
   // この端末で人が解決すべき縄張りドロー選択か判定する。
+  // Render only Engine-provided choices. No attachment rule or GameState mutation lives here.
+  BattleUI.prototype._syncAttachmentPicker = function (pending) {
+    var picker=document.getElementById('attachment-picker');
+    var attackCostStatus=global.getPendingAttackCostStatus&&global.getPendingAttackCostStatus(this.state);
+    var active=pending&&pending.type==='CARD_SELECTION'&&(pending.candidateZones||[]).indexOf('ATTACHMENT')!==-1&&(!this.cpuMode||pending.playerId==='P1')&&(!attackCostStatus||attackCostStatus.canContinue);
+    if(!active){if(picker){if(picker.open)picker.close();picker.innerHTML='';}return;}
+    if(!picker){
+      picker=document.createElement('dialog');picker.id='attachment-picker';picker.className='compact-dialog';
+      picker.setAttribute('aria-label','対象カードを選択');
+      picker.addEventListener('cancel',function(event){event.preventDefault();});document.body.appendChild(picker);
+    }
+    picker.innerHTML='';var self=this,title=document.createElement('h3'),grid=document.createElement('div');
+    title.textContent='対象を選択（'+(pending.selectedIds||[]).length+'/'+pending.maxSelections+'）';grid.className='inspector-grid';picker.appendChild(title);
+    (pending.options||[]).forEach(function(id){
+      var attachment=global.findAttachment(self.state,id),holder=attachment||global.findAnywhere(self.state,id);
+      if(!holder)return;
+      var instance=holder.instance,definition=CardUI.getDef(instance),hidden=!attachment&&(instance.faceDown||holder.zone==='HAND'&&holder.playerId!==pending.playerId);
+      var button=document.createElement('button');button.type='button';button.className='inspector-card';button.dataset.instanceId=id;
+      var label=hidden?'裏向きのカード':definition&&definition.name||'カード';
+      if(attachment){var hostDefinition=CardUI.getDef(attachment.host);label+='（装着先：'+(attachment.host.faceDown?'裏向きの虫':hostDefinition&&hostDefinition.name||'虫')+'）';}
+      button.textContent=label;var selected=(pending.selectedIds||[]).indexOf(id)!==-1;button.setAttribute('aria-pressed',String(selected));if(selected)button.classList.add('is-pending-selected');
+      button.addEventListener('click',function(){if(self.state.pendingEffect!==pending)return;try{global.selectPendingCard(self.state,pending.playerId,id);self.render();var refreshed=document.querySelector('#attachment-picker [data-instance-id="'+id+'"]');if(refreshed)refreshed.focus();}catch(error){showUserError(error);}});grid.appendChild(button);
+    });
+    picker.appendChild(grid);var confirm=document.createElement('button');confirm.type='button';confirm.className='action-btn';confirm.textContent='選択を決定';confirm.disabled=(pending.selectedIds||[]).length<pending.minSelections;
+    confirm.addEventListener('click',function(){if(self.state.pendingEffect!==pending)return;try{global.resolveCardSelection(self.state,pending.playerId,pending.selectedIds||[],true);self.render();}catch(error){showUserError(error);}});picker.appendChild(confirm);
+    if(!picker.open&&typeof picker.showModal==='function')picker.showModal();
+  };
+
   // CPU戦: P1だけが人間(P2はCPUが自動解決)。Hotseat/チュートリアル: どちらのplayerIdも人間が解決する。
   BattleUI.prototype._resolveTerritoryPickerPending = function (pending) {
     var isDraw = pending && pending.type === 'TERRITORY_DRAW_SELECTION';
@@ -1206,7 +1242,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     this.showCardDetail(instance, actions);
   };
 
-  BattleUI.prototype.onFieldCardTap = function (playerId, instance, el) {
+  BattleUI.prototype.onFieldCardTap = function (playerId, instance, el, skipFieldAbilityMenu) {
     var tutorialAction = this.actionState.mode === 'attackTarget' ? 'ATTACK_TARGET' :
       (this.actionState.mode === 'enhanceTarget' ? 'ENHANCEMENT_TARGET' : 'FIELD_CARD');
     if (!this._tutorialAllows(tutorialAction, { instanceId: instance.instanceId })) return;
@@ -1281,6 +1317,20 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     }
 
     // --- ここから自分の虫をタップ → 攻撃者選択 ---
+    var fieldAbilities = !skipFieldAbilityMenu && st.mode === 'idle' && global.getFieldAbilityActions ? global.getFieldAbilityActions(this.state, playerId, instance.instanceId) : [];
+    if (fieldAbilities.length) {
+      var fieldActions = fieldAbilities.map(function(action) {
+        return {label:'特性を使う：' + action.label,onSelect:function() {
+          try { global.activateFieldAbility(self.state, playerId, instance.instanceId, action.abilityIndex); self.hideCardDetail(); self.render(); }
+          catch (e) { showUserError(e); self.render(); }
+        }};
+      });
+      if ((global.getEffectiveAttackSkills(this.state, instance)||[]).some(function(skill) { return global.getLegalAttackTargets(self.state,instance.instanceId,skill.id).length>0; })) {
+        fieldActions.push({label:'攻撃する',onSelect:function() { self.hideCardDetail(); self.onFieldCardTap(playerId,instance,el,true); }});
+      }
+      this.showCardDetail(instance, fieldActions);
+      return;
+    }
     var continuous = instance.runtimeFlags && instance.runtimeFlags.continuousAttack;
     var hasContinuous = !!(continuous && continuous.usedCount < continuous.maxCount);
     if (instance.attackedThisTurn && !hasContinuous) {
@@ -1733,10 +1783,11 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       return;
     }
     try {
+      this._endingTurnPlayerId=this.state.activePlayerId;
       endTurn(this.state);
       this.render();
-      if (!this.cpuMode) this.showPassOverlay();
     } catch (e) {
+      this._endingTurnPlayerId=null;
       showUserError(e);
     }
   };

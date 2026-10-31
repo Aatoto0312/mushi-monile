@@ -1,0 +1,21 @@
+'use strict';
+const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright'),assert=require('node:assert/strict');
+(async()=>{const browser=await(process.env.MUSHI_BROWSER==='webkit'?webkit.launch():chromium.launch({channel:'msedge'})),page=await browser.newPage({viewport:{width:390,height:650},isMobile:true,hasTouch:true});let checks=0;const errors=[];page.on('pageerror',e=>errors.push(e.message));
+try{await page.goto(process.env.MUSHI_URL||'http://127.0.0.1:8767');await page.waitForFunction(()=>!!window.MushiBattle?.ui);await page.locator('#btn-vs-human').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();if(await page.locator('#pass-overlay').isVisible())await page.locator('#btn-pass-ok').click();
+for(const viewport of [{width:390,height:650},{width:844,height:390}]){await page.setViewportSize(viewport);await page.evaluate(()=>{const u=MushiBattle.ui,s=u.state,pid=s.activePlayerId,opid=s.opponentOf(pid),p=s.player(pid),op=s.player(opid);const make=(id,owner,zone,n)=>new CardInstance({instanceId:'mist-'+n,cardId:id,ownerId:owner,controllerId:owner,zone,faceDown:zone==='TERRITORY',baseHp:getCardDefinition(id).baseHp,currentHp:getCardDefinition(id).baseHp});s.turnNumber=3;s.phase=Phases.MAIN_PHASE;s.pendingEffect=null;p.field=[make('set1_003',pid,'FIELD',1)];p.hand=[];op.field=[];op.territory=[make('set5_038',opid,'TERRITORY',2),make('set1_003',opid,'TERRITORY',3)];u.actionState={mode:'idle'};u.hideCardDetail();u.render();});
+await page.locator('#self-field-zone [data-instance-id="mist-1"]').click();await page.locator('#zone-top .zone-group--territory').click();await page.locator('#territory-picker [data-instance-id="mist-2"]').click();
+assert.equal(await page.evaluate(()=>MushiBattle.ui.state.pendingEffect.selectionPurpose),'TERRITORY_CARD_DESTINATION');checks++;
+await page.locator('#skill-select-row button').filter({hasText:'表向きで縄張りに置く'}).click();
+assert(await page.evaluate(()=>{const s=MushiBattle.ui.state,c=s.player(s.opponentOf(s.activePlayerId)).territory.find(c=>c.instanceId==='mist-2');return !s.pendingEffect&&!!c&&!c.faceDown;}));checks++;
+await page.evaluate(()=>{const u=MushiBattle.ui,s=u.state;s.player(s.activePlayerId).field[0].attackedThisTurn=false;u.actionState={mode:'idle'};u.render();});
+await page.locator('#self-field-zone [data-instance-id="mist-1"]').click();await page.locator('#zone-top .zone-group--territory').click();
+assert(await page.evaluate(()=>{const s=MushiBattle.ui.state,p=s.player(s.opponentOf(s.activePlayerId));return !s.pendingEffect&&p.discard.some(c=>c.instanceId==='mist-2')&&p.territory.length===1;}));checks++;
+assert(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1));checks++;
+}
+await page.evaluate(()=>{const u=MushiBattle.ui,s=u.state,pid=s.activePlayerId,opid=s.opponentOf(pid),p=s.player(pid),op=s.player(opid),d=getCardDefinition('set5_038');s.phase=Phases.MAIN_PHASE;s.pendingEffect=null;p.field=[];p.hand=[new CardInstance({instanceId:'mist-summon',cardId:d.id,ownerId:pid,controllerId:pid,zone:'HAND',baseHp:200,currentHp:200})];p.availableCost=2;op.field=[new CardInstance({instanceId:'mist-target',cardId:'set1_003',ownerId:opid,controllerId:opid,zone:'FIELD',baseHp:3000,currentHp:3000})];op.territory=[];u.actionState={mode:'idle'};u.hideCardDetail();u.render();});
+await page.locator('#self-hand-zone [data-instance-id="mist-summon"]').click();await page.locator('.detail-action-btn').filter({hasText:'場に出す'}).click();
+assert(await page.evaluate(()=>{const s=MushiBattle.ui.state,p=s.player(s.activePlayerId);return p.availableCost===0&&p.field[0].cardId==='set5_038';}));checks++;
+await page.locator('#self-field-zone [data-instance-id="mist-summon"]').click();await page.locator('#opp-field-zone [data-instance-id="mist-target"]').click();
+assert(await page.evaluate(()=>{const s=MushiBattle.ui.state;return !s.pendingEffect&&s.player(s.opponentOf(s.activePlayerId)).field[0].currentHp===2700;}));checks++;
+assert.deepEqual(errors,[]);checks++;console.log('SET5 TERRITORY REPLACEMENT HUMAN PASSED: '+checks);
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

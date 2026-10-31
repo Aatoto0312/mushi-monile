@@ -60,7 +60,7 @@
     d.cards.forEach(function(x){var c=byId[x.canonicalCardId];if(c){types[c.type]=(types[c.type]||0)+x.quantity;if(c.cost!=null)curve[Math.min(7,c.cost)]+=x.quantity;}});
     el.deckStats.innerHTML=Object.keys(types).map(function(t){return'<div><strong>'+types[t]+'</strong><span>'+esc(label(t))+'</span></div>';}).join('');
     el.costStats.innerHTML='<div class="cost-curve" aria-label="コスト別枚数">'+curve.map(function(n,i){return'<div aria-label="コスト'+i+(i===7?'以上':'')+' '+n+'枚"><span>'+n+'</span><i style="height:'+Math.max(3,n*5)+'px"></i><small>'+i+(i===7?'+':'')+'</small></div>';}).join('')+'</div><p class="deck-validation '+(v.battleReady?'ready':'')+'">'+esc(v.battleReady?'準備完了。この20枚で対戦できます。':v.errors.concat(v.warnings).join(' '))+'</p>';
-    el.battle.disabled=!v.battleReady;
+    el.battle.disabled=!v.battleReady;el.onlineBattle.disabled=!v.battleReady;
     el.deckList.querySelectorAll('[data-detail]').forEach(function(b){b.onclick=function(){detail(b.dataset.detail);};});
     el.deckList.querySelectorAll('[data-inc]').forEach(function(b){b.onclick=function(){add(b.dataset.inc);};});
     el.deckList.querySelectorAll('[data-dec]').forEach(function(b){b.onclick=function(){replace(core.decrementCard(active(),b.dataset.dec));renderDeck();updateCounts();notify('カードを1枚減らしました（保存前）');};});
@@ -92,12 +92,13 @@
     el.newDeck.onclick=function(){var d=makeDeck();store.decks.push(d);store.activeDeckId=d.deckId;dirty=true;renderDeck();updateCounts();notify('新しいデッキを作成しました。図鑑からカードを選びましょう。');};
     el.deleteDeck.onclick=function(){var d=active();if(!d||!confirm('「'+d.deckName+'」を削除しますか？'))return;store.decks=store.decks.filter(function(x){return x.deckId!==d.deckId;});store.activeDeckId=store.decks[0]?store.decks[0].deckId:null;ensure();persist('デッキを削除しました。');renderDeck();updateCounts();};
     el.battle.onclick=function(){if(!save())return;sessionStorage.setItem(runtime.HANDOFF_KEY,active().deckId);location.href='index.html?deck='+encodeURIComponent(active().deckId);};
+    el.onlineBattle.onclick=function(){if(!save())return;location.href='online-b.html?deck='+encodeURIComponent(active().deckId);};
     el.selector.onchange=function(){store.activeDeckId=el.selector.value;renderDeck();updateCounts();};el.name.oninput=function(){replace(core.renameDeck(active(),el.name.value));};
     document.querySelectorAll('[data-view]').forEach(function(b){b.onclick=function(){view(b.dataset.view);};});
     window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
   }
   function init() {
-    var m={search:'search-input',set:'set-filter',type:'type-filter',color:'color-filter',cost:'cost-filter',rarity:'rarity-filter',status:'status-filter',sort:'sort-select',clear:'clear-filters',count:'result-count',list:'card-list',empty:'empty-message',detail:'card-detail',close:'close-detail',detailAdd:'detail-add',detailContent:'detail-content',cardsView:'cards-view',decksView:'decks-view',selector:'deck-selector',name:'deck-name',save:'save-deck',duplicate:'duplicate-deck',newDeck:'new-deck',deleteDeck:'delete-deck',battle:'battle-deck',message:'storage-message',deckTotal:'deck-total',navTotal:'nav-deck-total',deckStats:'deck-stats',costStats:'cost-stats',entryCount:'deck-entry-count',emptyDeck:'empty-deck-message',deckList:'deck-list',toast:'collection-toast'};
+    var m={search:'search-input',set:'set-filter',type:'type-filter',color:'color-filter',cost:'cost-filter',rarity:'rarity-filter',status:'status-filter',sort:'sort-select',clear:'clear-filters',count:'result-count',list:'card-list',empty:'empty-message',detail:'card-detail',close:'close-detail',detailAdd:'detail-add',detailContent:'detail-content',cardsView:'cards-view',decksView:'decks-view',selector:'deck-selector',name:'deck-name',save:'save-deck',duplicate:'duplicate-deck',newDeck:'new-deck',deleteDeck:'delete-deck',battle:'battle-deck',onlineBattle:'online-battle-deck',message:'storage-message',deckTotal:'deck-total',navTotal:'nav-deck-total',deckStats:'deck-stats',costStats:'cost-stats',entryCount:'deck-entry-count',emptyDeck:'empty-deck-message',deckList:'deck-list',toast:'collection-toast'};
     Object.keys(m).forEach(function(k){el[k]=document.getElementById(m[k]);});
     try{cards=catalog.fromRegistry(window.cardRegistry);cards.forEach(function(c){byId[c.cardId]=c;});
       try{store=core.parseDeckStore(localStorage.getItem(core.DECK_STORAGE_KEY));}catch(e){store=core.parseDeckStore(null);store.recoveryWarning='保存データを読み込めません。ブラウザの保存設定を確認してください。';}

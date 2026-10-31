@@ -1,0 +1,15 @@
+{
+  "name": "mushijingi-online-beta",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local authoritative Battle server; no external exposure by default",
+  "engines": {"node": ">=24"},
+  "scripts": {
+    "start": "node index.cjs",
+    "dev": "node dev.cjs",
+    "test": "node --test test/*.test.cjs",
+    "test:browser": "node --test --test-concurrency=1 browser/*.cjs",
+    "contract": "node write-contract.cjs"
+  },
+  "dependencies": {"ws": "8.22.0"}
+}

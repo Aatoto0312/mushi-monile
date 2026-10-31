@@ -58,12 +58,16 @@
       return { type: 'RESOLVE_CHOICE_SELECTION', value: choice.value };
     }
     if (pending.type === 'CARD_SELECTION') {
+      var attackCostStatus = global.getPendingAttackCostStatus && global.getPendingAttackCostStatus(state);
+      if (attackCostStatus) { return attackCostStatus.canContinue ? {type:'RESOLVE_CARD_SELECTION',instanceIds:attackCostStatus.candidateIds.slice(0,pending.exactSelections||pending.minSelections)} : {type:'CANCEL_PENDING_ATTACK_COST'}; }
+      var fieldAbilityCandidates = global.getPendingFieldAbilityCandidates && global.getPendingFieldAbilityCandidates(state, pending);
+      if (fieldAbilityCandidates) { return {type:'RESOLVE_CARD_SELECTION',instanceIds:fieldAbilityCandidates.slice(0,1)}; }
       if (!pending.options || pending.options.length < pending.minSelections) return null;
       var count = pending.exactSelections != null ? pending.exactSelections : pending.maxSelections;
       var selected=pending.hiddenSelection?[pending.options[Math.floor(this.rng()*pending.options.length)]]:
         ((pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count));
       if (pending.allowedCombinations && pending.allowedCombinations.length) { selected = pending.allowedCombinations[0].slice(); }
-      if(pending.selectionPurpose==='TRANSFER_OWN_ATTACHMENT'&&selected.length===2){var holder=global.findAttachment(state,selected[0]);var destinations=pending.selectionGroups[1].filter(function(id){return !holder||id!==holder.host.instanceId;});if(destinations.length)selected[1]=destinations[0];}
+      if(pending.selectionPartitions&&pending.selectionPartitions.length){var partition=pending.selectionPartitions.find(function(group){return group.length>=pending.minSelections;});if(!partition)return null;selected=partition.slice(0,count);}
       return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
     }
 
@@ -74,6 +78,17 @@
   CpuAgent.prototype.decideMainPhaseAction = function (state) {
     var player = state.player(this.playerId);
     var self = this;
+
+    // Activated effects use Engine legality and own-hand candidates, before
+    // spending generated cost on an ordinary summon of the same insect.
+    var fieldAbilityAction = null;
+    player.field.some(function(source) {
+      var actions = global.getFieldAbilityActions ? global.getFieldAbilityActions(state, self.playerId, source.instanceId) : [];
+      if (!actions.length) { return false; }
+      fieldAbilityAction = {type:'ACTIVATE_FIELD_ABILITY',sourceInstanceId:source.instanceId,abilityIndex:actions[0].abilityIndex};
+      return true;
+    });
+    if (fieldAbilityAction) { return fieldAbilityAction; }
 
     // A. 召喚可能な虫を探す (availableCost 以下のコスト)
     var playableInsects = player.hand.filter(function (inst) {
@@ -106,7 +121,7 @@
       var effects = def.cardEffects || [];
       if (effects.some(function(effect) {
         var selection = global.getComplexSpellSelection(state, self.playerId, inst.instanceId, effect);
-        return selection && (selection.options.length < (selection.exactSelections || selection.minSelections || 1) ||
+        return selection && (selection.options.length < (selection.exactSelections != null ? selection.exactSelections : selection.minSelections != null ? selection.minSelections : 1) ||
           (selection.groups && selection.groups.some(function(group) { return !group.length; })));
       })) { return false; }
       if (effects.some(function (effect) { return effect && effect.requiresTarget; }) &&
@@ -284,6 +299,10 @@
         global.resolveCardSelection(state,this.playerId,action.instanceIds,true);
         return true;
       }
+      if (action.type === 'CANCEL_PENDING_ATTACK_COST') {
+        global.cancelPendingAttackCost(state,this.playerId);
+        return true;
+      }
       if (action.type === 'ENTER_SET_PHASE') {
         global.enterSetPhase(state);
         return true;
@@ -298,6 +317,10 @@
       }
       if (action.type === 'SUMMON') {
         global.summonInsect(state, this.playerId, action.instanceId);
+        return true;
+      }
+      if (action.type === 'ACTIVATE_FIELD_ABILITY') {
+        global.activateFieldAbility(state, this.playerId, action.sourceInstanceId, action.abilityIndex);
         return true;
       }
       if (action.type === 'USE_SPELL') {
