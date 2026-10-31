@@ -33,8 +33,8 @@
   endPlaceholder.className='action-btn-wide';endPlaceholder.type='button';endPlaceholder.disabled=true;endPlaceholder.textContent='ターン終了';endPlaceholder.title='メインフェイズで操作できます';controls.querySelector('.btn-row').append(endPlaceholder);
   function syncEnd(){endPlaceholder.hidden=end.style.display!=='none'&&end.textContent==='ターン終了';}
   new MutationObserver(syncEnd).observe(end,{attributes:true,attributeFilter:['style'],childList:true,characterData:true,subtree:true});syncEnd();
-  new MutationObserver(function(){var shown=skill.style.display!=='none'&&skill.children.length>0;if(shown&&!actions.open)actions.showModal();if(!shown&&actions.open)actions.close();}).observe(skill,{childList:true,attributes:true,attributeFilter:['style']});
-  actions.addEventListener('close',function(){if(skill.style.display!=='none'&&skill.children.length)document.getElementById('btn-cancel-attack').click();});
+  new MutationObserver(function(){if(window.MushiCpuBattle&&window.MushiCpuBattle.active){if(actions.open)actions.close();return;}var shown=skill.style.display!=='none'&&skill.children.length>0;if(shown&&!actions.open)actions.showModal();if(!shown&&actions.open)actions.close();}).observe(skill,{childList:true,attributes:true,attributeFilter:['style']});
+  actions.addEventListener('close',function(){if(window.MushiCpuBattle&&window.MushiCpuBattle.active)return;if(skill.style.display!=='none'&&skill.children.length)document.getElementById('btn-cancel-attack').click();});
   var lanes=[];
   ['opp-field-zone','self-field-zone','self-hand-zone'].forEach(function(id){
    var lane=document.getElementById(id),group=lane.parentElement;

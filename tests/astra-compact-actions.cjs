@@ -1,3 +1,4 @@
+// Legacy Astra compatibility suite; default CPU B UI is tested by server/browser/cpu-b.cjs.
 const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');
 const assert=require('node:assert/strict');
 (async()=>{
@@ -7,7 +8,7 @@ const assert=require('node:assert/strict');
  const ok=(v,m)=>{assert(v,m);checks++;console.log('PASS '+m);};
  async function fits(){ok(await page.locator('.battle-viewport').evaluate(n=>n.scrollHeight<=n.clientHeight+1),'No vertical board scroll');ok(await page.evaluate(()=>document.body.scrollHeight<=innerHeight+1&&document.documentElement.scrollHeight<=innerHeight+1),'No vertical body scroll');}
  try{
-  await page.goto(process.env.MUSHI_URL||'http://127.0.0.1:8766',{waitUntil:'domcontentloaded'});
+  await page.goto((process.env.MUSHI_URL||'http://127.0.0.1:8766')+'/?battleUi=legacy',{waitUntil:'domcontentloaded'});
   await page.locator('#btn-vs-human').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();
   if(await page.locator('#pass-overlay').isVisible())await page.locator('#btn-pass-ok').click();
   for(const size of [{width:390,height:560},{width:844,height:300}]){

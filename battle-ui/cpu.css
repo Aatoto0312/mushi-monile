@@ -1,0 +1,15 @@
+@import url('./board.css?v=cpu-b-v2-1');
+body.cpu-b-active{height:100dvh;overflow:hidden;margin:0;background:#071a19}
+.cpu-b-active>.mobile-frame{display:none!important}
+.cpu-b-active>#card-detail-modal,.cpu-b-active>#game-over,.cpu-b-active>#territory-picker,.cpu-b-active>#damage-vector{display:none!important}
+#cpu-b-shell[hidden]{display:none!important}
+#cpu-b-shell{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;height:100dvh;min-height:0;background:#0a1d19}
+#cpu-b-shell .cpu-b-header{display:flex;align-items:center;gap:10px;min-height:32px;padding:3px max(8px,env(safe-area-inset-right)) 3px max(8px,env(safe-area-inset-left));font-size:11px;color:#eee}
+#cpu-b-notice{overflow-wrap:anywhere;color:#f3d89b}
+#cpu-b-shell>#board{min-height:0;flex:1}
+#cpu-b-menu{max-height:85dvh;max-width:min(95vw,580px);overflow:auto;color:#eee;background:#102820;border:1px solid #b89f65;border-radius:16px}
+#cpu-b-menu button{display:block;width:100%;margin:7px 0;min-height:44px}
+#cpu-b-menu>[data-close]{position:sticky;bottom:0}
+#cpu-b-return{position:fixed;z-index:1200;top:5px;right:5px}
+#cpu-b-return[hidden]{display:none}
+@media(max-height:540px) and (orientation:portrait){#cpu-b-shell{overflow:auto}#cpu-b-shell>#board{min-height:560px}}

@@ -7,10 +7,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="robots" content="noindex,nofollow">
   <title>蟲神器</title>
-  <link rel="stylesheet" href="css/battle.css?v=online-beta-b1">
-  <link rel="stylesheet" href="css/design-system.css?v=online-beta-b1">
-  <link rel="stylesheet" href="css/astra-battle.css?v=online-beta-b1">
-  <link rel="stylesheet" href="css/battle-compact.css?v=online-beta-b1">
+  <link rel="stylesheet" href="css/battle.css?v=cpu-b-v2-1">
+  <link rel="stylesheet" href="css/design-system.css?v=cpu-b-v2-1">
+  <link rel="stylesheet" href="css/astra-battle.css?v=cpu-b-v2-1">
+  <link rel="stylesheet" href="css/battle-compact.css?v=cpu-b-v2-1">
+  <link id="cpu-b-style" rel="stylesheet" href="battle-ui/cpu.css?v=cpu-b-v2-1" disabled>
 </head>
 <body class="battle-screen">
   <div class="mobile-frame battle-viewport">
@@ -223,39 +224,44 @@
   </div>
 
   <dialog id="zone-inspector" class="zone-inspector"><header><div><span class="section-kicker">FIELD NOTES</span><h2 id="inspector-title">盤面の記録</h2></div><button id="inspector-close" type="button">閉じる</button></header><div id="inspector-body"></div></dialog>
-  <script src="shared/card-art-manifest.js?v=online-beta-b1"></script>
-  <script src="shared/card-visuals.js?v=online-beta-b1"></script>
-  <script src="js/cards/card-definition.js?v=online-beta-b1"></script>
-  <script src="js/cards/card-instance.js?v=online-beta-b1"></script>
-  <script src="js/cards/card-registry.js?v=online-beta-b1"></script>
-  <script src="js/cards/test-cards.js?v=online-beta-b1"></script>
-  <script src="js/cards/starter-cards.js?v=online-beta-b1"></script>
-  <script src="js/cards/set1-cards.js?v=online-beta-b1"></script>
-  <script src="js/cards/full-catalog-data.js?v=online-beta-b1"></script>
-  <script src="js/cards/set2-cards.js?v=online-beta-b1"></script>
-  <script src="js/cards/set3-cards.js?v=online-beta-b1"></script>
-  <script src="js/cards/set4-cards.js?v=online-beta-b1"></script>
-  <script src="js/cards/set5-cards.js?v=online-beta-b1"></script>
-  <script src="shared/deck-format/runtime.js?v=online-beta-b1"></script>
-  <script src="shared/ui-presenter.js?v=online-beta-b1"></script>
-  <script src="js/engine/game-state.js?v=online-beta-b1"></script>
-  <script src="js/engine/rules.js?v=online-beta-b1"></script>
-  <script src="js/engine/stat-modifier.js?v=online-beta-b1"></script>
-  <script src="js/engine/zone-engine.js?v=online-beta-b1"></script>
-  <script src="js/engine/battle-engine.js?v=online-beta-b1"></script>
-  <script src="js/engine/turn-engine.js?v=online-beta-b1"></script>
-  <script src="js/engine/game-engine.js?v=online-beta-b1"></script>
-  <script src="js/engine/cpu-agent.js?v=online-beta-b1"></script>
-  <script src="js/engine/cpu-runner.js?v=online-beta-b1"></script>
-  <script src="js/ui/battle-log-ui.js?v=online-beta-b1"></script>
-  <script src="js/ui/cpu-toast.js?v=online-beta-b1"></script>
-  <script src="js/ui/card-effect-formatter.js?v=online-beta-b1"></script>
-  <script src="js/ui/card-ui.js?v=online-beta-b1"></script>
-  <script src="js/tutorial/tutorial-scenario.js?v=online-beta-b1"></script>
-  <script src="js/tutorial/tutorial-controller.js?v=online-beta-b1"></script>
-  <script src="js/ui/battle-ui.js?v=online-beta-b1"></script>
-  <script src="js/app.js?v=online-beta-b1"></script>
-  <script src="js/ui/battle-experience.js?v=online-beta-b1"></script>
-  <script src="js/ui/battle-compact.js?v=online-beta-b1"></script>
+  <script src="shared/card-art-manifest.js?v=cpu-b-v2-1"></script>
+  <script src="shared/card-visuals.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/card-definition.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/card-instance.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/card-registry.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/test-cards.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/starter-cards.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/set1-cards.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/full-catalog-data.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/set2-cards.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/set3-cards.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/set4-cards.js?v=cpu-b-v2-1"></script>
+  <script src="js/cards/set5-cards.js?v=cpu-b-v2-1"></script>
+  <script src="shared/deck-format/runtime.js?v=cpu-b-v2-1"></script>
+  <script src="shared/ui-presenter.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/game-state.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/rules.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/stat-modifier.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/zone-engine.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/battle-engine.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/turn-engine.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/game-engine.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/cpu-agent.js?v=cpu-b-v2-1"></script>
+  <script src="js/engine/cpu-runner.js?v=cpu-b-v2-1"></script>
+  <script src="js/ui/battle-log-ui.js?v=cpu-b-v2-1"></script>
+  <script src="js/ui/cpu-toast.js?v=cpu-b-v2-1"></script>
+  <script src="js/ui/card-effect-formatter.js?v=cpu-b-v2-1"></script>
+  <script src="js/ui/card-ui.js?v=cpu-b-v2-1"></script>
+  <script src="js/tutorial/tutorial-scenario.js?v=cpu-b-v2-1"></script>
+  <script src="js/tutorial/tutorial-controller.js?v=cpu-b-v2-1"></script>
+  <script src="js/ui/battle-ui.js?v=cpu-b-v2-1"></script>
+  <script src="js/app.js?v=cpu-b-v2-1"></script>
+  <script src="js/ui/battle-experience.js?v=cpu-b-v2-1"></script>
+  <script src="js/ui/battle-compact.js?v=cpu-b-v2-1"></script>
+  <script src="battle-ui/engine-view.js?v=cpu-b-v2-1"></script>
+  <script src="battle-ui/presentation.js?v=cpu-b-v2-1"></script>
+  <script src="battle-ui/board.js?v=cpu-b-v2-1"></script>
+  <script src="battle-ui/cpu-adapter.js?v=cpu-b-v2-1"></script>
+  <script src="battle-ui/cpu-controller.js?v=cpu-b-v2-1"></script>
 </body>
 </html>

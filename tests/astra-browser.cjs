@@ -1,3 +1,4 @@
+// Legacy Astra compatibility suite; default CPU B UI is tested by server/browser/cpu-b.cjs.
 /* Run against a local HTTP server. Playwright stays a test-only dependency.
    MUSHI_PLAYWRIGHT_PATH may point to an external Playwright installation. */
 const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');
@@ -35,7 +36,7 @@ fs.mkdirSync(shots,{recursive:true});
     throw new Error('CPU did not return control after resolving territory choices');
   }
   try{
-    await page.goto(base);await page.locator('#hero-cards img').first().waitFor();
+    await page.goto(base+'/?battleUi=legacy');await page.locator('#hero-cards img').first().waitFor();
     await page.waitForFunction(()=>document.querySelector('#hero-cards img').naturalWidth>0);
     await shot('01-home-390');await layout('Home 390');
     for(const size of [{width:360,height:640},{width:430,height:932},{width:1280,height:900}]){
@@ -76,6 +77,8 @@ fs.mkdirSync(shots,{recursive:true});
     ok(await page.locator('#battle-deck').isEnabled(),'Existing battle-ready validation retained');
     await page.locator('#save-deck').click();await shot('04-deck-390');
     await page.locator('#battle-deck').click();await page.waitForURL('**/index.html?deck=*');
+    // Keep this suite on the retained Astra UI after Toolbox's default B handoff.
+    await page.goto(page.url()+'&battleUi=legacy',{waitUntil:'domcontentloaded'});
     await page.locator('#btn-vs-cpu').click();
     ok((await page.locator('#user-deck-p1 option').allTextContents()).some(x=>x.includes('森の20枚')),'Saved deck available in battle setup');
     await shot('05-setup-390');
@@ -109,7 +112,7 @@ fs.mkdirSync(shots,{recursive:true});
     ok(!await page.locator('#pass-overlay').isVisible(),'CPU game does not show hotseat handoff');
     await finishCpu();
     ok(await page.evaluate(()=>MushiBattle.ui.state.turnNumber>=3),'CPU turn completes and returns control');
-    await page.goto(base);await page.locator('#btn-tutorial').click();await step('draw');await shot('07-tutorial-390');
+    await page.goto(base+'/?battleUi=legacy');await page.locator('#btn-tutorial').click();await step('draw');await shot('07-tutorial-390');
     await page.setViewportSize({width:360,height:640});
     const tutorialField=await page.locator('#opp-field-zone .battle-card').first().boundingBox();
     ok(tutorialField.height>=65,'Tutorial opponent card remains readable at 360x640');
@@ -133,7 +136,7 @@ fs.mkdirSync(shots,{recursive:true});
     ok(await page.locator('#status-text').textContent(),'Tutorial replay shows compact guidance');
     await page.locator('#status-text').click();await page.locator('.tutorial-exit').click();
     ok(await page.locator('#mode-select-overlay').isVisible(),'Tutorial exit returns to home');
-    await page.goto(base);await page.locator('#btn-vs-human').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();
+    await page.goto(base+'/?battleUi=legacy');await page.locator('#btn-vs-human').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();
     if(await page.locator('#pass-overlay').isVisible())await page.locator('#btn-pass-ok').click();
     if(await page.locator('#btn-draw').isVisible())await page.locator('#btn-draw').click();
     await page.locator('#btn-to-main').click();const before=await page.evaluate(()=>MushiBattle.ui.state.activePlayerId);

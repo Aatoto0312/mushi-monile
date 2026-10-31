@@ -18,7 +18,7 @@
   function button(text,fn,kind){const b=document.createElement('button');b.type='button';b.textContent=text;if(kind)b.dataset.kind=kind;b.onclick=fn;return b;}
   function actionButton(a,fn){const b=button(a.label,fn||(()=>execute(a)),a.kind);b.disabled=!enabled();return b;}
   function dismiss(){if(dialog.open)dialog.close();}
-  function open(title,kicker='公開カード / サーバー同期'){
+  function open(title,kicker=ctx?.authorityLabel||'公開カード / サーバー同期'){
    $('title').textContent=title;$('kicker').textContent=kicker;$('body').replaceChildren();$('body').scrollTop=0;$('footer').replaceChildren();$('footer').hidden=true;
    if(!dialog.open)dialog.showModal();return $('body');
   }
@@ -57,13 +57,13 @@
    for(const skill of c.definition.skills||[]){const p=document.createElement('p');p.textContent=skill.name+' '+(skill.effectText||skill.description||(skill.effects||[]).map(effectText).join('、'));skills.append(p);}
    for(const trait of c.definition.passiveAbilities||[]){const p=document.createElement('p');p.textContent='印刷特性：'+trait.name+' '+(trait.effectText||trait.description||(trait.effects||[]).map(effectText).join('、'));skills.append(p);}
    for(const text of [...root.CardEffectFormatter.formatCardEffects(c.definition),...root.CardEffectFormatter.formatEnhancementEffects(c.definition)]){const p=document.createElement('p');p.textContent=text;skills.append(p);}
-   const note=document.createElement('p');note.className='note';note.textContent='現在HP・APはサーバーの値です。印刷特性の説明と、現在の発動可否は異なります。全文は実カード画像でも確認できます。';skills.append(note);grid.append(skills);body.append(grid);
+   const note=document.createElement('p');note.className='note';note.textContent=(ctx.mode==='cpu'?'現在HP・APは対戦エンジンの値です。':'現在HP・APはサーバーの値です。')+'印刷特性の説明と、現在の発動可否は異なります。全文は実カード画像でも確認できます。';skills.append(note);grid.append(skills);body.append(grid);
    body.append(button('実カード画像を拡大',()=>{const body=open(c.name,'CARD IMAGE');const visual=image(c);visual.classList.add('zoom-art');body.append(visual,button('詳細へ戻る',()=>details(c)));}));
    const attached=document.createElement('section');attached.className='attachments';const title=document.createElement('h2');title.textContent='装着中の強化 '+c.attachments.length;attached.append(title);
    for(const a of c.attachments){const b=button(a.name,()=>details(a));b.prepend(image(a));attached.append(b);}body.append(attached);
    const actions=document.createElement('section');actions.className='action-section';if(vm.actions.some(a=>a.sourceRef===c.ref))actions.append(button('このカードの行動',()=>{selected=c.ref;showCard();}));actions.append(button('盤面へ戻る',cancel));$('footer').replaceChildren(actions);$('footer').hidden=false;
   }
-  function showSkills(){const body=open('攻撃技を選択','サーバーが許可した技');for(const group of P.attackGroups(vm.actions,selected)){const b=button(group.name+(group.ap!=null?' / AP '+group.ap:''),()=>chooseTargets(group));b.dataset.skill='true';b.className='skill-option';b.disabled=!enabled();body.append(b);}body.append(button('戻る',showCard),button('キャンセル',cancel));}
+  function showSkills(){const body=open('攻撃技を選択',ctx.mode==='cpu'?'エンジンが許可した技':'サーバーが許可した技');for(const group of P.attackGroups(vm.actions,selected)){const b=button(group.name+(group.ap!=null?' / AP '+group.ap:''),()=>chooseTargets(group));b.dataset.skill='true';b.className='skill-option';b.disabled=!enabled();body.append(b);}body.append(button('戻る',showCard),button('キャンセル',cancel));}
   function chooseTargets(group){
    if(!enabled())return;
    if(group.actions.every(a=>!a.targetRef)){resolveVariant(group.actions);return;}
@@ -75,7 +75,7 @@
   }
   function execute(a,refs=[]){if(!enabled()||!vm.actions.some(x=>x.id===a.id))return;dismiss();targetGroup=null;selected=null;ctx.act(a,refs);}
   function cancel(){selected=null;targetGroup=null;dismiss();draw();}
-  function allActions(){const body=open('現在できる操作','すべてサーバー発行の操作');if(vm.decision)body.append(button('効果の選択へ戻る',showDecision));for(const a of vm.actions)if(a.id!==vm.decision?.actionId)body.append(actionButton(a));if(!vm.actions.length)body.textContent=vm.spectator?'観戦中です':'現在は操作を待っています';body.append(button('盤面へ戻る',cancel));}
+  function allActions(){const body=open('現在できる操作',ctx.mode==='cpu'?'対戦エンジンの合法操作':'すべてサーバー発行の操作');if(vm.decision)body.append(button('効果の選択へ戻る',showDecision));for(const a of vm.actions)if(a.id!==vm.decision?.actionId)body.append(actionButton(a));if(!vm.actions.length)body.textContent=vm.spectator?'観戦中です':'現在は操作を待っています';body.append(button('盤面へ戻る',cancel));}
   function showDecision(){
    const d=vm.decision;if(!d||!enabled())return;
    const body=open('カードを選択','効果の解決');chosen=[];
@@ -93,19 +93,20 @@
   function draw(){
    if(!ctx||!vm)return;arena.classList.toggle('hand-expanded',expanded);arena.dataset.mode=targetGroup?'target':'idle';
    for(const [role,cards] of [['other-field',vm.other.field],['own-field',vm.own.field],['hand',vm.own.hand]]){const lane=$(role),left=lane.scrollLeft;lane.dataset.count=cards.length;lane.replaceChildren(...cards.map(unit));lane.scrollLeft=left;}
-   const b=view.battle;stats('other-stats',vm.other);stats('own-stats',vm.own);$('own-name').textContent=vm.spectator?'P1':'あなた';$('other-name').textContent=vm.spectator?'P2':'相手';
+   const b=view.battle;stats('other-stats',vm.other);stats('own-stats',vm.own);$('own-name').textContent=vm.spectator?'P1':ctx.names?.own||'あなた';$('other-name').textContent=vm.spectator?'P2':ctx.names?.other||'相手';
    $('phase').textContent='TURN '+b.turn+' / '+({SET_PHASE:'SET',MAIN_PHASE:'MAIN',DRAW_PHASE:'DRAW',GAME_OVER:'END'}[b.phase]||b.phase);
    let instruction=vm.spectator?'観戦中':b.activePlayerId===b.viewerId?'あなたの番':'相手の番';
    if(targetGroup)instruction=targetGroup.name+'：光る対象を選択';
-   if(view.room.phase!=='PLAYING')instruction=view.room.phase==='ENDED'?'対戦終了'+(view.room.result?.winner?' / '+view.room.result.winner+'の勝利':''):'試合中断：'+(view.room.reason||view.room.phase);
-   else if(!ctx.connected)instruction='通信が切断されました。再接続中…';else if(view.room.paused)instruction='相手の再接続を待っています（最大5分）';else if(ctx.busy)instruction='操作を送信中…';else if(b.blockedReason)instruction='処理を継続できません：'+b.blockedReason;else if(vm.decision)instruction='効果の選択を行ってください';
+   if(view.room.phase!=='PLAYING')instruction=view.room.phase==='ENDED'?'対戦終了'+(view.room.result?.winner?' / '+(ctx.resultLabel||view.room.result.winner+'の勝利'):''):'試合中断：'+(view.room.reason||view.room.phase);
+   else if(!ctx.connected)instruction='通信が切断されました。再接続中…';else if(view.room.paused)instruction='相手の再接続を待っています（最大5分）';else if(ctx.busy)instruction='操作を送信中…';else if(b.blockedReason)instruction='処理を継続できません：'+b.blockedReason;else if(vm.decision)instruction='効果の選択を行ってください';else if(vm.actions.some(a=>['CHOICE','TERRITORY_CHOICE'].includes(a.kind)))instruction='操作一覧から効果を選択してください';
    $('instruction').textContent=instruction;
    $('hand-toggle').textContent=(expanded?'⌄ 収納':'⌃ 展開')+' · 手札 '+vm.own.counts.hand+'枚';$('hand-toggle').setAttribute('aria-expanded',String(expanded));$('hand-toggle').disabled=!!targetGroup;
    $('back').hidden=$('cancel').hidden=!targetGroup;
    $('direct').hidden=!targetGroup||!targetGroup.actions.some(a=>!a.targetRef);$('direct').disabled=!enabled();$('direct').onclick=()=>targetGroup&&resolveVariant(targetGroup.actions.filter(a=>!a.targetRef));
    const end=vm.actions.find(a=>a.kind==='END'),next=vm.actions.find(a=>['MAIN','DRAW','TO_SET'].includes(a.kind));const mainAction=end||next;
    $('end').textContent=mainAction?.label||'相手の操作待ち';$('end').disabled=!enabled()||!mainAction||!!targetGroup;$('end').onclick=()=>mainAction&&execute(mainAction);
-   $('all-actions').disabled=!enabled();
+   if(view.room.phase==='ENDED'&&ctx.replay){$('end').textContent='もう一度対戦';$('end').disabled=false;$('end').onclick=ctx.replay;}
+   $('all-actions').disabled=!enabled()||!vm.actions.length;
   }
   $('hand-toggle').onclick=()=>{expanded=!expanded;draw();};$('all-actions').onclick=allActions;
   host.querySelectorAll('[data-role="menu"]').forEach(b=>b.onclick=()=>ctx.menu());

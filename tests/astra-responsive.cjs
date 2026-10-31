@@ -1,3 +1,4 @@
+// Legacy Astra compatibility suite; default CPU B UI is tested by server/browser/cpu-b.cjs.
 // Run against the local server with an external Playwright installation.
 const {chromium,webkit}=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');
 const assert=require('node:assert/strict');
@@ -12,7 +13,7 @@ fs.mkdirSync(out,{recursive:true});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  let checks=0;const check=(x,m)=>{assert(x,m);checks++;};
  try {
-  await page.goto(process.env.MUSHI_URL||'http://127.0.0.1:8765',{waitUntil:'domcontentloaded'});
+  await page.goto((process.env.MUSHI_URL||'http://127.0.0.1:8765')+'/?battleUi=legacy',{waitUntil:'domcontentloaded'});
   for(const size of [{width:390,height:560},{width:844,height:300},{width:568,height:320},{width:667,height:375},{width:375,height:667},{width:844,height:390},{width:390,height:844}]){
    await page.setViewportSize(size);
    for(const target of ['#btn-vs-cpu','#btn-vs-human','#btn-tutorial']){
@@ -69,7 +70,7 @@ fs.mkdirSync(out,{recursive:true});
    const css=(await response.text()).replace(/env\(safe-area-inset-(top|bottom|left|right)(?:,[^)]*)?\)/g,(_,side)=>({top:'20px',bottom:'21px',left:'44px',right:'44px'})[side]);
    await route.fulfill({response,body:css});
   });
-  await safe.goto(process.env.MUSHI_URL||'http://127.0.0.1:8765',{waitUntil:'domcontentloaded'});
+  await safe.goto((process.env.MUSHI_URL||'http://127.0.0.1:8765')+'/?battleUi=legacy',{waitUntil:'domcontentloaded'});
   check(insetStyles>0,'Safe-area CSS injection includes cache-versioned stylesheets');
   await safe.locator('#btn-tutorial').scrollIntoViewIfNeeded();
   const safeNav=await safe.locator('.app-nav').boundingBox(),entry=await safe.locator('#btn-tutorial').boundingBox();

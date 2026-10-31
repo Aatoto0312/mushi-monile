@@ -1,7 +1,7 @@
 name: Release build verification
 on:
   push:
-    branches: ['release/online-b-20261031']
+    branches: ['release/online-b-20261031', 'cpu-b-v2-20261031']
 permissions:
   contents: read
 jobs:

@@ -10,7 +10,7 @@ function createDevServer(options={}){
     let name;try{name=decodeURIComponent(req.url.split('?')[0]);}catch{return fail();}
     if(name==='/online/contract.json'){res.writeHead(200,{'Content-Type':MIME['.json']});return res.end(req.method==='HEAD'?'':JSON.stringify(VERSIONS));}
     if(name==='/')name='/index.html';
-    if(!/^\/(?:index\.html|toolbox\.html|online\.html|online-b\.html|battle-ui\/(?:board\.css|board\.js|presentation\.js)|prototype-b\/(?:style\.css|base\.css|forest\.png)|(?:js|css|shared|toolbox|assets|online)\/[a-zA-Z0-9_./-]+)$/.test(name)||name.split('/').some(p=>p==='..'||p.startsWith('.'))||name.includes('.local.')||!MIME[path.extname(name).toLowerCase()])return fail();
+    if(!/^\/(?:index\.html|toolbox\.html|online\.html|online-b\.html|battle-ui\/(?:board\.css|board\.js|presentation\.js|engine-view\.js|cpu-adapter\.js|cpu-controller\.js|cpu\.css)|prototype-b\/(?:style\.css|base\.css|forest\.png)|(?:js|css|shared|toolbox|assets|online)\/[a-zA-Z0-9_./-]+)$/.test(name)||name.split('/').some(p=>p==='..'||p.startsWith('.'))||name.includes('.local.')||!MIME[path.extname(name).toLowerCase()])return fail();
     const file=path.resolve(ROOT,'.'+name);
     try{const real=await fs.promises.realpath(file);if(!real.startsWith(ROOT+path.sep))return fail();const stat=await fs.promises.stat(real);if(!stat.isFile())return fail();res.writeHead(200,{'Content-Type':MIME[path.extname(name).toLowerCase()],'Content-Length':stat.size});if(req.method==='HEAD')return res.end();const stream=fs.createReadStream(real);stream.on('error',()=>res.destroy());stream.pipe(res);}catch{return fail();}
   });
