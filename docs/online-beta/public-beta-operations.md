@@ -1,0 +1,11 @@
+# Toolbox B online public beta
+
+Frontend: https://aatoto0312.github.io/mushi-monile/ ; online-b.html. API: loopback 127.0.0.1:8791 using server/public.cjs createPublicServer. The development API8787 is independent. Fixed ngrok domain routes only to8791; no static repository files are exposed by API.
+
+Operator scripts are private to this PC: C:/Users/aatot/.mushijingi-online-beta/public-release/Start-PublicBeta.ps1 and Stop-PublicBeta.ps1. Existing auth.yml remains in its restricted ngrok directory; no token is copied to Git or command arguments. Start refuses an existing agent or occupied API port; stop verifies recorded process identity. No Windows startup tasks/services are installed. PC restart interrupts matches; rerun Start after checking connectivity.
+
+Rollback base: 2ea76fad5f419037122d7b24a71a784117fbe385 (309 playable, no public online service). Stop owned tunnel/API first. Use reviewed ordinary revert commits for release changes, preserving saved decks. Wait for legacy main/root Pages deployment. Do not run345-card API against309-card frontend; validate health/contract before reopening. No reset or force push.
+
+Known limitations:345/565 playable; SET5 partially supported, SET6-8 unavailable. Equal territory on deck-out remains NEEDS_RULING and aborts ENGINE_BLOCKED. Runtime rooms are in memory; restart interrupts games. Origin checks are not user authentication; per-seat tokens and opaque actions are required. Public room creation has global limits; this is a small beta, not a guaranteed public hosting service. Free ngrok quotas apply; no paid upgrade is enabled. Native iPhone/Android tests must be performed by a human.
+
+Build verification: Linux actions/jekyll-build-pages, exact76 deployed assets against release-manifest (77th file is build-only_config.yml). theme:null suppresses theme CSS. Only3 B design assets are included; no prototype app or mock state exists in release tree. Source/tests/server/docs remain excluded from Pages.
