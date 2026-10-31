@@ -474,8 +474,8 @@
     },
     {
       "path": "_config.yml",
-      "bytes": 150,
-      "sha256": "454f8762519df8c54b5ef87fa31a450aa870a12dddd075a85a91a8188778eb31",
+      "bytes": 250,
+      "sha256": "9f584b64a09414fb4d7593508a2ef10de8c8bb8970d53f606cd72fd529c34419",
       "main": "generated",
       "kind": "pages-build-config"
     }

@@ -34,7 +34,7 @@ function runAll() {
   var scripts = [];
   var match;
   while ((match = scriptRegex.exec(html)) !== null) {
-    scripts.push(match[1]);
+    scripts.push(match[1].split(/[?#]/)[0]);
   }
 
   // 1. 重複チェック

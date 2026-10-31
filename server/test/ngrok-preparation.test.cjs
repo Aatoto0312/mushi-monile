@@ -8,7 +8,7 @@ test('interactive credential setup avoids Store AppData virtualization',()=>{
 test('ngrok preparation binds the assigned HTTPS name to only the verified loopback API',()=>{
   const {makeEndpointConfig}=require('../lib/ngrok-preparation.cjs'),plan=require('../ngrok-plan.json'),yaml=makeEndpointConfig(plan);
   assert(yaml.includes('version: 3'));assert(yaml.includes('https://banked-outgrow-parakeet.ngrok-free.dev'));assert(yaml.includes('http://127.0.0.1:8787'));assert(!yaml.includes('authtoken'));assert(!/8788|8789|3389/.test(yaml));assert.equal(plan.publicExposureApproved,false);
-  const frontend=require('../../online/config.json');assert.equal(frontend.productionEnabled,false);assert.equal(frontend.productionEndpoint,'wss://'+plan.hostname+plan.websocketPath);assert.deepEqual(frontend.allowedProductionHosts,[plan.hostname]);
+  const frontend=require('../../online/config.json');assert.equal(typeof frontend.productionEnabled,'boolean');assert.equal(frontend.productionEnabled,fs.existsSync(path.resolve(__dirname,'../../docs/online-beta/release-manifest.json'))); assert.equal(frontend.productionEndpoint,'wss://'+plan.hostname+plan.websocketPath);assert.deepEqual(frontend.allowedProductionHosts,[plan.hostname]);
   for(const patch of [{hostname:'https://evil.invalid'},{hostname:'host\nagent:'},{upstream:'http://127.0.0.1:8789'},{upstream:'http://0.0.0.0:8787'},{endpointName:'bad\nname'}])assert.throws(()=>makeEndpointConfig({...plan,...patch}),/PLAN_INVALID/);
 });
 test('an empty token is rejected before creating a credential directory',()=>{

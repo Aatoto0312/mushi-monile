@@ -8,7 +8,7 @@ function createPreview(options={}){
   const inviteHash=crypto.createHash('sha256').update(options.inviteToken).digest(),cookieToken=crypto.randomBytes(32).toString('base64url');
   const totals={httpRequests:0,httpSentBytes:0,wsSentBytes:0,wsReceivedBytes:0,wsSpectatorSentBytes:0,wsPlayerSentBytes:0};let attempts=[];const events=[];
   const html=fs.readFileSync(path.join(ROOT,'online.html'),'utf8');
-  const files=new Set(['/online.html',...Array.from(html.matchAll(/(?:src|href)="([^"?#]+\.(?:js|css))"/g),m=>'/'+m[1])]);
+  const files=new Set(['/online.html',...Array.from(html.matchAll(/(?:src|href)="([^"?#]+\.(?:js|css))(?:\?[^"#]*)?"/g),m=>'/'+m[1])]);
   const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.woff2':'font/woff2'};
   let app;
   const localOrigin=()=> 'http://127.0.0.1:'+app.port;

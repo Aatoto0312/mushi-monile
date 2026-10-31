@@ -9,3 +9,9 @@ exclude:
   - README.md
   - package.json
   - package-lock.json
+
+theme: null
+include:
+  - prototype-b/base.css
+  - prototype-b/style.css
+  - prototype-b/forest.png
