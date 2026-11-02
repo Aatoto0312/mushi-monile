@@ -44,3 +44,6 @@ All565 cards are rechecked; remaining groups overlap and are research candidates
 
 ## Explicit holds
 Original four hypotheses and paid-cost source-loss route remain isolated on olddevelopment branch. No edits or skips to those tests. No API/ngrok restart, no main push, no public deployment. FinalAUDITED is not inferred from PLAYABLE.
+
+## Final gates and checkpoint
+Code/Toolbox checkpoint329b9f3; source functionality checkpoint6b35ffc. Full1746/0, shared73/0, server81/0. New card browser12/0 (36scenarios); broad browser12/0 (CPU matches, online matches, spectator,reconnect,responsive,legacy fallback). Toolbox16checks perengine. LinuxJekyll run41501875511:86exact deployable assets, allSHA256+contract match. No public deployment; API/ngrok untouched and match absence not assumed. Safe388 remains protected at5c73a4f. Remaining168 cards are not certified by this batch.

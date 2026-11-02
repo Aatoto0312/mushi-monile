@@ -49,3 +49,10 @@ A local Pages-shaped candidate is a preparation artifact, not evidence of a new 
 - Syntax:31JS/CJS files checked; diff whitespace clean. Private API/ngrok process identities and original stage hash rechecked unchanged.
 - Local candidate:87 manifest entries /86 deployable assets,565catalog/397playable; every SHA256 and generated contract matched. Source engine contract c0ae38807278652de14bb6cd20792fcc270be90cded9d2f60f439a3c5ff5e5cc; card contract e44754c243d49e9d0f67c06c53edbe72a59d78fbc563ece186a554b95d8a42f3.
 - Pages live configuration independently read: legacy build from main:/; validation branch workflow only reads/builds/uploads an artifact, has no Pages deployment permission or step.
+## Linux Pages verification
+
+Final run https://github.com/Aatoto0312/mushi-monile/actions/runs/41501875511 succeeded at commit329b9f32bc4c52db191eaed6e2a10f34995b3c3b. Downloaded actual Jekyll artifact contains exactly86 deployable files, all SHA256 match87-entry manifest (_config.yml is build-only). Independently recomputed artifact Engine/card hashes and online contract match the trusted runtime and397 playable count. server/,tests/,docs/,scripts/ and private files are absent.
+
+First validation run41501713712 correctly failed on toolbox.html because that verified working-tree file was accidentally omitted from the explicit initial staging list. Follow-up329b9f3 included only that file; all87 committed source bytes were checked against manifest before the successful run. No main push or public deployment occurred in either run. A local verification helper initially decoded the binary forest image as text; corrected binary-safe hashing confirmed its bytes were unchanged. These are preparation/verification errors, not hidden runtime test failures.
+
+Actual downloaded artifact and receipt: C:/Users/aatot/.codex/tmp/mushi-sequences-397-linux/ and mushi-sequences-397-linux-result.json. Final record-only changes are outside the deployed asset list; they do not change the validated87 source asset hashes.
