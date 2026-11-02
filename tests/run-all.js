@@ -6,6 +6,12 @@ var engine = require('./engine-loader.js');
 
 function requireAll() {
   return [
+    require('./crossset-public-scope.test.js'),
+    require('./crossset-evidence-integrity.test.js'),
+    require('./crossset-ant.test.js'),
+    require('./crossset-traits.test.js'),
+    require('./crossset-simple-effects.test.js'),
+    require('./crossset-vanilla.test.js'),
     require('./set5-definitions.test.js'),
     require('./set5-basic-completion.test.js'),
     require('./all-card-readiness.test.js'),

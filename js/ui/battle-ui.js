@@ -1123,6 +1123,9 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   };
 
   BattleUI.prototype.showTerritoryChoiceModal = function (pending) {
+    // The common board owns this decision while active. A legacy confirm must
+    // not race its Engine-issued action buttons or consume the same choice.
+    if (global.MushiCpuBattle && global.MushiCpuBattle.active) return;
     if (this._handlingChoice) return;
     this._handlingChoice = true;
     var self = this;
@@ -1131,6 +1134,10 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     var cardName = def ? def.name : 'カード';
 
     setTimeout(function () {
+      if (global.MushiCpuBattle && global.MushiCpuBattle.active) {
+        self._handlingChoice = false;
+        return;
+      }
       var useTobidasu = confirm(cardName + ' の ＜とびだす＞ を使用しますか？\n「キャンセル」で手札に加えます。');
       var choice = useTobidasu ? 'USE_TOBIDASU' : 'TAKE_TO_HAND';
       try {
