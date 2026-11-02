@@ -10,11 +10,21 @@ function createPublicObserver({directory,port=8791,intervalMs=10000,testMode=fal
   async function refresh(){const m=await request('STATUS');state={...state,...m.status};persist();return {...state};}
   async function start(){
     if(child)throw Error('ALREADY_STARTED');
+    // Fail before binding an API if the initial private receipt cannot persist.
+    persist();
     child=fork(path.join(__dirname,'public-worker.cjs'),[],{windowsHide:true,stdio:['ignore','ignore','ignore','ipc'],env:{...process.env,NODE_ENV:testMode?'test':'production'}});
-    exited=new Promise(resolve=>child.once('exit',(code,signal)=>{clearInterval(timer);state={...state,running:false,exitCode:code,exitSignal:signal||null};persist();log({event:'PUBLIC_API_EXIT',phase:signal||'CODE_'+code});for(const p of pending.values())p.reject(Error('API_EXITED'));pending.clear();resolve();}));
+    exited=new Promise(resolve=>child.once('exit',(code,signal)=>{clearInterval(timer);state={...state,running:false,exitCode:code,exitSignal:signal||null};try{persist();}catch{}try{log({event:'PUBLIC_API_EXIT',phase:signal||'CODE_'+code});}catch{}for(const p of pending.values())p.reject(Error('API_EXITED'));pending.clear();resolve();}));
     child.on('message',m=>{const p=pending.get(m?.requestId);if(p){pending.delete(m.requestId);p.resolve(m);}});
     await new Promise((resolve,reject)=>{const deadline=setTimeout(()=>reject(Error('API_START_TIMEOUT')),10000);const ready=m=>{if(m.type==='READY'){clearTimeout(deadline);child.off('message',ready);boundPort=m.port;resolve();}else if(m.type==='START_FAILED'){clearTimeout(deadline);reject(Error('API_START_FAILED'));}};child.on('message',ready);child.once('error',reject);child.send({type:'START',port,logDirectory:path.join(directory,'logs')});});
-    state={running:true,pid:child.pid,startedAt:new Date().toISOString(),port:boundPort,automaticRestart:false};log({event:'PUBLIC_API_STARTED'});await refresh();
+    state={running:true,pid:child.pid,startedAt:new Date().toISOString(),port:boundPort,automaticRestart:false};
+    try{log({event:'PUBLIC_API_STARTED'});await refresh();}
+    catch(error){
+      // This is our new child only. Never force-stop a room that joined meanwhile.
+      const reply=await request('STOP_IF_IDLE').catch(()=>null);
+      if(reply?.type==='STOPPED'){await exited;throw error;}
+      timer=setInterval(()=>refresh().catch(()=>{}),intervalMs);timer.unref();
+      throw Error('OBSERVATION_FAILED_API_BUSY_OR_UNKNOWN');
+    }
     timer=setInterval(()=>refresh().catch(()=>{state.statusUnavailableAt=new Date().toISOString();persist();}),intervalMs);timer.unref();
   }
   async function stopIfIdle(){const m=await request('STOP_IF_IDLE');if(m.type==='BUSY')return false;await exited;return true;}
