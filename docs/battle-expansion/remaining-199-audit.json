@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-02T13:40:10.381Z",
+  "at": "2026-11-02T13:45:41.893Z",
   "publicBaseline": "988e4f765c3faea90551de673946e9f8945d899e",
   "localBaseline": "0e20fcaf1bd38566fc0171c9b4d945979f58897a",
   "publicPlayable": 366,
@@ -47,112 +47,2174 @@
     {
       "id": "set5_006",
       "name": "オオヤマトンボ",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_006",
+        "officialNumber": "6/64",
+        "name": "オオヤマトンボ",
+        "set": "BOOSTER_SET_5",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "RED",
+        "cost": 3,
+        "baseHp": 500,
+        "skills": [
+          {
+            "name": "とびかかる",
+            "baseAp": 400,
+            "effectText": null,
+            "id": "set5_006_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [
+          {
+            "name": "トンボ返り",
+            "effectText": "これが破壊されたとき、この虫に強化カードがついていたなら、この虫を手札に戻す。",
+            "timing": "ON_DESTROYED",
+            "condition": {
+              "type": "HAD_ATTACHMENT_WHEN_DESTROYED"
+            },
+            "effects": [
+              {
+                "type": "MOVE_CARD",
+                "target": "SOURCE",
+                "from": "DISCARD",
+                "to": "HAND"
+              }
+            ]
+          }
+        ],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "強化カードの付いたオオヤマトンボを軍配虫の大団扇を付けた虫の攻撃で破壊した場合、オオヤマトンボは＜トンボ返り＞で手札に戻りますか？: いいえ。その場合、先に山札にの一番下に置かれてしまい戻りません。",
+          "強化カードの付いたオオヤマトンボを逆立ち返しや、繚乱の足掻き、反逆の蛮勇などで入れ替えた場合、＜トンボ返り＞は: いいえ。発動しません。"
+        ],
+        "description": null,
+        "tags": [
+          "ヤマトンボ科",
+          "トンボ返り",
+          "破壊時",
+          "手札操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/6/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "HAD_ATTACHMENT_WHEN_DESTROYED",
+        "MOVE_CARD"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "オオヤマトンボ",
+        "cost": 3,
+        "color": "RED",
+        "hp": 500,
+        "ap": 400,
+        "image": "https://mushijingi.com/images/card/315.jpg",
+        "sourceProvenance": "Printed fan-hosted scan315/322 visually checked2026-11-02; official SET5 QA independently checked for bottom-deck priority, exchange exclusion, copy preservation, revived insects and Hariganemushi order.",
+        "engine": [
+          "tests/set5-destruction-canonical.test.js",
+          "tests/set5-destruction-return.test.js",
+          "tests/set5-destroyed-attachment-return.test.js"
+        ],
+        "cpu": [
+          "tests/set5-destruction-canonical.test.js",
+          "tests/set5-destroyed-attachment-return.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-destruction-canonical.test.js",
+          "tests/set5-destroyed-attachment-return.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Card-specific summon and attached-host destruction through actual CPU and authenticated WSS B-board paths, Chromium/WebKit. Optional return chosen by Human; stale enhancement candidates rebuilt for shared Human/CPU legality. Captured host owner/controller and JSON checked. Independent read-only review passed canonical9/9. Basic PLAYABLE only; final AUDITED/release gates still pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_013",
       "name": "クロスズメバチ",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_013",
+        "officialNumber": "13/64",
+        "name": "クロスズメバチ",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "RED",
+        "cost": 1,
+        "baseHp": 100,
+        "skills": [
+          {
+            "name": "かみきる",
+            "baseAp": 200,
+            "effectText": null,
+            "id": "set5_013_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [
+          {
+            "name": "地蜂の巣",
+            "effectText": "これが虫の攻撃により破壊されたとき、この虫に強化カードがついているなら、それを１つ選び手札に戻してもよい。",
+            "timing": "ON_DESTROYED",
+            "condition": {
+              "type": "DESTROYED_BY_ATTACK"
+            },
+            "resolutionPhase": "AFTER_ATTACHMENT_TRIGGERS",
+            "effects": [
+              {
+                "type": "OPTIONAL_RETURN_DESTROYED_HOST_ATTACHMENT"
+              }
+            ]
+          }
+        ],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "自分の場に、【[天牛の大顎]がついた[クロスズメバチ]】と【[蠱術の贋作]がついた[マメコガネ]】がいます。 [蠱術の贋作]は、つけるときに[天牛の大顎]を選びました。相手の虫の攻: いいえ。破壊されません。[蠱術の贋作]をつけるときに選んだ強化カードが、手札に戻るなど破壊以外の方法で場を離れた場合[蠱術の贋作]は破壊されず、 [蠱術の贋作]が効果によって[マメコガネ]に与えている修正値(つけるときに選んだ[天牛の大顎]の修正値、攻撃力を300増やす。)への影響もありません。",
+          "[白銀蜘蛛の糸]を使い、捨て札の[カブトムシ]と[ナミアゲハ]を選び、[白銀蜘蛛の糸]を[カブトムシ]に付けて場に出しました。 その後に[クロスズメバチ]を場に出し、[螻蛄の七芸]: いいえ。破壊されません。 手札に戻るなど破壊以外の方法で[白銀蜘蛛の糸]が場を離れた場合、「これが破壊されたとき、それらの虫を破壊する。」の効果は発揮されません。",
+          "針金の道連れをつけたクロスズメバチが相手の虫の攻撃により倒された場合 、針金の道連れと＜地蜂の巣＞が誘発しますが: その場合、針金虫の効果で相手の虫を破壊後、＜地蜂の巣＞の効果で針金虫の道連れを手札に戻す。となります。"
+        ],
+        "description": null,
+        "tags": [
+          "スズメバチ科",
+          "地蜂の巣",
+          "捨て札",
+          "破壊時",
+          "ダメージ変更",
+          "手札操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/13/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "DESTROYED_BY_ATTACK",
+        "OPTIONAL_RETURN_DESTROYED_HOST_ATTACHMENT"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "クロスズメバチ",
+        "cost": 1,
+        "color": "RED",
+        "hp": 100,
+        "ap": 200,
+        "image": "https://mushijingi.com/images/card/322.jpg",
+        "sourceProvenance": "Printed fan-hosted scan315/322 visually checked2026-11-02; official SET5 QA independently checked for bottom-deck priority, exchange exclusion, copy preservation, revived insects and Hariganemushi order.",
+        "engine": [
+          "tests/set5-destruction-canonical.test.js",
+          "tests/set5-destruction-return.test.js",
+          "tests/set5-destroyed-attachment-return.test.js"
+        ],
+        "cpu": [
+          "tests/set5-destruction-canonical.test.js",
+          "tests/set5-destroyed-attachment-return.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-destruction-canonical.test.js",
+          "tests/set5-destroyed-attachment-return.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Card-specific summon and attached-host destruction through actual CPU and authenticated WSS B-board paths, Chromium/WebKit. Optional return chosen by Human; stale enhancement candidates rebuilt for shared Human/CPU legality. Captured host owner/controller and JSON checked. Independent read-only review passed canonical9/9. Basic PLAYABLE only; final AUDITED/release gates still pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_021",
       "name": "オオテナガカナブン",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_021",
+        "officialNumber": "21/64",
+        "name": "オオテナガカナブン",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "BLUE",
+        "cost": 3,
+        "baseHp": 600,
+        "skills": [
+          {
+            "name": "たいあたり",
+            "baseAp": 300,
+            "effectText": null,
+            "id": "set5_021_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          },
+          {
+            "name": "テナガ攻撃",
+            "baseAp": 100,
+            "effectText": "相手の虫を２つ選び、それぞれに攻撃する。※１つの虫や、相手に直接攻撃はできない",
+            "id": "set5_021_skill_2",
+            "timing": "ATTACK",
+            "effects": [
+              {
+                "type": "ATTACK_MULTIPLE_TARGETS",
+                "exactSelections": 2,
+                "ordered": true
+              }
+            ],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "コガネムシ科"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/21/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "ATTACK_MULTIPLE_TARGETS"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "オオテナガカナブン",
+        "cost": 3,
+        "color": "BLUE",
+        "hp": 600,
+        "image": "https://mushijingi.com/images/card/330.jpg",
+        "sourceProvenance": "Printed scan330 visually checked2026-11-01; normal printed technique300AP and exact-two100AP attack, no direct attack with second technique. Existing serial destruction/territory rules used.",
+        "engine": [
+          "tests/set5-longarm-canonical.test.js",
+          "tests/multi-attack-continuation.test.js",
+          "tests/set5-territory-spells.test.js"
+        ],
+        "cpu": [
+          "tests/set5-longarm-canonical.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-longarm-canonical.test.js",
+          "tests/multi-attack-continuation.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Three failed-first cross-set/restore regressions fixed generically: preserve destruction-discard→territory→next hit ordering, and reject reentered source/target field stays. Independent review passed6 canonical/5 existing cases; canonical suite now7. Both printed techniques, exact-two/duplicate rejection, cost and CPU selection verified. Actual CPU/WSS B-board summon→second skill→two choices→two damage results pass Chromium/WebKit. Final cross-set release audit pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_028",
       "name": "ヨツコブツノゼミ",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_028",
+        "officialNumber": "28/64",
+        "name": "ヨツコブツノゼミ",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "BLUE",
+        "cost": 1,
+        "baseHp": 300,
+        "skills": [
+          {
+            "name": "しぼりとる",
+            "baseAp": 100,
+            "effectText": null,
+            "id": "set5_028_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [
+          {
+            "name": "魔よけの鈴",
+            "effectText": "これは術カードの対象にならない。",
+            "effects": [
+              {
+                "type": "SPELL_TARGET_IMMUNITY"
+              }
+            ]
+          }
+        ],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "[テイオウゼミ]の＜セミの帝王＞の効果で[ヨツコブツノゼミ]を捨て札から場に出すことは: いいえ。できません。[ヨツコブツノゼミ]はツノゼミ科のため＜セミの帝王＞の効果で選び、場に出すことはできません。",
+          "[玉響の蠢き]で自分の手札にある[ヨツコブツノゼミ]を選び、場に出すことが: はい。できます。＜魔よけの鈴＞の効果は、手札やエサ場、捨て札にあるときには効果を発動しません。"
+        ],
+        "description": null,
+        "tags": [
+          "ツノゼミ科",
+          "魔よけの鈴",
+          "エサ操作",
+          "捨て札"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/28/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "SPELL_TARGET_IMMUNITY"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "ヨツコブツノゼミ",
+        "cost": 1,
+        "color": "BLUE",
+        "hp": 300,
+        "attack": "しぼりとる",
+        "ap": 100,
+        "image": "https://mushijingi.com/images/card/337.jpg",
+        "sourceProvenance": "Printed scan337 visually checked2026-11-01 (nonofficial image host); official SET5 QA confirms immunity applies on field, not hand/food/discard.",
+        "engine": [
+          "tests/set5-bell-canonical.test.js",
+          "tests/set5-all-spell-immunity.test.js"
+        ],
+        "cpu": [
+          "tests/set5-bell-canonical.test.js",
+          "tests/set5-all-spell-immunity.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs",
+          "server/test/set5-bell-capabilities.test.cjs"
+        ],
+        "serialization": [
+          "tests/set5-bell-canonical.test.js",
+          "tests/set5-all-spell-immunity.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Canonical summon/printed technique/trait detail reaches victory through CPU and real authenticated WSS B board in Chromium/WebKit. Shared spell choices reject immune targets and forged refs; suppression and non-field zone targeting retain existing behavior. Basic completion, final cross-set audit pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_044",
       "name": "ヘラクレスサン",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_044",
+        "officialNumber": "44/64",
+        "name": "ヘラクレスサン",
+        "set": "BOOSTER_SET_5",
+        "rarity": "SR",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "COLORLESS",
+        "cost": 6,
+        "baseHp": 1000,
+        "skills": [
+          {
+            "name": "はばたく",
+            "baseAp": 1100,
+            "effectText": null,
+            "id": "set5_044_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [
+          {
+            "name": "伝承羽化",
+            "effectText": "これがカード名に羽化と書かれたカードの効果により場に出たとき、この虫の体力と攻撃力を500増やす。",
+            "timing": "ON_ENTER_FIELD",
+            "effects": [
+              {
+                "type": "GROW_SELF_IF_ENTRY_CARD_NAME",
+                "nameSubstring": "羽化",
+                "amount": 500,
+                "stats": [
+                  "HP",
+                  "AP"
+                ]
+              }
+            ]
+          }
+        ],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "＜伝承羽化＞により、体力と攻撃力が増えた後に、＜くちなし＞などの効果で＜伝承羽化＞を失った場合、増えた修正値はなく: いいえ。なくなりません。＜伝承羽化＞で与えられた修正値は、与えられた効果となり、技を失っても修正値は消えません。"
+        ],
+        "description": null,
+        "tags": [
+          "ヤママユガ科",
+          "伝承羽化",
+          "登場時",
+          "ダメージ変更"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/44/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "GROW_SELF_IF_ENTRY_CARD_NAME"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "ヘラクレスサン",
+        "cost": 6,
+        "color": "COLORLESS",
+        "hp": 1000,
+        "attack": "はばたく",
+        "ap": 1100,
+        "image": "https://mushijingi.com/images/card/353.jpg",
+        "sourceProvenance": "Printed scan353 visually checked2026-11-01; official SET5 QA confirms resolved emergence bonus survives later trait suppression.",
+        "engine": [
+          "tests/set5-emergence-canonical.test.js",
+          "tests/set5-entry-provenance.test.js"
+        ],
+        "cpu": [
+          "tests/set5-emergence-canonical.test.js",
+          "tests/set5-entry-provenance.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-emergence-canonical.test.js",
+          "tests/set5-entry-provenance.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Both real hatching spells resolve +500HP/AP; ordinary summon and other spell do not. Suppression before/after, capture, leave and JSON checked. CPU exchange selection and empowered attack reach victory. CPU/WSS B-board actual exchange and 1500HP/1600AP detail verified in Chromium/WebKit; final cross-set audit pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_046",
       "name": "禁域の注連縄",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_046",
+        "officialNumber": "46/64",
+        "name": "禁域の注連縄",
+        "set": "BOOSTER_SET_5",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "ENHANCEMENT",
+        "color": null,
+        "cost": 0,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "HP",
+            "amount": 100
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "AP",
+            "amount": 100
+          },
+          {
+            "type": "PROHIBIT_OPPONENT_SPELL_ENTRY_ATTACK_THIS_TURN"
+          }
+        ],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "攻撃制限",
+          "ダメージ変更"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/46/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "PROHIBIT_OPPONENT_SPELL_ENTRY_ATTACK_THIS_TURN",
+        "STAT_MODIFIER"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "禁域の注連縄",
+        "cost": 0,
+        "type": "ENHANCEMENT",
+        "image": "https://mushijingi.com/images/card/355.jpg",
+        "sourceProvenance": "Printed scan355 visually checked2026-11-01; uses ordinary entry-trigger and resolved-effect duration semantics, no user ruling.",
+        "engine": [
+          "tests/set5-rope-canonical.test.js",
+          "tests/set5-spell-entry-restriction.test.js"
+        ],
+        "cpu": [
+          "tests/set5-rope-canonical.test.js",
+          "tests/set5-spell-entry-restriction.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs",
+          "server/test/set5-rope-capabilities.test.cjs"
+        ],
+        "serialization": [
+          "tests/set5-rope-canonical.test.js",
+          "tests/set5-spell-entry-restriction.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Printed zero cost and +100HP/AP. Opponent spell entrant cannot attack that turn; normal summon and own spell entry unaffected. Trigger order, stale field stay, controller and source departure regressions retained. B-board CPU/WSS normal attachment passes Chromium/WebKit; authoritative capabilities deny restricted attack. Final cross-set audit pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_047",
       "name": "武勇の面頬",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_047",
+        "officialNumber": "47/64",
+        "name": "武勇の面頬",
+        "set": "BOOSTER_SET_5",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "ENHANCEMENT",
+        "color": null,
+        "cost": 1,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "HP",
+            "amount": 300
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "AP",
+            "amount": 300
+          },
+          {
+            "type": "SUPPRESS_HOST_KEYWORD_SKILLS"
+          },
+          {
+            "type": "OPTIONAL_ATTACH_FROM_TERRITORY"
+          }
+        ],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "ダメージ変更",
+          "縄張り操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/47/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "OPTIONAL_ATTACH_FROM_TERRITORY",
+        "STAT_MODIFIER",
+        "SUPPRESS_HOST_KEYWORD_SKILLS"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "武勇の面頬",
+        "cost": 1,
+        "type": "ENHANCEMENT",
+        "image": "https://mushijingi.com/images/card/356.jpg",
+        "sourceProvenance": "Printed scan356 visually checked2026-11-01; official active-trait suppression and optional territory attachment framework used, no user ruling.",
+        "engine": [
+          "tests/set5-mask-canonical.test.js",
+          "tests/set5-host-trait-suppression.test.js"
+        ],
+        "cpu": [
+          "tests/set5-mask-canonical.test.js",
+          "tests/set5-host-trait-suppression.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-mask-canonical.test.js",
+          "tests/set5-host-trait-suppression.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Printed +300HP/AP and host keyword suppression, normal cost1 and optional free territory attachment, decline/stale-host rejection, destruction/army-link/entry-suppressor regressions. Chromium/WebKit CPU/WSS B-board normal and territory choices pass8 actual card paths. Basic completion, final cross-set audit pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_048",
       "name": "蛮虫の一本槍",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_048",
+        "officialNumber": "48/64",
+        "name": "蛮虫の一本槍",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "ENHANCEMENT",
+        "color": null,
+        "cost": 1,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [
+          {
+            "type": "ATTACHMENT_HOST_REQUIREMENT",
+            "noSkillEffects": true
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "HP",
+            "amount": 400
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "AP",
+            "amount": 400
+          },
+          {
+            "type": "OPTIONAL_RETURN_ATTACHMENT_ON_HOST_ATTACK_DESTRUCTION"
+          }
+        ],
+        "rulings": [
+          "[トノサマバッタ]に[蟲神の一本槍]がついているとき、[飛蝗の待ち伏せ]を使いました。 効果によって、[トノサマバッタ]が効果をもつ＜とびだす＞を持った場合、ついている[蟲神の一本: 「これは技の効果を持たない虫にしかつけられない。」の条件をみたせなくなり、＜とびだす＞を持った[トノサマバッタ]についていた[蟲神の一本槍]は破壊されます。 「にしかつけられない。」の効果を持つ強化カードは、つけた後にその条件を満たせなくなった場合破壊されます。",
+          "[蟲神の一本槍]をもった虫が[サシハリアリ]の\"激痛針\"で破壊されました。[蟲神の一本槍]を捨てることは: できます。\"激痛針\"は縄張りを引いたときに効果を発揮する技です。仮に手札が1枚もないとき、破壊されたことで[蟲神の一本槍]は手札に戻り、その後縄張りを引きます。ここで\"激痛針\"が効果を発揮するため、捨てる対象は引いた縄張りか[蟲神の一本槍]のどちらかとなります。",
+          "＜＞の技を持つ虫につけることは: いいえ。つけられません。＜＞の技はすべて効果があるため、「技の効果を持たない虫」ではなく、＜＞を持つ虫につけることはできません。",
+          "[カイコ]や[武勇の面頬]などの効果で＜＞の技を失っている虫が場にいるとき、その虫に蟲神の一本槍をつけることは: はい、つけられます。＜＞の技を失ったあと、持っている＜＞でない技に効果が無い場合、つけることができます。",
+          "[カイコ]の効果で＜＞の技を失っている虫に蟲神の一本槍をつけました。その後[カイコ]が破壊された場合、蟲神の一本槍は: 蟲神の一本槍は破壊され、捨て札になります。強化カードは正しい対象につけられていない場合、破壊されて捨て札になります。虫の攻撃で破壊されていないため、手札には戻りません。",
+          "虫Aにつけた一本槍をの修正値を贋作でコピーして、贋作を虫Bにつけたたとき、虫Aが破壊されて一本槍が手札に戻ると、一本槍破壊されていないため、贋作はそのまま残りますか？: はい。その場合、贋作は破壊されず場に残ります。"
+        ],
+        "description": null,
+        "tags": [
+          "捨て札",
+          "破壊時",
+          "ダメージ変更",
+          "手札操作",
+          "縄張り操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/48/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "ATTACHMENT_HOST_REQUIREMENT",
+        "OPTIONAL_RETURN_ATTACHMENT_ON_HOST_ATTACK_DESTRUCTION",
+        "STAT_MODIFIER"
+      ],
+      "priorEvidenceClaim": {
+        "name": "蛮虫の一本槍",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "spear continuous eligibility and optional attachment return"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/357.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [],
+        "engine": [
+          "tests/set5-spears-canonical.test.js"
+        ],
+        "cpu": [
+          "tests/set5-spears-canonical.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-spears-canonical.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "19/19 canonical checks across two cards: printed values, HP/AP400/800, paid attach, eligibility and suppression, granted trait invalidation, return/decline, JSON, CPU attachment and optional retrieval per card, SPELL excluded, capture owner/controller and stacked bonuses. Actual Chromium/WebKit CPU/WSS8 card paths pass4/4 Node tests.",
+        "image": "https://mushijingi.com/images/card/357.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 1,
+        "color": null,
+        "hp": null
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_049",
       "name": "蟲神の一本槍",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_049",
+        "officialNumber": "49/64",
+        "name": "蟲神の一本槍",
+        "set": "BOOSTER_SET_5",
+        "rarity": "SR",
+        "starterDeck": null,
+        "type": "ENHANCEMENT",
+        "color": null,
+        "cost": 2,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [
+          {
+            "type": "ATTACHMENT_HOST_REQUIREMENT",
+            "noSkillEffects": true
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "HP",
+            "amount": 800
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "AP",
+            "amount": 800
+          },
+          {
+            "type": "OPTIONAL_RETURN_ATTACHMENT_ON_HOST_ATTACK_DESTRUCTION"
+          }
+        ],
+        "rulings": [
+          "[トノサマバッタ]に[蟲神の一本槍]がついているとき、[飛蝗の待ち伏せ]を使いました。 効果によって、[トノサマバッタ]が効果をもつ＜とびだす＞を持った場合、ついている[蟲神の一本: 「これは技の効果を持たない虫にしかつけられない。」の条件をみたせなくなり、＜とびだす＞を持った[トノサマバッタ]についていた[蟲神の一本槍]は破壊されます。 「にしかつけられない。」の効果を持つ強化カードは、つけた後にその条件を満たせなくなった場合破壊されます。",
+          "[蟲神の一本槍]をもった虫が[サシハリアリ]の\"激痛針\"で破壊されました。[蟲神の一本槍]を捨てることは: できます。\"激痛針\"は縄張りを引いたときに効果を発揮する技です。仮に手札が1枚もないとき、破壊されたことで[蟲神の一本槍]は手札に戻り、その後縄張りを引きます。ここで\"激痛針\"が効果を発揮するため、捨てる対象は引いた縄張りか[蟲神の一本槍]のどちらかとなります。",
+          "＜＞の技を持つ虫につけることは: いいえ。つけられません。＜＞の技はすべて効果があるため、「技の効果を持たない虫」ではなく、＜＞を持つ虫につけることはできません。",
+          "[カイコ]や[武勇の面頬]などの効果で＜＞の技を失っている虫が場にいるとき、その虫に蟲神の一本槍をつけることは: はい、つけられます。＜＞の技を失ったあと、持っている＜＞でない技に効果が無い場合、つけることができます。",
+          "[カイコ]の効果で＜＞の技を失っている虫に蟲神の一本槍をつけました。その後[カイコ]が破壊された場合、蟲神の一本槍は: 蟲神の一本槍は破壊され、捨て札になります。強化カードは正しい対象につけられていない場合、破壊されて捨て札になります。虫の攻撃で破壊されていないため、手札には戻りません。",
+          "虫Aにつけた一本槍をの修正値を贋作でコピーして、贋作を虫Bにつけたたとき、虫Aが破壊されて一本槍が手札に戻ると、一本槍破壊されていないため、贋作はそのまま残りますか？: はい。その場合、贋作は破壊されず場に残ります。"
+        ],
+        "description": null,
+        "tags": [
+          "捨て札",
+          "破壊時",
+          "ダメージ変更",
+          "手札操作",
+          "縄張り操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/49/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "ATTACHMENT_HOST_REQUIREMENT",
+        "OPTIONAL_RETURN_ATTACHMENT_ON_HOST_ATTACK_DESTRUCTION",
+        "STAT_MODIFIER"
+      ],
+      "priorEvidenceClaim": {
+        "name": "蟲神の一本槍",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "spear continuous eligibility and optional attachment return"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/358.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [],
+        "engine": [
+          "tests/set5-spears-canonical.test.js"
+        ],
+        "cpu": [
+          "tests/set5-spears-canonical.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-spears-canonical.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "19/19 canonical checks across two cards: printed values, HP/AP400/800, paid attach, eligibility and suppression, granted trait invalidation, return/decline, JSON, CPU attachment and optional retrieval per card, SPELL excluded, capture owner/controller and stacked bonuses. Actual Chromium/WebKit CPU/WSS8 card paths pass4/4 Node tests.",
+        "image": "https://mushijingi.com/images/card/358.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 2,
+        "color": null,
+        "hp": null
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_053",
       "name": "雀蜂の鬼鎧",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_053",
+        "officialNumber": "53/64",
+        "name": "雀蜂の鬼鎧",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "ENHANCEMENT",
+        "color": null,
+        "cost": 2,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [
+          {
+            "type": "ATTACHMENT_HOST_REQUIREMENT",
+            "familySuffix": "バチ科"
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "HP",
+            "amount": 800
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "AP",
+            "amount": 800
+          },
+          {
+            "type": "OPTIONAL_ATTACH_FROM_TERRITORY"
+          }
+        ],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "縄張り操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/53/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "ATTACHMENT_HOST_REQUIREMENT",
+        "OPTIONAL_ATTACH_FROM_TERRITORY",
+        "STAT_MODIFIER"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "雀蜂の鬼鎧",
+        "type": "ENHANCEMENT",
+        "cost": 2,
+        "image": "https://mushijingi.com/images/card/362.jpg",
+        "sourceProvenance": "Printed scan362 visually checked2026-11-01 (nonofficial image host); official SET5 QA and official processing PDF261021 consulted. Family suffix restriction, +800HP/AP, optional territory attachment verified.",
+        "engine": [
+          "tests/set5-restricted-enhancements.test.js"
+        ],
+        "cpu": [
+          "tests/set5-restricted-enhancements.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/test/set5-restricted-capabilities.test.cjs",
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-restricted-enhancements.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Basic card-level completion only; final whole-SET and cross-set gate pending. Chromium/WebKit exercise real CPU adapter and authenticated local WebSocket room for normal use and territory attachment. Synthetic starting scenarios are test-only."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_055",
       "name": "幼虫の胡坐鍋",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_055",
+        "officialNumber": "55/64",
+        "name": "幼虫の胡坐鍋",
+        "set": "BOOSTER_SET_5",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "ENHANCEMENT",
+        "color": null,
+        "cost": 0,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [
+          {
+            "type": "ATTACHMENT_HOST_REQUIREMENT",
+            "nameSuffix": "（幼虫）"
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "HP",
+            "amount": 400
+          },
+          {
+            "type": "STAT_MODIFIER",
+            "stat": "AP",
+            "amount": 400
+          },
+          {
+            "type": "OPTIONAL_RETURN_ATTACHMENT_ON_HOST_ATTACK_DESTRUCTION"
+          }
+        ],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "破壊時",
+          "手札操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/55/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "ATTACHMENT_HOST_REQUIREMENT",
+        "OPTIONAL_RETURN_ATTACHMENT_ON_HOST_ATTACK_DESTRUCTION",
+        "STAT_MODIFIER"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "幼虫の胡坐鍋",
+        "type": "ENHANCEMENT",
+        "cost": 0,
+        "image": "https://mushijingi.com/images/card/364.jpg",
+        "sourceProvenance": "Printed nonofficial-hosted scan364 visually checked2026-11-02. Printed full effect is larva-only +400HP/AP and optional self return after host attack destruction. Uses established shared destruction lifecycle; no user ruling.",
+        "engine": [
+          "tests/set5-pot-canonical.test.js",
+          "tests/set5-destroyed-attachment-return.test.js"
+        ],
+        "cpu": [
+          "tests/set5-pot-canonical.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-pot-canonical.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Canonical8/8: illegal adult rejected atomically; zero cost and HP/AP400; retrieve/decline; independent multiple copies; JSON; CPU equipment and pending completion; host suppression; captured enhancement owner return; SPELL and ordinary leave excluded. Final Engine Chromium/WebKit CPU/WSS actual attachment→opponent attack→Human optional return passed. Independent reviewer reran8/8 and found no concrete basic-readiness blocker. Not final AUDITED; four unrelated timing hypotheses still block release."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_057",
       "name": "腐葉の沃土",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_057",
+        "officialNumber": "57/64",
+        "name": "腐葉の沃土",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "SPELL",
+        "color": null,
+        "cost": 4,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [
+          {
+            "type": "MOVE_SELECTED_ZONE_CARDS",
+            "from": "DISCARD",
+            "to": "FOOD",
+            "exactSelections": 2,
+            "faceDown": true,
+            "suppressFoodCostThisTurn": true
+          }
+        ],
+        "enhancementEffects": [],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "裏向き",
+          "エサ操作",
+          "捨て札"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/57/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "MOVE_SELECTED_ZONE_CARDS"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "腐葉の沃土",
+        "type": "SPELL",
+        "cost": 4,
+        "image": "https://mushijingi.com/images/card/366.jpg",
+        "sourceProvenance": "Printed scan visually checked2026-11-01 (nonofficial image host); official SET5 QA and official processing rules consulted.",
+        "engine": [
+          "tests/set5-discard-spells-canonical.test.js",
+          "tests/set5-discard-spells.test.js"
+        ],
+        "cpu": [
+          "tests/set5-discard-spells-canonical.test.js",
+          "tests/set5-discard-spells.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-discard-spells-canonical.test.js",
+          "tests/set5-discard-spells.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Basic card-level certification, final SET audit pending. Canonical Engine scenarios and real CPU/WSS B-board paths in both browser engines. Card60 ownership scope corrected against printed text; old own-only synthetic tests remain intact."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_058",
       "name": "燻煙の迎撃",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_058",
+        "officialNumber": "58/64",
+        "name": "燻煙の迎撃",
+        "set": "BOOSTER_SET_5",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "SPELL",
+        "color": null,
+        "cost": 1,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [
+          {
+            "type": "DEAL_DAMAGE_TO_TARGET",
+            "target": "OPPONENT_FIELD_INSECT",
+            "requiresTarget": true,
+            "amount": 400,
+            "effectText": "相手の虫を１つ選び、400のダメージを与える。＜迎撃＞これを縄張りから引いたとき、この縄張りを引かせた虫に、この効果を使用してもよい。そうしたなら、これを捨て札に置く。"
+          }
+        ],
+        "enhancementEffects": [],
+        "rulings": [
+          "相手が縄張りを引き＜迎撃＞の効果で[燻煙の迎撃]を使用したとき、 自分の場にいる＜未熟＞を持つ[イシガケチョウ(幼虫)]は＜未熟＞の効果を発揮して破壊されますか？: はい。破壊されます。＜迎撃＞の効果により術カードが使用されるため、＜未熟＞の効果が発動し破壊されます。",
+          "メガボールで攻撃したとき、相手の縄張りから発動した「燻煙の迎撃」の〈迎撃〉のダメージは受けますか: はい。自分のターン中は＜メガ装甲＞効果がないため＜迎撃＞のダメージを受けます。"
+        ],
+        "description": null,
+        "tags": [
+          "捨て札",
+          "ダメージ変更",
+          "縄張り操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/58/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending.",
+        "territoryEffects": [
+          {
+            "type": "USE_SPELL_ON_ATTACK_SOURCE",
+            "name": "迎撃"
+          }
+        ]
+      },
+      "genericMechanics": [
+        "DEAL_DAMAGE_TO_TARGET"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "燻煙の迎撃",
+        "type": "SPELL",
+        "cost": 1,
+        "damage": 400,
+        "image": "https://mushijingi.com/images/card/367.jpg",
+        "sourceProvenance": "Printed scans367/368 visually checked2026-11-01; official SET5 QA confirms Immature, Kuchinashi and first-damage shield interactions.",
+        "engine": [
+          "tests/set5-territory-spells.test.js"
+        ],
+        "cpu": [
+          "tests/set5-territory-spells.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-territory-spells.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Normal paid use and optional free territory counter share spell legality and pre-spell lifecycle. Counter target identity is rebuilt; no retargeting. Four browser tests pass32 CPU/WSS card scenarios including both counters, in Chromium/WebKit. Final SET audit pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_059",
       "name": "稲妻の迎撃",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_059",
+        "officialNumber": "59/64",
+        "name": "稲妻の迎撃",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "SPELL",
+        "color": null,
+        "cost": 2,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [
+          {
+            "type": "DEAL_DAMAGE_TO_TARGET",
+            "target": "OPPONENT_FIELD_INSECT",
+            "requiresTarget": true,
+            "amount": 800,
+            "effectText": "相手の虫を１つ選び、800のダメージを与える。＜迎撃＞これを縄張りから引いたとき、この縄張りを引かせた虫に、この効果を使用してもよい。そうしたなら、これを捨て札に置く。"
+          }
+        ],
+        "enhancementEffects": [],
+        "rulings": [
+          "自分のターンに受けた稲妻の迎撃や蠱毒の祟りのダメージは、アレクサンドラトリバネアゲハの＜不死蝶の舞＞の効果で0にすることは: はい。アレクサンドラトリバネアゲハの＜不死蝶の舞＞は自分のターンに受けた迎撃や蠱毒の祟りのダメージも0にします。"
+        ],
+        "description": null,
+        "tags": [
+          "捨て札",
+          "ダメージ変更",
+          "縄張り操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/59/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending.",
+        "territoryEffects": [
+          {
+            "type": "USE_SPELL_ON_ATTACK_SOURCE",
+            "name": "迎撃"
+          }
+        ]
+      },
+      "genericMechanics": [
+        "DEAL_DAMAGE_TO_TARGET"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "稲妻の迎撃",
+        "type": "SPELL",
+        "cost": 2,
+        "damage": 800,
+        "image": "https://mushijingi.com/images/card/368.jpg",
+        "sourceProvenance": "Printed scans367/368 visually checked2026-11-01; official SET5 QA confirms Immature, Kuchinashi and first-damage shield interactions.",
+        "engine": [
+          "tests/set5-territory-spells.test.js"
+        ],
+        "cpu": [
+          "tests/set5-territory-spells.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-territory-spells.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Normal paid use and optional free territory counter share spell legality and pre-spell lifecycle. Counter target identity is rebuilt; no retargeting. Four browser tests pass32 CPU/WSS card scenarios including both counters, in Chromium/WebKit. Final SET audit pending."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_060",
       "name": "毒の追い打ち",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_060",
+        "officialNumber": "60/64",
+        "name": "毒の追い打ち",
+        "set": "BOOSTER_SET_5",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "SPELL",
+        "color": null,
+        "cost": 2,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [
+          {
+            "type": "RESET_ATTACK",
+            "requiresTarget": true,
+            "target": "ANY_ATTACKED_FIELD_INSECT",
+            "requiredSkillNameSubstring": "毒"
+          }
+        ],
+        "enhancementEffects": [],
+        "rulings": [
+          "＜毒霧噴射＞など、＜＞の技に「毒とつく」虫に[毒の追い打ち]を使うことは: はい。できます。＜＞の技も技として扱います。"
+        ],
+        "description": null,
+        "tags": [],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/60/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "RESET_ATTACK"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "毒の追い打ち",
+        "type": "SPELL",
+        "cost": 2,
+        "image": "https://mushijingi.com/images/card/369.jpg",
+        "sourceProvenance": "Printed scan visually checked2026-11-01 (nonofficial image host); official SET5 QA and official processing rules consulted.",
+        "engine": [
+          "tests/set5-poison-reset-canonical.test.js",
+          "tests/set5-poison-reset.test.js",
+          "tests/set5-spell-lure-interactions.test.js"
+        ],
+        "cpu": [
+          "tests/set5-poison-reset-canonical.test.js",
+          "tests/set5-poison-reset.test.js",
+          "tests/set5-spell-lure-interactions.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-poison-reset-canonical.test.js",
+          "tests/set5-poison-reset.test.js",
+          "tests/set5-spell-lure-interactions.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Basic card-level certification, final SET audit pending. Canonical Engine scenarios and real CPU/WSS B-board paths in both browser engines. Card60 ownership scope corrected against printed text; old own-only synthetic tests remain intact."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set5_062",
       "name": "甲冑の鍛冶",
-      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED"
+      "decision": "HOLD_DEPENDENCY_CLOSED_AUDIT_NOT_COMPLETED",
+      "localRuntimeDefinition": {
+        "id": "set5_062",
+        "officialNumber": "62/64",
+        "name": "甲冑の鍛冶",
+        "set": "BOOSTER_SET_5",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "SPELL",
+        "color": null,
+        "cost": 0,
+        "baseHp": null,
+        "skills": [],
+        "passiveAbilities": [],
+        "cardEffects": [
+          {
+            "type": "MOVE_SELECTED_ZONE_CARDS",
+            "from": "DISCARD",
+            "to": "HAND",
+            "cardType": "ENHANCEMENT",
+            "nameSubstrings": [
+              "甲冑",
+              "贋作"
+            ],
+            "minSelections": 0,
+            "maxSelections": 2
+          }
+        ],
+        "enhancementEffects": [],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "捨て札",
+          "手札操作"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI5/62/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "NOT_APPLICABLE",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending."
+      },
+      "genericMechanics": [
+        "MOVE_SELECTED_ZONE_CARDS"
+      ],
+      "priorEvidenceClaim": {
+        "status": "PLAYABLE",
+        "audited": false,
+        "name": "甲冑の鍛冶",
+        "type": "SPELL",
+        "cost": 0,
+        "image": "https://mushijingi.com/images/card/371.jpg",
+        "sourceProvenance": "Printed scan visually checked2026-11-01 (nonofficial image host); official SET5 QA and official processing rules consulted.",
+        "engine": [
+          "tests/set5-discard-spells-canonical.test.js",
+          "tests/set5-discard-spells.test.js"
+        ],
+        "cpu": [
+          "tests/set5-discard-spells-canonical.test.js",
+          "tests/set5-discard-spells.test.js"
+        ],
+        "human": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "online": [
+          "server/browser/set5-completion-paths.cjs"
+        ],
+        "serialization": [
+          "tests/set5-discard-spells-canonical.test.js",
+          "tests/set5-discard-spells.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "Basic card-level certification, final SET audit pending. Canonical Engine scenarios and real CPU/WSS B-board paths in both browser engines. Card60 ownership scope corrected against printed text; old own-only synthetic tests remain intact."
+      },
+      "independentAuditNote": "Not certified this run: broad local Engine includes paid-cost source-loss blocker; dependency-closed port and dedicated CPU/WSS tests still required"
     },
     {
       "id": "set6_015",
       "name": "アオバアリガタハネカクシ",
-      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION"
+      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION",
+      "localRuntimeDefinition": {
+        "id": "set6_015",
+        "officialNumber": "15/64",
+        "name": "アオバアリガタハネカクシ",
+        "set": "BOOSTER_SET_6",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "RED",
+        "cost": 1,
+        "baseHp": 100,
+        "skills": [
+          {
+            "name": "やけど虫",
+            "baseAp": "X",
+            "effectText": "自分の捨て札にある赤の虫の数×100のダメージを与える。",
+            "id": "set6_015_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": [],
+            "dynamicAp": {
+              "type": "FILTERED_DISCARD_COUNT",
+              "filter": {
+                "cardType": "INSECT",
+                "color": "RED"
+              },
+              "multiplier": 100
+            }
+          }
+        ],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "ハネカクシ科",
+          "捨て札",
+          "ダメージ変更"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI6/15/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "Shared visible-discard predicate. Per-card Engine, CPU, Human and WSS evidence required; final audit pending."
+      },
+      "genericMechanics": [
+        "FILTERED_DISCARD_COUNT"
+      ],
+      "priorEvidenceClaim": {
+        "name": "アオバアリガタハネカクシ",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "visible red insect discard count dynamic AP"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/388.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [
+          "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/"
+        ],
+        "engine": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "cpu": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "human": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "online": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "serialization": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "25/25 common+card checks across six cards; complete printed cost/color/HP/skill; live count, suppression, controller, hidden getter, cost additive-floor/atomic failure, printed-cost exchange rule and JSON. Chromium/WebKit CPU/authenticated WSS36 actual operation paths across9 scenarios pass4/4 tests. Zero AP and Kuchinashi variants included. New cards share one server-authoritative predicate; no UI-only damage. Final AUDITED pending.",
+        "image": "https://mushijingi.com/images/card/388.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 1,
+        "color": "RED",
+        "hp": 100
+      },
+      "independentAuditNote": "Six-card focused25 and CPU/WSS four browser tests re-executed in isolated branch"
     },
     {
       "id": "set6_032",
       "name": "ヨツモンヒラタツユムシ",
-      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION"
+      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION",
+      "localRuntimeDefinition": {
+        "id": "set6_032",
+        "officialNumber": "32/64",
+        "name": "ヨツモンヒラタツユムシ",
+        "set": "BOOSTER_SET_6",
+        "rarity": "SR",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "GREEN",
+        "cost": 5,
+        "baseHp": 1100,
+        "skills": [
+          {
+            "name": "とびはねる",
+            "baseAp": 800,
+            "effectText": null,
+            "id": "set6_032_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [
+          {
+            "name": "露の恵み",
+            "effectText": "自分の捨て札にある強化カード1つにつき、この虫のコストを1減らす。"
+          }
+        ],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "手札にある5コストの[ヨツモンヒラタツユムシ]が＜露の恵み＞の効果によりコストが1減っているとき、[繚乱の足掻き]を使用して、効果で場のコスト4の虫と交換することが: いいえ。できません。 [繚乱の足掻き]などのコストを参照するカードや効果は、特別記載がない限りカードに書かれている元のコストを参照します。"
+        ],
+        "description": null,
+        "tags": [
+          "キリギリス科",
+          "露の恵み",
+          "捨て札"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI6/32/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "Shared visible-discard predicate. Per-card Engine, CPU, Human and WSS evidence required; final audit pending.",
+        "costModifiers": [
+          {
+            "type": "PER_FILTERED_DISCARD",
+            "filter": {
+              "cardType": "ENHANCEMENT"
+            },
+            "amount": -1,
+            "requiresKeywordTrait": true
+          }
+        ]
+      },
+      "genericMechanics": [
+        "PER_FILTERED_DISCARD"
+      ],
+      "priorEvidenceClaim": {
+        "name": "ヨツモンヒラタツユムシ",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "visible enhancement discard count effective cost"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/405.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [
+          "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/"
+        ],
+        "engine": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "cpu": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "human": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "online": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "serialization": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "25/25 common+card checks across six cards; complete printed cost/color/HP/skill; live count, suppression, controller, hidden getter, cost additive-floor/atomic failure, printed-cost exchange rule and JSON. Chromium/WebKit CPU/authenticated WSS36 actual operation paths across9 scenarios pass4/4 tests. Zero AP and Kuchinashi variants included. New cards share one server-authoritative predicate; no UI-only damage. Final AUDITED pending.",
+        "image": "https://mushijingi.com/images/card/405.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 5,
+        "color": "GREEN",
+        "hp": 1100
+      },
+      "independentAuditNote": "Six-card focused25 and CPU/WSS four browser tests re-executed in isolated branch"
     },
     {
       "id": "set6_038",
       "name": "ツユムシ",
-      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION"
+      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION",
+      "localRuntimeDefinition": {
+        "id": "set6_038",
+        "officialNumber": "38/64",
+        "name": "ツユムシ",
+        "set": "BOOSTER_SET_6",
+        "rarity": "SR",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "GREEN",
+        "cost": 3,
+        "baseHp": 400,
+        "skills": [
+          {
+            "name": "かみちぎる",
+            "baseAp": 400,
+            "effectText": null,
+            "id": "set6_038_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [
+          {
+            "name": "露の恵み",
+            "effectText": "自分の捨て札にある強化カード1つにつき、この虫のコストを1減らす。"
+          }
+        ],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "手札にある5コストの[ヨツモンヒラタツユムシ]が＜露の恵み＞の効果によりコストが1減っているとき、[繚乱の足掻き]を使用して、効果で場のコスト4の虫と交換することが: いいえ。できません。 [繚乱の足掻き]などのコストを参照するカードや効果は、特別記載がない限りカードに書かれている元のコストを参照します。"
+        ],
+        "description": null,
+        "tags": [
+          "キリギリス科",
+          "露の恵み",
+          "捨て札"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI6/38/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "Shared visible-discard predicate. Per-card Engine, CPU, Human and WSS evidence required; final audit pending.",
+        "costModifiers": [
+          {
+            "type": "PER_FILTERED_DISCARD",
+            "filter": {
+              "cardType": "ENHANCEMENT"
+            },
+            "amount": -1,
+            "requiresKeywordTrait": true
+          }
+        ]
+      },
+      "genericMechanics": [
+        "PER_FILTERED_DISCARD"
+      ],
+      "priorEvidenceClaim": {
+        "name": "ツユムシ",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "visible enhancement discard count effective cost"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/411.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [
+          "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/"
+        ],
+        "engine": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "cpu": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "human": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "online": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "serialization": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "25/25 common+card checks across six cards; complete printed cost/color/HP/skill; live count, suppression, controller, hidden getter, cost additive-floor/atomic failure, printed-cost exchange rule and JSON. Chromium/WebKit CPU/authenticated WSS36 actual operation paths across9 scenarios pass4/4 tests. Zero AP and Kuchinashi variants included. New cards share one server-authoritative predicate; no UI-only damage. Final AUDITED pending.",
+        "image": "https://mushijingi.com/images/card/411.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 3,
+        "color": "GREEN",
+        "hp": 400
+      },
+      "independentAuditNote": "Six-card focused25 and CPU/WSS four browser tests re-executed in isolated branch"
     },
     {
       "id": "set7_005",
       "name": "ケンランカマキリ",
-      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION"
+      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION",
+      "localRuntimeDefinition": {
+        "id": "set7_005",
+        "officialNumber": "5/64",
+        "name": "ケンランカマキリ",
+        "set": "BOOSTER_SET_7",
+        "rarity": "R",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "RED",
+        "cost": 3,
+        "baseHp": 400,
+        "skills": [
+          {
+            "name": "カマ斬撃",
+            "baseAp": 400,
+            "effectText": null,
+            "id": "set7_005_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": []
+          }
+        ],
+        "passiveAbilities": [
+          {
+            "name": "生きた化石",
+            "effectText": "自分の捨て札にある＜生きた化石＞を持つ虫1つにつき、これのコストを1減らす。"
+          }
+        ],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [],
+        "description": null,
+        "tags": [
+          "ケンランカマキリ科",
+          "生きた化石",
+          "捨て札"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI7/5/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "NO_OFFICIAL_QA_MATCH"
+        },
+        "implementationNotes": "Shared visible-discard predicate. Per-card Engine, CPU, Human and WSS evidence required; final audit pending.",
+        "costModifiers": [
+          {
+            "type": "PER_FILTERED_DISCARD",
+            "filter": {
+              "cardType": "INSECT",
+              "traitName": "生きた化石"
+            },
+            "amount": -1,
+            "requiresKeywordTrait": true
+          }
+        ]
+      },
+      "genericMechanics": [
+        "PER_FILTERED_DISCARD"
+      ],
+      "priorEvidenceClaim": {
+        "name": "ケンランカマキリ",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "active visible fossil insect discard count effective cost"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/442.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [
+          "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第７弾のカードについて/"
+        ],
+        "engine": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "cpu": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "human": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "online": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "serialization": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "25/25 common+card checks across six cards; complete printed cost/color/HP/skill; live count, suppression, controller, hidden getter, cost additive-floor/atomic failure, printed-cost exchange rule and JSON. Chromium/WebKit CPU/authenticated WSS36 actual operation paths across9 scenarios pass4/4 tests. Zero AP and Kuchinashi variants included. New cards share one server-authoritative predicate; no UI-only damage. Final AUDITED pending.",
+        "image": "https://mushijingi.com/images/card/442.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 3,
+        "color": "RED",
+        "hp": 400
+      },
+      "independentAuditNote": "Six-card focused25 and CPU/WSS four browser tests re-executed in isolated branch"
     },
     {
       "id": "set7_024",
       "name": "ベニモンアゲハ",
-      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION"
+      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION",
+      "localRuntimeDefinition": {
+        "id": "set7_024",
+        "officialNumber": "24/64",
+        "name": "ベニモンアゲハ",
+        "set": "BOOSTER_SET_7",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "BLUE",
+        "cost": 3,
+        "baseHp": 500,
+        "skills": [
+          {
+            "name": "黒毒蝶",
+            "baseAp": "X",
+            "effectText": "自分の捨て札にある毒と書かれた技を持つ虫の数×300のダメージを与える。",
+            "id": "set7_024_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": [],
+            "dynamicAp": {
+              "type": "FILTERED_DISCARD_COUNT",
+              "filter": {
+                "cardType": "INSECT",
+                "skillNameIncludes": "毒"
+              },
+              "multiplier": 300
+            }
+          }
+        ],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "4/17追記 場に[カイコ]がいます。自分の捨て札に[オオスズメバチ][アカスジキンカメムシ][ナガメ][サソリカミキリ]の4枚があるとき、[ベニモンアゲハ]の\"黒毒蝶\"で与えられ: 600です。 捨て札にあるのはいずれも技名に「毒」と書かれた虫カードですが、[アカスジカメムシ][サソリカミキリ]の2枚は[カイコ]によって＜＞の技を失っています。"
+        ],
+        "description": null,
+        "tags": [
+          "アゲハチョウ科",
+          "捨て札",
+          "ダメージ変更"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI7/24/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "Shared visible-discard predicate. Per-card Engine, CPU, Human and WSS evidence required; final audit pending."
+      },
+      "genericMechanics": [
+        "FILTERED_DISCARD_COUNT"
+      ],
+      "priorEvidenceClaim": {
+        "name": "ベニモンアゲハ",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "active poison skill-name discard count dynamic AP"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/461.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [
+          "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第７弾のカードについて/"
+        ],
+        "engine": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "cpu": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "human": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "online": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "serialization": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "25/25 common+card checks across six cards; complete printed cost/color/HP/skill; live count, suppression, controller, hidden getter, cost additive-floor/atomic failure, printed-cost exchange rule and JSON. Chromium/WebKit CPU/authenticated WSS36 actual operation paths across9 scenarios pass4/4 tests. Zero AP and Kuchinashi variants included. New cards share one server-authoritative predicate; no UI-only damage. Final AUDITED pending.",
+        "image": "https://mushijingi.com/images/card/461.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 3,
+        "color": "BLUE",
+        "hp": 500
+      },
+      "independentAuditNote": "Six-card focused25 and CPU/WSS four browser tests re-executed in isolated branch"
     },
     {
       "id": "set7_025",
       "name": "メルポメネドクチョウ",
-      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION"
+      "decision": "COUNT_BATCH_UNDER_INDEPENDENT_REVALIDATION",
+      "localRuntimeDefinition": {
+        "id": "set7_025",
+        "officialNumber": "25/64",
+        "name": "メルポメネドクチョウ",
+        "set": "BOOSTER_SET_7",
+        "rarity": "N",
+        "starterDeck": null,
+        "type": "INSECT",
+        "color": "BLUE",
+        "cost": 2,
+        "baseHp": 300,
+        "skills": [
+          {
+            "name": "毒蝶",
+            "baseAp": "X",
+            "effectText": "自分の捨て札にある毒と書かれた技を持つ虫の数×200のダメージを与える。",
+            "id": "set7_025_skill_1",
+            "timing": "ATTACK",
+            "effects": [],
+            "additionalCost": [],
+            "dynamicAp": {
+              "type": "FILTERED_DISCARD_COUNT",
+              "filter": {
+                "cardType": "INSECT",
+                "skillNameIncludes": "毒"
+              },
+              "multiplier": 200
+            }
+          }
+        ],
+        "passiveAbilities": [],
+        "cardEffects": [],
+        "enhancementEffects": [],
+        "rulings": [
+          "4/17追記 場に[カイコ]がいます。自分の捨て札に[オオスズメバチ][アカスジキンカメムシ][ナガメ][サソリカミキリ]の4枚があるとき、[ベニモンアゲハ]の\"黒毒蝶\"で与えられ: 600です。 捨て札にあるのはいずれも技名に「毒」と書かれた虫カードですが、[アカスジカメムシ][サソリカミキリ]の2枚は[カイコ]によって＜＞の技を失っています。"
+        ],
+        "description": null,
+        "tags": [
+          "タテハチョウ科",
+          "捨て札",
+          "ダメージ変更"
+        ],
+        "implementationStatus": "PLAYABLE",
+        "sourceLevel": "C",
+        "sourceRefs": [
+          "https://mushijingi.com/card/MUSHI7/25/",
+          "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+        ],
+        "verificationNotes": {
+          "basicCardData": "VERIFIED_SECONDARY",
+          "taxonomy": "VERIFIED_SECONDARY",
+          "rulings": "OFFICIAL_QA_SUMMARY"
+        },
+        "implementationNotes": "Shared visible-discard predicate. Per-card Engine, CPU, Human and WSS evidence required; final audit pending."
+      },
+      "genericMechanics": [
+        "FILTERED_DISCARD_COUNT"
+      ],
+      "priorEvidenceClaim": {
+        "name": "メルポメネドクチョウ",
+        "status": "PLAYABLE",
+        "audited": false,
+        "mechanics": [
+          "active poison skill-name discard count dynamic AP"
+        ],
+        "source": {
+          "image": "https://mushijingi.com/images/card/462.jpg",
+          "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-02",
+          "provenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings."
+        },
+        "officialRulings": [
+          "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第７弾のカードについて/"
+        ],
+        "engine": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "cpu": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "human": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "online": [
+          "server/browser/crossset-count-paths.cjs"
+        ],
+        "serialization": [
+          "tests/crossset-discard-count.test.js"
+        ],
+        "unresolvedRulings": [],
+        "userRulings": [],
+        "notes": "25/25 common+card checks across six cards; complete printed cost/color/HP/skill; live count, suppression, controller, hidden getter, cost additive-floor/atomic failure, printed-cost exchange rule and JSON. Chromium/WebKit CPU/authenticated WSS36 actual operation paths across9 scenarios pass4/4 tests. Zero AP and Kuchinashi variants included. New cards share one server-authoritative predicate; no UI-only damage. Final AUDITED pending.",
+        "image": "https://mushijingi.com/images/card/462.jpg",
+        "sourceProvenance": "Secondary printed-image host; official SET6/SET7 QA separately checked for applicable cost/suppression rulings.",
+        "cost": 2,
+        "color": "BLUE",
+        "hp": 300
+      },
+      "independentAuditNote": "Six-card focused25 and CPU/WSS four browser tests re-executed in isolated branch"
     }
   ],
   "mechanicGroups": [

@@ -20,4 +20,3 @@ jobs:
           name: verified-pages-output
           path: _site
           retention-days: 3
-
