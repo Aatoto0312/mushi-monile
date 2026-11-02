@@ -10,12 +10,12 @@ Recovery uses immutable505097f code under C:/Users/aatot/.codex/tmp/mushi-public
 ## Why not388
 Independent review reproduced RULING_REQUIRED in34ebf3a with only PLAYABLE SET4-39 and Starter Minomushi equipment:100HP host destroys its ownHP enhancement to pay second-skill additional cost, then dies before attack resumes. This is not isolated by PARTIAL SET5-52, not one of the accepted four timing hypotheses, and blocks whole388 release pending source-backed rule/containment. No guessed ruling implemented.
 
-Candidate preserves9 Engine/AI/projection files byte-equivalent to505097f and unchanged SET5 definitions. Does not adopt14 earlier SET5 promotions, phase2 eight promotions, new filtered-discard handler, conditional-HP/paid-cost continuation changes or their provisional rules. tests/crossset-public-scope.test.js enforces that boundary. Existing published baseline behavior is preserved, not declared exhaustively correct.
+Candidate preserves9 Engine/AI/projection files equivalent after CRLF-to-LF normalization to505097f and unchanged SET5 definitions. Does not adopt14 earlier SET5 promotions, phase2 eight promotions, new filtered-discard handler, conditional-HP/paid-cost continuation changes or their provisional rules. tests/crossset-public-scope.test.js enforces that boundary. Existing published baseline behavior is preserved, not declared exhaustively correct.
 
 Adopted21: SET6-9/23/29/34/39/40/45/48, SET7-3/39/43/47/50, SET8-2/9/10/12/20/25/35/46. Source-backed per-card basic evidence and64 focused checks in crossset suites. Donor SET5-28 metadata is reused without promoting that donor. One UI-only legacy confirm ownership guard preserves B Tobidasu choices and legacy fallback. New SCRIPTS registration and contract required for server; no WSS protocol alteration.
 
 ## Four research failures
-Original four diagnostics and expectations remain untouched on battle-set5-complete (34ebf3a); they still execute in its full suite. This candidate starts from publishedmain and does not adopt their provisional Engine/cards/test dependency branch (including absent SET5-58). No test is deleted, skipped, or weakened to green that branch. Candidate full is published baseline1562 plus64 card/evidence checks plus2 release-scope checks =1628; separate broader-branch1792/4 receipt is retained. A safe subset is not a claim that the larger branch is green.
+Original four diagnostics and expectations remain untouched on battle-set5-complete (34ebf3a); they still execute in its full suite. This candidate starts from publishedmain and does not adopt their provisional Engine/cards/test dependency branch (including absent SET5-58). No test is deleted, skipped, or weakened to green that branch. Candidate full is published baseline1562 plus64 card/evidence checks plus3 release-scope checks =1629; separate broader-branch1792/4 receipt is retained. A safe subset is not a claim that the larger branch is green.
 
 ## Versioned assets and gates
 Cache tag cards-366-v1, matched online/contract generated from candidate sources. Saved deck format/key unchanged; canonical PLAYABLE controls filters. Invalid/PARTIAL/unconnected deck entries remain rejected. All assets remain at existing GitHub Pages URL; ngrok onlyAPI.
@@ -28,3 +28,12 @@ Restored public345 API is now running. Rooms/sessions live only in its process. 
 For an approved controlled window: retain old immutable snapshot and contracts; prepare immutable366 API offline, verify it on an isolated port; announce match interruption; stop only verified owned4056 by PID+creation+executable; start paired366 at8791 without restarting ngrok; push validated main and verify Pages deployment/assets/contract; test public CPU/online/spectator/reconnect. On failure restore oldAPI and ordinary-revert frontend as a matched pair. No force/reset/clean.
 
 Autostart/service registration remains outside this change. iPhone real device validation remains human-operated. Public API recovery is not a claim of24h supervision.
+
+## Verified gate receipt (2026-11-02)
+- Final full:1629 pass/0 fail; shared:73/0; server:54/0.
+- Chromium and WebKit:21 CPU plus21 online card-specific paths per engine; both suites2/2. Flow gates8/8 plus candidate-validation4/4, including completed matches, spectator, reload/reconnect, invalid decks and legacy online UI.
+- Toolbox candidate:16 checks in each browser, including saved mixed-set deck handoff. Public345 recovery:online2/2 and CPU2/2 with completed matches; physical iPhone not tested.
+- Real Linux official Jekyll artifact:Actions run41381855534, source f2d743e;81 deployed files,82 manifest entries (build-only config excluded), all SHA256 matched. Receipt outside Git: C:/Users/aatot/.codex/tmp/mushi-public-recovery-20261102/linux-result.json.
+- Immutable366 API snapshot prepared and tested on an ephemeral localhost port; health200 and candidate contract matched. It has NOT replaced restored public345 API.
+- API maintenance approval requested because rooms and reconnect seats cannot migrate across processes. main and Pages remain505097f pending that decision; no new-card publication claimed.
+- Existing online-beta staged diff hash remains45016f7bd80bb86e6f6ef50b3dcef5ac6d4e28f8.
