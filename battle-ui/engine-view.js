@@ -40,7 +40,7 @@ function prepareView(r,s,viewer){
   function card(inst,zone,pid,forceHidden=false){
     // Some existing moves keep the instance faceDown flag after it enters hand/discard.
     // Visibility follows the current zone, never a stale territory flag.
-    const hidden=forceHidden||zone==='DECK'||zone==='HAND'&&pid!==viewer||zone==='RESOLVING'&&pid!==viewer||['FIELD','FOOD','TERRITORY'].includes(zone)&&!!inst.faceDown;
+    const hidden=forceHidden||zone==='DECK'||zone==='HAND'&&pid!==viewer||zone==='RESOLVING'&&pid!==viewer||['FIELD','FOOD','TERRITORY','DISCARD'].includes(zone)&&!!inst.faceDown;
     if(hidden)return {ref:ref(inst.instanceId),hidden:true,label:'裏向きのカード',zone};
     const d=c.getCardDefinition(inst.cardId);
     const result={ref:ref(inst.instanceId),hidden:false,zone,cardId:inst.cardId,name:d?d.name:'カード',ownerId:inst.ownerId,controllerId:pid};

@@ -217,6 +217,8 @@
       discardAllAttachments(state, card, {deferDestruction:!!opts.deferAttachmentDestruction});
     }
 
+    // Discard is public by default; explicit opts.faceDown below may override.
+    if (toZone === ZONES.DISCARD) card.faceDown = false;
     card.zone = toZone;
     card.controllerId = destPlayerId;
 

@@ -9,6 +9,8 @@ function requireAll() {
     require('./crossset-public-scope.test.js'),
     require('./crossset-evidence-integrity.test.js'),
     require('./crossset-ant.test.js'),
+    require('./crossset-discard-count.test.js'),
+    require('./count-evidence-integrity.test.js'),
     require('./crossset-traits.test.js'),
     require('./crossset-simple-effects.test.js'),
     require('./crossset-vanilla.test.js'),

@@ -57,6 +57,26 @@
     return total;
   }
 
+  // Face-down discard cards are absent for rule queries. Never inspect their
+  // identity, even when a filter could otherwise be decided from metadata.
+  function countVisibleDiscardCards(state, playerId, filter) {
+    filter = filter || {};
+    return state.player(playerId).discard.filter(function (card) {
+      if (card.faceDown) return false;
+      var def = global.getCardDefinition(card.cardId);
+      if (!def || (filter.cardType && def.type !== filter.cardType)) return false;
+      if (filter.color && def.color !== filter.color) return false;
+      var suppressed = global.areInsectKeywordSkillsSuppressed && global.areInsectKeywordSkillsSuppressed(state, card);
+      if (filter.traitName && (suppressed || !(def.passiveAbilities || []).some(function (trait) { return trait.name === filter.traitName; }))) return false;
+      if (filter.skillNameIncludes) {
+        var names = (def.skills || []).filter(function (skill) { return skill.timing === 'ATTACK' || !suppressed; });
+        if (!suppressed) names = names.concat(def.passiveAbilities || []);
+        if (!names.some(function (skill) { return (skill.name || '').indexOf(filter.skillNameIncludes) !== -1; })) return false;
+      }
+      return true;
+    }).length;
+  }
+
   // 有効な AP 修飾を合算した総AP量を返す。
   // baseAp は通常、技の baseAp。攻撃のたびに再計算される。
   function getEffectiveAP(state, instance, baseAp, skill) {
@@ -79,6 +99,8 @@
           var color = global.getEffectiveColor ? global.getEffectiveColor(card) : def && def.color;
           return !card.faceDown && def && color === rule.color;
         }).length * rule.multiplier;
+      } else if (rule.type === 'FILTERED_DISCARD_COUNT') {
+        baseAp = countVisibleDiscardCards(state, controllerId, rule.filter) * rule.multiplier;
       } else if (rule.type === 'DISCARD_COUNT') {
         baseAp = player.discard.length * rule.multiplier;
       } else if (rule.type === 'OWN_FIELD_COUNT') {
@@ -204,6 +226,7 @@
     }
   }
 
+  global.countVisibleDiscardCards = countVisibleDiscardCards;
   global.getStatModifierTotal = getStatModifierTotal;
   global.getEffectiveAP = getEffectiveAP;
   global.calculateMaxHp = calculateMaxHp;

@@ -791,6 +791,9 @@
       if (modifier.type === 'OWN_FIELD_EMPTY' && !player.field.some(function (card) { return !card.faceDown; })) {
         cost += modifier.amount;
       }
+      if (modifier.type === 'PER_FILTERED_DISCARD') {
+        cost += countVisibleDiscardCards(state, playerId, modifier.filter) * modifier.amount;
+      }
       if (modifier.type === 'PER_DISCARD_TRAIT') {
         var traitCount = player.discard.filter(function (card) {
           var discardedDef = getCardDefinition(card.cardId);
@@ -2166,6 +2169,7 @@
     }
     if(holder){var sourceCards=getPlayerZoneArray(state,holder.playerId,holder.zone);sourceCards.splice(sourceCards.indexOf(attachment),1);}
     attachment.controllerId=playerId;
+    attachment.faceDown=false;
     attachment.zone=ZONES.FIELD;host.attachments=host.attachments||[];host.attachments.push(attachment);
     if(options.copySource)setCopiedEnhancementSource(attachment,options.copySource);
     preserveDamageAfterMaxHpChange(state,host,oldMax);
@@ -2306,6 +2310,7 @@
       throw new Error('useEnhancement: handInstance not in HAND');
     }
     fromArr.splice(idx, 1);
+    held.faceDown = false;
     held.zone = ZONES.FIELD;
     if (!target.attachments) { target.attachments = []; }
     var previousMaxHp = calculateMaxHp(target, state);
