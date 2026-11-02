@@ -25,7 +25,7 @@ function createPublicObserver({directory,port=8791,intervalMs=10000,testMode=fal
       timer=setInterval(()=>refresh().catch(()=>{}),intervalMs);timer.unref();
       throw Error('OBSERVATION_FAILED_API_BUSY_OR_UNKNOWN');
     }
-    timer=setInterval(()=>refresh().catch(()=>{state.statusUnavailableAt=new Date().toISOString();persist();}),intervalMs);timer.unref();
+    timer=setInterval(()=>refresh().catch(()=>{state.statusUnavailableAt=new Date().toISOString();try{persist();}catch{}}),intervalMs);timer.unref();
   }
   async function stopIfIdle(){const m=await request('STOP_IF_IDLE');if(m.type==='BUSY')return false;await exited;return true;}
   async function stopForTest(){if(!testMode)throw Error('TEST_ONLY');if(child?.connected){child.send({type:'TEST_STOP'});await exited;}}
