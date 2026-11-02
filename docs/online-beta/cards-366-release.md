@@ -1,6 +1,6 @@
 # 21-card isolated release candidate and recovery (2026-11-02)
 
-STATUS: PREPARED, NOT RELEASED. Publicmain505097f /345 cards. Card-development branch34ebf3a /388 is preserved separately. Candidate is exactly public345+21 previously certified reuse cards =366. No unreviewed whole-branch merge.
+STATUS: RELEASED 2026-11-02. Public card release5d85350 /366 cards; prior publicmain505097f /345 cards retained for paired rollback. Card-development branch34ebf3a /388 is preserved separately. Candidate is exactly public345+21 previously certified reuse cards =366. No unreviewed whole-branch merge.
 
 ## Recovery and cause
 Original recorded APIpid14280 is absent and127.0.0.1:8791 had no listener. ngrokpid6440, created2026-10-31T21:19:06JST, remains running with token-free endpoint.yml forwarding8791. This explains the502 transport failure. Original hidden Start-Process launcher persisted neither exit logs nor a supervisor; exact exit cause is unknown, not asserted to be a crash or reboot. No credentials/ACL/Windows/Tailscale/RDP changed.
@@ -37,3 +37,14 @@ Autostart/service registration remains outside this change. iPhone real device v
 - Immutable366 API snapshot prepared and tested on an ephemeral localhost port; health200 and candidate contract matched. It has NOT replaced restored public345 API.
 - API maintenance approval requested because rooms and reconnect seats cannot migrate across processes. main and Pages remain505097f pending that decision; no new-card publication claimed.
 - Existing online-beta staged diff hash remains45016f7bd80bb86e6f6ef50b3dcef5ac6d4e28f8.
+
+## Release execution receipt (2026-11-02 22:18-22:22 JST)
+User confirmed no matches and authorized cutover. Process4056 identity was verified and explicitly stopped; no claim of graceful room migration. Snapshot api-366-f2d743e started as PID23988 at8791. Existing ngrokPID6440, domain and authentication untouched. Local/publichealth200, exact contract match, actual WSS HELLO and unauthorized Origin403 confirmed. The small probe held its rejected socket open after assertions and was stopped by its exact test PID32556; publicAPI was not stopped.
+
+Main fast-forwarded normally505097f ->5d85350 and normally pushed. Actual Pages build/deployment succeeded: https://github.com/Aatoto0312/mushi-monile/actions/runs/41451889073 . Public81 asset SHA256 values match manifest;5 forbidden representative paths404; published contract equals publicAPI. Public CPU:Chromium2 matches +WebKit2 matches completed,2/2 tests. Public online:Chromium1 +WebKit1 completed,2/2 tests with spectator, reload and disconnect/resume;111/65 actions and2570502/1175143 received WS payload bytes respectively (not billed tunnel traffic). Toolbox mixed saved-deck handoff:16 checks per engine. No application page errors, missing required assets or tested hidden-information leaks. Physical iPhone not operated.
+
+Evidence outside Git: C:/Users/aatot/.codex/tmp/mushi-public-recovery-20261102/{public-366-assets.json,public-366-online.log,public-366-cpu.log,public-366-toolbox.log,api-366-process.json,api-366.stdout.log,api-366.stderr.log}. Exact snapshot node command: node server/public.cjs with cwd api-366-f2d743e. This is a manually started process, not a registered Windows service or automatic recovery guarantee.
+
+For emergency stop, verify PID23988 and recorded creation time/executable against api-366-process.json before stopping only that API. It disconnects matches; obtain an operational window unless urgent safety requires stop. Existing tunnel then has no upstream. For restart, first verify8791 is free, then launch node server/public.cjs in the immutable366 snapshot with hidden window and new log names; keep ngrok unchanged. Never start from changing card-development worktrees.
+
+Paired rollback: secure a maintenance window; restore old immutable api-505097f on8791; restore browser assets to505097f with ordinary reviewed revert commits (no reset or force), regenerate/reverify matching manifest and Pages build, and verify old contracts/HTTPS/WSS. Restoring only frontend or onlyAPI leaves a contract mismatch. The388 branch and paid-cost source-loss ruling remain excluded. Original four research failures remain unchanged on card-development branch.
