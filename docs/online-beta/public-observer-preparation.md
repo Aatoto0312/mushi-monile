@@ -1,0 +1,10 @@
+# Public observer preparation (not activated)
+2026-11-02. Separate operational change from card rules. Current live API23988 and ngrok6440 are NOT replaced by this implementation.
+
+The previous direct hidden Node launcher had no durable exit receipt and no room introspection. `server/public-observer.cjs` forks the existing exact-Origin `public.cjs` server through a private IPC worker, writes aggregate status.json and rotates sanitized event logs using existing log.cjs (5 x1MiB). No public management HTTP route, no tokens/decks/hands/room codes in status. Node exceptions are logged as coarse event types; raw exception strings and stdout are not exposed. Parent records exit code/signal; no automatic restart, Windows task registration, power settings or ngrok modification.
+
+`createPublicObserver({directory:absolutePrivatePath,port:8791})` provides start/refresh/stopIfIdle. stopIfIdle is checked atomically in the serving worker and refuses LOBBY, PLAYING, reconnect-wait seats. Status refresh every10seconds includes timestamp: a stale status file is not proof of idleness. Unknown status fails closed. This API is an operator module; the CLI starts observation only and does not provide an external stop endpoint. No claim of24h automatic recovery. Use a managed operator invoking stopIfIdle before a future approved cutover; direct forced stopping remains a potentially destructive fallback.
+
+Safe future adoption: require verified absence of current matches or user-confirmed maintenance, create fixed paired runtime snapshot, start observer on available8791 with logs outside Git, verify health/contract/Origin/publicWSS. Existing online sessions cannot migrate. Windows boot-before-login and automatic restart policies remain deferred pending separate approval and match-loss policy; do not enable existing development supervisor's auto-restart on production.
+
+Tests: fail-first missing observer module; aggregate lobby and reconnect metrics, no secret tokens/names in status; busy stop refused; idle stop records exit and remains stopped. Temporary test processes use random loopback ports and test-only shutdown; no production PID touched.

@@ -121,6 +121,15 @@ function createRoomService(options={}){
     if(room.endedAt!=null&&now()-room.endedAt>300000){rooms.delete(room.code);for(const seat of members(room)){const session=sessions.get(seat.sessionId);if(session){session.roomCode=null;session.playerId=null;send(session,{type:'ROOM_EXPIRED'});}}}
   }}
   function close(){for(const room of rooms.values()){if(room.phase==='PLAYING'||room.phase==='LOBBY'){room.phase='ABORTED';room.reason='SERVER_RESTART';bump(room);broadcast(room);}}for(const session of sessions.values()){send(session,{type:'SERVER_STOPPING',bootId});session.close(1012,'SERVER_RESTART');session.closed=true;}sessions.clear();rooms.clear();}
-  return {connect,receive,disconnect,sweep,close,bootId,meta:catalog.meta,stats:()=>({rooms:rooms.size,sessions:sessions.size})};
+  function operationalStatus(){
+    let lobbyRooms=0,playingRooms=0,reconnectingPlayers=0;
+    for(const room of rooms.values()){
+      if(room.phase==='LOBBY')lobbyRooms++;
+      if(room.phase==='PLAYING')playingRooms++;
+      if(room.phase==='LOBBY'||room.phase==='PLAYING')for(const seat of Object.values(room.players))if(!seat.connected&&seat.disconnectedAt!=null)reconnectingPlayers++;
+    }
+    return {rooms:rooms.size,sessions:sessions.size,lobbyRooms,playingRooms,reconnectingPlayers};
+  }
+  return {connect,receive,disconnect,sweep,close,operationalStatus,bootId,meta:catalog.meta,stats:()=>({rooms:rooms.size,sessions:sessions.size})};
 }
 module.exports={createRoomService};
