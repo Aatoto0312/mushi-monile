@@ -1,7 +1,7 @@
 {
-  "createdAt": "2026-11-02T03:09:34.934Z",
+  "createdAt": "2026-11-02T03:12:45.829Z",
   "assetVersion": "cards-366-v1",
-  "sourceHead": "3abbfa4da42e1896c65063b988a1b0162e3e45e1",
+  "sourceHead": "611c4b14ff17f3d368921411eab103c8214a1527",
   "mainHead": "505097f721cfa27019916dee08ab94db9c909f8d",
   "versions": {
     "protocol": "mushi-online/1",
@@ -84,8 +84,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 15702,
-      "sha256": "00a32a7f8bb1e8f8325761d57a58d162bb7b7d227a5e23ef8bd1978ac3ecf89c",
+      "bytes": 15700,
+      "sha256": "f8388cb564e4f9d79575974b6495684c58dab827b3a84b1a41171f24dade80b9",
       "main": "modified"
     },
     {
@@ -282,14 +282,14 @@
     },
     {
       "path": "online-b.html",
-      "bytes": 4958,
-      "sha256": "e9d49954ff28102a7a945295acc048eb7c87b3a4b50a5760ed56057dbdd1d4dc",
+      "bytes": 3878,
+      "sha256": "0325fe503a0474fab04f8c99c6e7561a46531dbec9197ad74038176bd044a7c3",
       "main": "modified"
     },
     {
       "path": "online.html",
-      "bytes": 5230,
-      "sha256": "b04ad2e0296d066bcb4c05668223164a0c55f98b69502abfc1b86bd760f132fa",
+      "bytes": 4336,
+      "sha256": "becfac3589ef63088c4490ea3f94b881d4df81b5b00258dc21cf2a97707743c8",
       "main": "modified"
     },
     {
@@ -468,8 +468,8 @@
     },
     {
       "path": "toolbox.html",
-      "bytes": 7786,
-      "sha256": "fdb45e44f6a68ea6f691d28c554cd909b193d1e517a9790bfea6095fec1eca32",
+      "bytes": 7784,
+      "sha256": "2604929b392fc362e168e01df6cfa144f4609482126db11f251ae38c212ad36b",
       "main": "modified"
     },
     {
