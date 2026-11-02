@@ -1,0 +1,8 @@
+# Cross-set next batch (372 candidate preserved)
+Baseline e93b373, separate worktree mushi-crossset-next. No live API/ngrok/main changes.
+
+Target up to16 cards with clear printed predicates, rather than SET5-first:9 attacks with legal-target/usage conditions and7 cost-trait cards. The earlier classification is a hint, not proof. Each mapping validates every printed effect and refuses extras. Start PARTIAL; promote individually only after all clauses, Engine/CPU/UI/WSS/JSON and boundaries pass. If any rule remains uncertain, exclude that card without stopping independent cards.
+
+Shared metadata extensions:target printed-cost min/max; wounded target against current maxHP; current targetcolor; own visible-discard insect minimum; opponent field-count minimum; distinct faceup insect food colors; own facedown-food reduction; named visible ally threshold; opponent faceupbluefood one-time threshold. Reuse existing TARGET_HAS_ATTACHMENT, once-per-field-stay, targetRuleINSECT_ONLY, suppression and additive zero-floor logic. Do not copy provisional paid-cost source-loss or conditionalHP branch.
+
+TDD: add focused tests beforemodule/handlers; confirmRED; implement minimal declarative module and common predicates; verify allnormal attacks plus eachspecialskill, atomic rejection, leader exclusion, suppression, hiddenidentity getter, owner/controller, costamountsnapshot, currentcolor/maxHP and JSON. Actual Chromium/WebKit CPU+authenticated WSS paths percard, full/shared/server andToolbox regressions. Trace source scans/QAs separately. Createcheckpoint and nextcandidate; preserve original372 treeclean. No publication without match-safety condition.

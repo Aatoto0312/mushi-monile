@@ -781,6 +781,13 @@
     var player = state.player(playerId);
     (definition.costModifiers || []).forEach(function (modifier) {
       if (modifier.requiresKeywordTrait && areInsectKeywordSkillsSuppressed(state,{cardId:definition.id})) { return; }
+      if(modifier.type==='PER_DISTINCT_FACE_UP_FOOD_INSECT_COLOR'){
+        var colors={};player.food.forEach(function(card){if(card.faceDown)return;var d=getCardDefinition(card.cardId);if(d&&d.type===CardTypes.INSECT)colors[getEffectiveColor(card)]=true;});
+        cost+=Object.keys(colors).length*modifier.amount;
+      }
+      if(modifier.type==='PER_FACE_DOWN_FOOD')cost+=Math.floor(player.food.filter(function(card){return card.faceDown;}).length/(modifier.per||1))*modifier.amount;
+      if(modifier.type==='OWN_VISIBLE_FIELD_NAME'&&player.field.some(function(card){if(card.faceDown)return false;var d=getCardDefinition(card.cardId);return d&&d.name===modifier.name;}))cost+=modifier.amount;
+      if(modifier.type==='OPPONENT_FACE_UP_FOOD_COLOR_THRESHOLD'&&state.player(state.opponentOf(playerId)).food.filter(function(card){return !card.faceDown&&getEffectiveColor(card)===modifier.color;}).length>=modifier.minimum)cost+=modifier.amount;
       if (modifier.type === 'PER_FACE_UP_FOOD_COLOR') {
         var count = player.food.filter(function (card) {
           var foodDef = !card.faceDown && getCardDefinition(card.cardId);
@@ -2434,6 +2441,7 @@
 
     var selectedRequirementSkill = skillId && (attackerDef.skills || []).filter(function (skill) { return skill.id === skillId; })[0];
     var skillRequirements = selectedRequirementSkill && selectedRequirementSkill.requirements || [];
+    if(skillRequirements.some(function(requirement){return requirement.type==='OWN_VISIBLE_DISCARD_COUNT'&&countVisibleDiscardCards(state,holder.playerId,{cardType:requirement.cardType})<requirement.minimum;}))return [];
     if(skillRequirements.some(function(requirement){return requirement.type==='OWN_FIELD_TAG_COUNT'&&state.player(holder.playerId).field.filter(function(card){var definition=!card.faceDown&&getCardDefinition(card.cardId);return definition&&(definition.tags||[]).indexOf(requirement.tag)!==-1;}).length<requirement.minimum;})){return [];}
     if (skillRequirements.some(function (requirement) {
       return requirement.type === 'SOURCE_HAS_ATTACHMENT' && !(attacker.attachments || []).length;
@@ -2446,6 +2454,12 @@
     if (skillRequirements.some(function (requirement) { return requirement.type === 'TARGET_HAS_ATTACHMENT'; })) {
       legalPool = legalPool.filter(function (defender) { return (defender.attachments || []).length > 0; });
     }
+    legalPool=legalPool.filter(function(defender){return !skillRequirements.some(function(requirement){
+      if(requirement.type==='TARGET_PRINTED_COST'){var d=getCardDefinition(defender.cardId);return !d||(requirement.minimum!=null&&d.cost<requirement.minimum)||(requirement.maximum!=null&&d.cost>requirement.maximum);}
+      if(requirement.type==='TARGET_DAMAGED')return defender.currentHp>=calculateMaxHp(defender,state);
+      if(requirement.type==='TARGET_COLOR')return getEffectiveColor(defender)!==requirement.color;
+      return false;
+    });});
     if (skillRequirements.some(function (requirement) { return requirement.type === 'OPPONENT_FACE_UP_FOOD_INSECT'; }) &&
         !opponent.food.some(function(card) { var foodDef=!card.faceDown&&getCardDefinition(card.cardId); return foodDef&&foodDef.type===CardTypes.INSECT; })) {
       return [];

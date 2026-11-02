@@ -20,6 +20,7 @@ require(path.join(base, 'cards', 'set4-cards.js'));
 require(path.join(base, 'cards', 'set5-cards.js'));
 require(path.join(base, 'cards', 'expansion-reuse-cards.js'));
 require(path.join(base, 'cards', 'expansion-count-cards.js'));
+require(path.join(base, 'cards', 'expansion-predicate-cards.js'));
 require(path.join(base, 'engine', 'game-state.js'));
 require(path.join(base, 'engine', 'stat-modifier.js'));
 require(path.join(base, 'engine', 'rules.js'));
@@ -31,3 +32,4 @@ require(path.join(base, 'engine', 'game-engine.js'));
 module.exports = {
   testDeck: global.buildStarterTestDeck()
 };
+
