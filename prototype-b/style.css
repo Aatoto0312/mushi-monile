@@ -1,6 +1,6 @@
-@import url('base.css?v=b-responsive-v1');
+@import url('base.css?v=cards-366-v1');
 :root{--gold:#e7d48d;--cyan:#aee7cb;background:#040c0b;color:#f2f3df}
-.arena{max-width:540px;grid-template-rows:52px minmax(128px,1fr) 68px minmax(155px,1.25fr) 48px 104px 48px;gap:5px;padding:8px 10px max(8px,env(safe-area-inset-bottom));padding-top:max(8px,env(safe-area-inset-top));background:linear-gradient(0deg,#00100d77,transparent 70%),url('forest.png?v=b-responsive-v1') center/cover;box-shadow:0 0 100px #18352e}
+.arena{max-width:540px;grid-template-rows:52px minmax(128px,1fr) 68px minmax(155px,1.25fr) 48px 104px 48px;gap:5px;padding:8px 10px max(8px,env(safe-area-inset-bottom));padding-top:max(8px,env(safe-area-inset-top));background:linear-gradient(0deg,#00100d77,transparent 70%),url('forest.png?v=cards-366-v1') center/cover;box-shadow:0 0 100px #18352e}
 .arena:before{background:linear-gradient(90deg,#00141155,transparent 35%,transparent 65%,#00141155)}
 .player{border-radius:8px;border-color:#a4c1a347;background:linear-gradient(90deg,#00140eea,#09281bc9);box-shadow:0 4px 12px #0006;gap:7px;padding:4px 7px}
 .avatar{color:#e9d587;border-color:#bfa55d;background:#1b3d27;width:30px;height:30px}.identity small{font-size:7px}.identity b{font-size:12px}.stats{gap:10px}.stats b{font-size:15px}.stats span{font-size:8px}.player>button{background:#041c17}
