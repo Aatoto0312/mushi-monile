@@ -345,6 +345,27 @@
       if(committedSpell)completeCommittedSpell(state,continuation.playerId,committedSpell,getCardDefinition(committedSpell.cardId),continuation.targetInstanceId,continuation.spellOptions);
       return;
     }
+    if(continuation.type==='FINALIZE_COMMITTED_SPELL'){
+      var finishingSpell=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.sourceInstanceId);
+      if(finishingSpell)finalizeCommittedSpell(state,continuation.playerId,finishingSpell,getCardDefinition(finishingSpell.cardId),continuation.finalZone);
+      return;
+    }
+    if(continuation.type==='SERIAL_SPELL_DAMAGE'){
+      var repeatSource=findAnywhere(state,continuation.sourceInstanceId);
+      var repeatDef=repeatSource&&getCardDefinition(repeatSource.instance.cardId);
+      if(!repeatDef)return;
+      var remaining=continuation.remaining;
+      if(continuation.condition){
+        var met=continuation.condition==='SAME_NAME_IN_OWN_DISCARD' && state.player(continuation.playerId).discard.some(function(card){return !card.faceDown&&card.instanceId!==continuation.sourceInstanceId&&getCardDefinition(card.cardId).name===repeatDef.name;});
+        if(continuation.condition==='OWN_FOOD_RGB')met=['RED','BLUE','GREEN'].every(function(color){return state.player(continuation.playerId).food.some(function(card){return !card.faceDown&&getEffectiveColor(card)===color;});});
+        if(!met)return;
+      }
+      if(remaining<=0)return;
+      var repeatTargets=getSpellTargetsForDefinition(state,continuation.playerId,repeatDef,continuation.sourceInstanceId);
+      if(!repeatTargets.length)return;
+      createCardSelection(state,{playerId:continuation.playerId,options:repeatTargets.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:[ZONES.FIELD],selectionPurpose:'SERIAL_SPELL_DAMAGE',continuation:{type:'RESOLVE_SERIAL_SPELL_DAMAGE',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,amount:continuation.amount},});
+      state.pendingEffect.afterResolution={type:'SERIAL_SPELL_DAMAGE',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,amount:continuation.amount,remaining:remaining-1};return;
+    }
     if(continuation.type==='GROW_ATTACK_SOURCE'){
       var growingSource=findAnywhere(state,continuation.sourceInstanceId);
       if(growingSource&&growingSource.zone===ZONES.FIELD&&(growingSource.instance.runtimeFlags.fieldEntrySerial||0)===(continuation.fieldEntrySerial||0)){
@@ -1310,6 +1331,13 @@
     if(c.type==='DESTROY_SELECTED_WITHOUT_TERRITORY'){
       ids.forEach(function(id){var target=findInZone(state,c.targetPlayerId,ZONES.FIELD,id);if(target&&!target.faceDown){destroyInsect(state,id,'EFFECT',c.sourceInstanceId,null,{skipTerritoryDraw:true});}});return ids;
     }
+    if(c.type==='RESOLVE_SERIAL_SPELL_DAMAGE'){
+      var source=findAnywhere(state,c.sourceInstanceId),definition=source&&getCardDefinition(source.instance.cardId);
+      var legal=getSpellTargetsForDefinition(state,c.playerId,definition,c.sourceInstanceId);
+      var selected=legal.filter(function(card){return card.instanceId===ids[0];})[0];
+      if(!selected)throw new Error('連続ダメージの対象が不正です');
+      applyDamage(state,source.instance,selected,c.amount,'SPELL',c.sourceInstanceId,selected.instanceId,{effectId:'SERIAL_SPELL_DAMAGE',multiplier:1,apVal:c.amount});return ids;
+    }
     if(c.type==='DAMAGE_SELECTED'){
       ids.forEach(function(id){var target=findInZone(state,c.targetPlayerId,ZONES.FIELD,id);if(!target||target.faceDown)throw new Error('ダメージ対象が不正です');applyDamage(state,null,target,c.amount,'SPELL',c.sourceInstanceId,id,{effectId:c.effectType||'DAMAGE_SELECTED',multiplier:1,apVal:c.amount});});return ids;
     }
@@ -1537,6 +1565,10 @@
   function getSpellTargetCandidates(state, playerId, handInstanceId) {
     var held = findInZone(state, playerId, ZONES.HAND, handInstanceId);
     var def = held ? getCardDefinition(held.cardId) : null;
+    return getSpellTargetsForDefinition(state,playerId,def,handInstanceId);
+  }
+
+  function getSpellTargetsForDefinition(state,playerId,def,handInstanceId) {
     if (!def || def.type !== CardTypes.SPELL) { return []; }
     var candidates = [];
     (def.cardEffects || []).forEach(function (effect) {
@@ -1602,7 +1634,9 @@
     var targetHolder=findAnywhere(state,target.instanceId),sourceHolder=findAnywhere(state,sourceInstanceId);
     if(!targetHolder||!sourceHolder||targetHolder.playerId===sourceHolder.playerId)return false;
     var def=getCardDefinition(target.cardId);
-    return (def.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='PREVENT_OPPONENT_SPELL_DAMAGE_AND_DESTRUCTION'&&state.turnNumber===target.enteredFieldTurn+effect.turnAfterEntry;});});
+    return (def.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='PREVENT_OPPONENT_SPELL_DAMAGE_AND_DESTRUCTION'&&
+      state.turnNumber===(effect.nextOpponentTurn ? target.runtimeFlags.nextOpponentTurnAfterEntry : target.enteredFieldTurn+effect.turnAfterEntry)&&
+      (!effect.requiredFood || state.player(targetHolder.playerId).food.filter(function(food){return !food.faceDown && getEffectiveColor(food)===effect.requiredFood.color;}).length>=effect.requiredFood.minimum);});});
   }
 
   function getAttackMultiplier(state, attackerColor, defender) {
@@ -1697,6 +1731,7 @@
           multiplier: multiplier,
           apVal: dmg
         });
+        if(effect.repeat)resumeAfterSelection(state,{type:'SERIAL_SPELL_DAMAGE',playerId:playerId,sourceInstanceId:instance.instanceId,amount:dmg,remaining:effect.repeat.additional,condition:effect.repeat.condition});
         var spellResult = {};
         spellResult.damageDealt = finalDmg;
       }
@@ -2087,6 +2122,14 @@
 
   function completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions){
     var finalZone=resolveSpellEffects(state,playerId,held,def,chosenTargetInstanceId,spellOptions);
+    if(state.pendingEffect&&(def.cardEffects||[]).some(function(effect){return !!effect.repeat;})){
+      resumeAfterSelection(state,{type:'FINALIZE_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId,finalZone:finalZone});
+      return {pending:true,spellInstance:held,def:def,finalZone:finalZone,foodDelta:0};
+    }
+    return finalizeCommittedSpell(state,playerId,held,def,finalZone);
+  }
+
+  function finalizeCommittedSpell(state,playerId,held,def,finalZone){
     moveCard(state,held.instanceId,ZONES.RESOLVING,finalZone,{playerId:playerId});
     log(state,state.turnNumber,playerId+' は '+def.name+' を使用した');
     if(state._postSpellContinuation){var postSpell=state._postSpellContinuation;delete state._postSpellContinuation;resumeAfterSelection(state,postSpell);}

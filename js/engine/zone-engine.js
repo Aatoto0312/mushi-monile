@@ -86,6 +86,8 @@
   // 相手ターンで有効化する(2026年1月15日の公式裁定に準拠)。
   function setupFieldEntry(state, card, fromZone) {
     card.enteredFieldTurn = state.turnNumber;
+    card.runtimeFlags = card.runtimeFlags || {};
+    card.runtimeFlags.nextOpponentTurnAfterEntry = state.turnNumber + (state.activePlayerId === (card.controllerId || card.ownerId) ? 1 : 2);
     card.runtimeFlags=card.runtimeFlags||{};
     if(fromZone!==ZONES.FIELD)card.runtimeFlags.fieldEntrySerial=(card.runtimeFlags.fieldEntrySerial||0)+1;
     if (card.runtimeFlags) {

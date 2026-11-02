@@ -7,6 +7,12 @@ var engine = require('./engine-loader.js');
 function requireAll() {
   return [
     require('./crossset-public-scope.test.js'),
+    require('./crossset-dive.test.js'),
+    require('./sequence-evidence-integrity.test.js'),
+    require('./crossset-entry-reuse.test.js'),
+    require('./crossset-dive-cards.test.js'),
+    require('./crossset-repeat-damage.test.js'),
+    require('./crossset-repeat-cards.test.js'),
     require('./crossset-evidence-integrity.test.js'),
     require('./crossset-ant.test.js'),
     require('./crossset-discard-count.test.js'),
