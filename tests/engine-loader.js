@@ -32,4 +32,3 @@ require(path.join(base, 'engine', 'game-engine.js'));
 module.exports = {
   testDeck: global.buildStarterTestDeck()
 };
-

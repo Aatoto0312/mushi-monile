@@ -10,6 +10,8 @@ function requireAll() {
     require('./crossset-evidence-integrity.test.js'),
     require('./crossset-ant.test.js'),
     require('./crossset-discard-count.test.js'),
+    require('./crossset-predicates.test.js'),
+    require('./predicate-evidence-integrity.test.js'),
     require('./count-evidence-integrity.test.js'),
     require('./crossset-traits.test.js'),
     require('./crossset-simple-effects.test.js'),
