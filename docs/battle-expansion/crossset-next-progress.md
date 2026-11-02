@@ -39,6 +39,22 @@ Pending177; counts{"LOCAL22":16,"C":155,"D":6,"UNASSESSED":0}. Prior C classific
 ## Newly available primitives and next research
 Printed-cost target bounds / damaged target / current color; visible discard minimum; distinct faceup insectfood colors / hiddenfoodper2 / visible namedally / opponentbluefood singlethreshold. Existing family AP and hand-return compose into SET7-31 without a newresolver. Re-search matches are not complete mappings: every remaining printed clause, source and CPU/WSS/restore decision still requires proof.
 
+|Remaining mechanic group|Primary|Dependent|
+|---|---:|---:|
+|zone-serial-and-exchange|10|76|
+|destruction-and-replacement|5|44|
+|selection-and-candidates|67|71|
+|hidden-info-and-face-down|2|44|
+|territory-and-combat-order|1|22|
+|usage-and-additional-cost|13|36|
+|attachment-lifecycle|11|40|
+|attack-and-payment-sequence|1|53|
+|entry-and-duration|16|57|
+|global-trait-and-grants|1|12|
+|continuous-hp-ap|7|13|
+|target-legality|16|16|
+|filtered-discard|0|0|
+|new-composition-research|5|5|
 - set6_059 小蠅の落とし子: TARGET_PRINTED_COST; remaining target-legality, selection-and-candidates, zone-serial-and-exchange
 - set7_063 常闇の繭籠もり: FOOD_COLOR_COST; remaining selection-and-candidates, zone-serial-and-exchange
 - set8_003 トゲアクマツユムシ: TARGET_HAS_ATTACHMENT; remaining selection-and-candidates, usage-and-additional-cost, attachment-lifecycle, zone-serial-and-exchange, destruction-and-replacement, attack-and-payment-sequence

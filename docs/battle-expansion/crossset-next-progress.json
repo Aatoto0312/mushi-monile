@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-02T15:28:18.117Z",
+  "at": "2026-11-02T15:36:27.182Z",
   "publicBaseline": "988e4f7",
   "publicPlayable": 366,
   "frozen372": "e93b37384db60cbedf3aaa45b71c4c78f0efdece",
@@ -18059,6 +18059,78 @@
       ],
       "availablePrimitiveCandidates": [],
       "completionClaim": false
+    }
+  ],
+  "remainingMechanicGroups": [
+    {
+      "group": "zone-serial-and-exchange",
+      "primary": 10,
+      "dependent": 76
+    },
+    {
+      "group": "destruction-and-replacement",
+      "primary": 5,
+      "dependent": 44
+    },
+    {
+      "group": "selection-and-candidates",
+      "primary": 67,
+      "dependent": 71
+    },
+    {
+      "group": "hidden-info-and-face-down",
+      "primary": 2,
+      "dependent": 44
+    },
+    {
+      "group": "territory-and-combat-order",
+      "primary": 1,
+      "dependent": 22
+    },
+    {
+      "group": "usage-and-additional-cost",
+      "primary": 13,
+      "dependent": 36
+    },
+    {
+      "group": "attachment-lifecycle",
+      "primary": 11,
+      "dependent": 40
+    },
+    {
+      "group": "attack-and-payment-sequence",
+      "primary": 1,
+      "dependent": 53
+    },
+    {
+      "group": "entry-and-duration",
+      "primary": 16,
+      "dependent": 57
+    },
+    {
+      "group": "global-trait-and-grants",
+      "primary": 1,
+      "dependent": 12
+    },
+    {
+      "group": "continuous-hp-ap",
+      "primary": 7,
+      "dependent": 13
+    },
+    {
+      "group": "target-legality",
+      "primary": 16,
+      "dependent": 16
+    },
+    {
+      "group": "filtered-discard",
+      "primary": 0,
+      "dependent": 0
+    },
+    {
+      "group": "new-composition-research",
+      "primary": 5,
+      "dependent": 5
     }
   ]
 }
