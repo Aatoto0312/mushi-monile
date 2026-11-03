@@ -37,3 +37,12 @@ All565 inventory and pending dependency rediscovery: entry-selection-progress.js
 Remaining overlapping groups: paid entry1, food/color11, entry11, attachment24, destruction/replacement44. Next consider SET8-19/21 technique-versus-card provenance, SET8-47 opponent-owned territory choice, SET6-24 multi-food entry and SET7-7/35 hidden-color/multi-food decisions. Do not silently extend card-name-only provenance to technique names.
 
 Read-only public API diagnosis is a separate commit/document: docs/online-beta/api-diagnosis-20261103.md. Public HTTPS/WSS and366 contract work; prior absent LISTEN result not reproduced and historical root cause unproven. No public restart, observer installation, auth change or automatic restart enabled. A later safe maintenance window must establish match/reconnect safety before introducing prepared private observer/idle-stop. Development412 needs paired API/frontend; not published to main.
+
+## Immutable checkpoint / Pages receipt
+- Read-only operational record:c4e4d15.
+- Functional checkpoint:d11b74ef84de8e406956e723b37cced4dbdec93d.
+- Manifest/validation checkpoint:7d6a110fbaffae736227a185889fb07ee904a4cd.
+- Validation-only run:https://github.com/Aatoto0312/mushi-monile/actions/runs/41587110184 — success. Legacy Pages source remains main:/; workflow has read-only contents permission and no deployment step.
+- Independently downloaded artifact:exact86 deployable assets, every SHA256 equal to committed candidate manifest;87th manifest entry is build-only _config.yml. Engine/cards/contract all match. Receipt:C:/Users/aatot/.codex/tmp/mushi-growth412-linux-result.json; reproducible candidate:C:/Users/aatot/.codex/tmp/mushi-growth412-checkpoint.
+- Protected407/397/388/372 worktrees are clean at original commits. Original online-beta staged binary diff hash:45016f7bd80bb86e6f6ef50b3dcef5ac6d4e28f8, unchanged. Local main/origin/main and remote main remain988e4f765c3faea90551de673946e9f8945d899e. No knowledge/worker/auth/temp/screenshots committed.
+- Final local gate logs:full-verified1817/0;shared73/0;server-final98/0;entry-browser-final8/0;flow-final12/0;toolbox-verified16 per engine. All have prefix C:/Users/aatot/.codex/tmp/mushi-growth412-.
