@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 433.
+All entries: 565; declared PLAYABLE: 438.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -367,7 +367,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_5 | 50/64 | set5_050 | 草薙の紅剣 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 51/64 | set5_051 | 肉祓いの蒼玉 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 52/64 | set5_052 | 蜜絶の翠鏡 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_5 | 53/64 | set5_053 | 雀蜂の鬼鎧 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_5 | 53/64 | set5_053 | 雀蜂の鬼鎧 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 54/64 | set5_054 | 黒銀蜘蛛の糸 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 55/64 | set5_055 | 幼虫の胡坐鍋 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 56/64 | set5_056 | 花蝶の幻舞 | yes | yes | pending | pending | pending | PARTIAL |
@@ -428,10 +428,10 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 47/64 | set6_047 | ダイコクコガネ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 48/64 | set6_048 | チャドクガ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 49/64 | set6_049 | 花潜の甲冑 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_6 | 50/64 | set6_050 | 小兜虫の甲冑 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 50/64 | set6_050 | 小兜虫の甲冑 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 51/64 | set6_051 | 武勇の刻印 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_6 | 52/64 | set6_052 | 天牛の錦顎 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_6 | 53/64 | set6_053 | 古の蜻蛉切 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 52/64 | set6_052 | 天牛の錦顎 | yes | yes | yes | yes | pending | PLAYABLE |
+| BOOSTER_SET_6 | 53/64 | set6_053 | 古の蜻蛉切 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 54/64 | set6_054 | 七節の変化巻 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 55/64 | set6_055 | 命燃の鬼火 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 56/64 | set6_056 | 宿命の影写し | yes | yes | yes | yes | pending | PLAYABLE |
@@ -554,7 +554,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 45/64 | set8_045 | アレクサンドラトリバネアゲハ（幼虫） | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 46/64 | set8_046 | モモアカアブラムシ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 47/64 | set8_047 | 鬼蜻蜓の簪 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_8 | 48/64 | set8_048 | 百足の具足 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 48/64 | set8_048 | 百足の具足 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 49/64 | set8_049 | 黄金虫の六文銭 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 50/64 | set8_050 | 幻惑の蛍袋 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 51/64 | set8_051 | 影武者の魔鏡 | yes | pending | pending | pending | pending | RESEARCHED |

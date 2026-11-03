@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 433,
+  "playable": 438,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -60,25 +60,25 @@
     },
     "BOOSTER_SET_5": {
       "cataloged": 64,
-      "connected": 50,
-      "implemented": 37,
-      "playable": 37,
+      "connected": 51,
+      "implemented": 38,
+      "playable": 38,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 37,
+        "PLAYABLE": 38,
         "PARTIAL": 13,
-        "RESEARCHED": 14
+        "RESEARCHED": 13
       }
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
-      "connected": 32,
-      "implemented": 32,
-      "playable": 32,
+      "connected": 35,
+      "implemented": 35,
+      "playable": 35,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 32,
-        "RESEARCHED": 32
+        "PLAYABLE": 35,
+        "RESEARCHED": 29
       }
     },
     "BOOSTER_SET_7": {
@@ -95,13 +95,13 @@
     },
     "BOOSTER_SET_8": {
       "cataloged": 64,
-      "connected": 24,
-      "implemented": 24,
-      "playable": 24,
+      "connected": 25,
+      "implemented": 25,
+      "playable": 25,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 24,
-        "RESEARCHED": 40
+        "PLAYABLE": 25,
+        "RESEARCHED": 39
       }
     }
   },
@@ -9810,12 +9810,12 @@
       "officialNumber": "53/64",
       "name": "雀蜂の鬼鎧",
       "set": "BOOSTER_SET_5",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -10492,12 +10492,12 @@
       "officialNumber": "50/64",
       "name": "小兜虫の甲冑",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -10536,12 +10536,12 @@
       "officialNumber": "52/64",
       "name": "天牛の錦顎",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -10558,12 +10558,12 @@
       "officialNumber": "53/64",
       "name": "古の蜻蛉切",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -12181,12 +12181,12 @@
       "officialNumber": "48/64",
       "name": "百足の具足",
       "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13505,10 +13505,6 @@
           "name": "花潜の甲冑"
         },
         {
-          "id": "set6_050",
-          "name": "小兜虫の甲冑"
-        },
-        {
           "id": "set6_058",
           "name": "怒濤の黒山"
         },
@@ -13547,10 +13543,6 @@
         {
           "id": "set8_028",
           "name": "ヒメカブト"
-        },
-        {
-          "id": "set8_048",
-          "name": "百足の具足"
         },
         {
           "id": "set8_051",
@@ -13736,13 +13728,16 @@
       ]
     }
   ],
-  "incrementalBase": "7758284",
+  "incrementalBase": "781ad46",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "7758284",
+    "base": "781ad46",
     "ids": [
-      "set7_054",
-      "set7_055"
+      "set8_048",
+      "set6_050",
+      "set6_052",
+      "set6_053",
+      "set5_053"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false
