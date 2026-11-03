@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 431,
+  "playable": 433,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -83,14 +83,14 @@
     },
     "BOOSTER_SET_7": {
       "cataloged": 64,
-      "connected": 30,
-      "implemented": 29,
-      "playable": 29,
+      "connected": 32,
+      "implemented": 31,
+      "playable": 31,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 29,
+        "PLAYABLE": 31,
         "PARTIAL": 1,
-        "RESEARCHED": 34
+        "RESEARCHED": 32
       }
     },
     "BOOSTER_SET_8": {
@@ -11394,12 +11394,12 @@
       "officialNumber": "54/64",
       "name": "電気虫の金砕棒",
       "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -11416,12 +11416,12 @@
       "officialNumber": "55/64",
       "name": "塵芥虫の爆熱棍",
       "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13460,14 +13460,6 @@
           "name": "アカウシアブ"
         },
         {
-          "id": "set7_054",
-          "name": "電気虫の金砕棒"
-        },
-        {
-          "id": "set7_055",
-          "name": "塵芥虫の爆熱棍"
-        },
-        {
           "id": "set8_008",
           "name": "ミイデラゴミムシ"
         },
@@ -13744,16 +13736,13 @@
       ]
     }
   ],
-  "incrementalBase": "ccd776d",
+  "incrementalBase": "7758284",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "ccd776d",
+    "base": "7758284",
     "ids": [
-      "set6_056",
-      "set8_055",
-      "set7_063",
-      "set6_047",
-      "set6_020"
+      "set7_054",
+      "set7_055"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false

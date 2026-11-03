@@ -2357,6 +2357,13 @@
     return choices;
   }
 
+  function resolveAttachmentEntryEffects(state,playerId,attachment,afterResolution){
+    var definition=getCardDefinition(attachment.cardId);
+    var steps=(definition.enhancementEffects||[]).filter(function(effect){return effect.timing==='ON_ENTER_FIELD';}).map(function(effect){return {type:'FIELD_ENTRY_EFFECT',playerId:playerId,sourceInstanceId:attachment.instanceId,optional:!!effect.optional,effect:effect};});
+    if(afterResolution)steps.push(afterResolution);
+    resumeAfterSelection(state,{type:'SEQUENCE',steps:steps});
+  }
+
   function attachExistingEnhancement(state,playerId,attachment,host,options){
     options=options||{};
     if(!isForcedAttachmentHostLegal(state,playerId,attachment,host))throw new Error('強化の装着対象が不正です');
@@ -2373,7 +2380,7 @@
     attachment.zone=ZONES.FIELD;host.attachments=host.attachments||[];host.attachments.push(attachment);
     if(options.copySource)setCopiedEnhancementSource(attachment,options.copySource);
     preserveDamageAfterMaxHpChange(state,host,oldMax);
-    resumeAfterSelection(state,options.afterResolution);
+    resolveAttachmentEntryEffects(state,playerId,attachment,options.afterResolution);
     return attachment;
   }
 
@@ -2530,6 +2537,7 @@
     });
     preserveDamageAfterMaxHpChange(state, target, previousMaxHp);
     if (summons) { resolveFieldEntryEffects(state, target.instanceId); }
+    resolveAttachmentEntryEffects(state,playerId,held);
 
     log(state, state.turnNumber, playerId + ' は ' + def.name + ' を ' + getCardDefinition(target.cardId).name + ' に装着した' + (chosenColor ? '(' + chosenColor + ')' : ''));
     return held;

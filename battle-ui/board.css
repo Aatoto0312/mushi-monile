@@ -1,4 +1,4 @@
-@import url('../prototype-b/style.css?v=economy2-431-v1');
+@import url('../prototype-b/style.css?v=entryarms-433-v1');
 /* Scope layout changes to the independent page; prototype-b remains untouched. */
 #board{display:block;min-height:0;flex:1;overflow:hidden}
 #b-battle{height:100%;min-height:0}

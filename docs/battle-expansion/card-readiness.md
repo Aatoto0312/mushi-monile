@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 431.
+All entries: 565; declared PLAYABLE: 433.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -496,8 +496,8 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 51/64 | set7_051 | 怨念の陣羽織 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 52/64 | set7_052 | 勝虫の一本刀 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 53/64 | set7_053 | 吉兆虫の一本刀 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 54/64 | set7_054 | 電気虫の金砕棒 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 55/64 | set7_055 | 塵芥虫の爆熱棍 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 54/64 | set7_054 | 電気虫の金砕棒 | yes | yes | yes | yes | pending | PLAYABLE |
+| BOOSTER_SET_7 | 55/64 | set7_055 | 塵芥虫の爆熱棍 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 56/64 | set7_056 | 宝石虫の冠 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 57/64 | set7_057 | 封印の怨念 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 58/64 | set7_058 | 供物の封印 | yes | yes | yes | yes | pending | PLAYABLE |
