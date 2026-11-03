@@ -7,3 +7,5 @@ Object.assign(module.exports,require('./wave3-evidence'));
 Object.assign(module.exports,require('./emergence-evidence'));
 
 for(const [id,e]of Object.entries(require('./food-wave-evidence')))if(id!=='set7_057')module.exports[id]=e;
+
+for(const id of ['set6_020','set6_047'])module.exports[id]={id,name:records.find(c=>c.id===id).name,status:'PLAYABLE',audited:false,source:{verification:'PRINTED_TEXT_AND_OFFICIAL_QA_2026-11-04',image:'https://mushijingi.com/images/card/'+({set6_020:393,set6_047:420}[id])+'.jpg'},officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/'],engine:['tests/economy2.test.js'],cpu:['tests/economy2.test.js'],human:['server/browser/economy2-paths.cjs'],online:['server/test/economy2.test.cjs','server/browser/economy2-paths.cjs'],serialization:['tests/economy2.test.js','server/test/economy2.test.cjs'],unresolvedRulings:[]};

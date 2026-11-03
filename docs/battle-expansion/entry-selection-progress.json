@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 426,
+  "playable": 431,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -72,36 +72,36 @@
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
-      "connected": 29,
+      "connected": 32,
+      "implemented": 32,
+      "playable": 32,
+      "audited": 0,
+      "statuses": {
+        "PLAYABLE": 32,
+        "RESEARCHED": 32
+      }
+    },
+    "BOOSTER_SET_7": {
+      "cataloged": 64,
+      "connected": 30,
       "implemented": 29,
       "playable": 29,
       "audited": 0,
       "statuses": {
         "PLAYABLE": 29,
-        "RESEARCHED": 35
-      }
-    },
-    "BOOSTER_SET_7": {
-      "cataloged": 64,
-      "connected": 29,
-      "implemented": 28,
-      "playable": 28,
-      "audited": 0,
-      "statuses": {
-        "PLAYABLE": 28,
         "PARTIAL": 1,
-        "RESEARCHED": 35
+        "RESEARCHED": 34
       }
     },
     "BOOSTER_SET_8": {
       "cataloged": 64,
-      "connected": 23,
-      "implemented": 23,
-      "playable": 23,
+      "connected": 24,
+      "implemented": 24,
+      "playable": 24,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 23,
-        "RESEARCHED": 41
+        "PLAYABLE": 24,
+        "RESEARCHED": 40
       }
     }
   },
@@ -10140,12 +10140,12 @@
       "officialNumber": "20/64",
       "name": "ヘレナモルフォ",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -10448,12 +10448,12 @@
       "officialNumber": "47/64",
       "name": "ダイコクコガネ",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -10624,12 +10624,12 @@
       "officialNumber": "56/64",
       "name": "宿命の影写し",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -11548,12 +11548,12 @@
       "officialNumber": "63/64",
       "name": "常闇の繭籠もり",
       "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -12345,12 +12345,12 @@
       "officialNumber": "55/64",
       "name": "蟲術の息吹",
       "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13439,10 +13439,6 @@
           "name": "シロスジカミキリ"
         },
         {
-          "id": "set6_056",
-          "name": "宿命の影写し"
-        },
-        {
           "id": "set7_001",
           "name": "オオスズメバチ（女王）"
         },
@@ -13503,10 +13499,6 @@
         {
           "id": "set6_019",
           "name": "エラフスホソアカクワガタ"
-        },
-        {
-          "id": "set6_020",
-          "name": "ヘレナモルフォ"
         },
         {
           "id": "set6_022",
@@ -13752,6 +13744,18 @@
       ]
     }
   ],
-  "incrementalBase": "c12368f",
-  "implementationQueue": "docs/battle-expansion/implementation-queue.md"
+  "incrementalBase": "ccd776d",
+  "implementationQueue": "docs/battle-expansion/implementation-queue.md",
+  "lastIncrementalBatch": {
+    "base": "ccd776d",
+    "ids": [
+      "set6_056",
+      "set8_055",
+      "set7_063",
+      "set6_047",
+      "set6_020"
+    ],
+    "evidence": "docs/battle-expansion/food-wave-certification.md",
+    "audited": false
+  }
 }

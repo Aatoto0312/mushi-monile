@@ -851,6 +851,7 @@
         var colors={};player.food.forEach(function(card){if(card.faceDown)return;var d=getCardDefinition(card.cardId);if(d&&d.type===CardTypes.INSECT)colors[getEffectiveColor(card)]=true;});
         cost+=Object.keys(colors).length*modifier.amount;
       }
+      if(modifier.type==='PER_DISTINCT_FACE_UP_FOOD_COLOR'){var foundColors={};player.food.forEach(function(card){if(!card.faceDown){var color=getEffectiveColor(card);if(!modifier.colors||modifier.colors.indexOf(color)!==-1)foundColors[color]=true;}});cost+=Object.keys(foundColors).length*modifier.amount;}
       if(modifier.type==='PER_FACE_DOWN_FOOD')cost+=Math.floor(player.food.filter(function(card){return card.faceDown;}).length/(modifier.per||1))*modifier.amount;
       if(modifier.type==='OWN_VISIBLE_FIELD_NAME'&&player.field.some(function(card){if(card.faceDown)return false;var d=getCardDefinition(card.cardId);return d&&d.name===modifier.name;}))cost+=modifier.amount;
       if(modifier.type==='OPPONENT_FACE_UP_FOOD_COLOR_THRESHOLD'&&state.player(state.opponentOf(playerId)).food.filter(function(card){return !card.faceDown&&getEffectiveColor(card)===modifier.color;}).length>=modifier.minimum)cost+=modifier.amount;
@@ -1721,6 +1722,8 @@
         });
       }
     });
+    if((def.cardEffects||[]).some(function(effect){return effect.printedCostPayment;})){var budget=state.player(playerId).availableCost-getEffectiveCardCost(state,playerId,def);candidates=candidates.filter(function(card){return getCardDefinition(card.cardId).cost<=budget;});}
+    if((def.cardEffects||[]).some(function(effect){return effect.requireDestinationOwner;})){candidates=candidates.filter(function(card){var holder=findAnywhere(state,card.instanceId);return holder&&card.ownerId===holder.playerId;});}
     candidates=candidates.filter(function (card) {
       return isSpellSelectionTargetLegal(state, playerId, card);
     });
@@ -1797,9 +1800,15 @@
         state.player(state.opponentOf(playerId)).territoryTriggerSuppressionUntilTurn = state.turnNumber;
       }
       var chosenIds = Array.isArray(chosenTargetInstanceId) ? chosenTargetInstanceId : (chosenTargetInstanceId ? [chosenTargetInstanceId] : []);
-      if(effect.type==='DISCOUNT_NEXT_MATCHING_FORM'){
+      if(effect.type==='PAID_FOOD_DEPLOY'){
+        var paidFood=findInZone(state,playerId,ZONES.FOOD,chosenTargetInstanceId),paidDef=paidFood&&!paidFood.faceDown&&getCardDefinition(paidFood.cardId);
+        if(!paidDef||paidDef.type!==CardTypes.INSECT||state.player(playerId).availableCost<paidDef.cost)return;
+        state.player(playerId).availableCost-=paidDef.cost;finalZone=ZONES.FOOD;
+        moveCard(state,paidFood.instanceId,ZONES.FOOD,ZONES.FIELD,{playerId:playerId,faceDown:false,runtimeFlags:spellEntryFlags(state,playerId,instance)});
+      }
+      if(effect.type==='DISCOUNT_NEXT_MATCHING_FORM'||effect.type==='GRANT_NEXT_USE_COST'){
         var discountedPlayer=state.player(playerId);
-        discountedPlayer.nextUseCostModifiers=(discountedPlayer.nextUseCostModifiers||[]).concat([{cardType:CardTypes.INSECT,sourceZone:effect.sourceZone,nameSuffix:effect.nameSuffix,amount:-effect.amount,endTurn:state.turnNumber,sourceInstanceId:instance.instanceId}]);
+        discountedPlayer.nextUseCostModifiers=(discountedPlayer.nextUseCostModifiers||[]).concat([{cardType:effect.cardType||CardTypes.INSECT,sourceZone:effect.sourceZone,nameSuffix:effect.nameSuffix,amount:-effect.amount,endTurn:state.turnNumber,sourceInstanceId:instance.instanceId}]);
       }
       if(effect.type==='MOVE_SELECTED_ZONE_CARDS'){
         resumeAfterSelection(state,{type:'SERIAL_ZONE_MOVES',moves:chosenIds.map(function(id){return {instanceId:id,sourcePlayerId:playerId,playerId:playerId,from:effect.from,to:effect.to,faceDown:effect.faceDown,runtimeFlags:effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null};})});
@@ -1898,8 +1907,9 @@
       }
       if (effect.type === 'MOVE_TARGET') {
         var moveTarget = chosenTargetInstanceId && findAnywhere(state, chosenTargetInstanceId);
-        if (!moveTarget || moveTarget.playerId !== playerId || moveTarget.zone !== effect.from) { throw new Error('移動対象が正しいゾーンにありません'); }
-        var moved = moveCard(state, chosenTargetInstanceId, effect.from, effect.to, { playerId: playerId,runtimeFlags:effect.to===ZONES.FIELD?spellEntryFlags(state,playerId,instance,effect.destroyAtEndTurn?{destroyAtEndTurn:state.turnNumber}:null):null });
+        var movePlayerId=effect.controller==='OPPONENT'?state.opponentOf(playerId):playerId;
+        if (!moveTarget || moveTarget.playerId !== movePlayerId || moveTarget.zone !== effect.from || (effect.requireDestinationOwner&&moveTarget.instance.ownerId!==movePlayerId)) { throw new Error('移動対象が正しいゾーンにありません'); }
+        var moved = moveCard(state, chosenTargetInstanceId, effect.from, effect.to, { playerId: movePlayerId,faceDown:effect.faceDown,runtimeFlags:effect.to===ZONES.FIELD?spellEntryFlags(state,playerId,instance,effect.destroyAtEndTurn?{destroyAtEndTurn:state.turnNumber}:null):null });
         if (effect.to === ZONES.FIELD && effect.destroyAtEndTurn) {
           if (!moved.runtimeFlags) { moved.runtimeFlags = {}; }
           moved.runtimeFlags.destroyAtEndTurn = state.turnNumber;
@@ -2077,6 +2087,7 @@
     // コストを支払い前へ戻す
     if (snapshot && snapshot.availableCost != null) {
       player.availableCost = snapshot.availableCost;
+    player.nextUseCostModifiers=snapshot.nextUseCostModifiers;
     }
 
     // カードを現在の場所から HANd へ戻す(どのゾーンにいても確実に)。
@@ -2200,6 +2211,7 @@
     // 使用直前の状態を記録(rollback用)。
     var snapshot = {
       availableCost: player.availableCost,
+      nextUseCostModifiers:player.nextUseCostModifiers,
       originalZone: ZONES.HAND
     };
 
@@ -2214,6 +2226,7 @@
         player.availableCost -= spellCost + (spellOptions.variablePayment || 0);
       }
 
+      player.nextUseCostModifiers=(player.nextUseCostModifiers||[]).filter(function(modifier){return state.turnNumber<=modifier.endTurn&&!matchesNextUseCostModifier(state,playerId,def,modifier);});
       var result = {
         spellInstance: held,
         def: def,
@@ -2258,7 +2271,8 @@
   }
 
   function finalizeCommittedSpell(state,playerId,held,def,finalZone){
-    if(held.zone!==finalZone)moveCard(state,held.instanceId,ZONES.RESOLVING,finalZone,{playerId:playerId});
+    var finalFaceEffect=(def.cardEffects||[]).find(function(effect){return effect.selfFinalZone===finalZone;});
+    if(held.zone!==finalZone)moveCard(state,held.instanceId,ZONES.RESOLVING,finalZone,{playerId:playerId,faceDown:finalFaceEffect?finalFaceEffect.selfFinalFaceDown:undefined});
     log(state,state.turnNumber,playerId+' は '+def.name+' を使用した');
     if(state._postSpellContinuation){var postSpell=state._postSpellContinuation;delete state._postSpellContinuation;resumeAfterSelection(state,postSpell);}
     return {spellInstance:held,def:def,finalZone:finalZone,foodDelta:finalZone===ZONES.FOOD?1:0};
@@ -2278,6 +2292,8 @@
   }
 
   // ---- 強化カード使用 ----
+  function activeAttachmentLimit(state,host){var def=getCardDefinition(host.cardId);if(def.attachmentLimitRequiresTrait&&(areInsectKeywordSkillsSuppressed(state,host)||(host.runtimeFlags&&host.runtimeFlags.suppressKeywordSkills)))return null;return def.attachmentLimit;}
+
   function getEnhancementTargetCandidates(state, playerId, sourceId) {
     var source = findInZone(state, playerId, ZONES.HAND, sourceId);
     var definition = source && getCardDefinition(source.cardId);
@@ -2287,7 +2303,7 @@
     var summons = (definition.enhancementEffects || []).some(function(effect) { return effect.type === 'SUMMON_ATTACHED_FROM_HAND'; });
     return insectCards(state.player(playerId)[summons ? 'hand' : 'field']).filter(function(card){
       var hostDef=getCardDefinition(card.cardId);
-      return hostDef.attachmentLimit==null || (card.attachments||[]).length<hostDef.attachmentLimit;
+      var limit=activeAttachmentLimit(state,card);return limit==null || (card.attachments||[]).length<limit;
     });
   }
 
@@ -2316,7 +2332,7 @@
   function isForcedAttachmentHostLegal(state,playerId,attachment,host){
     if(!host||host.faceDown)return false;
     var hostDef=getCardDefinition(host.cardId);
-    return !hostDef||hostDef.attachmentLimit==null||(host.attachments||[]).length<hostDef.attachmentLimit;
+    var limit=activeAttachmentLimit(state,host);return limit==null||(host.attachments||[]).length<limit;
   }
 
   function setCopiedEnhancementSource(copy,source){
