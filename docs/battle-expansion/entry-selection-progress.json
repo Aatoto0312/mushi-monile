@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 418,
+  "playable": 421,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -72,24 +72,25 @@
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
-      "connected": 25,
-      "implemented": 25,
-      "playable": 25,
+      "connected": 26,
+      "implemented": 26,
+      "playable": 26,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 25,
-        "RESEARCHED": 39
+        "PLAYABLE": 26,
+        "RESEARCHED": 38
       }
     },
     "BOOSTER_SET_7": {
       "cataloged": 64,
-      "connected": 24,
-      "implemented": 24,
-      "playable": 24,
+      "connected": 27,
+      "implemented": 26,
+      "playable": 26,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 24,
-        "RESEARCHED": 40
+        "PLAYABLE": 26,
+        "PARTIAL": 1,
+        "RESEARCHED": 37
       }
     },
     "BOOSTER_SET_8": {
@@ -8966,6 +8967,28 @@
       "rulingQuestionIds": []
     },
     {
+      "cardId": "set7_057",
+      "canonicalCardId": "set7_057",
+      "printingId": "registry:set7_057",
+      "officialNumber": "57/64",
+      "name": "封印の怨念",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/57/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
       "cardId": "set6_061",
       "canonicalCardId": "set6_061",
       "printingId": "registry:set6_061",
@@ -9051,6 +9074,72 @@
         "https://mushijingi.com/card/MUSHI8/59/",
         "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
         "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_017",
+      "canonicalCardId": "set6_017",
+      "printingId": "registry:set6_017",
+      "officialNumber": "17/64",
+      "name": "オオゴマダラ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/17/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_034",
+      "canonicalCardId": "set7_034",
+      "printingId": "registry:set7_034",
+      "officialNumber": "34/64",
+      "name": "シロスジカミキリ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PARTIAL",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": false,
+        "PLAYABLE": false,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/34/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_035",
+      "canonicalCardId": "set7_035",
+      "printingId": "registry:set7_035",
+      "officialNumber": "35/64",
+      "name": "ヤマトタマムシ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/35/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
       ],
       "rulingQuestionIds": []
     },
@@ -10018,28 +10107,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI6/14/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_017",
-      "canonicalCardId": "set6_017",
-      "printingId": "registry:set6_017",
-      "officialNumber": "17/64",
-      "name": "オオゴマダラ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/17/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
@@ -11057,50 +11124,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set7_034",
-      "canonicalCardId": "set7_034",
-      "printingId": "registry:set7_034",
-      "officialNumber": "34/64",
-      "name": "シロスジカミキリ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/34/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_035",
-      "canonicalCardId": "set7_035",
-      "printingId": "registry:set7_035",
-      "officialNumber": "35/64",
-      "name": "ヤマトタマムシ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/35/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set7_036",
       "canonicalCardId": "set7_036",
       "printingId": "registry:set7_036",
@@ -11426,28 +11449,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI7/56/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_057",
-      "canonicalCardId": "set7_057",
-      "printingId": "registry:set7_057",
-      "officialNumber": "57/64",
-      "name": "封印の怨念",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/57/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
       ],
       "rulingQuestionIds": []
@@ -12547,7 +12548,7 @@
       "rulingQuestionIds": []
     }
   ],
-  "base": "40be3855d88aab7bc752e6c58a0cce05d910cd7e",
+  "base": "1fc3e19cbea84d12cd8553692c5a32a566beba31",
   "publicPlayables": 366,
   "protectedCandidates": [
     372,
@@ -12555,7 +12556,8 @@
     397,
     407,
     412,
-    414
+    414,
+    418
   ],
   "newBatch": [
     {
@@ -13279,6 +13281,74 @@
       "userRulings": []
     },
     {
+      "id": "set6_017",
+      "name": "オオゴマダラ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "source": {
+        "image": "https://mushijingi.com/images/card/390.jpg",
+        "provenance": "Printed scan on secondary host visually checked 2026-11-03; official QA6/7 checked separately."
+      },
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第７弾のカードについて/"
+      ],
+      "engine": [
+        "tests/food-wave.test.js"
+      ],
+      "cpu": [
+        "tests/food-wave.test.js",
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "human": [
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "online": [
+        "server/test/food-wave-rooms.test.cjs",
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "serialization": [
+        "tests/food-wave.test.js",
+        "server/test/food-wave-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set7_035",
+      "name": "ヤマトタマムシ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "source": {
+        "image": "https://mushijingi.com/images/card/472.jpg",
+        "provenance": "Printed scan on secondary host visually checked 2026-11-03; official QA6/7 checked separately."
+      },
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第７弾のカードについて/"
+      ],
+      "engine": [
+        "tests/food-wave.test.js"
+      ],
+      "cpu": [
+        "tests/food-wave.test.js",
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "human": [
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "online": [
+        "server/test/food-wave-rooms.test.cjs",
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "serialization": [
+        "tests/food-wave.test.js",
+        "server/test/food-wave-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
       "id": "set5_044",
       "name": "ヘラクレスサン",
       "status": "PLAYABLE",
@@ -13314,6 +13384,40 @@
       ],
       "unresolvedRulings": [],
       "userRulings": []
+    },
+    {
+      "id": "set7_057",
+      "name": "封印の怨念",
+      "status": "PLAYABLE",
+      "audited": false,
+      "source": {
+        "image": "https://mushijingi.com/images/card/494.jpg",
+        "provenance": "Printed scan on secondary host visually checked 2026-11-03; official QA6/7 checked separately."
+      },
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第７弾のカードについて/"
+      ],
+      "engine": [
+        "tests/food-wave.test.js"
+      ],
+      "cpu": [
+        "tests/food-wave.test.js",
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "human": [
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "online": [
+        "server/test/food-wave-rooms.test.cjs",
+        "server/browser/food-wave-paths.cjs"
+      ],
+      "serialization": [
+        "tests/food-wave.test.js",
+        "server/test/food-wave-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
     }
   ],
   "remainingGroups": [
@@ -13329,6 +13433,10 @@
     {
       "name": "Food face/color decisions",
       "cards": [
+        {
+          "id": "set7_034",
+          "name": "シロスジカミキリ"
+        },
         {
           "id": "set6_012",
           "name": "アカカミアリ"
@@ -13346,20 +13454,8 @@
           "name": "オオスズメバチ（女王）"
         },
         {
-          "id": "set7_034",
-          "name": "シロスジカミキリ"
-        },
-        {
-          "id": "set7_035",
-          "name": "ヤマトタマムシ"
-        },
-        {
           "id": "set7_051",
           "name": "怨念の陣羽織"
-        },
-        {
-          "id": "set7_057",
-          "name": "封印の怨念"
         },
         {
           "id": "set7_058",
@@ -13377,14 +13473,6 @@
         {
           "id": "set6_005",
           "name": "アカウシアブ"
-        },
-        {
-          "id": "set6_017",
-          "name": "オオゴマダラ"
-        },
-        {
-          "id": "set7_035",
-          "name": "ヤマトタマムシ"
         },
         {
           "id": "set7_054",
@@ -13551,10 +13639,6 @@
         {
           "id": "set6_010",
           "name": "ボウレイカマキリ"
-        },
-        {
-          "id": "set6_017",
-          "name": "オオゴマダラ"
         },
         {
           "id": "set6_022",

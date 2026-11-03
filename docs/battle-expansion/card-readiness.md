@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 418.
+All entries: 565; declared PLAYABLE: 421.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -395,7 +395,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 14/64 | set6_014 | セミヤドリガ（幼虫） | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 15/64 | set6_015 | アオバアリガタハネカクシ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 16/64 | set6_016 | ゴクラクトリバネアゲハ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_6 | 17/64 | set6_017 | オオゴマダラ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 17/64 | set6_017 | オオゴマダラ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 18/64 | set6_018 | フェイスタメルシワバネクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 19/64 | set6_019 | エラフスホソアカクワガタ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 20/64 | set6_020 | ヘレナモルフォ | yes | pending | pending | pending | pending | RESEARCHED |
@@ -476,8 +476,8 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 31/64 | set7_031 | ニホンミツバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 32/64 | set7_032 | テナガカミキリ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 33/64 | set7_033 | オオルリタマムシ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 34/64 | set7_034 | シロスジカミキリ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 35/64 | set7_035 | ヤマトタマムシ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 34/64 | set7_034 | シロスジカミキリ | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_7 | 35/64 | set7_035 | ヤマトタマムシ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 36/64 | set7_036 | ウォーレスシロスジカミキリ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 37/64 | set7_037 | ジンメンカメムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 38/64 | set7_038 | ヒゲナガカミキリ | yes | pending | pending | pending | pending | RESEARCHED |
@@ -499,7 +499,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 54/64 | set7_054 | 電気虫の金砕棒 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 55/64 | set7_055 | 塵芥虫の爆熱棍 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 56/64 | set7_056 | 宝石虫の冠 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 57/64 | set7_057 | 封印の怨念 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 57/64 | set7_057 | 封印の怨念 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 58/64 | set7_058 | 供物の封印 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 59/64 | set7_059 | 蟲装の演舞 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 60/64 | set7_060 | 蟲術の演舞 | yes | pending | pending | pending | pending | RESEARCHED |

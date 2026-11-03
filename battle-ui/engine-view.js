@@ -37,10 +37,10 @@ function prepareView(r,s,viewer){
   if(viewer!=='SPECTATOR'&&!s.playerOrder.includes(viewer))throw Error('PLAYER_INVALID');
   const c=r.context,refs=new Map(),reverse=new Map(),capabilities=new Map();
   function ref(id){if(!refs.has(id)){const value=opaque();refs.set(id,value);reverse.set(value,id);}return refs.get(id);}
-  function card(inst,zone,pid,forceHidden=false){
+  function card(inst,zone,pid,forceHidden=false,inspectOwnHidden=false){
     // Some existing moves keep the instance faceDown flag after it enters hand/discard.
     // Visibility follows the current zone, never a stale territory flag.
-    const hidden=forceHidden||zone==='DECK'||zone==='HAND'&&pid!==viewer||zone==='RESOLVING'&&pid!==viewer||['FIELD','FOOD','TERRITORY','DISCARD'].includes(zone)&&!!inst.faceDown;
+    const hidden=forceHidden||zone==='DECK'||zone==='HAND'&&pid!==viewer||zone==='RESOLVING'&&pid!==viewer||['FIELD','FOOD','TERRITORY','DISCARD'].includes(zone)&&!!inst.faceDown&&!(inspectOwnHidden&&zone==='FOOD'&&pid===viewer);
     if(hidden)return {ref:ref(inst.instanceId),hidden:true,label:'裏向きのカード',zone};
     const d=c.getCardDefinition(inst.cardId);
     const result={ref:ref(inst.instanceId),hidden:false,zone,cardId:inst.cardId,name:d?d.name:'カード',ownerId:inst.ownerId,controllerId:pid};
@@ -51,7 +51,7 @@ function prepareView(r,s,viewer){
     if(inst.attachments)result.attachments=inst.attachments.map(a=>card(a,'ATTACHMENT',pid));
     return result;
   }
-  function locate(id,forceHidden=false){const attachment=c.findAttachment(s,id),holder=attachment||c.findAnywhere(s,id);return holder?card(holder.instance,attachment?'ATTACHMENT':holder.zone,holder.playerId,forceHidden||!!(attachment&&attachment.host.faceDown)):{ref:ref(id),hidden:true,label:'カード',zone:'UNKNOWN'};}
+  function locate(id,forceHidden=false,inspectOwnHidden=false){const attachment=c.findAttachment(s,id),holder=attachment||c.findAnywhere(s,id);return holder?card(holder.instance,attachment?'ATTACHMENT':holder.zone,holder.playerId,forceHidden||!!(attachment&&attachment.host.faceDown),inspectOwnHidden):{ref:ref(id),hidden:true,label:'カード',zone:'UNKNOWN'};}
   const view={viewerId:viewer,turn:s.turnNumber,phase:s.phase,activePlayerId:s.activePlayerId,firstPlayerId:s.firstPlayerId,winner:s.winner||null,players:{},actions:[],decision:null,unsupportedDecision:false,blockedReason:null};
   for(const pid of s.playerOrder){const p=s.player(pid),out={id:pid,availableCost:p.availableCost,counts:{}};
     for(const zone of ['hand','deck','territory','food','field','discard','resolving']){out.counts[zone]=p[zone].length;if(zone!=='deck')out[zone]=p[zone].map(inst=>card(inst,zone.toUpperCase(),pid));}
@@ -89,11 +89,12 @@ function prepareView(r,s,viewer){
       if(costStatus&&!costStatus.canContinue){add({kind:'CANCEL_ATTACK_COST'},'続行できない攻撃を取り消す',null,null,[],false);return {view,capabilities};}
       const max=pending.type==='CARD_SELECTION'?pending.maxSelections:1,min=pending.type==='CARD_SELECTION'?pending.minSelections:1;
       const fieldCandidates=c.getPendingFieldAbilityCandidates(s,pending);
-      const options=costStatus?costStatus.candidateIds:fieldCandidates||pending.options||[];
+      const entryConstraints=c.getPendingEntrySelectionConstraints(s,pending);
+      const options=costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
       if(options.length<min){view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
       const id=add({kind},'選択を決定',null,null,options,false);
       view.decision={actionId:id,min,max,exact:pending.exactSelections??(kind==='CARDS'?null:1),ordered:true,
-        options:options.map(id=>locate(id,!!pending.hiddenSelection)),groups:(pending.selectionGroups||[]).map(group=>group.map(ref)),partitions:(pending.selectionPartitions||[]).map(group=>group.map(ref)),combinations:(pending.allowedCombinations||[]).map(group=>group.map(ref))};
+        options:options.map(id=>locate(id,!!pending.hiddenSelection,!!pending.continuation?.effect?.inspectOwnHidden)),atMostOneGroups:(entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups||[]).map(group=>group.map(ref)),groups:(pending.selectionGroups||[]).map(group=>group.map(ref)),partitions:(pending.selectionPartitions||[]).map(group=>group.map(ref)),combinations:(pending.allowedCombinations||[]).map(group=>group.map(ref))};
       if(pending.hiddenSelection)view.decision.options.sort((a,b)=>a.ref.localeCompare(b.ref));
     }
     if(!view.actions.length)view.blockedReason='ENGINE_NO_LEGAL_COMMAND';

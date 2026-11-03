@@ -68,6 +68,8 @@
         ((pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count));
       if (pending.allowedCombinations && pending.allowedCombinations.length) { selected = pending.allowedCombinations[0].slice(); }
       if(pending.selectionPartitions&&pending.selectionPartitions.length){var partition=pending.selectionPartitions.find(function(group){return group.length>=pending.minSelections;});if(!partition)return null;selected=partition.slice(0,count);}
+      var entryConstraints=global.getPendingEntrySelectionConstraints&&global.getPendingEntrySelectionConstraints(state,pending),uniqueGroups=entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups;
+      if(uniqueGroups&&uniqueGroups.length){selected=uniqueGroups.filter(function(group){return group.length;}).map(function(group){return group[0];});}
       return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
     }
 
