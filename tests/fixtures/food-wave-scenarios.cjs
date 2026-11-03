@@ -10,5 +10,3 @@ function setup(c,s,id,variant){
  const opponent=put('P2','kabutomushi','FIELD');if(variant==='gold'){opponent.baseHp=5000;opponent.currentHp=5000;}if(variant==='damage')put('P2','set5_004','FIELD');
 }
 module.exports={cases,setup};
-
-
