@@ -649,9 +649,11 @@
         }
         if (effect.type === 'DISCARD_OPPONENT_HAND_ON_TERRITORY') {
           var discardPlayer=state.player(continuation.territoryPlayerId);
-          if(discardPlayer.hand.length){createCardSelection(state,{playerId:continuation.territoryPlayerId,options:discardPlayer.hand.map(function(c){return c.instanceId;}),exactSelections:effect.count||1,candidateZones:[ZONES.HAND],selectionPurpose:'OPPONENT_HAND_DISCARD',continuation:{type:'DISCARD_SELECTED_HAND',targetPlayerId:continuation.territoryPlayerId}});}
+          if(discardPlayer.hand.length>=(effect.minimumHand||1)){createCardSelection(state,{playerId:continuation.territoryPlayerId,options:discardPlayer.hand.map(function(c){return c.instanceId;}),exactSelections:effect.count||1,candidateZones:[ZONES.HAND],selectionPurpose:'OPPONENT_HAND_DISCARD',continuation:{type:'DISCARD_SELECTED_HAND',targetPlayerId:continuation.territoryPlayerId}});}
         }
       });
+      var bottomEffect=attackSkill&&(attackSkill.effects||[]).find(function(effect){return effect.type==='BOTTOM_DISCARD_ON_TERRITORY';});
+      if(bottomEffect)resumeAfterSelection(state,{type:'OPTIONAL_BOTTOM_DECK_DISCARD',playerId:source.playerId,targetPlayerId:continuation.territoryPlayerId,cardType:bottomEffect.cardType,maxSelections:1,faceDown:true});
       var foodEffect=attackSkill&&(attackSkill.effects||[]).find(function(effect){return effect.type==='OPTIONAL_FLIP_FOOD_ON_TERRITORY';});
       if (foodEffect) {
         var foodPlayerId=foodEffect.controller==='SELF'?source.playerId:continuation.territoryPlayerId;
@@ -659,14 +661,14 @@
         var food = state.player(foodPlayerId).food.filter(function(c) {
           if(!!c.faceDown!==expectedFaceDown)return false;
           // A hidden food's identity must never be inspected to build its candidates.
-          if(c.faceDown)return !foodEffect.color&&!foodEffect.cardType;
+          if(c.faceDown&&!(foodEffect.inspectOwnHidden&&foodPlayerId===source.playerId))return !foodEffect.color&&!foodEffect.cardType;
           var definition=getCardDefinition(c.cardId);
           return (!foodEffect.cardType||definition&&definition.type===foodEffect.cardType)&&(!foodEffect.color||getEffectiveColor(c)===foodEffect.color);
         });
         if (food.length) {
           createCardSelection(state, { playerId: source.playerId, options: food.map(function(c) { return c.instanceId; }),
             minSelections: 0, maxSelections: Math.min(foodEffect.maxSelections||1,food.length), candidateZones: [ZONES.FOOD], selectionPurpose: foodEffect.targetFaceDown===false?'REVEAL_OWN_FOOD':'FLIP_OPPONENT_FOOD',
-            continuation: { type: 'FLIP_SELECTED_FOOD', targetPlayerId: foodPlayerId, expectedFaceDown:expectedFaceDown,
+            continuation: { type: 'FLIP_SELECTED_FOOD', effect:{inspectOwnHidden:!!foodEffect.inspectOwnHidden}, targetPlayerId: foodPlayerId, expectedFaceDown:expectedFaceDown,
               targetFaceDown:foodEffect.targetFaceDown!==false,color:foodEffect.color,cardType:foodEffect.cardType,followUpIfColor:foodEffect.followUpIfColor,followUpColor:foodEffect.followUpColor,followUpCardType:foodEffect.followUpCardType } });
         }
       }
@@ -689,8 +691,8 @@
       continueFoodEnhancementSequence(state,continuation);return;
     }
     if(continuation.type==='OPTIONAL_BOTTOM_DECK_DISCARD'){
-      var discardPlayer=state.player(continuation.targetPlayerId),discardOptions=discardPlayer.discard.slice();
-      if(discardOptions.length){createCardSelection(state,{playerId:continuation.playerId,options:discardOptions.map(function(card){return card.instanceId;}),minSelections:0,maxSelections:Math.min(continuation.maxSelections||1,discardOptions.length),candidateZones:[ZONES.DISCARD],selectionPurpose:'OPTIONAL_BOTTOM_DECK_DISCARD',continuation:{type:'MOVE_DISCARD_TO_BOTTOM_DECK',targetPlayerId:continuation.targetPlayerId,faceDown:continuation.faceDown}});}return;
+      var discardPlayer=state.player(continuation.targetPlayerId),discardOptions=discardPlayer.discard.filter(function(card){var d=continuation.cardType&&!card.faceDown&&getCardDefinition(card.cardId);return !continuation.cardType||d&&d.type===continuation.cardType;});
+      if(discardOptions.length){createCardSelection(state,{playerId:continuation.playerId,options:discardOptions.map(function(card){return card.instanceId;}),minSelections:0,maxSelections:Math.min(continuation.maxSelections||1,discardOptions.length),candidateZones:[ZONES.DISCARD],selectionPurpose:'OPTIONAL_BOTTOM_DECK_DISCARD',continuation:{type:'MOVE_DISCARD_TO_BOTTOM_DECK',targetPlayerId:continuation.targetPlayerId,cardType:continuation.cardType,faceDown:continuation.faceDown}});}return;
     }
     if(continuation.type==='DESTROY_VISIBLE_SEQUENCE'){
       var destroyIds=(continuation.instanceIds||[]).slice();if(!destroyIds.length){resumeAfterSelection(state,continuation.afterResolution);return;}
@@ -1331,6 +1333,15 @@
       return performAttack(state, c.attackerInstanceId, ids[0], 'INSECT', c.skillId, null,
         { opponentSelectionToken: opponentAttackSelectionToken });
     }
+    if(c.type==='FLIP_FOOD_DAMAGE'){
+      var foodDamageTarget=findInZone(state,c.targetPlayerId,ZONES.FIELD,c.targetInstanceId);
+      var validFoodTarget=foodDamageTarget&&!foodDamageTarget.faceDown&&(foodDamageTarget.runtimeFlags.fieldEntrySerial||0)===c.targetEntrySerial&&isSpellSelectionTargetLegal(state,pending.playerId,foodDamageTarget);
+      if(!validFoodTarget){if(!ids.length)return;throw new Error('術の対象が場を離れています');}
+      ids.forEach(function(id){var food=findInZone(state,pending.playerId,ZONES.FOOD,id);if(!food||food.faceDown)throw new Error('表向きの自分のエサを選んでください');});
+      ids.forEach(function(id){findInZone(state,pending.playerId,ZONES.FOOD,id).faceDown=true;});
+      var damageSource=findAnywhere(state,c.sourceInstanceId),amount=ids.length*c.perFood;
+      applyDamage(state,damageSource&&damageSource.instance,foodDamageTarget,amount,'SPELL',c.sourceInstanceId,foodDamageTarget.instanceId,{effectId:'FLIP_FOOD_FOR_DAMAGE',multiplier:1,apVal:amount});return;
+    }
     if (c.type === 'FLIP_SELECTED_FOOD') {
       ids.forEach(function(id) {
         var food = findInZone(state, c.targetPlayerId, ZONES.FOOD, id);
@@ -1391,7 +1402,8 @@
       return ids;
     }
     if (c.type === 'DISCARD_SELECTED_HAND') {
-      ids.forEach(function(id){var card=findInZone(state,c.targetPlayerId,ZONES.HAND,id);if(!card){throw new Error('手札のカードを選んでください');}moveCard(state,id,ZONES.HAND,ZONES.DISCARD,{playerId:c.targetPlayerId});});
+      ids.forEach(function(id){if(!findInZone(state,c.targetPlayerId,ZONES.HAND,id))throw new Error('手札のカードを選んでください');});
+      ids.forEach(function(id){moveCard(state,id,ZONES.HAND,ZONES.DISCARD,{playerId:c.targetPlayerId});});
       return ids;
     }
     if(c.type==='ATTACK_WITH_ADDITIONAL_COST'){
@@ -1433,7 +1445,7 @@
       ids.forEach(function(id){var target=findInZone(state,c.targetPlayerId,ZONES.FIELD,id);if(!target||target.faceDown)throw new Error('ダメージ対象が不正です');applyDamage(state,null,target,c.amount,'SPELL',c.sourceInstanceId,id,{effectId:c.effectType||'DAMAGE_SELECTED',multiplier:1,apVal:c.amount});});return ids;
     }
     if(c.type==='MOVE_DISCARD_TO_BOTTOM_DECK'){
-      ids.forEach(function(id){var card=findInZone(state,c.targetPlayerId,ZONES.DISCARD,id);if(!card)throw new Error('捨て札のカードを選んでください');moveCard(state,id,ZONES.DISCARD,ZONES.DECK,{playerId:c.targetPlayerId,faceDown:c.faceDown!==false});});return ids;
+      ids.forEach(function(id){var card=findInZone(state,c.targetPlayerId,ZONES.DISCARD,id);if(!card||(c.cardType&&(card.faceDown||getCardDefinition(card.cardId).type!==c.cardType)))throw new Error('捨て札のカードを選んでください');moveCard(state,id,ZONES.DISCARD,ZONES.DECK,{playerId:c.targetPlayerId,faceDown:c.faceDown!==false});});return ids;
     }
     if(c.type==='RETURN_DESTROYED_HOST_ATTACHMENT'){
       var returnedIds=pending.selectedIds||[],returnedAttachment=returnedIds.length&&findAnywhere(state,returnedIds[0]);
@@ -1770,6 +1782,16 @@
       if(spellOptions.committedTargetSnapshots&&(effect.requiresTarget||effect.type==='DEAL_DAMAGE_TO_TARGET'||['EXCHANGE_OPPONENT_FIELD_FOOD','EXCHANGE_INSECTS','EXCHANGE_MATCHING_FORM','DESTROY_OPPONENT_ATTACHMENT','TRANSFER_OWN_ATTACHMENT','DESTROY_OWN_ATTACHMENT_OPTIONAL_DAMAGE','DESTROY_OWN_ATTACHMENT_TO_MOVE_SELF'].indexOf(effect.type)!==-1)){
         var lostTarget=spellOptions.committedTargetSnapshots.some(function(snapshot){return !isCommittedSpellTargetCurrent(state,snapshot);});
         if(lostTarget)return;
+      }
+      if(effect.type==='SELF_TO_FOOD_WITH_COST'){
+        moveCard(state,instance.instanceId,ZONES.RESOLVING,ZONES.FOOD,{playerId:playerId,faceDown:false});finalZone=ZONES.FOOD;state.player(playerId).availableCost+=effect.amount;
+        resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:playerId,sourceInstanceId:instance.instanceId,optional:true,effect:{type:'SELECT_ON_ENTRY',from:ZONES.DISCARD,controller:'SELF',operation:'MOVE',to:ZONES.FOOD,targetFaceDown:true,suppressFoodCostThisTurn:true}});
+      }
+      if(effect.type==='FLIP_FOOD_FOR_DAMAGE'){
+        var chosenFoodTarget=findInZone(state,state.opponentOf(playerId),ZONES.FIELD,chosenTargetInstanceId);
+        if(!chosenFoodTarget||chosenFoodTarget.faceDown)throw new Error('相手の虫を選んでください');
+        var faceUpFood=state.player(playerId).food.filter(function(food){return !food.faceDown;});
+        createCardSelection(state,{playerId:playerId,options:faceUpFood.map(function(food){return food.instanceId;}),minSelections:0,maxSelections:faceUpFood.length,candidateZones:[ZONES.FOOD],selectionPurpose:'FLIP_FOOD_FOR_DAMAGE',continuation:{type:'FLIP_FOOD_DAMAGE',sourceInstanceId:instance.instanceId,targetInstanceId:chosenTargetInstanceId,targetPlayerId:state.opponentOf(playerId),targetEntrySerial:chosenFoodTarget.runtimeFlags.fieldEntrySerial||0,perFood:effect.perFood}});
       }
       if (effect.type === 'SUPPRESS_OPPONENT_TERRITORY_TRIGGER') {
         state.player(state.opponentOf(playerId)).territoryTriggerSuppressionUntilTurn = state.turnNumber;
@@ -2228,7 +2250,7 @@
 
   function completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions){
     var finalZone=resolveSpellEffects(state,playerId,held,def,chosenTargetInstanceId,spellOptions);
-    if(state.pendingEffect&&(def.cardEffects||[]).some(function(effect){return !!effect.repeat;})){
+    if(state.pendingEffect&&(def.cardEffects||[]).some(function(effect){return !!effect.repeat||!!effect.deferFinalization;})){
       resumeAfterSelection(state,{type:'FINALIZE_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId,finalZone:finalZone});
       return {pending:true,spellInstance:held,def:def,finalZone:finalZone,foodDelta:0};
     }
@@ -2236,7 +2258,7 @@
   }
 
   function finalizeCommittedSpell(state,playerId,held,def,finalZone){
-    moveCard(state,held.instanceId,ZONES.RESOLVING,finalZone,{playerId:playerId});
+    if(held.zone!==finalZone)moveCard(state,held.instanceId,ZONES.RESOLVING,finalZone,{playerId:playerId});
     log(state,state.turnNumber,playerId+' は '+def.name+' を使用した');
     if(state._postSpellContinuation){var postSpell=state._postSpellContinuation;delete state._postSpellContinuation;resumeAfterSelection(state,postSpell);}
     return {spellInstance:held,def:def,finalZone:finalZone,foodDelta:finalZone===ZONES.FOOD?1:0};

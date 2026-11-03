@@ -15,6 +15,7 @@ function requireAll() {
     require('./wave3-food-entry.test.js'),
     require('./emergence-family.test.js'),
     require('./food-wave.test.js'),
+    require('./economy-batch.test.js'),
     require('./crossset-phalanx.test.js'),
     require('./crossset-gokuraku.test.js'),
     require('./entry-selection-evidence.test.js'),

@@ -24,6 +24,7 @@ require(path.join(base, 'cards', 'expansion-predicate-cards.js'));
 require(path.join(base, 'cards', 'expansion-dive-cards.js'));
 require(path.join(base, 'cards', 'expansion-repeat-cards.js'));
 require(path.join(base, 'cards', 'expansion-entry-cards.js'));
+require(path.join(base, 'cards', 'expansion-economy-cards.js'));
 require(path.join(base, 'engine', 'game-state.js'));
 require(path.join(base, 'engine', 'stat-modifier.js'));
 require(path.join(base, 'engine', 'rules.js'));

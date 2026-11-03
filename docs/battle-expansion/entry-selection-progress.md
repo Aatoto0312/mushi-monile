@@ -1,6 +1,6 @@
 # Entry selection batch progress
 
-Checked2026-11-04. Catalog565; developmentPLAYABLE421; remaining144. Public366 and protected372/388/397/407/412/414/418 unchanged.
+Checked2026-11-04. Catalog565; developmentPLAYABLE426; remaining139. Public366 and protected372/388/397/407/412/414/418/421 unchanged.
 
 |SET|PLAYABLE|PARTIAL|Unconnected|
 |---|---:|---:|---:|
@@ -10,8 +10,8 @@ Checked2026-11-04. Catalog565; developmentPLAYABLE421; remaining144. Public366 a
 |BOOSTER_SET_3|60|0|0|
 |BOOSTER_SET_4|64|0|0|
 |BOOSTER_SET_5|37|13|14|
-|BOOSTER_SET_6|26|0|38|
-|BOOSTER_SET_7|26|1|37|
+|BOOSTER_SET_6|29|0|35|
+|BOOSTER_SET_7|28|1|35|
 |BOOSTER_SET_8|23|0|41|
 
 ## Newly certified per-card evidence
@@ -55,3 +55,5 @@ Groups overlap; classifications are research priorities, not automatically certi
 
 ## Explicit holds
 Original four timing hypotheses and additional-cost-source-loss stop route stay isolated on oldunsafe development branch. New official processing PDF is available as a future audit source, but those assertions/paths were not altered or imported. No main/publicAPI/ngrok changes. AUDITED is not implied by PLAYABLE.
+
+2026-11-04 incremental economy batch: SET6-02/12/60, SET7-13/58; tests/economy-batch.test.js, server/test/economy-batch.test.cjs, server/browser/economy-paths.cjs. Queue:implementation-queue.md. No whole-catalog reclassification.
