@@ -19,6 +19,7 @@ function requireAll() {
     require('./economy2.test.js'),
     require('./entryarms.test.js'),
     require('./attachchain.test.js'),
+    require('./foodpayment.test.js'),
     require('./crossset-phalanx.test.js'),
     require('./crossset-gokuraku.test.js'),
     require('./entry-selection-evidence.test.js'),

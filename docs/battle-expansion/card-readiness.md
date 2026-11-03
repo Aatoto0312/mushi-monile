@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 438.
+All entries: 565; declared PLAYABLE: 439.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -493,7 +493,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 48/64 | set7_048 | オオセンチコガネ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 49/64 | set7_049 | ヘイケボタル | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 50/64 | set7_050 | ワラジムシ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 51/64 | set7_051 | 怨念の陣羽織 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 51/64 | set7_051 | 怨念の陣羽織 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 52/64 | set7_052 | 勝虫の一本刀 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 53/64 | set7_053 | 吉兆虫の一本刀 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 54/64 | set7_054 | 電気虫の金砕棒 | yes | yes | yes | yes | pending | PLAYABLE |

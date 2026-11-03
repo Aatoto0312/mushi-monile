@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 438,
+  "playable": 439,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -83,14 +83,14 @@
     },
     "BOOSTER_SET_7": {
       "cataloged": 64,
-      "connected": 32,
-      "implemented": 31,
-      "playable": 31,
+      "connected": 33,
+      "implemented": 32,
+      "playable": 32,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 31,
+        "PLAYABLE": 32,
         "PARTIAL": 1,
-        "RESEARCHED": 32
+        "RESEARCHED": 31
       }
     },
     "BOOSTER_SET_8": {
@@ -11328,12 +11328,12 @@
       "officialNumber": "51/64",
       "name": "怨念の陣羽織",
       "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13443,10 +13443,6 @@
           "name": "オオスズメバチ（女王）"
         },
         {
-          "id": "set7_051",
-          "name": "怨念の陣羽織"
-        },
-        {
           "id": "set8_052",
           "name": "亀虫の盾甲冑"
         }
@@ -13728,16 +13724,12 @@
       ]
     }
   ],
-  "incrementalBase": "781ad46",
+  "incrementalBase": "ea7fb09",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "781ad46",
+    "base": "ea7fb09",
     "ids": [
-      "set8_048",
-      "set6_050",
-      "set6_052",
-      "set6_053",
-      "set5_053"
+      "set7_051"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false

@@ -19,6 +19,7 @@ function run(r,s,op,ids=[]){const c=r.context,p=op.playerId;
     case 'TERRITORY':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveTerritoryDrawSelection(s,p,ids[0]);
     case 'SPELL_TARGET':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveSpellTargetSelection(s,p,ids[0]);
     case 'DISCARD':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveDiscardInsectSelection(s,p,ids[0]);
+    case 'CANCEL_CARD_PAYMENT':return c.cancelPendingEnhancementPayment(s,p);
     case 'CANCEL_ATTACK_COST':return c.cancelPendingAttackCost(s,p);
     default:throw Error('ACTION_INVALID');
   }
@@ -78,6 +79,8 @@ function prepareView(r,s,viewer){
   if(s.phase==='GAME_OVER')return {view,capabilities};
   if(pending){
     if(pending.playerId!==viewer)return {view,capabilities};
+    const paymentStatus=c.getPendingEnhancementPaymentStatus(s);
+    if(paymentStatus){add({kind:'CANCEL_CARD_PAYMENT'},'支払いを取り消す');if(!paymentStatus.canContinue)return {view,capabilities};}
     if(pending.type==='CHOICE_SELECTION'){
       for(const option of pending.options)add({kind:'CHOICE',value:option.value},String(option.label).slice(0,180),null,null,[],false);
     }else if(pending.type==='TERRITORY_DRAW_CHOICE'){
@@ -90,7 +93,7 @@ function prepareView(r,s,viewer){
       const max=pending.type==='CARD_SELECTION'?pending.maxSelections:1,min=pending.type==='CARD_SELECTION'?pending.minSelections:1;
       const fieldCandidates=c.getPendingFieldAbilityCandidates(s,pending);
       const entryConstraints=c.getPendingEntrySelectionConstraints(s,pending);
-      const options=costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
+      const options=paymentStatus?paymentStatus.candidateIds:costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
       if(options.length<min){view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
       const id=add({kind},'選択を決定',null,null,options,false);
       view.decision={actionId:id,min,max,exact:pending.exactSelections??(kind==='CARDS'?null:1),ordered:true,

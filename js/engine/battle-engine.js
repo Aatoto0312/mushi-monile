@@ -920,6 +920,7 @@
     if(definition.type===CardTypes.ENHANCEMENT&&player.nextEnhancementDiscount&&state.turnNumber<=player.nextEnhancementDiscount.endTurn){cost-=player.nextEnhancementDiscount.amount;}
     (player.runtimeCostModifiers||[]).forEach(function(modifier){if(definition.type===modifier.cardType&&state.turnNumber>=modifier.startTurn&&state.turnNumber<=modifier.endTurn){cost+=modifier.amount;}});
     (player.nextUseCostModifiers||[]).forEach(function(modifier){if(matchesNextUseCostModifier(state,playerId,definition,modifier))cost+=modifier.amount;});
+    if(definition.foodPaymentDiscount){var foodPaymentCount=context.foodPaymentCount==null?player.food.filter(function(card){return !card.faceDown;}).length:context.foodPaymentCount;cost-=foodPaymentCount*definition.foodPaymentDiscount;}
     return Math.max(0, cost);
   }
 
@@ -1203,6 +1204,14 @@
       state.pendingEffect=null;
       resumeAfterSelection(state,{type:'SEQUENCE',steps:[chosenTrigger.continuation,{type:'ORDER_TRIGGER_CONTINUATIONS',steps:orderedSteps}]});
       resumeAfterSelection(state,pending.afterResolution);return;
+    } else if(continuation.type==='ENHANCEMENT_FOOD_PAYMENT_COUNT'){
+      if(value==='CANCEL'){cancelPendingEnhancementPayment(state,playerId);return;}
+      var paymentSource=findInZone(state,playerId,ZONES.HAND,continuation.sourceInstanceId),paymentDef=paymentSource&&getCardDefinition(paymentSource.cardId),paymentCount=Number(value),paymentFood=state.player(playerId).food.filter(function(card){return !card.faceDown;});
+      if(!paymentDef||!getEnhancementTargetCandidates(state,playerId,paymentSource.instanceId).some(function(card){return card.instanceId===continuation.targetInstanceId;})||paymentFood.length<paymentCount||getEffectiveCardCost(state,playerId,paymentDef,{targetInstanceId:continuation.targetInstanceId,foodPaymentCount:paymentCount})>state.player(playerId).availableCost)throw new Error('支払い条件が変化しました');
+      state.pendingEffect=null;
+      if(!paymentCount)useEnhancement(state,playerId,paymentSource.instanceId,continuation.targetInstanceId,continuation.chosenColor,{foodPaymentIds:[]});
+      else createCardSelection(state,{playerId:playerId,options:paymentFood.map(function(card){return card.instanceId;}),exactSelections:paymentCount,candidateZones:[ZONES.FOOD],selectionPurpose:'ENHANCEMENT_FOOD_PAYMENT',continuation:{type:'ENHANCEMENT_FOOD_PAYMENT_CARDS',sourceInstanceId:paymentSource.instanceId,targetInstanceId:continuation.targetInstanceId,chosenColor:continuation.chosenColor}});
+      resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='USE_SPELL_VARIABLE_COST'){
       var paid=Number(value);state.pendingEffect=null;return useSpell(state,playerId,continuation.sourceInstanceId,continuation.targetInstanceId,{variablePayment:paid});
     } else if(continuation.type==='USE_SPELL_PAYMENT_METHOD'){
@@ -1401,6 +1410,7 @@
       if(ids.length&&c.effect.sourceGrowth){var growHolder=findAnywhere(state,c.sourceInstanceId),growSource=growHolder&&growHolder.zone===ZONES.FIELD&&growHolder.instance;if(growSource&&(growSource.runtimeFlags.fieldEntrySerial||0)===c.effect.sourceEntrySerial)(c.effect.sourceGrowth.stats||[]).forEach(function(stat){addStatModifier(state,growSource,{sourceInstanceId:c.sourceInstanceId,stat:stat,amount:c.effect.sourceGrowth.amount,duration:'FIELD_STAY'});});}
       return ids;
     }
+    if(c.type==='ENHANCEMENT_FOOD_PAYMENT_CARDS'){return useEnhancement(state,pending.playerId,c.sourceInstanceId,c.targetInstanceId,c.chosenColor,{foodPaymentIds:ids});}
     if(c.type==='CHAIN_ATTACHMENT'){
       if(!ids.length)return ids;
       var chainCard=findInZone(state,pending.playerId,ZONES.DISCARD,ids[0]),chainHost=findInZone(state,pending.playerId,ZONES.FIELD,c.hostInstanceId);
@@ -2433,6 +2443,14 @@
   // 強化カードは HAND から対象虫の attachments へ移動する。
   // 強化カード自体は zone=FIELD のまま所有者情報を保持する。
   // chosenColor: COLOR_OVERRIDE系の場合、'RED' | 'BLUE' | 'GREEN' を指定
+  function getPendingEnhancementPaymentStatus(state){
+    var pending=state.pendingEffect;if(!pending||pending.selectionPurpose!=='ENHANCEMENT_FOOD_PAYMENT')return null;
+    var c=pending.continuation,source=findInZone(state,pending.playerId,ZONES.HAND,c.sourceInstanceId),definition=source&&getCardDefinition(source.cardId),ids=state.player(pending.playerId).food.filter(function(card){return !card.faceDown&&(!pending.exactSelections||pending.options.indexOf(card.instanceId)!==-1);}).map(function(card){return card.instanceId;}),cost=definition&&getEffectiveCardCost(state,pending.playerId,definition,{targetInstanceId:c.targetInstanceId,foodPaymentCount:pending.type==='CARD_SELECTION'?pending.exactSelections:undefined});
+    return {candidateIds:ids,canContinue:!!(source&&definition&&getEnhancementTargetCandidates(state,pending.playerId,source.instanceId).some(function(card){return card.instanceId===c.targetInstanceId;})&&ids.length>=(pending.exactSelections||0)&&cost<=state.player(pending.playerId).availableCost)};
+  }
+  function cancelPendingEnhancementPayment(state,playerId){var pending=state.pendingEffect;if(!pending||pending.playerId!==playerId||pending.selectionPurpose!=='ENHANCEMENT_FOOD_PAYMENT')throw new Error('取り消せる支払いではありません');state.pendingEffect=null;resumeAfterSelection(state,pending.afterResolution);return true;}
+  global.getPendingEnhancementPaymentStatus=getPendingEnhancementPaymentStatus;
+  global.cancelPendingEnhancementPayment=cancelPendingEnhancementPayment;
   function useEnhancement(state, playerId, handInstanceId, targetInstanceId, chosenColor, enhancementOptions) {
     enhancementOptions=enhancementOptions||{};
     // ---- VALIDATE ----
@@ -2456,7 +2474,9 @@
     if (!def.isPlayable()) {
       throw new Error('このカードはまだ使用可能になっていません');
     }
-    var enhancementCost = getEffectiveCardCost(state, playerId, def, { targetInstanceId: targetInstanceId });
+    var paymentIds=enhancementOptions.foodPaymentIds;
+    if(def.foodPaymentDiscount&&Array.isArray(paymentIds)&&(new Set(paymentIds).size!==paymentIds.length||paymentIds.some(function(id){var food=findInZone(state,playerId,ZONES.FOOD,id);return !food||food.faceDown;})))throw new Error('表向きのエサを重複せず選んでください');
+    var enhancementCost = getEffectiveCardCost(state, playerId, def, { targetInstanceId: targetInstanceId,foodPaymentCount:Array.isArray(paymentIds)?paymentIds.length:undefined });
     if (player.availableCost < enhancementCost) {
       throw new Error('コストが不足しています');
     }
@@ -2490,6 +2510,12 @@
     if (target.faceDown) {
       throw new Error('裏向きの虫には強化カードを装着できません');
     }
+    if(def.foodPaymentDiscount&&!Array.isArray(paymentIds)){
+      var paymentOptions=[],countLimit=player.food.filter(function(card){return !card.faceDown;}).length;
+      for(var count=0;count<=countLimit;count++)if(getEffectiveCardCost(state,playerId,def,{targetInstanceId:targetInstanceId,foodPaymentCount:count})<=player.availableCost)paymentOptions.push({value:String(count),label:'エサ'+count+'枚を裏返して支払う'});
+      paymentOptions.push({value:'CANCEL',label:'支払いを取り消す'});
+      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,selectionPurpose:'ENHANCEMENT_FOOD_PAYMENT',options:paymentOptions,continuation:{type:'ENHANCEMENT_FOOD_PAYMENT_COUNT',sourceInstanceId:handInstanceId,targetInstanceId:targetInstanceId,chosenColor:chosenColor}};return {pending:true};
+    }
     var copyEffect=(def.enhancementEffects||[]).filter(function(effect){return effect.type==='COPY_ENHANCEMENT_STATS_TRACK_SOURCE';})[0];
     if(copyEffect&&!enhancementOptions.copySourceId){
       var copyCandidates=[];player.field.forEach(function(host){(host.attachments||[]).forEach(function(att){if(att.instanceId!==handInstanceId)copyCandidates.push(att);});});
@@ -2518,6 +2544,7 @@
     }
 
     // ---- PAY_COST ----
+    if(def.foodPaymentDiscount)(paymentIds||[]).forEach(function(id){findInZone(state,playerId,ZONES.FOOD,id).faceDown=true;});
     player.availableCost -= enhancementCost;
     if(player.nextEnhancementDiscount&&state.turnNumber<=player.nextEnhancementDiscount.endTurn){player.nextEnhancementDiscount=null;}
 

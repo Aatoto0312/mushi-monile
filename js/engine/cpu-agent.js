@@ -20,6 +20,9 @@
       return null;
     }
 
+    var paymentStatus=global.getPendingEnhancementPaymentStatus&&global.getPendingEnhancementPaymentStatus(state);
+    if(paymentStatus&&!paymentStatus.canContinue)return {type:'CANCEL_CARD_PAYMENT'};
+    if(paymentStatus&&pending.type==='CARD_SELECTION')return {type:'RESOLVE_CARD_SELECTION',instanceIds:paymentStatus.candidateIds.slice(0,pending.exactSelections)};
     if (pending.type === 'TERRITORY_DRAW_SELECTION') {
       if (!pending.options || pending.options.length === 0) return null;
       var idx = Math.floor(this.rng() * pending.options.length);
@@ -317,6 +320,7 @@
         global.enterMainPhase(state);
         return true;
       }
+      if(action.type==='CANCEL_CARD_PAYMENT'){global.cancelPendingEnhancementPayment(state,this.playerId);return true;}
       if (action.type === 'SUMMON') {
         global.summonInsect(state, this.playerId, action.instanceId);
         return true;
