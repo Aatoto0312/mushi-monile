@@ -12,6 +12,7 @@ function requireAll() {
     require('./crossset-entry-reuse.test.js'),
     require('./crossset-entry-selectors.test.js'),
     require('./crossset-growth-entry.test.js'),
+    require('./wave3-food-entry.test.js'),
     require('./crossset-phalanx.test.js'),
     require('./crossset-gokuraku.test.js'),
     require('./entry-selection-evidence.test.js'),

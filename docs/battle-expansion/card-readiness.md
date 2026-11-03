@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 412.
+All entries: 565; declared PLAYABLE: 414.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -402,7 +402,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 21/64 | set6_021 | チリクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 22/64 | set6_022 | フローレンシスニセヒメカブト | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 23/64 | set6_023 | コノハチョウ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_6 | 24/64 | set6_024 | ハルゼミ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 24/64 | set6_024 | ハルゼミ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 25/64 | set6_025 | パプアキンイロクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 26/64 | set6_026 | ツマジロスカシマダラ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 27/64 | set6_027 | ジュウシチネンゼミ | yes | pending | pending | pending | pending | RESEARCHED |
@@ -449,7 +449,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 4/64 | set7_004 | トビズムカデ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 5/64 | set7_005 | ケンランカマキリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 6/64 | set7_006 | アオオサムシ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 7/64 | set7_007 | ウスバカマキリ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 7/64 | set7_007 | ウスバカマキリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 8/64 | set7_008 | ウスバキトンボ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 9/64 | set7_009 | オオシオカラトンボ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 10/64 | set7_010 | ナツアカネ | yes | yes | yes | yes | pending | PLAYABLE |

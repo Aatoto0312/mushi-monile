@@ -496,6 +496,7 @@
     }
     if (continuation.type === 'FIELD_ENTRY_EFFECT') {
       var entryEffect = continuation.effect;
+      if(entryEffect.sourceGrowth)entryEffect=Object.assign({},entryEffect,{sourceEntrySerial:continuation.entryEvent.fieldEntrySerial});
       if(entryEffect.excludeSource)entryEffect=Object.assign({},entryEffect,{excludedInstanceId:continuation.sourceInstanceId});
       if(entryEffect.adultFormOfSource)entryEffect=Object.assign({},entryEffect,{nameEquals:continuation.entryEvent.printedName.replace(/[（(]幼虫[）)]/g,'').trim()});
       if(entryEffect.printedCostMaxFromSource)entryEffect=Object.assign({},entryEffect,{printedCostMax:continuation.entryEvent.printedCost});
@@ -503,10 +504,13 @@
       if(entryEffect.requiresPaidEntry&&(!entryReceipt||entryReceipt.kind!=='SUMMON'||entryReceipt.method!=='NORMAL_SUMMON'))return;
       if(entryEffect.requiredOwnDiscardNameSubstring&&!state.player(continuation.playerId).discard.some(function(card){var d=!card.faceDown&&getCardDefinition(card.cardId);return d&&d.name.indexOf(entryEffect.requiredOwnDiscardNameSubstring)!==-1;}))return;
       if(entryEffect.type==='SELECT_ON_ENTRY'){
+        if(entryEffect.minimumOpponentFoodAdvantage!=null&&state.player(state.opponentOf(continuation.playerId)).food.length-state.player(continuation.playerId).food.length<entryEffect.minimumOpponentFoodAdvantage)return;
         var entryChoices=getEntrySelectionCandidates(state,continuation.playerId,entryEffect);
         if(entryEffect.allCandidates){entryChoices.forEach(function(card){addStatModifier(state,card,{sourceInstanceId:continuation.sourceInstanceId,stat:entryEffect.stat,amount:entryEffect.amount});});return;}
         if(!entryChoices.length)return;
-        createCardSelection(state,{playerId:continuation.playerId,options:entryChoices.map(function(card){return card.instanceId;}),minSelections:continuation.optional?0:1,maxSelections:1,candidateZones:[entryEffect.from],selectionPurpose:'ENTRY_'+entryEffect.operation,continuation:{type:'RESOLVE_ENTRY_SELECTION',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,effect:entryEffect}});return;
+        var entryPairs=[];
+        if(entryEffect.exactOptionalCount===2){if(entryChoices.length<2)return;entryChoices.forEach(function(a,i){entryChoices.slice(i+1).forEach(function(b){entryPairs.push([a.instanceId,b.instanceId]);});});entryPairs.push([]);}
+        createCardSelection(state,{playerId:continuation.playerId,options:entryChoices.map(function(card){return card.instanceId;}),minSelections:continuation.optional?0:1,maxSelections:Math.min(entryEffect.maxSelections||1,entryChoices.length),allowedCombinations:entryPairs,candidateZones:[entryEffect.from],selectionPurpose:'ENTRY_'+entryEffect.operation,continuation:{type:'RESOLVE_ENTRY_SELECTION',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,effect:entryEffect}});return;
       }
       if(entryEffect.type==='ATTACH_FROM_ZONE_TO_OWN_INSECT'){
         var entryAttachChoices=getEntryAttachAnyCandidates(state,continuation.playerId,entryEffect);
@@ -1013,8 +1017,9 @@
     var targetPlayerId=effect.controller==='OPPONENT'?state.opponentOf(playerId):playerId;
     return getPlayerZoneArray(state,targetPlayerId,effect.from).filter(function(card){
       if(card.instanceId===effect.excludedInstanceId)return false;
-      if(effect.faceDown!=null&&!!card.faceDown!==effect.faceDown)return false;
-      if(card.faceDown)return !effect.cardType&&!effect.colors&&!effect.nameSubstring&&!effect.nameEquals&&!effect.requiredTraitName&&!effect.printedCostMaxFromSource&&effect.printedCostMax==null;
+      var entryHidden=!!card.faceDown&&!(effect.from===ZONES.HAND&&targetPlayerId===playerId);
+      if(effect.faceDown!=null&&entryHidden!==effect.faceDown)return false;
+      if(entryHidden)return !effect.cardType&&!effect.colors&&!effect.nameSubstring&&!effect.nameEquals&&!effect.requiredTraitName&&!effect.printedCostMaxFromSource&&effect.printedCostMax==null;
       var definition=getCardDefinition(card.cardId);
       return !!definition&&(!effect.cardType||definition.type===effect.cardType)&&
         (!effect.familySuffixes||(definition.tags||[]).some(function(tag){return effect.familySuffixes.some(function(suffix){return tag.slice(-suffix.length)===suffix;});}))&&
@@ -1338,9 +1343,11 @@
         if(c.effect.operation==='SET_FACE')card.faceDown=c.effect.targetFaceDown;
         else if(c.effect.operation==='STAT_MODIFIER')addStatModifier(state,card,{sourceInstanceId:c.sourceInstanceId,stat:c.effect.stat,amount:c.effect.amount});
         else if(c.effect.operation==='DESTROY')destroyInsect(state,id,'EFFECT',c.sourceInstanceId);
-        else if(c.effect.operation==='MOVE')moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,runtimeFlags:c.effect.to===ZONES.FIELD?{fieldEntryCause:{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:null});
+        else if(c.effect.operation==='MOVE')moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,faceDown:c.effect.targetFaceDown,runtimeFlags:c.effect.to===ZONES.FIELD?{fieldEntryCause:{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:c.effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null});
         else throw new Error('未対応の登場時操作');
-      });return ids;
+      });
+      if(ids.length&&c.effect.sourceGrowth){var growHolder=findAnywhere(state,c.sourceInstanceId),growSource=growHolder&&growHolder.zone===ZONES.FIELD&&growHolder.instance;if(growSource&&(growSource.runtimeFlags.fieldEntrySerial||0)===c.effect.sourceEntrySerial)(c.effect.sourceGrowth.stats||[]).forEach(function(stat){addStatModifier(state,growSource,{sourceInstanceId:c.sourceInstanceId,stat:stat,amount:c.effect.sourceGrowth.amount,duration:'FIELD_STAY'});});}
+      return ids;
     }
     if (c.type === 'ENTRY_DAMAGE') {
       if (!ids.length) { return ids; }

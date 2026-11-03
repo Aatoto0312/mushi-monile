@@ -1,7 +1,7 @@
 name: Release build verification
 on:
   push:
-    branches: ['release/online-b-20261031', 'cpu-b-v2-20261031', 'b-responsive-20261031', 'release/cards-366-20261102', 'cards-count-isolation-20261102', 'crossset-next-20261103', 'crossset-dive-20261103', 'crossset-entry-20261103', 'crossset-growth-20261103']
+    branches: ['release/online-b-20261031', 'cpu-b-v2-20261031', 'b-responsive-20261031', 'release/cards-366-20261102', 'cards-count-isolation-20261102', 'crossset-next-20261103', 'crossset-dive-20261103', 'crossset-entry-20261103', 'crossset-growth-20261103', 'crossset-entry-wave3-20261103']
 permissions:
   contents: read
 jobs:

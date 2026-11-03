@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 412,
+  "playable": 414,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -72,6 +72,17 @@
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
+      "connected": 25,
+      "implemented": 25,
+      "playable": 25,
+      "audited": 0,
+      "statuses": {
+        "PLAYABLE": 25,
+        "RESEARCHED": 39
+      }
+    },
+    "BOOSTER_SET_7": {
+      "cataloged": 64,
       "connected": 24,
       "implemented": 24,
       "playable": 24,
@@ -79,17 +90,6 @@
       "statuses": {
         "PLAYABLE": 24,
         "RESEARCHED": 40
-      }
-    },
-    "BOOSTER_SET_7": {
-      "cataloged": 64,
-      "connected": 23,
-      "implemented": 23,
-      "playable": 23,
-      "audited": 0,
-      "statuses": {
-        "PLAYABLE": 23,
-        "RESEARCHED": 41
       }
     },
     "BOOSTER_SET_8": {
@@ -9055,6 +9055,50 @@
       "rulingQuestionIds": []
     },
     {
+      "cardId": "set6_024",
+      "canonicalCardId": "set6_024",
+      "printingId": "registry:set6_024",
+      "officialNumber": "24/64",
+      "name": "ハルゼミ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/24/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_007",
+      "canonicalCardId": "set7_007",
+      "printingId": "registry:set7_007",
+      "officialNumber": "7/64",
+      "name": "ウスバカマキリ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/7/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
       "cardId": "set6_033",
       "canonicalCardId": "set6_033",
       "printingId": "registry:set6_033",
@@ -9973,28 +10017,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set6_024",
-      "canonicalCardId": "set6_024",
-      "printingId": "registry:set6_024",
-      "officialNumber": "24/64",
-      "name": "ハルゼミ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/24/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set6_026",
       "canonicalCardId": "set6_026",
       "printingId": "registry:set6_026",
@@ -10650,28 +10672,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI7/4/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_007",
-      "canonicalCardId": "set7_007",
-      "printingId": "registry:set7_007",
-      "officialNumber": "7/64",
-      "name": "ウスバカマキリ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/7/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
       ],
       "rulingQuestionIds": []
@@ -12547,13 +12547,14 @@
       "rulingQuestionIds": []
     }
   ],
-  "base": "797cb2108fa62f6abdd543e0ab9e141c58246428",
+  "base": "7ed84fa246ad40a9bdd99ab4fb90306c1a32ebda",
   "publicPlayables": 366,
   "protectedCandidates": [
     372,
     388,
     397,
-    407
+    407,
+    412
   ],
   "newBatch": [
     {
@@ -13061,6 +13062,78 @@
       "userRulings": []
     },
     {
+      "id": "set6_024",
+      "name": "ハルゼミ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 1,
+      "color": "BLUE",
+      "hp": 200,
+      "image": "https://mushijingi.com/images/card/397.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/wave3-food-entry.test.js"
+      ],
+      "cpu": [
+        "tests/wave3-food-entry.test.js",
+        "server/browser/wave3-paths.cjs"
+      ],
+      "human": [
+        "server/browser/wave3-paths.cjs"
+      ],
+      "online": [
+        "server/test/wave3-rooms.test.cjs",
+        "server/browser/wave3-paths.cjs"
+      ],
+      "serialization": [
+        "tests/wave3-food-entry.test.js",
+        "server/test/wave3-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set7_007",
+      "name": "ウスバカマキリ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 3,
+      "color": "RED",
+      "hp": 500,
+      "image": "https://mushijingi.com/images/card/444.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/wave3-food-entry.test.js"
+      ],
+      "cpu": [
+        "tests/wave3-food-entry.test.js",
+        "server/browser/wave3-paths.cjs"
+      ],
+      "human": [
+        "server/browser/wave3-paths.cjs"
+      ],
+      "online": [
+        "server/test/wave3-rooms.test.cjs",
+        "server/browser/wave3-paths.cjs"
+      ],
+      "serialization": [
+        "tests/wave3-food-entry.test.js",
+        "server/test/wave3-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
       "id": "set5_044",
       "name": "ヘラクレスサン",
       "status": "PLAYABLE",
@@ -13128,10 +13201,6 @@
           "name": "オオスズメバチ（女王）"
         },
         {
-          "id": "set7_007",
-          "name": "ウスバカマキリ"
-        },
-        {
           "id": "set7_034",
           "name": "シロスジカミキリ"
         },
@@ -13167,14 +13236,6 @@
         {
           "id": "set6_017",
           "name": "オオゴマダラ"
-        },
-        {
-          "id": "set6_024",
-          "name": "ハルゼミ"
-        },
-        {
-          "id": "set7_007",
-          "name": "ウスバカマキリ"
         },
         {
           "id": "set7_035",
