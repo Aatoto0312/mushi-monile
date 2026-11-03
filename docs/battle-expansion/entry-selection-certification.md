@@ -46,3 +46,13 @@ No main merge/push, public API restart, ngrok/config/authentication change or sy
 
 ## Follow-up priorities
 See progress companion for refreshed overlapping dependency groups: paid deployment3, food/color11, entry effects16, attachment lifecycle25, destruction/replacement44. Prioritize SET5-44 existing growth trigger audit, SET8-45 form-relative adult deployment, SET6-3 legal enhancement+host selection, and SET7-9/SET6-33 entry stat effects. These are research candidates, not certified cards. Unproven rules remain pending rather than guessed.
+
+## Final checkpoint and Linux verification
+Functional checkpoint: `17aa9f38386a7103d6d8fcf625ed5402f0964463`.
+Manifest checkpoint: `1b776b1e06f8587a9ccc5ccb7c6fe154f3ef968c`.
+Validation-only Actions: https://github.com/Aatoto0312/mushi-monile/actions/runs/41583501044 — success. Pages remains legacy main:/; this branch workflow has contents:read and uploads an artifact, with no deployment step.
+Downloaded Linux Jekyll artifact independently verified: exact86 assets, all SHA256 equal to the87-entry manifest (the87th is build-only _config.yml), Engine/cards/contract all equal. No server/tests/docs/private roots or extra theme file. Receipt: C:/Users/aatot/.codex/tmp/mushi-entry407-linux-result.json.
+
+Safety recheck: local main, origin/main and remote main remain988e4f765c3faea90551de673946e9f8945d899e. Frozen397/388/372 worktrees remain clean. Original online-beta staged binary diff hash remains45016f7bd80bb86e6f6ef50b3dcef5ac6d4e28f8.
+
+Operational observation at 2026-11-03 14:22JST: existing API PID23988 and ngrok PID6440 retained their prior start times, but a read-only socket check found no8791 LISTEN socket (one connection was FIN_WAIT1). This does not prove idle rooms. No restart/stop/update was attempted. Public availability needs a separate safe diagnosis; this batch certifies development407, not restored public service or public407 deployment.
