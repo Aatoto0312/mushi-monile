@@ -496,6 +496,15 @@
     }
     if (continuation.type === 'FIELD_ENTRY_EFFECT') {
       var entryEffect = continuation.effect;
+      if(entryEffect.printedCostMaxFromSource)entryEffect=Object.assign({},entryEffect,{printedCostMax:continuation.entryEvent.printedCost});
+      var entryReceipt=continuation.entryEvent&&continuation.entryEvent.cause;
+      if(entryEffect.requiresPaidEntry&&(!entryReceipt||entryReceipt.kind!=='SUMMON'||entryReceipt.method!=='NORMAL_SUMMON'))return;
+      if(entryEffect.requiredOwnDiscardNameSubstring&&!state.player(continuation.playerId).discard.some(function(card){var d=!card.faceDown&&getCardDefinition(card.cardId);return d&&d.name.indexOf(entryEffect.requiredOwnDiscardNameSubstring)!==-1;}))return;
+      if(entryEffect.type==='SELECT_ON_ENTRY'){
+        var entryChoices=getEntrySelectionCandidates(state,continuation.playerId,entryEffect);
+        if(!entryChoices.length)return;
+        createCardSelection(state,{playerId:continuation.playerId,options:entryChoices.map(function(card){return card.instanceId;}),minSelections:continuation.optional?0:1,maxSelections:1,candidateZones:[entryEffect.from],selectionPurpose:'ENTRY_'+entryEffect.operation,continuation:{type:'RESOLVE_ENTRY_SELECTION',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,effect:entryEffect}});return;
+      }
       if (entryEffect.type === 'CHOOSE_SELF_COLOR') {
         var colorLabels = { RED: '赤', BLUE: '青', GREEN: '緑', COLORLESS: '無色' };
         var choices = entryEffect.colors.map(function(color) { return { value: color, label: colorLabels[color] }; });
@@ -992,10 +1001,30 @@
 
   // ---- 術カード使用 ----
 
+  function getEntrySelectionCandidates(state,playerId,effect){
+    var targetPlayerId=effect.controller==='OPPONENT'?state.opponentOf(playerId):playerId;
+    return getPlayerZoneArray(state,targetPlayerId,effect.from).filter(function(card){
+      if(effect.faceDown!=null&&!!card.faceDown!==effect.faceDown)return false;
+      if(card.faceDown)return !effect.cardType&&!effect.colors&&!effect.nameSubstring&&!effect.nameEquals&&!effect.requiredTraitName&&!effect.printedCostMaxFromSource&&effect.printedCostMax==null;
+      var definition=getCardDefinition(card.cardId);
+      return !!definition&&(!effect.cardType||definition.type===effect.cardType)&&
+        (!effect.requiredTraitName||(!areInsectKeywordSkillsSuppressed(state,card)&&!(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills)&&(definition.passiveAbilities||[]).some(function(ability){return ability.name===effect.requiredTraitName;})))&&
+        (!effect.colors||effect.colors.indexOf(getEffectiveColor(card))!==-1)&&
+        (!effect.nameSubstring||definition.name.indexOf(effect.nameSubstring)!==-1)&&
+        (!effect.nameEquals||definition.name===effect.nameEquals)&&
+        (effect.printedCostMax==null||definition.cost<=effect.printedCostMax);
+    });
+  }
+
   function resolveFieldEntryEffects(state, instanceId) {
     var holder = findAnywhere(state, instanceId);
     if (!holder || holder.zone !== ZONES.FIELD) { return; }
     var definition = getCardDefinition(holder.instance.cardId);
+    var entrySerial=holder.instance.runtimeFlags.fieldEntrySerial||0;
+    if(holder.instance.runtimeFlags.resolvedEntryEffectSerial===entrySerial)return;
+    holder.instance.runtimeFlags.resolvedEntryEffectSerial=entrySerial;
+    if(holder.instance.faceDown)return;
+    var entryEvent={cause:Object.assign({},holder.instance.runtimeFlags.fieldEntryCause||{}),fieldEntrySerial:entrySerial,printedCost:definition.cost};
     var entrySuppressed=state.playerOrder.some(function(playerId){return state.player(playerId).field.some(function(source){
       return hasPassiveEffect(state,source,'SUPPRESS_ENTER_FIELD_TRAITS');
     });});
@@ -1021,7 +1050,7 @@
     var hasEntryWatchers=entryTriggers.length>0;
     if(!entrySuppressed&&!(holder.instance.runtimeFlags&&holder.instance.runtimeFlags.suppressKeywordSkills)&&!areInsectKeywordSkillsSuppressed(state,holder.instance)){
       (definition.passiveAbilities||[]).filter(function(ability){return ability.timing==='ON_ENTER_FIELD';}).forEach(function(ability){
-        entryTriggers.push({playerId:holder.playerId,label:definition.name+'〈'+ability.name+'〉',continuation:{type:'SEQUENCE',steps:(ability.effects||[]).map(function(effect){return {type:'FIELD_ENTRY_EFFECT',playerId:holder.playerId,sourceInstanceId:instanceId,optional:!!ability.optional,effect:effect};})}});
+        entryTriggers.push({playerId:holder.playerId,label:definition.name+'〈'+ability.name+'〉',continuation:{type:'SEQUENCE',steps:(ability.effects||[]).map(function(effect){return {type:'FIELD_ENTRY_EFFECT',playerId:holder.playerId,sourceInstanceId:instanceId,optional:!!ability.optional,entryEvent:entryEvent,effect:effect};})}});
       });
     }
     if(hasEntryWatchers)resumeAfterSelection(state,{type:'ORDER_TRIGGER_CONTINUATIONS',steps:entryTriggers});
@@ -1290,6 +1319,17 @@
       ]);
       if (pending.afterResolution) { pending.afterResolution.targetInstanceId = incoming.instanceId; }
       return incoming;
+    }
+    if(c.type==='RESOLVE_ENTRY_SELECTION'){
+      var legalEntries=getEntrySelectionCandidates(state,c.playerId,c.effect);
+      if(ids.some(function(id){return !legalEntries.some(function(card){return card.instanceId===id;});}))throw new Error('登場時効果の対象が現在の条件を満たしません');
+      var entryTargetPlayer=c.effect.controller==='OPPONENT'?state.opponentOf(c.playerId):c.playerId;
+      ids.forEach(function(id){var card=legalEntries.filter(function(candidate){return candidate.instanceId===id;})[0];
+        if(c.effect.operation==='SET_FACE')card.faceDown=c.effect.targetFaceDown;
+        else if(c.effect.operation==='DESTROY')destroyInsect(state,id,'EFFECT',c.sourceInstanceId);
+        else if(c.effect.operation==='MOVE')moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,runtimeFlags:c.effect.to===ZONES.FIELD?{fieldEntryCause:{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:null});
+        else throw new Error('未対応の登場時操作');
+      });return ids;
     }
     if (c.type === 'ENTRY_DAMAGE') {
       if (!ids.length) { return ids; }
