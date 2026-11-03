@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 414,
+  "playable": 418,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -94,13 +94,13 @@
     },
     "BOOSTER_SET_8": {
       "cataloged": 64,
-      "connected": 19,
-      "implemented": 19,
-      "playable": 19,
+      "connected": 23,
+      "implemented": 23,
+      "playable": 23,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 19,
-        "RESEARCHED": 45
+        "PLAYABLE": 23,
+        "RESEARCHED": 41
       }
     }
   },
@@ -9055,6 +9055,100 @@
       "rulingQuestionIds": []
     },
     {
+      "cardId": "set8_019",
+      "canonicalCardId": "set8_019",
+      "printingId": "registry:set8_019",
+      "officialNumber": "19/64",
+      "name": "アカボシゴマダラ",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/19/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_021",
+      "canonicalCardId": "set8_021",
+      "printingId": "registry:set8_021",
+      "officialNumber": "21/64",
+      "name": "ミカドアゲハ",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/21/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_036",
+      "canonicalCardId": "set8_036",
+      "printingId": "registry:set8_036",
+      "officialNumber": "36/64",
+      "name": "アカボシゴマダラ（幼虫）",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/36/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_038",
+      "canonicalCardId": "set8_038",
+      "printingId": "registry:set8_038",
+      "officialNumber": "38/64",
+      "name": "ミカドアゲハ（幼虫）",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/38/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
       "cardId": "set6_024",
       "canonicalCardId": "set6_024",
       "printingId": "registry:set6_024",
@@ -11655,53 +11749,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set8_019",
-      "canonicalCardId": "set8_019",
-      "printingId": "registry:set8_019",
-      "officialNumber": "19/64",
-      "name": "アカボシゴマダラ",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/19/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set8_021",
-      "canonicalCardId": "set8_021",
-      "printingId": "registry:set8_021",
-      "officialNumber": "21/64",
-      "name": "ミカドアゲハ",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/21/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set8_023",
       "canonicalCardId": "set8_023",
       "printingId": "registry:set8_023",
@@ -11939,30 +11986,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set8_036",
-      "canonicalCardId": "set8_036",
-      "printingId": "registry:set8_036",
-      "officialNumber": "36/64",
-      "name": "アカボシゴマダラ（幼虫）",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/36/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set8_037",
       "canonicalCardId": "set8_037",
       "printingId": "registry:set8_037",
@@ -11980,29 +12003,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI8/37/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set8_038",
-      "canonicalCardId": "set8_038",
-      "printingId": "registry:set8_038",
-      "officialNumber": "38/64",
-      "name": "ミカドアゲハ（幼虫）",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/38/",
         "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
         "https://mushijingi.jimdofree.com/"
       ],
@@ -12547,14 +12547,15 @@
       "rulingQuestionIds": []
     }
   ],
-  "base": "7ed84fa246ad40a9bdd99ab4fb90306c1a32ebda",
+  "base": "40be3855d88aab7bc752e6c58a0cce05d910cd7e",
   "publicPlayables": 366,
   "protectedCandidates": [
     372,
     388,
     397,
     407,
-    412
+    412,
+    414
   ],
   "newBatch": [
     {
@@ -13134,6 +13135,150 @@
       "userRulings": []
     },
     {
+      "id": "set8_019",
+      "name": "アカボシゴマダラ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 4,
+      "color": "BLUE",
+      "hp": 800,
+      "image": "https://mushijingi.com/images/card/520.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/emergence-family.test.js"
+      ],
+      "cpu": [
+        "tests/emergence-family.test.js",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "human": [
+        "server/browser/emergence-paths.cjs"
+      ],
+      "online": [
+        "server/test/emergence-rooms.test.cjs",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "serialization": [
+        "tests/emergence-family.test.js",
+        "server/test/emergence-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set8_021",
+      "name": "ミカドアゲハ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 3,
+      "color": "BLUE",
+      "hp": 500,
+      "image": "https://mushijingi.com/images/card/522.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/emergence-family.test.js"
+      ],
+      "cpu": [
+        "tests/emergence-family.test.js",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "human": [
+        "server/browser/emergence-paths.cjs"
+      ],
+      "online": [
+        "server/test/emergence-rooms.test.cjs",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "serialization": [
+        "tests/emergence-family.test.js",
+        "server/test/emergence-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set8_036",
+      "name": "アカボシゴマダラ（幼虫）",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 3,
+      "color": "GREEN",
+      "hp": 500,
+      "image": "https://mushijingi.com/images/card/537.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/emergence-family.test.js"
+      ],
+      "cpu": [
+        "tests/emergence-family.test.js",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "human": [
+        "server/browser/emergence-paths.cjs"
+      ],
+      "online": [
+        "server/test/emergence-rooms.test.cjs",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "serialization": [
+        "tests/emergence-family.test.js",
+        "server/test/emergence-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set8_038",
+      "name": "ミカドアゲハ（幼虫）",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 2,
+      "color": "GREEN",
+      "hp": 300,
+      "image": "https://mushijingi.com/images/card/539.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/emergence-family.test.js"
+      ],
+      "cpu": [
+        "tests/emergence-family.test.js",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "human": [
+        "server/browser/emergence-paths.cjs"
+      ],
+      "online": [
+        "server/test/emergence-rooms.test.cjs",
+        "server/browser/emergence-paths.cjs"
+      ],
+      "serialization": [
+        "tests/emergence-family.test.js",
+        "server/test/emergence-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
       "id": "set5_044",
       "name": "ヘラクレスサン",
       "status": "PLAYABLE",
@@ -13252,14 +13397,6 @@
         {
           "id": "set8_008",
           "name": "ミイデラゴミムシ"
-        },
-        {
-          "id": "set8_019",
-          "name": "アカボシゴマダラ"
-        },
-        {
-          "id": "set8_021",
-          "name": "ミカドアゲハ"
         },
         {
           "id": "set8_047",
@@ -13522,14 +13659,6 @@
         {
           "id": "set8_030",
           "name": "パンダアリバチ"
-        },
-        {
-          "id": "set8_036",
-          "name": "アカボシゴマダラ（幼虫）"
-        },
-        {
-          "id": "set8_038",
-          "name": "ミカドアゲハ（幼虫）"
         },
         {
           "id": "set8_049",

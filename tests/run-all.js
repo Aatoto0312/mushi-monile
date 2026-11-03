@@ -13,6 +13,7 @@ function requireAll() {
     require('./crossset-entry-selectors.test.js'),
     require('./crossset-growth-entry.test.js'),
     require('./wave3-food-entry.test.js'),
+    require('./emergence-family.test.js'),
     require('./crossset-phalanx.test.js'),
     require('./crossset-gokuraku.test.js'),
     require('./entry-selection-evidence.test.js'),

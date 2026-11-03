@@ -379,6 +379,12 @@
       }return;
     }
     if(continuation.type==='RESOLVE_DESTROYED_ABILITY'){
+      if((continuation.ability.effects||[]).some(function(effect){return effect.type==='DEPLOY_ADULT_ON_OPPONENT_DESTRUCTION';})){
+        var dying=continuation.sourceCard,dyingController=dying.controllerId||dying.ownerId,receipt=dying.destructionReceipt;
+        if(dying.faceDown||!receipt||receipt.actorControllerId!==state.opponentOf(dyingController))return;
+        var dyingDef=getCardDefinition(dying.cardId),adultName=dyingDef.name.replace(/[（(]幼虫[）)]/g,'').trim();
+        resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:dyingController,sourceInstanceId:dying.instanceId,optional:true,effect:{type:'SELECT_ON_ENTRY',from:ZONES.HAND,controller:'SELF',faceDown:false,cardType:CardTypes.INSECT,nameEquals:adultName,operation:'MOVE',to:ZONES.FIELD,entryCause:{kind:'TRAIT',abilityName:continuation.ability.name,sourceInstanceId:dying.instanceId,playerId:dyingController}}});return;
+      }
       if(continuation.ability.condition&&!checkCondition(state,continuation.sourceCard,continuation.ability.condition,continuation.sourceType,continuation.sourceInstanceId))return;
       resumeAfterSelection(state,{type:'SEQUENCE',steps:(continuation.ability.effects||[]).map(function(effect){return {type:'RESOLVE_SNAPSHOT_EFFECT',sourceCard:continuation.sourceCard,effect:effect,sourceType:continuation.sourceType,sourceInstanceId:continuation.sourceInstanceId};})});return;
     }
@@ -547,6 +553,12 @@
       if(entryEffect.type==='GROW_SELF_IF_ENTRY_CARD_NAME'){
         var enteringSource=findInZone(state,continuation.playerId,ZONES.FIELD,continuation.sourceInstanceId),cause=enteringSource&&enteringSource.runtimeFlags.fieldEntryCause,causeDefinition=cause&&getCardDefinition(cause.cardId);
         if(causeDefinition&&causeDefinition.name.indexOf(entryEffect.nameSubstring)!==-1){(entryEffect.stats||[]).forEach(function(stat){addStatModifier(state,enteringSource,{sourceInstanceId:continuation.sourceInstanceId,stat:stat,amount:entryEffect.amount,duration:'FIELD_STAY'});});}return;
+      }
+      if(entryEffect.type==='GROW_SELF_IF_ENTRY_EFFECT_NAME'){
+        var growthCause=continuation.entryEvent&&continuation.entryEvent.cause||{},growthDefinition=growthCause.kind==='SPELL'&&getCardDefinition(growthCause.cardId);
+        var growthName=growthDefinition?growthDefinition.name:(growthCause.kind==='TRAIT'||growthCause.kind==='SKILL')?(growthCause.abilityName||growthCause.skillName||''):'';
+        var growing=findAnywhere(state,continuation.sourceInstanceId);
+        if(growthName.indexOf(entryEffect.nameSubstring)!==-1&&growing&&growing.zone===ZONES.FIELD&&(growing.instance.runtimeFlags.fieldEntrySerial||0)===continuation.entryEvent.fieldEntrySerial)(entryEffect.stats||[]).forEach(function(stat){addStatModifier(state,growing.instance,{sourceInstanceId:continuation.sourceInstanceId,stat:stat,amount:entryEffect.amount,duration:'FIELD_STAY'});});return;
       }
       if(entryEffect.type==='IGNORE_WEAKNESS_NEXT_OPPONENT_TURN'||entryEffect.type==='PREVENT_ATTACK_TARGET_NEXT_OPPONENT_TURN'){
         var protectedEntry=findAnywhere(state,continuation.sourceInstanceId);
@@ -1343,7 +1355,7 @@
         if(c.effect.operation==='SET_FACE')card.faceDown=c.effect.targetFaceDown;
         else if(c.effect.operation==='STAT_MODIFIER')addStatModifier(state,card,{sourceInstanceId:c.sourceInstanceId,stat:c.effect.stat,amount:c.effect.amount});
         else if(c.effect.operation==='DESTROY')destroyInsect(state,id,'EFFECT',c.sourceInstanceId);
-        else if(c.effect.operation==='MOVE')moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,faceDown:c.effect.targetFaceDown,runtimeFlags:c.effect.to===ZONES.FIELD?{fieldEntryCause:{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:c.effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null});
+        else if(c.effect.operation==='MOVE')moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,faceDown:c.effect.targetFaceDown,runtimeFlags:c.effect.to===ZONES.FIELD?{fieldEntryCause:c.effect.entryCause||{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:c.effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null});
         else throw new Error('未対応の登場時操作');
       });
       if(ids.length&&c.effect.sourceGrowth){var growHolder=findAnywhere(state,c.sourceInstanceId),growSource=growHolder&&growHolder.zone===ZONES.FIELD&&growHolder.instance;if(growSource&&(growSource.runtimeFlags.fieldEntrySerial||0)===c.effect.sourceEntrySerial)(c.effect.sourceGrowth.stats||[]).forEach(function(stat){addStatModifier(state,growSource,{sourceInstanceId:c.sourceInstanceId,stat:stat,amount:c.effect.sourceGrowth.amount,duration:'FIELD_STAY'});});}
@@ -2659,6 +2671,11 @@
   }
 
   // 攻撃実行。targetType は 'INSECT' | 'LEADER'
+  function stampDestructionActor(state,snapshot,sourceType,sourceInstanceId,result,options){
+    var source=sourceInstanceId&&findAnywhere(state,sourceInstanceId);
+    snapshot.destructionReceipt={actorControllerId:result&&result.sourceControllerId||options&&options.sourceControllerId||source&&source.playerId||null,sourceType:sourceType};
+  }
+
   function performAttack(state, attackerInstanceId, targetInstanceId, targetType, skillId, chosenSacrificeInstanceId, attackOptions) {
     attackOptions = attackOptions || {};
     assertNoPendingEffect(state);
@@ -2818,6 +2835,7 @@
 
     var opponentId = state.opponentOf(ap);
     var result = {
+      sourceControllerId: ap,
       attackerInstanceId: attackerInstanceId,
       attacker: attacker,
       def: def,
@@ -3359,6 +3377,7 @@
     var defenderPlayerId = holder.playerId;
     var destroyedSnapshot = JSON.parse(JSON.stringify(destroyedCard));
     destroyedSnapshot.controllerId = defenderPlayerId;
+    stampDestructionActor(state,destroyedSnapshot,sourceType,sourceInstanceId,result,opts);
     
     // 破壊前に attachments を snapshot (死亡誘発で使用)
     var attachmentsSnapshot = (destroyedCard.attachments || []).slice();
@@ -3530,7 +3549,7 @@
     if(context.attackKillTargetMoved)return false;
     var holder=findAnywhere(state,context.destroyedCard.instanceId);if(!holder||holder.zone!==ZONES.DISCARD)return false;
     context.attackKillTargetMoved=true;
-    moveCard(state,context.destroyedCard.instanceId,ZONES.DISCARD,ZONES.DECK,{playerId:context.destroyedCard.ownerId,faceDown:faceDown!==false});context.suppressDestroyedCardTriggers=true;return true;
+    moveCard(state,context.destroyedCard.instanceId,ZONES.DISCARD,ZONES.DECK,{playerId:context.destroyedCard.ownerId,faceDown:faceDown!==false});return true;
   }
 
   function finishDestroyedTerritory(state, context) {
@@ -3660,6 +3679,7 @@
         var dmg = effect.amount || 0;
         global.applyDamage(state, sourceCard, target, dmg, 'ABILITY', sourceCard.instanceId, target.instanceId, {
           effectId: effect.id || effect.type,
+          sourceControllerId:sourceCard.controllerId||sourceCard.ownerId,
           multiplier: 1,
           apVal: dmg
         });
@@ -3670,7 +3690,7 @@
       if (sourceInstanceId) {
         var holder = global.findAnywhere(state, sourceInstanceId);
         if (holder && holder.instance.zone === global.ZONES.FIELD) {
-          global.destroyInsect(state, sourceInstanceId, 'ABILITY', sourceCard.instanceId, null, { skipTerritoryDraw: true });
+          global.destroyInsect(state, sourceInstanceId, 'ABILITY', sourceCard.instanceId, null, { skipTerritoryDraw: true, sourceControllerId:sourceCard.controllerId||sourceCard.ownerId });
         }
       }
     }

@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 414.
+All entries: 565; declared PLAYABLE: 418.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -525,9 +525,9 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 16/64 | set8_016 | アトラスオオカブト | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 17/64 | set8_017 | インペラトールホソアカクワガタ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 18/64 | set8_018 | モーレンカンプオオカブト | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_8 | 19/64 | set8_019 | アカボシゴマダラ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 19/64 | set8_019 | アカボシゴマダラ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 20/64 | set8_020 | ケンタウルスオオカブト | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_8 | 21/64 | set8_021 | ミカドアゲハ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 21/64 | set8_021 | ミカドアゲハ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 22/64 | set8_022 | エンガノオオカブト | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 23/64 | set8_023 | オオハキリバチ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 24/64 | set8_024 | ヤマトハキリバチ | yes | pending | pending | pending | pending | RESEARCHED |
@@ -542,9 +542,9 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 33/64 | set8_033 | トノサマバッタ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 34/64 | set8_034 | カツオゾウムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 35/64 | set8_035 | オウサマミツギリゾウムシ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_8 | 36/64 | set8_036 | アカボシゴマダラ（幼虫） | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 36/64 | set8_036 | アカボシゴマダラ（幼虫） | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 37/64 | set8_037 | クロカタゾウムシ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_8 | 38/64 | set8_038 | ミカドアゲハ（幼虫） | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 38/64 | set8_038 | ミカドアゲハ（幼虫） | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 39/64 | set8_039 | コウテイブローチハムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 40/64 | set8_040 | ハサミツノカメムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 41/64 | set8_041 | クサギカメムシ | yes | pending | pending | pending | pending | RESEARCHED |

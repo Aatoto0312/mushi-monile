@@ -3,3 +3,5 @@
 for(const [id,e]of Object.entries(require('./growth-entry-evidence')))if(id!=='set5_044')module.exports[id]=e;
 
 Object.assign(module.exports,require('./wave3-evidence'));
+
+Object.assign(module.exports,require('./emergence-evidence'));
