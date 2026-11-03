@@ -496,14 +496,22 @@
     }
     if (continuation.type === 'FIELD_ENTRY_EFFECT') {
       var entryEffect = continuation.effect;
+      if(entryEffect.excludeSource)entryEffect=Object.assign({},entryEffect,{excludedInstanceId:continuation.sourceInstanceId});
+      if(entryEffect.adultFormOfSource)entryEffect=Object.assign({},entryEffect,{nameEquals:continuation.entryEvent.printedName.replace(/[（(]幼虫[）)]/g,'').trim()});
       if(entryEffect.printedCostMaxFromSource)entryEffect=Object.assign({},entryEffect,{printedCostMax:continuation.entryEvent.printedCost});
       var entryReceipt=continuation.entryEvent&&continuation.entryEvent.cause;
       if(entryEffect.requiresPaidEntry&&(!entryReceipt||entryReceipt.kind!=='SUMMON'||entryReceipt.method!=='NORMAL_SUMMON'))return;
       if(entryEffect.requiredOwnDiscardNameSubstring&&!state.player(continuation.playerId).discard.some(function(card){var d=!card.faceDown&&getCardDefinition(card.cardId);return d&&d.name.indexOf(entryEffect.requiredOwnDiscardNameSubstring)!==-1;}))return;
       if(entryEffect.type==='SELECT_ON_ENTRY'){
         var entryChoices=getEntrySelectionCandidates(state,continuation.playerId,entryEffect);
+        if(entryEffect.allCandidates){entryChoices.forEach(function(card){addStatModifier(state,card,{sourceInstanceId:continuation.sourceInstanceId,stat:entryEffect.stat,amount:entryEffect.amount});});return;}
         if(!entryChoices.length)return;
         createCardSelection(state,{playerId:continuation.playerId,options:entryChoices.map(function(card){return card.instanceId;}),minSelections:continuation.optional?0:1,maxSelections:1,candidateZones:[entryEffect.from],selectionPurpose:'ENTRY_'+entryEffect.operation,continuation:{type:'RESOLVE_ENTRY_SELECTION',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,effect:entryEffect}});return;
+      }
+      if(entryEffect.type==='ATTACH_FROM_ZONE_TO_OWN_INSECT'){
+        var entryAttachChoices=getEntryAttachAnyCandidates(state,continuation.playerId,entryEffect);
+        if(entryAttachChoices.length)createCardSelection(state,{playerId:continuation.playerId,options:entryAttachChoices.map(function(card){return card.instanceId;}),minSelections:0,maxSelections:1,candidateZones:[entryEffect.from],selectionPurpose:'ENTRY_CHOOSE_ATTACHMENT',continuation:{type:'ENTRY_CHOOSE_ATTACHMENT_HOST',effect:entryEffect}});
+        return;
       }
       if (entryEffect.type === 'CHOOSE_SELF_COLOR') {
         var colorLabels = { RED: '赤', BLUE: '青', GREEN: '緑', COLORLESS: '無色' };
@@ -1004,10 +1012,12 @@
   function getEntrySelectionCandidates(state,playerId,effect){
     var targetPlayerId=effect.controller==='OPPONENT'?state.opponentOf(playerId):playerId;
     return getPlayerZoneArray(state,targetPlayerId,effect.from).filter(function(card){
+      if(card.instanceId===effect.excludedInstanceId)return false;
       if(effect.faceDown!=null&&!!card.faceDown!==effect.faceDown)return false;
       if(card.faceDown)return !effect.cardType&&!effect.colors&&!effect.nameSubstring&&!effect.nameEquals&&!effect.requiredTraitName&&!effect.printedCostMaxFromSource&&effect.printedCostMax==null;
       var definition=getCardDefinition(card.cardId);
       return !!definition&&(!effect.cardType||definition.type===effect.cardType)&&
+        (!effect.familySuffixes||(definition.tags||[]).some(function(tag){return effect.familySuffixes.some(function(suffix){return tag.slice(-suffix.length)===suffix;});}))&&
         (!effect.requiredTraitName||(!areInsectKeywordSkillsSuppressed(state,card)&&!(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills)&&(definition.passiveAbilities||[]).some(function(ability){return ability.name===effect.requiredTraitName;})))&&
         (!effect.colors||effect.colors.indexOf(getEffectiveColor(card))!==-1)&&
         (!effect.nameSubstring||definition.name.indexOf(effect.nameSubstring)!==-1)&&
@@ -1024,7 +1034,7 @@
     if(holder.instance.runtimeFlags.resolvedEntryEffectSerial===entrySerial)return;
     holder.instance.runtimeFlags.resolvedEntryEffectSerial=entrySerial;
     if(holder.instance.faceDown)return;
-    var entryEvent={cause:Object.assign({},holder.instance.runtimeFlags.fieldEntryCause||{}),fieldEntrySerial:entrySerial,printedCost:definition.cost};
+    var entryEvent={cause:Object.assign({},holder.instance.runtimeFlags.fieldEntryCause||{}),fieldEntrySerial:entrySerial,printedCost:definition.cost,printedName:definition.name};
     var entrySuppressed=state.playerOrder.some(function(playerId){return state.player(playerId).field.some(function(source){
       return hasPassiveEffect(state,source,'SUPPRESS_ENTER_FIELD_TRAITS');
     });});
@@ -1326,6 +1336,7 @@
       var entryTargetPlayer=c.effect.controller==='OPPONENT'?state.opponentOf(c.playerId):c.playerId;
       ids.forEach(function(id){var card=legalEntries.filter(function(candidate){return candidate.instanceId===id;})[0];
         if(c.effect.operation==='SET_FACE')card.faceDown=c.effect.targetFaceDown;
+        else if(c.effect.operation==='STAT_MODIFIER')addStatModifier(state,card,{sourceInstanceId:c.sourceInstanceId,stat:c.effect.stat,amount:c.effect.amount});
         else if(c.effect.operation==='DESTROY')destroyInsect(state,id,'EFFECT',c.sourceInstanceId);
         else if(c.effect.operation==='MOVE')moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,runtimeFlags:c.effect.to===ZONES.FIELD?{fieldEntryCause:{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:null});
         else throw new Error('未対応の登場時操作');
@@ -1433,6 +1444,20 @@
       destroyAttachedEnhancement(state,resetAttachment);
       resumeAfterSelection(state,{type:'RESET_ATTACKED_HOST',hostInstanceId:c.hostInstanceId,fieldEntrySerial:c.fieldEntrySerial});return;
     }
+    if(c.type==='ENTRY_CHOOSE_ATTACHMENT_HOST'){
+      if(!ids.length)return;
+      var chosenEntryAttachment=getEntryAttachAnyCandidates(state,pending.playerId,c.effect).find(function(card){return card.instanceId===ids[0];});
+      if(!chosenEntryAttachment)throw new Error('装着できる強化カードがありません');
+      var entryHosts=insectCards(state.player(pending.playerId).field).filter(function(host){return getEntryAttachmentCandidates(state,pending.playerId,host,c.effect).indexOf(chosenEntryAttachment)!==-1;});
+      createCardSelection(state,{playerId:pending.playerId,options:entryHosts.map(function(host){return host.instanceId;}),minSelections:0,maxSelections:1,candidateZones:[ZONES.FIELD],selectionPurpose:'ENTRY_ATTACHMENT_HOST',continuation:{type:'ENTRY_ATTACH_TO_SELECTED_HOST',attachmentInstanceId:ids[0],effect:c.effect}});return;
+    }
+    if(c.type==='ENTRY_ATTACH_TO_SELECTED_HOST'){
+      if(!ids.length)return;
+      var chosenHost=findInZone(state,pending.playerId,ZONES.FIELD,ids[0]);
+      var chosenAttachment=chosenHost&&getEntryAttachmentCandidates(state,pending.playerId,chosenHost,c.effect).find(function(card){return card.instanceId===c.attachmentInstanceId;});
+      if(!chosenAttachment)throw new Error('強化カードまたは装着先が現在の条件を満たしません');
+      return attachExistingEnhancement(state,pending.playerId,chosenAttachment,chosenHost,{entryEffect:c.effect});
+    }
     if(c.type==='ENTRY_ATTACH_ENHANCEMENT'){
       if(!ids.length)return;
       var entryAttachmentHost=findInZone(state,pending.playerId,ZONES.FIELD,c.hostInstanceId);
@@ -1440,11 +1465,12 @@
       var legalEntryAttachments=getEntryAttachmentCandidates(state,pending.playerId,entryAttachmentHost,c.effect);
       var entryAttachment=legalEntryAttachments.find(function(card){return card.instanceId===ids[0];});
       if(!entryAttachment)throw new Error('装着できる強化カードがありません');
-      return attachExistingEnhancement(state,pending.playerId,entryAttachment,entryAttachmentHost);
+      return attachExistingEnhancement(state,pending.playerId,entryAttachment,entryAttachmentHost,{entryEffect:c.effect});
     }
     if(c.type==='ATTACH_EXISTING_COPY'){
       var pendingAttachment=findAnywhere(state,c.attachmentInstanceId),pendingHost=findInZone(state,pending.playerId,ZONES.FIELD,c.hostInstanceId),copySource=findAttachment(state,ids[0]);
-      if(!pendingAttachment||pendingAttachment.zone!==c.sourceZone||!pendingHost||(pendingHost.runtimeFlags.fieldEntrySerial||0)!==c.fieldEntrySerial||!copySource||copySource.playerId!==pending.playerId)throw new Error('装着先またはコピー元がありません');
+      if(!pendingAttachment||pendingAttachment.playerId!==pending.playerId||pendingAttachment.instance.controllerId!==pending.playerId||pendingAttachment.zone!==c.sourceZone||!pendingHost||(pendingHost.runtimeFlags.fieldEntrySerial||0)!==c.fieldEntrySerial||!copySource||copySource.playerId!==pending.playerId||!isEnhancementEligibleForForcedAttach(state,pending.playerId,pendingAttachment.instance))throw new Error('装着先またはコピー元がありません');
+      if(c.entryEffect&&getEntryAttachmentCandidates(state,pending.playerId,pendingHost,c.entryEffect).indexOf(pendingAttachment.instance)===-1)throw new Error('登場時の装着条件を満たしません');
       return attachExistingEnhancement(state,pending.playerId,pendingAttachment.instance,pendingHost,{copySource:copySource.instance});
     }
     if(c.type==='ATTACH_TERRITORY_CARD'){
@@ -2247,6 +2273,12 @@
     });
   }
 
+  function getEntryAttachAnyCandidates(state,playerId,effect){
+    var choices=[];
+    insectCards(state.player(playerId).field).forEach(function(host){getEntryAttachmentCandidates(state,playerId,host,effect).forEach(function(card){if(choices.indexOf(card)===-1)choices.push(card);});});
+    return choices;
+  }
+
   function attachExistingEnhancement(state,playerId,attachment,host,options){
     options=options||{};
     if(!isForcedAttachmentHostLegal(state,playerId,attachment,host))throw new Error('強化の装着対象が不正です');
@@ -2255,7 +2287,7 @@
     if(needsCopy&&!options.copySource){
       var copyChoices=getOwnAttachments(state,playerId,attachment.instanceId);
       if(!holder||!copyChoices.length)throw new Error('コピー元にできる強化カードがありません');
-      createCardSelection(state,{playerId:playerId,options:copyChoices.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:['ATTACHMENT'],selectionPurpose:'COPY_ENHANCEMENT_SOURCE',continuation:{type:'ATTACH_EXISTING_COPY',attachmentInstanceId:attachment.instanceId,sourceZone:holder.zone,hostInstanceId:host.instanceId,fieldEntrySerial:host.runtimeFlags.fieldEntrySerial||0}});return {pending:true};
+      createCardSelection(state,{playerId:playerId,options:copyChoices.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:['ATTACHMENT'],selectionPurpose:'COPY_ENHANCEMENT_SOURCE',continuation:{type:'ATTACH_EXISTING_COPY',attachmentInstanceId:attachment.instanceId,sourceZone:holder.zone,hostInstanceId:host.instanceId,fieldEntrySerial:host.runtimeFlags.fieldEntrySerial||0,entryEffect:options.entryEffect}});return {pending:true};
     }
     if(holder){var sourceCards=getPlayerZoneArray(state,holder.playerId,holder.zone);sourceCards.splice(sourceCards.indexOf(attachment),1);}
     attachment.controllerId=playerId;

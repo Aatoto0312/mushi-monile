@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 407,
+  "playable": 412,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -61,46 +61,46 @@
     "BOOSTER_SET_5": {
       "cataloged": 64,
       "connected": 50,
-      "implemented": 36,
-      "playable": 36,
+      "implemented": 37,
+      "playable": 37,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 36,
-        "PARTIAL": 14,
+        "PLAYABLE": 37,
+        "PARTIAL": 13,
         "RESEARCHED": 14
       }
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
-      "connected": 22,
-      "implemented": 22,
-      "playable": 22,
+      "connected": 24,
+      "implemented": 24,
+      "playable": 24,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 22,
-        "RESEARCHED": 42
+        "PLAYABLE": 24,
+        "RESEARCHED": 40
       }
     },
     "BOOSTER_SET_7": {
       "cataloged": 64,
-      "connected": 22,
-      "implemented": 22,
-      "playable": 22,
+      "connected": 23,
+      "implemented": 23,
+      "playable": 23,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 22,
-        "RESEARCHED": 42
+        "PLAYABLE": 23,
+        "RESEARCHED": 41
       }
     },
     "BOOSTER_SET_8": {
       "cataloged": 64,
-      "connected": 18,
-      "implemented": 18,
-      "playable": 18,
+      "connected": 19,
+      "implemented": 19,
+      "playable": 19,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 18,
-        "RESEARCHED": 46
+        "PLAYABLE": 19,
+        "RESEARCHED": 45
       }
     }
   },
@@ -7709,12 +7709,12 @@
       "officialNumber": "44/64",
       "name": "ヘラクレスサン",
       "set": "BOOSTER_SET_5",
-      "implementationStatus": "PARTIAL",
+      "implementationStatus": "PLAYABLE",
       "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -9055,6 +9055,96 @@
       "rulingQuestionIds": []
     },
     {
+      "cardId": "set6_033",
+      "canonicalCardId": "set6_033",
+      "printingId": "registry:set6_033",
+      "officialNumber": "33/64",
+      "name": "ウスリーオオカミキリ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/33/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_009",
+      "canonicalCardId": "set7_009",
+      "printingId": "registry:set7_009",
+      "officialNumber": "9/64",
+      "name": "オオシオカラトンボ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/9/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_003",
+      "canonicalCardId": "set6_003",
+      "printingId": "registry:set6_003",
+      "officialNumber": "3/64",
+      "name": "ウチワヤンマ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/3/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_045",
+      "canonicalCardId": "set8_045",
+      "printingId": "registry:set8_045",
+      "officialNumber": "45/64",
+      "name": "アレクサンドラトリバネアゲハ（幼虫）",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/45/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
       "cardId": "set6_016",
       "canonicalCardId": "set6_016",
       "printingId": "registry:set6_016",
@@ -9663,28 +9753,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set6_003",
-      "canonicalCardId": "set6_003",
-      "printingId": "registry:set6_003",
-      "officialNumber": "3/64",
-      "name": "ウチワヤンマ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/3/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set6_005",
       "canonicalCardId": "set6_005",
       "printingId": "registry:set6_005",
@@ -10032,28 +10100,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI6/31/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_033",
-      "canonicalCardId": "set6_033",
-      "printingId": "registry:set6_033",
-      "officialNumber": "33/64",
-      "name": "ウスリーオオカミキリ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/33/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
@@ -10648,28 +10694,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI7/8/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_009",
-      "canonicalCardId": "set7_009",
-      "printingId": "registry:set7_009",
-      "officialNumber": "9/64",
-      "name": "オオシオカラトンボ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/9/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
       ],
       "rulingQuestionIds": []
@@ -12127,30 +12151,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set8_045",
-      "canonicalCardId": "set8_045",
-      "printingId": "registry:set8_045",
-      "officialNumber": "45/64",
-      "name": "アレクサンドラトリバネアゲハ（幼虫）",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/45/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set8_047",
       "canonicalCardId": "set8_047",
       "printingId": "registry:set8_047",
@@ -12547,12 +12547,13 @@
       "rulingQuestionIds": []
     }
   ],
-  "base": "0ac9db28e2b58ad7d4338191ac61a598acb363ee",
+  "base": "797cb2108fa62f6abdd543e0ab9e141c58246428",
   "publicPlayables": 366,
   "protectedCandidates": [
     372,
     388,
-    397
+    397,
+    407
   ],
   "newBatch": [
     {
@@ -12914,20 +12915,193 @@
         "server/test/entry-selection-rooms.test.cjs"
       ],
       "unresolvedRulings": []
+    },
+    {
+      "id": "set6_003",
+      "name": "ウチワヤンマ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 5,
+      "color": "RED",
+      "hp": 900,
+      "image": "https://mushijingi.com/images/card/376.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/crossset-growth-entry.test.js"
+      ],
+      "cpu": [
+        "tests/crossset-growth-entry.test.js",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "human": [
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "online": [
+        "server/test/growth-entry-rooms.test.cjs",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "serialization": [
+        "tests/crossset-growth-entry.test.js",
+        "server/test/growth-entry-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set6_033",
+      "name": "ウスリーオオカミキリ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 5,
+      "color": "GREEN",
+      "hp": 1000,
+      "image": "https://mushijingi.com/images/card/406.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/crossset-growth-entry.test.js"
+      ],
+      "cpu": [
+        "tests/crossset-growth-entry.test.js",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "human": [
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "online": [
+        "server/test/growth-entry-rooms.test.cjs",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "serialization": [
+        "tests/crossset-growth-entry.test.js",
+        "server/test/growth-entry-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set7_009",
+      "name": "オオシオカラトンボ",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 3,
+      "color": "RED",
+      "hp": 500,
+      "image": "https://mushijingi.com/images/card/446.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/crossset-growth-entry.test.js"
+      ],
+      "cpu": [
+        "tests/crossset-growth-entry.test.js",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "human": [
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "online": [
+        "server/test/growth-entry-rooms.test.cjs",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "serialization": [
+        "tests/crossset-growth-entry.test.js",
+        "server/test/growth-entry-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set8_045",
+      "name": "アレクサンドラトリバネアゲハ（幼虫）",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 3,
+      "color": "GREEN",
+      "hp": 400,
+      "image": "https://mushijingi.com/images/card/546.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/crossset-growth-entry.test.js"
+      ],
+      "cpu": [
+        "tests/crossset-growth-entry.test.js",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "human": [
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "online": [
+        "server/test/growth-entry-rooms.test.cjs",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "serialization": [
+        "tests/crossset-growth-entry.test.js",
+        "server/test/growth-entry-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set5_044",
+      "name": "ヘラクレスサン",
+      "status": "PLAYABLE",
+      "audited": false,
+      "cost": 6,
+      "color": "COLORLESS",
+      "hp": 1000,
+      "image": "https://mushijingi.com/images/card/353.jpg",
+      "sourceProvenance": "Printed scan visually compared2026-11-03 on secondary host; original text and official QA/processing rules independently checked. No final AUDITED claim.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/",
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/crossset-growth-entry.test.js",
+        "tests/set5-entry-provenance.test.js"
+      ],
+      "cpu": [
+        "tests/crossset-growth-entry.test.js",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "human": [
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "online": [
+        "server/test/growth-entry-rooms.test.cjs",
+        "server/browser/growth-entry-paths.cjs"
+      ],
+      "serialization": [
+        "tests/crossset-growth-entry.test.js",
+        "server/test/growth-entry-rooms.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
     }
   ],
   "remainingGroups": [
     {
       "name": "Paid entry and free deployment",
       "cards": [
-        {
-          "id": "set6_003",
-          "name": "ウチワヤンマ"
-        },
-        {
-          "id": "set8_045",
-          "name": "アレクサンドラトリバネアゲハ（幼虫）"
-        },
         {
           "id": "set8_047",
           "name": "鬼蜻蜓の簪"
@@ -12987,14 +13161,6 @@
       "name": "Entry effects",
       "cards": [
         {
-          "id": "set5_044",
-          "name": "ヘラクレスサン"
-        },
-        {
-          "id": "set6_003",
-          "name": "ウチワヤンマ"
-        },
-        {
           "id": "set6_005",
           "name": "アカウシアブ"
         },
@@ -13007,16 +13173,8 @@
           "name": "ハルゼミ"
         },
         {
-          "id": "set6_033",
-          "name": "ウスリーオオカミキリ"
-        },
-        {
           "id": "set7_007",
           "name": "ウスバカマキリ"
-        },
-        {
-          "id": "set7_009",
-          "name": "オオシオカラトンボ"
         },
         {
           "id": "set7_035",
@@ -13043,10 +13201,6 @@
           "name": "ミカドアゲハ"
         },
         {
-          "id": "set8_045",
-          "name": "アレクサンドラトリバネアゲハ（幼虫）"
-        },
-        {
           "id": "set8_047",
           "name": "鬼蜻蜓の簪"
         }
@@ -13070,10 +13224,6 @@
         {
           "id": "set6_001",
           "name": "オオカレエダカマキリ"
-        },
-        {
-          "id": "set6_003",
-          "name": "ウチワヤンマ"
         },
         {
           "id": "set6_019",
