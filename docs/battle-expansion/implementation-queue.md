@@ -1,3 +1,12 @@
+# Resume: safe451 /565 —2026-11-04
+Top objective565/565; do not stop at intermediate counts. Base2d08db2; newSET6-22フローレンシスニセヒメカブト. Sets38/38/37/29,remaining114.
+- full1982/0 shared73/0 server156/0; predamage451-browser-final4/4 CPU/onlineChromium/WebKit; Toolbox16each; syntax/diff/contractgreen.
+- Extracted resolveCommittedAttack exact existing damage/postattack body, no payment/event replay; queued before-damage targetattachment destruction, full trigger resolution beforedamage, originaldefendercontroller/stayguard, currentAPrecompute only newpausedroute. TARGET_HAS_ATTACHMENT +INSECT_ONLY existinglegality; officialcommonQA explicitly requires appropriate effecttargets. Stale mandatory selectionbounds0 sharedEngine/CPU/EngineView allowsfizzle; existing paid-source-loss path untouched (protectedtail exactinverse extraction auditpasses).
+- Sources actualscan395 visuallychecked +officialgameQA effectbeforedamage/appropriate target/HP<=0. Specific6QAquestion only storedsecondarysummary, not claimedofficialfreshverification.
+- Next SET5-62甲冑の鍛冶 maps existing MOVE_SELECTED_ZONE_CARDS fromDISCARD toHAND cardTypeENHANCEMENT nameSubstrings['甲冑','贋作'] min0max2, cost0. No newEngine needed. Then re-evaluate7-64 extraattack+discardattachment lifecycle, 7-23/27/59/60 counter-use,8-57/58 globaldamage.
+- Known1failure+held5 remain inmushi-recovery; public366/main/API/ngrok/auth/originalstage/frozen checkpoints untouched. No system or publicprocess operations.
+
+--- prior queue ---
 # Resume: safe450 /565 —2026-11-04
 Worktree mushi-independent /crossset-independent-20261104. Base5ad88ff. AddedSET8-28ヒメカブト; total450, remaining115. SET5/6/7/8 PLAYABLE38/37/37/29.
 - Gates:full1974/0 shared73/0 server154/0; target-attachment-paths CPU/onlineChromium/WebKit4/4; Toolbox16each with newcard in saved20. Logs target450-full-final/shared/server-final/browser-final2/toolbox-final in .codex/tmp. Syntax/diff/contract passed.

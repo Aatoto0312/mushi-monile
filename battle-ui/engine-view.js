@@ -90,13 +90,14 @@ function prepareView(r,s,viewer){
       if(!kind){view.unsupportedDecision=true;view.blockedReason='UNSUPPORTED_DECISION';return {view,capabilities};}
       const costStatus=c.getPendingAttackCostStatus(s);
       if(costStatus&&!costStatus.canContinue){add({kind:'CANCEL_ATTACK_COST'},'続行できない攻撃を取り消す',null,null,[],false);return {view,capabilities};}
-      const max=pending.type==='CARD_SELECTION'?pending.maxSelections:1,min=pending.type==='CARD_SELECTION'?pending.minSelections:1;
       const fieldCandidates=c.getPendingFieldAbilityCandidates(s,pending);
       const entryConstraints=c.getPendingEntrySelectionConstraints(s,pending);
+      const bounds=entryConstraints?.selectionBounds||pending;
+      const max=pending.type==='CARD_SELECTION'?bounds.maxSelections:1,min=pending.type==='CARD_SELECTION'?bounds.minSelections:1;
       const options=paymentStatus?paymentStatus.candidateIds:costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
       if(options.length<min){view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
       const id=add({kind},'選択を決定',null,null,options,false);
-      view.decision={actionId:id,min,max,exact:pending.exactSelections??(kind==='CARDS'?null:1),ordered:true,
+      view.decision={actionId:id,min,max,exact:bounds.exactSelections??(kind==='CARDS'?null:1),ordered:true,
         options:options.map(id=>locate(id,!!pending.hiddenSelection,!!pending.continuation?.effect?.inspectOwnHidden)),atMostOneGroups:(entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups||[]).map(group=>group.map(ref)),groups:(pending.selectionGroups||[]).map(group=>group.map(ref)),partitions:(pending.selectionPartitions||[]).map(group=>group.map(ref)),combinations:(pending.allowedCombinations||[]).map(group=>group.map(ref))};
       if(pending.hiddenSelection)view.decision.options.sort((a,b)=>a.ref.localeCompare(b.ref));
     }

@@ -500,6 +500,7 @@
       resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves, afterResolution:continuation.afterResolution });
       return;
     }
+    if(continuation.type==='RESOLVE_COMMITTED_ATTACK'){resolveCommittedAttack(state,continuation);return;}
     if(continuation.type==='TARGET_ATTACHMENT_AFTER_ATTACK'){
       var attachmentDefender=findInZone(state,continuation.targetPlayerId,ZONES.FIELD,continuation.targetInstanceId);
       if(state.phase===Phases.GAME_OVER||!attachmentDefender||(attachmentDefender.runtimeFlags.fieldEntrySerial||0)!==continuation.fieldEntrySerial)return;
@@ -1081,7 +1082,8 @@
     if(!c)return null;
     if(c.type==='TARGET_ATTACHMENT_OPERATION'){
       var currentAttachmentHost=findInZone(state,c.targetPlayerId,ZONES.FIELD,c.targetInstanceId);
-      return {options:currentAttachmentHost&&(currentAttachmentHost.runtimeFlags.fieldEntrySerial||0)===c.fieldEntrySerial?(currentAttachmentHost.attachments||[]).filter(function(card){return !card.faceDown&&pending.options.indexOf(card.instanceId)!==-1;}).map(function(card){return card.instanceId;}):[],atMostOneGroups:[]};
+      var currentAttachmentIds=currentAttachmentHost&&(currentAttachmentHost.runtimeFlags.fieldEntrySerial||0)===c.fieldEntrySerial?(currentAttachmentHost.attachments||[]).filter(function(card){return !card.faceDown&&pending.options.indexOf(card.instanceId)!==-1;}).map(function(card){return card.instanceId;}):[];
+      return {options:currentAttachmentIds,atMostOneGroups:[],selectionBounds:currentAttachmentIds.length?null:{minSelections:0,maxSelections:0,exactSelections:0}};
     }
     if(c.type==='ENTRY_ATTACH_ENHANCEMENT'){
       var attachmentHost=findInZone(state,pending.playerId,ZONES.FIELD,c.hostInstanceId);
@@ -1297,8 +1299,9 @@
     var unique = [];
     ids.forEach(function (id) { if (pending.options.indexOf(id) === -1) throw new Error('選択対象外のカードです'); if (unique.indexOf(id) !== -1) throw new Error('同じカードを重複選択できません'); unique.push(id); });
     var mustFinish = finish !== false;
-    if (unique.length > pending.maxSelections) { throw new Error('選択枚数が上限を超えています'); }
-    if (mustFinish && unique.length < pending.minSelections) { throw new Error('必要な枚数を選択してください'); }
+    var currentSelectionConstraints=getPendingEntrySelectionConstraints(state,pending),selectionBounds=currentSelectionConstraints&&currentSelectionConstraints.selectionBounds||pending;
+    if (unique.length > selectionBounds.maxSelections) { throw new Error('選択枚数が上限を超えています'); }
+    if (mustFinish && unique.length < selectionBounds.minSelections) { throw new Error('必要な枚数を選択してください'); }
     if(mustFinish&&pending.selectionPartitions&&pending.selectionPartitions.length&&!pending.selectionPartitions.some(function(group){return unique.every(function(id){return group.indexOf(id)!==-1;});}))throw new Error('同じ条件のカードを選択してください');
     if (mustFinish && pending.selectionGroups.length && pending.selectionGroups.some(function(group){return !unique.some(function(id){return group.indexOf(id)!==-1;});})) { throw new Error('各対象グループから選択してください'); }
     if (mustFinish && pending.allowedCombinations && pending.allowedCombinations.length && !pending.allowedCombinations.some(function(group) {
@@ -3014,11 +3017,24 @@
       sourceName: result.attackerName
     });
 
-    if (targetType === 'INSECT') {
-      var defender = findInZone(state, opponentId, ZONES.FIELD, targetInstanceId);
-      if (!defender) {
-        throw new Error('対象の虫が場にいません');
-      }
+    var committedAttack={type:'RESOLVE_COMMITTED_ATTACK',playerId:ap,opponentId:opponentId,attackerInstanceId:attacker.instanceId,attackerFieldEntrySerial:attackerFieldEntrySerial,targetInstanceId:targetInstanceId,targetType:targetType,targetFieldEntrySerial:attackedTargetFieldSerial,skill:skill,apVal:apVal,result:result,attackOptions:attackOptions};
+    var preDamageAttachmentEffect=(skill.effects||[]).find(function(effect){return effect.type==='TARGET_ATTACHMENT_BEFORE_DAMAGE';});
+    var preDamageHost=targetType==='INSECT'&&findInZone(state,opponentId,ZONES.FIELD,targetInstanceId);
+    if(preDamageAttachmentEffect&&preDamageHost&&(preDamageHost.attachments||[]).length){
+      createCardSelection(state,{playerId:ap,options:preDamageHost.attachments.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:['ATTACHMENT'],selectionPurpose:'TARGET_ATTACHMENT_OPERATION',continuation:{type:'TARGET_ATTACHMENT_OPERATION',targetPlayerId:opponentId,targetInstanceId:targetInstanceId,fieldEntrySerial:attackedTargetFieldSerial,operation:preDamageAttachmentEffect.operation}});
+      committedAttack.recalculateAp=true;state.pendingEffect.afterResolution=committedAttack;return {pending:true};
+    }
+    return resolveCommittedAttack(state,committedAttack);
+  }
+
+  // Resume only resolution: costs and the attack announcement have already committed.
+  function resolveCommittedAttack(state,c){
+    var committedSource=findAnywhere(state,c.attackerInstanceId);if(!committedSource)return c.result;
+    var attacker=committedSource.instance,ap=c.playerId,opponentId=c.opponentId,targetInstanceId=c.targetInstanceId,targetType=c.targetType,skill=c.skill,apVal=c.apVal,result=c.result,attackOptions=c.attackOptions||{},attackerFieldEntrySerial=c.attackerFieldEntrySerial,attackedTargetFieldSerial=c.targetFieldEntrySerial,def={name:result.attackerName};
+    if(c.recalculateAp){apVal=getEffectiveAP(state,attacker,skill.baseAp||0,skill);result.apVal=apVal;}
+    var committedDefender=targetType==='INSECT'&&findInZone(state,opponentId,ZONES.FIELD,targetInstanceId);
+    if (targetType === 'INSECT' && committedDefender && (committedDefender.runtimeFlags.fieldEntrySerial||0)===attackedTargetFieldSerial) {
+      var defender = committedDefender;
       if (skill.bonusApAgainstAttached && (defender.attachments || []).length) { apVal += skill.bonusApAgainstAttached; result.apVal = apVal; }
       var attackerColor = getEffectiveColor(attacker);
       var defenderColor = getEffectiveColor(defender);
