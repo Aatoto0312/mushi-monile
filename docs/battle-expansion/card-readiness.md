@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 461.
+All entries: 565; declared PLAYABLE: 463.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -529,8 +529,8 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 20/64 | set8_020 | ケンタウルスオオカブト | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 21/64 | set8_021 | ミカドアゲハ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 22/64 | set8_022 | エンガノオオカブト | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_8 | 23/64 | set8_023 | オオハキリバチ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_8 | 24/64 | set8_024 | ヤマトハキリバチ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 23/64 | set8_023 | オオハキリバチ | yes | yes | yes | yes | pending | PLAYABLE |
+| BOOSTER_SET_8 | 24/64 | set8_024 | ヤマトハキリバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 25/64 | set8_025 | アカエゾゼミ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 26/64 | set8_026 | ジュウサンネンゼミ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 27/64 | set8_027 | ミドリシジミ | yes | pending | pending | pending | pending | RESEARCHED |

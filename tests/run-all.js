@@ -6,6 +6,7 @@ var engine = require('./engine-loader.js');
 
 function requireAll() {
   return [
+    require('./material-collection.test.js'),
     require('./public-battle-log.test.js'),
     require('./self-skill-targeting.test.js'),
     require('./battle-result-label.test.js'),

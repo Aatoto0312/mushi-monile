@@ -143,3 +143,6 @@ SET5-25/27 printed scans checked; existing Engine only. Engine6, rooms2, browser
 
 ## safe461 +debuggerP0
 SET6-41 dedicated pre-damage self-destruction/matching adult selection; officialQA6 confirms no-damage/no-territory on destruction, mandatoryselfdestroy withoutadult, replacementallowsattack. Engine5, rooms2, browser4, Toolbox16each; full2037/0 shared73/0 server177/0. P0 SOURCE/SELF alias fixed generically; 10selfstat skill regression and bothseat/resume realroom +browser tested. Viewer-relative win/loss/draw presentation; serveroutcome unchanged. Public/main/API untouched.
+
+## safe463 material collection
+SET8-23/24 printed scans524/525; same skilltext reuses source-destruction effect lifecycle. full2046/0 shared73/0 server183/0; individual6,rooms4,browser4x4variants,Toolbox16each;6-41regression5. No oldadditional-cost source-loss behavior changed.

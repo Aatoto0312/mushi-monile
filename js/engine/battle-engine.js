@@ -504,7 +504,13 @@
       var formOptions=state.player(continuation.playerId).discard.filter(function(card){var def=!card.faceDown&&getCardDefinition(card.cardId);return def&&def.type===CardTypes.INSECT&&String(def.name).normalize('NFKC')===continuation.adultName;});
       if(formOptions.length){createCardSelection(state,{playerId:continuation.playerId,options:formOptions.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:[ZONES.DISCARD],selectionPurpose:'DEPLOY_ATTACK_MATCHING_FORM',continuation:{type:'DEPLOY_ATTACK_MATCHING_FORM_SELECTED',playerId:continuation.playerId,adultName:continuation.adultName,attack:continuation.attack}});}else resumeAfterSelection(state,{type:'FINISH_FORM_ATTACK',attack:continuation.attack});return;
     }
+    if(continuation.type==='GAIN_COST_AFTER_SOURCE_DESTRUCTION'){
+      state.player(continuation.playerId).availableCost+=continuation.amount;
+      emitBattleEvent(state,'COST_GAIN',{playerId:continuation.playerId,amount:continuation.amount});
+      resumeAfterSelection(state,{type:'FINISH_FORM_ATTACK',attack:continuation.attack});return;
+    }
     if(continuation.type==='FINISH_FORM_ATTACK'){
+
       var formAttack=continuation.attack,formSource=findInZone(state,formAttack.playerId,ZONES.FIELD,formAttack.attackerInstanceId);
       if(formSource&&!formSource.faceDown&&(formSource.runtimeFlags.fieldEntrySerial||0)===formAttack.attackerFieldEntrySerial){formAttack.recalculateAp=true;resolveCommittedAttack(state,formAttack);}return;
     }
@@ -3059,11 +3065,11 @@
     });
 
     var committedAttack={type:'RESOLVE_COMMITTED_ATTACK',playerId:ap,opponentId:opponentId,attackerInstanceId:attacker.instanceId,attackerFieldEntrySerial:attackerFieldEntrySerial,targetInstanceId:targetInstanceId,targetType:targetType,targetFieldEntrySerial:attackedTargetFieldSerial,skill:skill,apVal:apVal,result:result,attackOptions:attackOptions};
-    var sourceFormEffect=(skill.effects||[]).find(function(effect){return effect.type==='DESTROY_SOURCE_DEPLOY_MATCHING_FORM';});
+    var sourceFormEffect=(skill.effects||[]).find(function(effect){return effect.type==='DESTROY_SOURCE_DEPLOY_MATCHING_FORM'||effect.type==='DESTROY_SOURCE_BEFORE_DAMAGE';});
     if(sourceFormEffect){
-      var adultName=String(def.name).normalize('NFKC').replace(String(sourceFormEffect.nameSuffix).normalize('NFKC'),'');
+      var sourceFollowup=sourceFormEffect.type==='DESTROY_SOURCE_DEPLOY_MATCHING_FORM'?{type:'DEPLOY_ATTACK_MATCHING_FORM',playerId:ap,adultName:String(def.name).normalize('NFKC').replace(String(sourceFormEffect.nameSuffix).normalize('NFKC'),''),attack:committedAttack}:{type:'GAIN_COST_AFTER_SOURCE_DESTRUCTION',playerId:ap,amount:sourceFormEffect.gainCost,attack:committedAttack};
       destroyInsect(state,attacker.instanceId,'ABILITY',attacker.instanceId,{}, {skipTerritoryDraw:true,sourceControllerId:ap});
-      resumeAfterSelection(state,{type:'DEPLOY_ATTACK_MATCHING_FORM',playerId:ap,adultName:adultName,attack:committedAttack});return result;
+      resumeAfterSelection(state,sourceFollowup);return result;
     }
     var preDamageAttachmentEffect=(skill.effects||[]).find(function(effect){return effect.type==='TARGET_ATTACHMENT_BEFORE_DAMAGE';});
     var preDamageHost=targetType==='INSECT'&&findInZone(state,opponentId,ZONES.FIELD,targetInstanceId);
