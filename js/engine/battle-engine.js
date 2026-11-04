@@ -1066,9 +1066,9 @@
 
   function getPendingEntrySelectionConstraints(state,pending){
     var c=pending&&pending.continuation;
-    if(!c||c.type!=='RESOLVE_ENTRY_SELECTION'||!c.effect.distinctColor)return null;
+    if(!c||c.type!=='RESOLVE_ENTRY_SELECTION')return null;
     var cards=getEntrySelectionCandidates(state,c.playerId,c.effect).filter(function(card){return pending.options.indexOf(card.instanceId)!==-1;});
-    return {options:cards.map(function(card){return card.instanceId;}),atMostOneGroups:['RED','BLUE','GREEN','COLORLESS'].map(function(color){return cards.filter(function(card){return getEffectiveColor(card)===color;}).map(function(card){return card.instanceId;});})};
+    return {options:cards.map(function(card){return card.instanceId;}),atMostOneGroups:c.effect.distinctColor?['RED','BLUE','GREEN','COLORLESS'].map(function(color){return cards.filter(function(card){return getEffectiveColor(card)===color;}).map(function(card){return card.instanceId;});}):[]};
   }
 
   function resolveFieldEntryEffects(state, instanceId) {
@@ -3613,7 +3613,7 @@
     var jobs=[],sourceId=source.instance.instanceId,serial=source.instance.runtimeFlags.fieldEntrySerial||0;
     function add(effect,label,value){var key=value,index=1;while(jobs.some(function(job){return job.value===key;}))key=value+'_'+index++;
       jobs.push({effect:JSON.parse(JSON.stringify(effect)),label:label+'を先に解決',value:key,playerId:source.playerId,sourceInstanceId:sourceId,fieldEntrySerial:serial});}
-    (skill&&skill.effects||[]).forEach(function(effect){if(effect.type==='CAPTURE_ATTACK_DESTROYED_TARGET')add(effect,skill.name,'CAPTURE_FIRST');if(effect.type==='GROW_ON_ATTACK_KILL')add(effect,skill.name,'GROW_FIRST');});
+    (skill&&skill.effects||[]).forEach(function(effect){if(effect.type==='CAPTURE_ATTACK_DESTROYED_TARGET')add(effect,skill.name,'CAPTURE_FIRST');if(effect.type==='GROW_ON_ATTACK_KILL')add(effect,skill.name,'GROW_FIRST');if(effect.type==='SELECT_ON_ATTACK_KILL')add(effect,skill.name,'SELECT_FIRST');});
     (source.instance.attachments||[]).forEach(function(att){var d=getCardDefinition(att.cardId);(d&&d.enhancementEffects||[]).forEach(function(effect){
       if(effect.type==='BOTTOM_DECK_HOST_ATTACK_KILL')add(effect,d.name,'BOTTOM_FIRST');
       if(effect.type==='DESTROY_OPPONENT_CHOICE_AFTER_HOST_ATTACK_KILL')add(effect,d.name,'DESTROY_FIRST');
@@ -3629,6 +3629,7 @@
 
   function resolveAttackKillEffect(state,context,job){
     var effect=job.effect;
+    if(effect.type==='SELECT_ON_ATTACK_KILL'){resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:job.playerId,sourceInstanceId:job.sourceInstanceId,optional:true,effect:effect.selection});return;}
     if(effect.type==='CAPTURE_ATTACK_DESTROYED_TARGET'){applyCaptureDestroyedCard(state,context);return;}
     if(effect.type==='BOTTOM_DECK_HOST_ATTACK_KILL'){applyBottomDeckDestroyedCard(state,context,effect.faceDown!==false);return;}
     if(effect.type==='GROW_ON_ATTACK_KILL'){resumeAfterSelection(state,{type:'GROW_ATTACK_SOURCE',sourceInstanceId:job.sourceInstanceId,fieldEntrySerial:job.fieldEntrySerial,amount:effect.amount,stats:effect.stats});return;}

@@ -67,11 +67,13 @@
       if (fieldAbilityCandidates) { return {type:'RESOLVE_CARD_SELECTION',instanceIds:fieldAbilityCandidates.slice(0,1)}; }
       if (!pending.options || pending.options.length < pending.minSelections) return null;
       var count = pending.exactSelections != null ? pending.exactSelections : pending.maxSelections;
+      var entryConstraints=global.getPendingEntrySelectionConstraints&&global.getPendingEntrySelectionConstraints(state,pending);
+      var currentOptions=entryConstraints?entryConstraints.options:pending.options;
       var selected=pending.hiddenSelection?[pending.options[Math.floor(this.rng()*pending.options.length)]]:
-        ((pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):pending.options.slice(0,count));
-      if (pending.allowedCombinations && pending.allowedCombinations.length) { selected = pending.allowedCombinations[0].slice(); }
+        ((pending.selectionGroups&&pending.selectionGroups.length)?pending.selectionGroups.map(function(group){return group[0];}):currentOptions.slice(0,count));
+      if (pending.allowedCombinations && pending.allowedCombinations.length) { var legalCombination=pending.allowedCombinations.find(function(group){return group.every(function(id){return currentOptions.indexOf(id)!==-1;});});if(!legalCombination)return null;selected=legalCombination.slice(); }
       if(pending.selectionPartitions&&pending.selectionPartitions.length){var partition=pending.selectionPartitions.find(function(group){return group.length>=pending.minSelections;});if(!partition)return null;selected=partition.slice(0,count);}
-      var entryConstraints=global.getPendingEntrySelectionConstraints&&global.getPendingEntrySelectionConstraints(state,pending),uniqueGroups=entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups;
+      var uniqueGroups=entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups;
       if(uniqueGroups&&uniqueGroups.length){selected=uniqueGroups.filter(function(group){return group.length;}).map(function(group){return group[0];});}
       return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
     }

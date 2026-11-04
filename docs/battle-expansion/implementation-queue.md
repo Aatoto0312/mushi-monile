@@ -1,3 +1,9 @@
+# Resume: safe447 —2026-11-04
+Prior446 checkpointe1dfab6; addedSET6-7. full1959/shared73/server149 all0fail;CPU/onlineChromium/WebKit4/4. Queue+filtered selection primitives reused. Currententry candidates now re-evaluate forCPU/EngineView. No unconfirmed paid-source-loss changes.
+Next:SET7-36/38 same once-per-field-stay after-attack ownfood enhancement (printedcost<=3) to source. Reuse ATTACH_FROM_OWN_ZONE_ON_ENTRY + field-entry serial guard and after-attack queued continuation; verify official enhancement damage after attack does NOT draw territory. Generic pending host-loss must allow optional decline, no freeze.
+Protected recovery5/failedboundary remain untouched; public366/main/API/ngrok/auth/stage preserved.
+
+--- earlier records ---
 # Resume: safe446 —2026-11-04
 Worktree mushi-independent /crossset-independent-20261104. AddedSET7-37/41; gatesfull1954/shared73/server147 all0fail; browserCPU/onlineChromium/WebKit passed,Toolbox16each. Metadata446,SET7now35. No public/main/API/ngrok/auth/originalstage changes.
 Next untracked RED test:tests/attack-kill-retrieval.test.js forSET6-7; reuse SELECT_ON_ENTRY familySuffixes + attackkill ordered queue. Need register effect and resolver, preserve protected attack-tail hash via exact reviewed inverse additions, officialQA6 poison order. Do not count until tests/CPU/WSS/UI pass.

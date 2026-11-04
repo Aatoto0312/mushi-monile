@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 446.
+All entries: 565; declared PLAYABLE: 447.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -385,7 +385,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 4/64 | set6_004 | ナンベイオオタガメ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 5/64 | set6_005 | アカウシアブ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 6/64 | set6_006 | ツシマカブリモドキ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_6 | 7/64 | set6_007 | エゾオナガバチ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 7/64 | set6_007 | エゾオナガバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 8/64 | set6_008 | コオイムシ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 9/64 | set6_009 | デザートヘアリースコーピオン | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 10/64 | set6_010 | ボウレイカマキリ | yes | pending | pending | pending | pending | RESEARCHED |
