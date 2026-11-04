@@ -500,6 +500,11 @@
       resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves, afterResolution:continuation.afterResolution });
       return;
     }
+    if(continuation.type==='ATTACH_AFTER_ATTACK'){
+      var attachmentAttacker=findInZone(state,continuation.playerId,ZONES.FIELD,continuation.sourceInstanceId);
+      if(state.phase===Phases.GAME_OVER||!attachmentAttacker||(attachmentAttacker.runtimeFlags.fieldEntrySerial||0)!==continuation.fieldEntrySerial)return;
+      resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,optional:true,effect:continuation.effect});return;
+    }
     if (continuation.type === 'FIELD_ENTRY_EFFECT') {
       var entryEffect = continuation.effect;
       if(entryEffect.type==='ATTACH_SAME_NAME_FROM_DISCARD'){
@@ -1066,7 +1071,13 @@
 
   function getPendingEntrySelectionConstraints(state,pending){
     var c=pending&&pending.continuation;
-    if(!c||c.type!=='RESOLVE_ENTRY_SELECTION')return null;
+    if(!c)return null;
+    if(c.type==='ENTRY_ATTACH_ENHANCEMENT'){
+      var attachmentHost=findInZone(state,pending.playerId,ZONES.FIELD,c.hostInstanceId);
+      var eligible=attachmentHost&&(attachmentHost.runtimeFlags.fieldEntrySerial||0)===c.fieldEntrySerial?getEntryAttachmentCandidates(state,pending.playerId,attachmentHost,c.effect):[];
+      return {options:eligible.map(function(card){return card.instanceId;}).filter(function(id){return pending.options.indexOf(id)!==-1;}),atMostOneGroups:[]};
+    }
+    if(c.type!=='RESOLVE_ENTRY_SELECTION')return null;
     var cards=getEntrySelectionCandidates(state,c.playerId,c.effect).filter(function(card){return pending.options.indexOf(card.instanceId)!==-1;});
     return {options:cards.map(function(card){return card.instanceId;}),atMostOneGroups:c.effect.distinctColor?['RED','BLUE','GREEN','COLORLESS'].map(function(color){return cards.filter(function(card){return getEffectiveColor(card)===color;}).map(function(card){return card.instanceId;});}):[]};
   }
@@ -3172,6 +3183,9 @@
     }
     
     (skill.effects || []).forEach(function(effect) {
+      if(effect.type==='ATTACH_AFTER_ATTACK'){
+        resumeAfterSelection(state,{type:'ATTACH_AFTER_ATTACK',playerId:ap,sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial,effect:effect.attachment});
+      }
       if(effect.type==='GROW_AFTER_ATTACK'){
         resumeAfterSelection(state,{type:'GROW_ATTACK_SOURCE',sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial,amount:effect.amount,stats:effect.stats});
       }

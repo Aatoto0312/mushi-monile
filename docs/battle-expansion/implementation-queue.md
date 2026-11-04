@@ -1,3 +1,13 @@
+# Resume: safe449 /565 —2026-11-04
+Worktree C:/Users/aatot/mushi-independent; branch crossset-independent-20261104; HEAD after this checkpoint is safe449. Previous e1dfab6(446),5d239f4(447),7e8e057(444). Working tree should be clean.
+- Added5 this batch:SET7-37ジンメンカメムシ,7-41アカスジカメムシ,SET6-7エゾオナガバチ,7-36ウォーレスシロスジカミキリ,7-38ヒゲナガカミキリ. SET5/6/7/8 PLAYABLE38/37/37/28;total449,remaining116.
+- Gates:full1967/0 shared73/0 server152/0;all3 scoped browser suites CPU+onlineChromium/WebKit passed;Toolbox16each with newest5 in saved20deck. Syntax/diff/contract passed. No unfinished tests/code. Logs host446-*,retrieve447-*,after449-* in .codex/tmp.
+- Reused host attach lifecycle+ordered triggers; attackkill job dispatch+filtered discard selection; afterattack queued forced attach+once limit. Current selection candidates/host guards shared by Human/CPU. No paid-source-loss handler imported.
+- Historical1952/144 vs1943/142 were different experimental vsindependent trees:base1926/136 plus26/8 vs17/6. No baseline runner entry or testfile deleted. Known recovery boundary1fail+5pending remain unchanged in mushi-recovery, testSHA256de696d31178e30fa195434ae8f685dfe6ba525759f7992ee2b33bf2f9e4b098c. Do not repeat ruling investigation.
+- Next shared candidates:SET8-28/SET6-22 target attachment operation (return vsdestruction, after vsbefore attack; owner/detach/copy lifecycle required); SET7-23/27/59/60 counter-use reactions (payment/target reveal/order/cancellation, officialQA7 available); SET8-57/58 global damage+endturn requires correct batch damage/trigger order. Check runtime first; no whole catalog reread.
+- Public366/main/API/ngrok/auth/originalstage/frozen checkpoints unchanged. main/origin988e4f7. No push/Pages/billable/system/process changes.
+
+--- earlier records ---
 # Resume: safe447 —2026-11-04
 Prior446 checkpointe1dfab6; addedSET6-7. full1959/shared73/server149 all0fail;CPU/onlineChromium/WebKit4/4. Queue+filtered selection primitives reused. Currententry candidates now re-evaluate forCPU/EngineView. No unconfirmed paid-source-loss changes.
 Next:SET7-36/38 same once-per-field-stay after-attack ownfood enhancement (printedcost<=3) to source. Reuse ATTACH_FROM_OWN_ZONE_ON_ENTRY + field-entry serial guard and after-attack queued continuation; verify official enhancement damage after attack does NOT draw territory. Generic pending host-loss must allow optional decline, no freeze.

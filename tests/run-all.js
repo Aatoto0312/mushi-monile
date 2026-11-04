@@ -6,6 +6,7 @@ var engine = require('./engine-loader.js');
 
 function requireAll() {
   return [
+    require('./after-attack-attach.test.js'),
     require('./attack-kill-retrieval.test.js'),
     require('./host-attachment.test.js'),
     require('./monochrome.test.js'),

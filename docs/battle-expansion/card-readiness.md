@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 447.
+All entries: 565; declared PLAYABLE: 449.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -478,9 +478,9 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 33/64 | set7_033 | オオルリタマムシ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 34/64 | set7_034 | シロスジカミキリ | yes | yes | pending | pending | pending | PARTIAL |
 | BOOSTER_SET_7 | 35/64 | set7_035 | ヤマトタマムシ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 36/64 | set7_036 | ウォーレスシロスジカミキリ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 36/64 | set7_036 | ウォーレスシロスジカミキリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 37/64 | set7_037 | ジンメンカメムシ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 38/64 | set7_038 | ヒゲナガカミキリ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 38/64 | set7_038 | ヒゲナガカミキリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 39/64 | set7_039 | ラミーカミキリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 40/64 | set7_040 | シャチホコガ（幼虫） | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 41/64 | set7_041 | アカスジカメムシ | yes | yes | yes | yes | pending | PLAYABLE |
