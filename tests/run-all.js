@@ -6,6 +6,7 @@ var engine = require('./engine-loader.js');
 
 function requireAll() {
   return [
+    require('./named-enhancement-recovery.test.js'),
     require('./pre-damage-attachment.test.js'),
     require('./target-attachment.test.js'),
     require('./after-attack-attach.test.js'),

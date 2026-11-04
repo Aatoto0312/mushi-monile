@@ -10,7 +10,7 @@
   // Only connect definitions whose full text has been mapped. Registration is
   // deliberately separate from completion evidence and release status.
   var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 56, 57, 60, 62, 63, 64];
-  var playableNumbers = [1, 2, 3, 4, 5, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 26, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 63, 64];
+  var playableNumbers = [1, 2, 3, 4, 5, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 26, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 62, 63, 64];
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {
@@ -71,7 +71,7 @@
     }
     if (number === 60) { def.cardEffects=[{type:'RESET_ATTACK',requiresTarget:true,target:'OWN_ATTACKED_FIELD_INSECT',requiredSkillNameSubstring:'毒'}]; }
     if (number === 57) { def.cardEffects=[{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'FOOD',exactSelections:2,faceDown:true,suppressFoodCostThisTurn:true}]; }
-    if (number === 62) { def.cardEffects=[{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'HAND',cardType:'ENHANCEMENT',nameSubstrings:['甲冑','贋作'],minSelections:0,maxSelections:2}]; }
+    if (number === 62) { if(def.skills.length||def.passiveAbilities.length||def.enhancementEffects.length||def.cardEffects.length!==1||String(def.cardEffects[0].effectText).normalize('NFKC').replace(/\s/g,'')!=='自分の捨て札にある甲冑または贋作と書かれた強化カードを最大2つ選び手札に戻す。')throw new Error('SET5_62_TEXT_MISMATCH');def.cardEffects=[{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'HAND',cardType:'ENHANCEMENT',nameSubstrings:['甲冑','贋作'],minSelections:0,maxSelections:2}]; }
     if (number === 56) { def.cardEffects=[{type:'DISCOUNT_NEXT_MATCHING_FORM',sourceZone:'FOOD',nameSuffix:'（幼虫）',amount:3}]; }
     if (number === 40) { def.passiveAbilities[0].timing='TERRITORY_DRAW';def.passiveAbilities[0].effects=[{type:'OPTIONAL_SELF_DRAW_DESTINATION',destination:'FOOD'}]; }
     if (number === 38) { def.passiveAbilities[0].timing='TERRITORY_DRAW';def.passiveAbilities[0].effects=[{type:'OPTIONAL_SELF_DRAW_DESTINATION',destination:'TERRITORY',replaceNextTerritoryDraw:true,discardAtEndTurn:true}]; }

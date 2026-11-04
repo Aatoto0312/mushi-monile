@@ -125,3 +125,6 @@ Base5ad88ff. SET8-28ヒメカブト, printedscan https://mushijingi.com/images/c
 
 ## safe451: SET6-22 pre-damage attachment destruction
 Printedscan395 visuallychecked; official https://mushijingi.jimdofree.com/q-a-よくある質問-1/ゲームのルールについて/ confirms effectbefore damage, mandatory appropriatetarget, HP<=0 destruction. Existing secondary specificQA not promoted. Engine8 cases, rooms2, browsers4,full1982/shared73/server156 all0fail. Mandatoryselection freshbounds/owner destruction/JSON/events/childdestruction/stalecontroller&stay/APrecalculation covered. resolveCommittedAttack extraction audited by exactinverse keeping originalsafe372 tailhash. No additionalcost-source ruling imported. FirstWebKitonline attempt during ongoing sourceedits failed; frozenfinal4/4 passed. Toolbox16each; no publicchanges.
+
+## safe452: SET5-62甲冑の鍛冶
+Existingwired recipe reused without Enginechanges; fulltext guard and PLAYABLE gating added only after5 units,2 roomtests,4 CPU/onlineChromium/WebKit paths. Printedscan371 visuallychecked. Testscover ownvisible discard/type/nameOR/0..2/duplicate/max/JSON/pendingreconnect/retry/CPU. full1987/shared73/server158 zero failures,Toolbox16each; livecount452,SET5now39+12PARTIAL+13unconnected. Initialreal-art networkfetch errors retained in salvage452-browser.log; freshfinalall4 passed with actualJPEG verification. No publicchanges.

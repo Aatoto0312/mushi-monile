@@ -1,3 +1,11 @@
+# Resume: safe452 /565 —2026-11-04
+Objective565/565 ongoing; base96e8abf/451, newSET5-62甲冑の鍛冶. Sets39/38/37/29;remaining113.
+- Reused alreadywired exact MOVE_SELECTED_ZONE_CARDS recipe in set5-cards.js; duplicate registration avoided, no newEngine. Addedfullprintedtextguard +existing62playability gate +evidence. Scan371 visuallychecked.
+- full1987/0 shared73/0 server158/0; salvage452-browser-final4/4 CPU/onlineChromium/WebKit; Toolbox16each; syntax/diff/contractgreen. Initialartfetchfailed in browser transport, freshfinal realJPEG receipts passed; no placeholders or skipped assertions. Counts39PLAYABLE12PARTIAL13unconnected forSET5 reflectedinToolboxtests.
+- Next audit existing wired SET5-06/13 destruction-return effects with actualattack/ownercontroller/attachments/suppression/JSON/optionalCPU Human online. Not yet certified. Then7-64 forceddiscardattach+extraattack+endturnexpire, counter-use7-23/27/59/60 or batchdamage8-57/58.
+- Known1failure+held5 remain isolated; public/main/API/ngrok/auth/stage/frozencheckpoints unchanged.
+
+--- prior queue ---
 # Resume: safe451 /565 —2026-11-04
 Top objective565/565; do not stop at intermediate counts. Base2d08db2; newSET6-22フローレンシスニセヒメカブト. Sets38/38/37/29,remaining114.
 - full1982/0 shared73/0 server156/0; predamage451-browser-final4/4 CPU/onlineChromium/WebKit; Toolbox16each; syntax/diff/contractgreen.
