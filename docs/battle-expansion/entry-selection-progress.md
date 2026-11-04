@@ -57,3 +57,5 @@ Groups overlap; classifications are research priorities, not automatically certi
 Original four timing hypotheses and additional-cost-source-loss stop route stay isolated on oldunsafe development branch. New official processing PDF is available as a future audit source, but those assertions/paths were not altered or imported. No main/publicAPI/ngrok changes. AUDITED is not implied by PLAYABLE.
 
 2026-11-04 incremental economy batch: SET6-02/12/60, SET7-13/58; tests/economy-batch.test.js, server/test/economy-batch.test.cjs, server/browser/economy-paths.cjs. Queue:implementation-queue.md. No whole-catalog reclassification.
+
+- SET5-25/27: territory followups; tests/territory-followups.test.js, server/test/territory-followups.test.cjs, server/browser/territory-followups-paths.cjs.

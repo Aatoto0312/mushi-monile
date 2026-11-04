@@ -10,7 +10,7 @@
   // Only connect definitions whose full text has been mapped. Registration is
   // deliberately separate from completion evidence and release status.
   var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 56, 57, 60, 62, 63, 64];
-  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 26, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 62, 63, 64];
+  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 62, 63, 64];
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {
@@ -25,6 +25,7 @@
       if(def.skills.length!==1||def.skills[0].effectText||def.passiveAbilities.length!==1||def.enhancementEffects.length||def.cardEffects.length||String(def.passiveAbilities[0].effectText).normalize('NFKC').replace(/\s/g,'')!==hostReturnText)throw new Error('SET5_HOST_RETURN_TEXT_MISMATCH');
     }
     if(number===46||number===47){var expectedEnhancementText=number===46?'この虫の体力と攻撃力を100増やす。これがついた虫が場にいるとき、相手の虫が術カードの効果により場に出たなら、その虫は場に出たターン攻撃できない。':'この虫は＜＞の技を失う。この虫の体力と攻撃力を300増やす。＜装着＞これを縄張りから引いたとき、自分の場に虫がいるなら、これをつけてもよい。';if(def.skills.length||def.passiveAbilities.length||def.cardEffects.length||def.enhancementEffects.length!==1||String(def.enhancementEffects[0].effectText).normalize('NFKC').replace(/\s/g,'')!==expectedEnhancementText.normalize('NFKC').replace(/\s/g,''))throw new Error('SET5_KEYWORD_ENHANCEMENT_TEXT_MISMATCH');}
+    if(number===25||number===27){var expectedFollowupText=number===25?'この技により相手が縄張りを引いたとき、相手の縄張りが5枚以上あるなら、コストを1発生させる。':'この技により相手が縄張りを引いたとき、相手のエサ場にある青の虫を最大2つ選び裏返してもよい。';if(def.skills.length!==(number===25?2:1)||def.passiveAbilities.length||def.cardEffects.length||def.enhancementEffects.length||String(def.skills[number===25?1:0].effectText).normalize('NFKC').replace(/\s/g,'')!==expectedFollowupText.normalize('NFKC').replace(/\s/g,''))throw new Error('SET5_TERRITORY_FOLLOWUP_TEXT_MISMATCH');}
     if (number === 1) { def.skills[1].requirements = [{type:'SOURCE_HAS_ATTACHMENT'}]; }
     if (number === 2) { def.skills[0].dynamicAp = {type:'FOOD_COLOR_COUNT',color:'RED',multiplier:300}; }
     if (number === 3) {

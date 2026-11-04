@@ -1,3 +1,10 @@
+# Resume: safe460 /565 —2026-11-04
+Objective565 ongoing. Base0c8c1d1/458; newSET5-25プリモスマルガタクワガタ and5-27ニイニイゼミ. Sets46/39/37/29;remaining105.
+- Reused territory-after-draw cost threshold and optional visibleBLUE insect food flip; noEngine changes. Scans334/336 visuallychecked; officialQA5 threshold already verified. Individual6/6 inclJSON/CPU/duplicates/exacttargets/lethal/nonlethal/directwin. Rooms2/2 inclP2choice/privatewatch/resume/retry. territory460-browser-final4/4 Chromium/WebKitCPU/online, realJPEG; Toolbox16each. full2029/0 shared73/0 server172/0 syntax/diffgreen. Firstwide run exposed stale count/cache assertions only, updated to actual460 without weakeningbehavior. Logs territory460-* .codex/tmp.
+- Next5-57discard2tohiddenfood existingserialmove; verifycostsuppression/insufficienttargets/JSON/privateviews. 5-56cast-time larva condition/reference timing unresolved; do notguess. 5-60printedanyattackedpoison insect vs currentlyOWN filter needsauditedscopesharing. 6-41dedicatedselfdestroy-before-damage nowhasofficialproof; remainsnotimplemented. Generalcounters/7-64 stillnextnewmechanics.
+- Known1failure+held5/public366/main/API/ngrok/auth/stage/frozencheckpoints preserved. No publicprocess/systemoperations.
+
+--- prior queue ---
 # Resume: safe458 /565 —2026-11-04
 Objective565/565 ongoing. Baseb27dcb4/456; newSET5-46禁域の注連縄 and5-47武勇の面頬. Sets44/39/37/29;remaining107.
 - No newEngine: reused entryspell attackrestriction +hostkeyword suppression +territoryattach. Printedguards and scans355/356 checked; QA5 mask/entryattachment retention checked, QA4 resolvedstate principle retained. Ordinarysummon/ownspellentry unaffected; restriction survives sourceleave andexpires. Mask suppression/removal restores immunity without canceling committedreset; hostattachtrigger stopped, traitattachmentlimit removed; freeoptionalterritory JSON and normalpaid-entry attachment tested.

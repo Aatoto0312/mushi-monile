@@ -137,3 +137,6 @@ SET5-28/SET6-26 scans337/399 checked, officialQA6 121-122 andQA4 133-135 verifie
 
 ## safe458: SET5-46/47 keyword enhancements
 ExistingEngineonly, printedguards +scan355/356 checked. Engine8 includingnormalpaid-entry mask retainedaftertraitlost, stats/payment,CPU,delayedentryrestriction/sourceexit/expiry,ownentry/normalentry,immunityrestoration committedreset,attachmentlimit andoptionalterritoryJSON. Rooms4 coverphases/hidden territory/reconnect/watch/retry. Browsers3 variants eachCPU/onlineChromium/WebKit: first3tests passed; initialWebKitonline targetstability timeoutpassed isolatedunchangedtest retry(keyword458-webkit-online). Noforceclick or weakenedassertions. Toolbox16each;full2023/shared73/server170 zero failures. No rules/Engine/public changes.
+
+## safe460 territory followups
+SET5-25/27 printed scans checked; existing Engine only. Engine6, rooms2, browser4 (CPU/online xChromium/WebKit), Toolbox16each. full2029/0 shared73/0 server172/0. JSON, private food, optional0/1/2, duplicate rejection, actual post-draw threshold. Evidence scripts/set5-battle-evidence.js; not finalAUDITED.

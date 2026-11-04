@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 458,
+  "playable": 460,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -61,12 +61,12 @@
     "BOOSTER_SET_5": {
       "cataloged": 64,
       "connected": 51,
-      "implemented": 44,
-      "playable": 44,
+      "implemented": 46,
+      "playable": 46,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 44,
-        "PARTIAL": 7,
+        "PLAYABLE": 46,
+        "PARTIAL": 5,
         "RESEARCHED": 13
       }
     },
@@ -7336,12 +7336,12 @@
       "officialNumber": "25/64",
       "name": "プリモスマルガタクワガタ",
       "set": "BOOSTER_SET_5",
-      "implementationStatus": "PARTIAL",
+      "implementationStatus": "PLAYABLE",
       "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -7380,12 +7380,12 @@
       "officialNumber": "27/64",
       "name": "ニイニイゼミ",
       "set": "BOOSTER_SET_5",
-      "implementationStatus": "PARTIAL",
+      "implementationStatus": "PLAYABLE",
       "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -8526,6 +8526,75 @@
       "rulingQuestionIds": []
     },
     {
+      "cardId": "set8_030",
+      "canonicalCardId": "set8_030",
+      "printingId": "registry:set8_030",
+      "officialNumber": "30/64",
+      "name": "パンダアリバチ",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/30/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_022",
+      "canonicalCardId": "set7_022",
+      "printingId": "registry:set7_022",
+      "officialNumber": "22/64",
+      "name": "マレーテナガコガネ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/22/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_004",
+      "canonicalCardId": "set8_004",
+      "printingId": "registry:set8_004",
+      "officialNumber": "4/64",
+      "name": "ハナカマキリ",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/4/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
       "cardId": "set7_031",
       "canonicalCardId": "set7_031",
       "printingId": "registry:set7_031",
@@ -9074,6 +9143,116 @@
         "https://mushijingi.com/card/MUSHI8/59/",
         "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
         "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_037",
+      "canonicalCardId": "set7_037",
+      "printingId": "registry:set7_037",
+      "officialNumber": "37/64",
+      "name": "ジンメンカメムシ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/37/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_041",
+      "canonicalCardId": "set7_041",
+      "printingId": "registry:set7_041",
+      "officialNumber": "41/64",
+      "name": "アカスジカメムシ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/41/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_047",
+      "canonicalCardId": "set6_047",
+      "printingId": "registry:set6_047",
+      "officialNumber": "47/64",
+      "name": "ダイコクコガネ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/47/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_026",
+      "canonicalCardId": "set6_026",
+      "printingId": "registry:set6_026",
+      "officialNumber": "26/64",
+      "name": "ツマジロスカシマダラ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/26/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_020",
+      "canonicalCardId": "set6_020",
+      "printingId": "registry:set6_020",
+      "officialNumber": "20/64",
+      "name": "ヘレナモルフォ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/20/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
     },
@@ -9628,6 +9807,517 @@
       "rulingQuestionIds": []
     },
     {
+      "cardId": "set6_007",
+      "canonicalCardId": "set6_007",
+      "printingId": "registry:set6_007",
+      "officialNumber": "7/64",
+      "name": "エゾオナガバチ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/7/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_022",
+      "canonicalCardId": "set6_022",
+      "printingId": "registry:set6_022",
+      "officialNumber": "22/64",
+      "name": "フローレンシスニセヒメカブト",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/22/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_028",
+      "canonicalCardId": "set8_028",
+      "printingId": "registry:set8_028",
+      "officialNumber": "28/64",
+      "name": "ヒメカブト",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/28/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_060",
+      "canonicalCardId": "set8_060",
+      "printingId": "registry:set8_060",
+      "officialNumber": "60/64",
+      "name": "蛹の冬籠り",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/60/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_059",
+      "canonicalCardId": "set6_059",
+      "printingId": "registry:set6_059",
+      "officialNumber": "59/64",
+      "name": "小蠅の落とし子",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/59/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_051",
+      "canonicalCardId": "set7_051",
+      "printingId": "registry:set7_051",
+      "officialNumber": "51/64",
+      "name": "怨念の陣羽織",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/51/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set5_053",
+      "canonicalCardId": "set5_053",
+      "printingId": "registry:set5_053",
+      "officialNumber": "53/64",
+      "name": "雀蜂の鬼鎧",
+      "set": "BOOSTER_SET_5",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI5/53/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_050",
+      "canonicalCardId": "set6_050",
+      "printingId": "registry:set6_050",
+      "officialNumber": "50/64",
+      "name": "小兜虫の甲冑",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/50/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_053",
+      "canonicalCardId": "set6_053",
+      "printingId": "registry:set6_053",
+      "officialNumber": "53/64",
+      "name": "古の蜻蛉切",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/53/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_052",
+      "canonicalCardId": "set6_052",
+      "printingId": "registry:set6_052",
+      "officialNumber": "52/64",
+      "name": "天牛の錦顎",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/52/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_048",
+      "canonicalCardId": "set8_048",
+      "printingId": "registry:set8_048",
+      "officialNumber": "48/64",
+      "name": "百足の具足",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/48/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_054",
+      "canonicalCardId": "set7_054",
+      "printingId": "registry:set7_054",
+      "officialNumber": "54/64",
+      "name": "電気虫の金砕棒",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/54/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_055",
+      "canonicalCardId": "set7_055",
+      "printingId": "registry:set7_055",
+      "officialNumber": "55/64",
+      "name": "塵芥虫の爆熱棍",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/55/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_056",
+      "canonicalCardId": "set6_056",
+      "printingId": "registry:set6_056",
+      "officialNumber": "56/64",
+      "name": "宿命の影写し",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/56/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set8_055",
+      "canonicalCardId": "set8_055",
+      "printingId": "registry:set8_055",
+      "officialNumber": "55/64",
+      "name": "蟲術の息吹",
+      "set": "BOOSTER_SET_8",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI8/55/",
+        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
+        "https://mushijingi.jimdofree.com/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_063",
+      "canonicalCardId": "set7_063",
+      "printingId": "registry:set7_063",
+      "officialNumber": "63/64",
+      "name": "常闇の繭籠もり",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/63/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_002",
+      "canonicalCardId": "set6_002",
+      "printingId": "registry:set6_002",
+      "officialNumber": "2/64",
+      "name": "オソレハリアリ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/2/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_012",
+      "canonicalCardId": "set6_012",
+      "printingId": "registry:set6_012",
+      "officialNumber": "12/64",
+      "name": "アカカミアリ",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/12/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_013",
+      "canonicalCardId": "set7_013",
+      "printingId": "registry:set7_013",
+      "officialNumber": "13/64",
+      "name": "オオヒラタシデムシ（幼虫）",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/13/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set6_060",
+      "canonicalCardId": "set6_060",
+      "printingId": "registry:set6_060",
+      "officialNumber": "60/64",
+      "name": "神木の息吹",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/60/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_058",
+      "canonicalCardId": "set7_058",
+      "printingId": "registry:set7_058",
+      "officialNumber": "58/64",
+      "name": "供物の封印",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/58/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_036",
+      "canonicalCardId": "set7_036",
+      "printingId": "registry:set7_036",
+      "officialNumber": "36/64",
+      "name": "ウォーレスシロスジカミキリ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/36/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
+      "cardId": "set7_038",
+      "canonicalCardId": "set7_038",
+      "printingId": "registry:set7_038",
+      "officialNumber": "38/64",
+      "name": "ヒゲナガカミキリ",
+      "set": "BOOSTER_SET_7",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI7/38/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
       "cardId": "set5_008",
       "canonicalCardId": "set5_008",
       "printingId": "registry:set5_008",
@@ -9804,28 +10494,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set5_053",
-      "canonicalCardId": "set5_053",
-      "printingId": "registry:set5_053",
-      "officialNumber": "53/64",
-      "name": "雀蜂の鬼鎧",
-      "set": "BOOSTER_SET_5",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI5/53/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%95%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set5_054",
       "canonicalCardId": "set5_054",
       "printingId": "registry:set5_054",
@@ -9958,28 +10626,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set6_002",
-      "canonicalCardId": "set6_002",
-      "printingId": "registry:set6_002",
-      "officialNumber": "2/64",
-      "name": "オソレハリアリ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/2/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set6_005",
       "canonicalCardId": "set6_005",
       "printingId": "registry:set6_005",
@@ -10002,28 +10648,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set6_007",
-      "canonicalCardId": "set6_007",
-      "printingId": "registry:set6_007",
-      "officialNumber": "7/64",
-      "name": "エゾオナガバチ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/7/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set6_010",
       "canonicalCardId": "set6_010",
       "printingId": "registry:set6_010",
@@ -10041,28 +10665,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI6/10/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_012",
-      "canonicalCardId": "set6_012",
-      "printingId": "registry:set6_012",
-      "officialNumber": "12/64",
-      "name": "アカカミアリ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/12/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
@@ -10129,72 +10731,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI6/19/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_020",
-      "canonicalCardId": "set6_020",
-      "printingId": "registry:set6_020",
-      "officialNumber": "20/64",
-      "name": "ヘレナモルフォ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/20/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_022",
-      "canonicalCardId": "set6_022",
-      "printingId": "registry:set6_022",
-      "officialNumber": "22/64",
-      "name": "フローレンシスニセヒメカブト",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/22/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_026",
-      "canonicalCardId": "set6_026",
-      "printingId": "registry:set6_026",
-      "officialNumber": "26/64",
-      "name": "ツマジロスカシマダラ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/26/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
@@ -10442,28 +10978,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set6_047",
-      "canonicalCardId": "set6_047",
-      "printingId": "registry:set6_047",
-      "officialNumber": "47/64",
-      "name": "ダイコクコガネ",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/47/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set6_049",
       "canonicalCardId": "set6_049",
       "printingId": "registry:set6_049",
@@ -10486,28 +11000,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set6_050",
-      "canonicalCardId": "set6_050",
-      "printingId": "registry:set6_050",
-      "officialNumber": "50/64",
-      "name": "小兜虫の甲冑",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/50/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set6_051",
       "canonicalCardId": "set6_051",
       "printingId": "registry:set6_051",
@@ -10525,50 +11017,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI6/51/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_052",
-      "canonicalCardId": "set6_052",
-      "printingId": "registry:set6_052",
-      "officialNumber": "52/64",
-      "name": "天牛の錦顎",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/52/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_053",
-      "canonicalCardId": "set6_053",
-      "printingId": "registry:set6_053",
-      "officialNumber": "53/64",
-      "name": "古の蜻蛉切",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/53/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
@@ -10618,28 +11066,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set6_056",
-      "canonicalCardId": "set6_056",
-      "printingId": "registry:set6_056",
-      "officialNumber": "56/64",
-      "name": "宿命の影写し",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/56/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set6_057",
       "canonicalCardId": "set6_057",
       "printingId": "registry:set6_057",
@@ -10679,50 +11105,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI6/58/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_059",
-      "canonicalCardId": "set6_059",
-      "printingId": "registry:set6_059",
-      "officialNumber": "59/64",
-      "name": "小蠅の落とし子",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/59/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_060",
-      "canonicalCardId": "set6_060",
-      "printingId": "registry:set6_060",
-      "officialNumber": "60/64",
-      "name": "神木の息吹",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/60/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
@@ -10904,28 +11286,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set7_013",
-      "canonicalCardId": "set7_013",
-      "printingId": "registry:set7_013",
-      "officialNumber": "13/64",
-      "name": "オオヒラタシデムシ（幼虫）",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/13/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set7_014",
       "canonicalCardId": "set7_014",
       "printingId": "registry:set7_014",
@@ -10987,28 +11347,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI7/20/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_022",
-      "canonicalCardId": "set7_022",
-      "printingId": "registry:set7_022",
-      "officialNumber": "22/64",
-      "name": "マレーテナガコガネ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/22/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
       ],
       "rulingQuestionIds": []
@@ -11124,72 +11462,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set7_036",
-      "canonicalCardId": "set7_036",
-      "printingId": "registry:set7_036",
-      "officialNumber": "36/64",
-      "name": "ウォーレスシロスジカミキリ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/36/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_037",
-      "canonicalCardId": "set7_037",
-      "printingId": "registry:set7_037",
-      "officialNumber": "37/64",
-      "name": "ジンメンカメムシ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/37/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_038",
-      "canonicalCardId": "set7_038",
-      "printingId": "registry:set7_038",
-      "officialNumber": "38/64",
-      "name": "ヒゲナガカミキリ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/38/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set7_040",
       "canonicalCardId": "set7_040",
       "printingId": "registry:set7_040",
@@ -11207,28 +11479,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI7/40/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_041",
-      "canonicalCardId": "set7_041",
-      "printingId": "registry:set7_041",
-      "officialNumber": "41/64",
-      "name": "アカスジカメムシ",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/41/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
       ],
       "rulingQuestionIds": []
@@ -11322,28 +11572,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set7_051",
-      "canonicalCardId": "set7_051",
-      "printingId": "registry:set7_051",
-      "officialNumber": "51/64",
-      "name": "怨念の陣羽織",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/51/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set7_052",
       "canonicalCardId": "set7_052",
       "printingId": "registry:set7_052",
@@ -11388,50 +11616,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set7_054",
-      "canonicalCardId": "set7_054",
-      "printingId": "registry:set7_054",
-      "officialNumber": "54/64",
-      "name": "電気虫の金砕棒",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/54/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_055",
-      "canonicalCardId": "set7_055",
-      "printingId": "registry:set7_055",
-      "officialNumber": "55/64",
-      "name": "塵芥虫の爆熱棍",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/55/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set7_056",
       "canonicalCardId": "set7_056",
       "printingId": "registry:set7_056",
@@ -11449,28 +11633,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI7/56/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set7_058",
-      "canonicalCardId": "set7_058",
-      "printingId": "registry:set7_058",
-      "officialNumber": "58/64",
-      "name": "供物の封印",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/58/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
       ],
       "rulingQuestionIds": []
@@ -11542,28 +11704,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set7_063",
-      "canonicalCardId": "set7_063",
-      "printingId": "registry:set7_063",
-      "officialNumber": "63/64",
-      "name": "常闇の繭籠もり",
-      "set": "BOOSTER_SET_7",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI7/63/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set7_064",
       "canonicalCardId": "set7_064",
       "printingId": "registry:set7_064",
@@ -11627,30 +11767,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI8/3/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set8_004",
-      "canonicalCardId": "set8_004",
-      "printingId": "registry:set8_004",
-      "officialNumber": "4/64",
-      "name": "ハナカマキリ",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/4/",
         "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
         "https://mushijingi.jimdofree.com/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
@@ -11840,53 +11956,6 @@
         "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
         "https://mushijingi.jimdofree.com/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set8_028",
-      "canonicalCardId": "set8_028",
-      "printingId": "registry:set8_028",
-      "officialNumber": "28/64",
-      "name": "ヒメカブト",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/28/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F-1/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set8_030",
-      "canonicalCardId": "set8_030",
-      "printingId": "registry:set8_030",
-      "officialNumber": "30/64",
-      "name": "パンダアリバチ",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/30/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/"
       ],
       "rulingQuestionIds": []
     },
@@ -12175,29 +12244,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set8_048",
-      "canonicalCardId": "set8_048",
-      "printingId": "registry:set8_048",
-      "officialNumber": "48/64",
-      "name": "百足の具足",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/48/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set8_049",
       "canonicalCardId": "set8_049",
       "printingId": "registry:set8_049",
@@ -12339,29 +12385,6 @@
       "rulingQuestionIds": []
     },
     {
-      "cardId": "set8_055",
-      "canonicalCardId": "set8_055",
-      "printingId": "registry:set8_055",
-      "officialNumber": "55/64",
-      "name": "蟲術の息吹",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/55/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
       "cardId": "set8_056",
       "canonicalCardId": "set8_056",
       "printingId": "registry:set8_056",
@@ -12426,29 +12449,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI8/58/",
-        "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
-        "https://mushijingi.jimdofree.com/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set8_060",
-      "canonicalCardId": "set8_060",
-      "printingId": "registry:set8_060",
-      "officialNumber": "60/64",
-      "name": "蛹の冬籠り",
-      "set": "BOOSTER_SET_8",
-      "implementationStatus": "PLAYABLE",
-      "battleDefinitionConnected": true,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": true,
-        "PLAYABLE": true,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI8/60/",
         "https://www.mushijingi-cardlist.com/mushijingi-8dan-card-list/",
         "https://mushijingi.jimdofree.com/"
       ],
@@ -13419,6 +13419,70 @@
       ],
       "unresolvedRulings": [],
       "userRulings": []
+    },
+    {
+      "id": "set5_025",
+      "status": "PLAYABLE",
+      "audited": false,
+      "name": "プリモスマルガタクワガタ",
+      "cost": 2,
+      "hp": 300,
+      "image": "https://mushijingi.com/images/card/334.jpg",
+      "sourceProvenance": "Printed scan on secondary host visually checked2026-11-04; officialQA5 after-draw threshold checked.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/territory-followups.test.js"
+      ],
+      "cpu": [
+        "tests/territory-followups.test.js"
+      ],
+      "human": [
+        "server/browser/territory-followups-paths.cjs"
+      ],
+      "online": [
+        "server/test/territory-followups.test.cjs",
+        "server/browser/territory-followups-paths.cjs"
+      ],
+      "serialization": [
+        "tests/territory-followups.test.js",
+        "server/test/territory-followups.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set5_027",
+      "status": "PLAYABLE",
+      "audited": false,
+      "name": "ニイニイゼミ",
+      "cost": 1,
+      "hp": 200,
+      "image": "https://mushijingi.com/images/card/336.jpg",
+      "sourceProvenance": "Printed scan on secondary host visually checked2026-11-04; officialQA5 after-draw threshold checked.",
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/"
+      ],
+      "engine": [
+        "tests/territory-followups.test.js"
+      ],
+      "cpu": [
+        "tests/territory-followups.test.js"
+      ],
+      "human": [
+        "server/browser/territory-followups-paths.cjs"
+      ],
+      "online": [
+        "server/test/territory-followups.test.cjs",
+        "server/browser/territory-followups-paths.cjs"
+      ],
+      "serialization": [
+        "tests/territory-followups.test.js",
+        "server/test/territory-followups.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
     }
   ],
   "remainingGroups": [
@@ -13469,28 +13533,12 @@
       "name": "Attachment lifecycle",
       "cards": [
         {
-          "id": "set5_006",
-          "name": "オオヤマトンボ"
-        },
-        {
-          "id": "set5_013",
-          "name": "クロスズメバチ"
-        },
-        {
-          "id": "set5_062",
-          "name": "甲冑の鍛冶"
-        },
-        {
           "id": "set6_001",
           "name": "オオカレエダカマキリ"
         },
         {
           "id": "set6_019",
           "name": "エラフスホソアカクワガタ"
-        },
-        {
-          "id": "set6_022",
-          "name": "フローレンシスニセヒメカブト"
         },
         {
           "id": "set6_049",
@@ -13513,10 +13561,6 @@
           "name": "トゲアクマツユムシ"
         },
         {
-          "id": "set8_028",
-          "name": "ヒメカブト"
-        },
-        {
           "id": "set8_051",
           "name": "影武者の魔鏡"
         },
@@ -13534,16 +13578,8 @@
       "name": "Destruction and replacement",
       "cards": [
         {
-          "id": "set5_006",
-          "name": "オオヤマトンボ"
-        },
-        {
           "id": "set5_007",
           "name": "アシナガグモ"
-        },
-        {
-          "id": "set5_013",
-          "name": "クロスズメバチ"
         },
         {
           "id": "set5_042",
@@ -13572,10 +13608,6 @@
         {
           "id": "set6_010",
           "name": "ボウレイカマキリ"
-        },
-        {
-          "id": "set6_022",
-          "name": "フローレンシスニセヒメカブト"
         },
         {
           "id": "set6_027",

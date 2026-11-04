@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 458.
+All entries: 565; declared PLAYABLE: 460.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -339,9 +339,9 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_5 | 22/64 | set5_022 | ベニシタバ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 23/64 | set5_023 | キシタバ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 24/64 | set5_024 | ヒメオオクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_5 | 25/64 | set5_025 | プリモスマルガタクワガタ | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 25/64 | set5_025 | プリモスマルガタクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 26/64 | set5_026 | チビクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_5 | 27/64 | set5_027 | ニイニイゼミ | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 27/64 | set5_027 | ニイニイゼミ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 28/64 | set5_028 | ヨツコブツノゼミ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 29/64 | set5_029 | リーガルモス（幼虫） | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 30/64 | set5_030 | ヤエヤマツダナナフシ | yes | yes | yes | yes | pending | PLAYABLE |
