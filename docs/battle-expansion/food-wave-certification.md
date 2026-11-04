@@ -128,3 +128,6 @@ Printedscan395 visuallychecked; official https://mushijingi.jimdofree.com/q-a-�
 
 ## safe452: SET5-62甲冑の鍛冶
 Existingwired recipe reused without Enginechanges; fulltext guard and PLAYABLE gating added only after5 units,2 roomtests,4 CPU/onlineChromium/WebKit paths. Printedscan371 visuallychecked. Testscover ownvisible discard/type/nameOR/0..2/duplicate/max/JSON/pendingreconnect/retry/CPU. full1987/shared73/server158 zero failures,Toolbox16each; livecount452,SET5now39+12PARTIAL+13unconnected. Initialreal-art networkfetch errors retained in salvage452-browser.log; freshfinalall4 passed with actualJPEG verification. No publicchanges.
+
+## safe454: SET5-06/13 destruction return
+Scans315/322 visuallychecked; officialQA5 lines108-112 verified. Existing genericreturns certified with 15 Enginecases,3 rooms,4 CPU/onlineChromium/WebKit paths,Toolbox16each. full2002/shared73/server161 all0fail. Generic bug fixed fromRED: facedown destroyed虫 must not regain destructiontrait when moveCard revealsdiscard. Snapshot suppression1line only; exact inverse allowed in protectedtail audit. No broad facedownenhancement interpretation. Sourceownership,retaliationorder,optionaldecline/CPU/JSON,copy&revival survival,fan priority,replacement andterritory path tested. Public/main/stage/recoveryfailure preserved.

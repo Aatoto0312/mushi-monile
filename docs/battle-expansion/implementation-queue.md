@@ -1,3 +1,12 @@
+# Resume: safe454 /565 —2026-11-04
+Objective565/565 ongoing. Base3bec84e/452; newSET5-06オオヤマトンボ andSET5-13クロスズメバチ. Sets41/38/37/29,remaining111.
+- Reused existing destruction-return recipes; added fullprintedtext guards and certification. Found/fixed generic facedown destruction trait leak: snapshot faceDown before fieldleave now disables host destruction traits; no enhancement generalization. Protectedtail exactinverse audited, old paidcost-source path unchanged.
+- Engine15/15 including realattack,owner/controller,capturedhost,none/hidden/suppressed,JSON,CPUoptional,retaliation-before-return,revivalthread/copy survival,officialfan deckbottom priority,replacement. Rooms3/3; hostreturn454-browser-final4/4 CPU/onlineChromium/WebKit; Toolbox16each. full2002/0 shared73/0 server161/0, syntax/diff/contractgreen. EarlierWebKitCPU fixture race fixed by holding fixtureP1 until explicit realCpuAgent P2 action, not changing gameUI.
+- OfficialQA5 currentpage verified crosswasp thread/copy/hairworm and dragonflyfan/bounce; scans315/322 visuallychecked. Public/main/API/ngrok/auth/originalstage/heldfailureSHA unchanged, no publicprocess operations.
+- Next existing primitives:SET5-28 spelltarget immunity,5-46 entryspell attackrestriction enhancement,5-47 hostkeyword suppression+territoryattach. SET6-26 conditional attachment spellimmunity may share5-28 helper but must obey officialQA6 already-selected multiattach continuation exception. Check existing hasPassiveEffect condition support before change. Then7-64 discardattach+extraattack+endturn destruction (needs afterResolution carried through copyselection), or counter-use7-23/27/59/60/globaldamage8-57/58. No allcatalog reread.
+- Known1failure+held5 remain isolated in recoverytree; no new unresolvedruling imported.
+
+--- prior queue ---
 # Resume: safe452 /565 —2026-11-04
 Objective565/565 ongoing; base96e8abf/451, newSET5-62甲冑の鍛冶. Sets39/38/37/29;remaining113.
 - Reused alreadywired exact MOVE_SELECTED_ZONE_CARDS recipe in set5-cards.js; duplicate registration avoided, no newEngine. Addedfullprintedtextguard +existing62playability gate +evidence. Scan371 visuallychecked.

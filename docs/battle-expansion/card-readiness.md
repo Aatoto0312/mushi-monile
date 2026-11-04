@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 452.
+All entries: 565; declared PLAYABLE: 454.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -320,14 +320,14 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_5 | 3/64 | set5_003 | マエモンカマキリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 4/64 | set5_004 | ヒノマルコロギス | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 5/64 | set5_005 | アオズムカデ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_5 | 6/64 | set5_006 | オオヤマトンボ | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 6/64 | set5_006 | オオヤマトンボ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 7/64 | set5_007 | アシナガグモ | yes | yes | pending | pending | pending | PARTIAL |
 | BOOSTER_SET_5 | 8/64 | set5_008 | セスジアカムカデ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 9/64 | set5_009 | ジバクアリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 10/64 | set5_010 | カメノコテントウ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 11/64 | set5_011 | モンスズメバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 12/64 | set5_012 | ムツトゲイセキグモ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_5 | 13/64 | set5_013 | クロスズメバチ | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 13/64 | set5_013 | クロスズメバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 14/64 | set5_014 | トウキョウヒメハンミョウ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 15/64 | set5_015 | レギウスオオツノハナムグリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 16/64 | set5_016 | ヨーロッパミヤマクワガタ | yes | yes | yes | yes | pending | PLAYABLE |

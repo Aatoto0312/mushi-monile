@@ -3592,7 +3592,7 @@
     var destroyedDef = global.getCardDefinition ? global.getCardDefinition(destroyedCard.cardId) : null;
     var destroyedName = destroyedDef ? destroyedDef.name : destroyedCard.cardId;
     
-    var suppressHostKeywords = areInsectKeywordSkillsSuppressed(state, destroyedCard);
+    var suppressHostKeywords = destroyedCard.faceDown || areInsectKeywordSkillsSuppressed(state, destroyedCard);
     var destructionWatchers=collectOtherOwnDestructionTriggers(state,destroyedSnapshot,defenderPlayerId,sourceType,sourceInstanceId);
     var attackKillSource=sourceType==='ATTACK'&&findAnywhere(state,sourceInstanceId);
     var attackKillEffects=sourceType==='ATTACK'?collectAttackKillEffects(state,attackKillSource,result&&result.skill,defenderPlayerId):null;
