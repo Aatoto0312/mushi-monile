@@ -185,6 +185,7 @@
     };
     if (!instance.statModifiers) { instance.statModifiers = []; }
     instance.statModifiers.push(entry);
+    if(global.emitBattleEvent&&instance.zone==='FIELD'&&!instance.faceDown)global.emitBattleEvent(state,'STAT_CHANGE',{sourceInstanceId:entry.sourceInstanceId,targetInstanceId:instance.instanceId,stat:entry.stat,amount:entry.amount});
     if (entry.stat === 'HP' && isStatModifierActive(state, entry) && instance.currentHp != null) {
       instance.currentHp += entry.amount || 0;
     }

@@ -4,14 +4,15 @@ Card objective565 ongoing. Verified461 after39e4e32: SET6-41 skill emergence Eng
 |---|---|---|
 |P0|1 オカダンゴムシ自己強化: SOURCE/SELF contract mismatch|完了|
 |P0|2 オンライン勝敗表示・再接続|完了|
-|P1|3 非公開情報を守る対戦ログ|未着手|
-|P1|4 CPU行動の可視化|未着手|
-|P1|5 再接続後の一時表示残り|未着手|
+|P1|3 非公開情報を守る対戦ログ|完了|
+|P1|4 CPU行動の可視化|完了|
+|P1|5 再接続後の一時表示残り|完了|
 |P2|6 デッキ2列一覧|未着手|
 |P2|7 枚数増減と上限表示|未着手|
 |P2|8 新旧UI操作改善|未着手|
 - P0 evidence: feedback-self-unit2 2/2 includes10existingstatselfskills, server2/2 P1/P2+resume, browser4/4CPU/onlineChromium/WebKit. feedback-result unit1/1, server1/1 actualwin+bothresume+watch, browser2/2 projectedwin/loss/draw+rerender. Draw display does notchange protectedENGINE_BLOCKED rule.
-- NextP1 safe projected public actionlog +CPU actionnotice, reconnectephemeral cleanup; thenP2 two-columndeck/quantity/help. Cardqueue continues6-41 reuse8-23/24 requiresofficialreplacement check, countermechanics,7-64.
+- P1 verified: structuredpublicLog max100; summon/spell/enhance/skill/damage/stat/destruction/replacement; no rawbattleLog/privatehand/decksource payload. CommonBログ・設定 exposes chronological history inCPU/online without slowingEngine. CPUlegacy menu nowuses samepublicprojection. SuccessfulVIEW clearsstalenotice; public-battle-log-paths4/4 inclactualSYNCcleanup. Unit3/3 rooms2/2; full2040/0 shared73/0 server179/0; logs feedback-log-* .codex/tmp.
+- NextP2 two-columndeck/quantity/help. Cardqueue continues6-41 reuse8-23/24 requiresofficialreplacement check, countermechanics,7-64.
 - P0first, thenP1/P2 withoutblockingcarddevelopment indefinitely. Public/main/API/ngrok/auth/originalstage/frozenholds unchanged.
 - SET5-57 own-discard scope lacks explicit primary ruling; candidate tests4/4 only provisional own implementation, NOTcertified. Saved .codex/tmp/soil461-held outsideGit; statusPARTIAL. No repeatedrulingresearch.
 

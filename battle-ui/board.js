@@ -9,7 +9,7 @@
    <section class="field own"><div class="lane-title">自分の場 <small>横へスワイプ ›</small></div><div id="own" class="cards" data-role="own-field"></div></section>
    <section class="player self"><span class="avatar">✧</span><b data-role="own-name">あなた</b><div class="stats" data-role="own-stats"></div></section>
    <section class="hand"><button id="hand-toggle" data-role="hand-toggle" aria-expanded="false"></button><div id="hand" class="cards" data-role="hand"></div></section>
-   <footer class="rail"><button data-role="all-actions">操作一覧</button><button data-role="menu">メニュー</button><button id="end" class="primary" data-role="end">ターン終了</button></footer>
+   <footer class="rail"><button data-role="all-actions">操作一覧</button><button data-role="menu">ログ・設定</button><button id="end" class="primary" data-role="end">ターン終了</button></footer>
   </main><dialog id="sheet" aria-label="カード・操作"><header><div><small data-role="kicker"></small><h1 data-role="title"></h1></div><button id="close" data-role="close" aria-label="閉じる">×</button></header><div id="sheet-body" data-role="body"></div><footer id="sheet-actions" data-role="footer" hidden></footer></dialog>`;
   const $=name=>host.querySelector('[data-role="'+name+'"]'),arena=host.querySelector('.arena'),dialog=host.querySelector('dialog');
   let ctx,view,vm,version,selected=null,targetGroup=null,expanded=false,chosen=[];
@@ -109,7 +109,8 @@
    $('all-actions').disabled=!enabled()||!vm.actions.length;
   }
   $('hand-toggle').onclick=()=>{expanded=!expanded;draw();};$('all-actions').onclick=allActions;
-  host.querySelectorAll('[data-role="menu"]').forEach(b=>b.onclick=()=>ctx.menu());
+  function showPublicLog(){const body=open('対戦ログ','公開情報のみ / 時系列');const entries=view.battle.publicLog||[];if(!entries.length)body.textContent='公開行動はまだありません。';for(const entry of entries){const line=document.createElement('p');line.textContent='T'+entry.turn+' '+entry.text;body.append(line);}body.scrollTop=body.scrollHeight;}
+  host.querySelectorAll('[data-role="menu"]').forEach(b=>b.onclick=()=>{const body=open('対戦メニュー');body.append(button('対戦ログ',showPublicLog),button('設定・退出など',()=>{dismiss();ctx.menu();}));});
   $('back').onclick=()=>{const enhancement=targetGroup?.actions.every(a=>a.kind==='ENHANCE');targetGroup=null;draw();if(enhancement)showCard();else showSkills();};$('cancel').onclick=cancel;$('close').onclick=cancel;
   dialog.addEventListener('cancel',e=>{e.preventDefault();cancel();});
   return {render(next){const changed=view!==next.view||version!==next.view.room.version;ctx=next;view=next.view;vm=P.board(view.battle,definition);if(changed||!next.connected||next.busy){version=view.room.version;selected=null;targetGroup=null;dismiss();}draw();if(vm.decision&&!dialog.open)showDecision();},reset:cancel};

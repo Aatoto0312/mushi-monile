@@ -1055,6 +1055,7 @@
     player.nextUseCostModifiers=(player.nextUseCostModifiers||[]).filter(function(modifier){return state.turnNumber<=modifier.endTurn&&!matchesNextUseCostModifier(state,playerId,def,modifier);});
     moveCard(state, handInstanceId, ZONES.HAND, ZONES.FIELD, { playerId: playerId, runtimeFlags:{fieldEntryCause:{kind:'SUMMON',method:summonOptions.alternative?'ALTERNATIVE_SUMMON':'NORMAL_SUMMON',paidCost:summonOptions.alternative?0:summonCost,playerId:playerId}} });
     held.currentHp = def.baseHp;
+    emitBattleEvent(state,'SUMMON',{sourceInstanceId:held.instanceId,playerId:playerId});
     held.baseHp = def.baseHp;
     held.attackedThisTurn = false;
     held.usedSkills = [];
@@ -2329,6 +2330,7 @@
       // ---- RESOLVE_EFFECT: HAND → RESOLVING(一時領域) ----
       moveCard(state, handInstanceId, ZONES.HAND, ZONES.RESOLVING, { playerId: playerId });
 
+      emitBattleEvent(state,'SPELL_USED',{sourceInstanceId:held.instanceId,playerId:playerId});
       var spellUseTriggers=[];
       state.player(state.opponentOf(playerId)).field.forEach(function(watcher){
         if(watcher.faceDown||areInsectKeywordSkillsSuppressed(state,watcher))return;
@@ -2661,6 +2663,7 @@
     });
     preserveDamageAfterMaxHpChange(state, target, previousMaxHp);
     if (summons) { resolveFieldEntryEffects(state, target.instanceId); }
+    emitBattleEvent(state,'ENHANCEMENT_USED',{sourceInstanceId:held.instanceId,targetInstanceId:target.instanceId,playerId:playerId});
     resolveAttachmentEntryEffects(state,playerId,held);
 
     log(state, state.turnNumber, playerId + ' は ' + def.name + ' を ' + getCardDefinition(target.cardId).name + ' に装着した' + (chosenColor ? '(' + chosenColor + ')' : ''));

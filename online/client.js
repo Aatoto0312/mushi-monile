@@ -147,7 +147,7 @@
         seat=readSeat();if(seat){notice(seat.bootId!==m.bootId?'サーバーが再起動しました。前の試合の状態を確認します。':'対戦へ再接続しています。');send('RESUME',{code:seat.roomCode,token:seat.token});}else render();
       }else if(m.type==='SESSION'){seat={...seat,...m};saveSeat();}
       else if(m.type==='ACK'){busy=false;if(lastCommand&&m.requestId===lastCommand.requestId&&lastCommand.type==='LEAVE'){seat=null;current=null;saveSeat();$('room').hidden=$('board').hidden=true;closeOverlay();render();}}
-      else if(m.type==='VIEW'){if(!current||current.room.version!==m.room.version){closeOverlay();decisionVersion=null;}current=m;busy=false;render();}
+      else if(m.type==='VIEW'){if(!current||current.room.version!==m.room.version){closeOverlay();decisionVersion=null;}current=m;busy=false;notice('');render();}
       else if(m.type==='ERROR'){
         busy=false;const errors={STALE_STATE:'状態が更新されました。もう一度選択してください。',SPECTATOR_LIMIT:'観戦枠が満員です（最大3人）。',SPECTATOR_READ_ONLY:'観戦者は対戦操作できません。',DECK_VERSION:'保存デッキの形式・カードデータが一致しません。Toolboxで確認してください。',DECK_INVALID:'このデッキは使用できません。20枚・同名2枚・対戦対応を確認してください。',ROOM_STATE:'このルームは終了済み、または現在その操作ができません。',ROOM_FULL:'ルームは満員、または開始済みです。',ROOM_UNAVAILABLE:'ルームがありません。再起動・期限切れの場合は作り直してください。',AUTH_INVALID:'再接続できません。ルームを作り直してください。',SELECTION_INVALID:'選択条件を確認してください。'};
         notice(errors[m.code]||'操作できませんでした: '+m.code);
