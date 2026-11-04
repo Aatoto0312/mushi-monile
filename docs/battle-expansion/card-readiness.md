@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 463.
+All entries: 565; declared PLAYABLE: 464.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -370,7 +370,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_5 | 53/64 | set5_053 | 雀蜂の鬼鎧 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 54/64 | set5_054 | 黒銀蜘蛛の糸 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 55/64 | set5_055 | 幼虫の胡坐鍋 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_5 | 56/64 | set5_056 | 花蝶の幻舞 | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 56/64 | set5_056 | 花蝶の幻舞 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 57/64 | set5_057 | 腐葉の沃土 | yes | yes | pending | pending | pending | PARTIAL |
 | BOOSTER_SET_5 | 58/64 | set5_058 | 燻煙の迎撃 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 59/64 | set5_059 | 稲妻の迎撃 | yes | pending | pending | pending | pending | RESEARCHED |

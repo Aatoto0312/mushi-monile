@@ -63,3 +63,5 @@ Original four timing hypotheses and additional-cost-source-loss stop route stay 
 - SET6-41: dedicated pre-damage self destruction and matching adult deployment; QA6 replacement exception; evidence scripts/entry-selection-evidence.js.
 
 - SET8-23/24: printed skill self-destruction/cost lifecycle; scripts/material-collection-evidence.js.
+
+- SET5-56: officialQA7 dynamic food references resolves priorhold; existingEngine only; scripts/set5-battle-evidence.js.

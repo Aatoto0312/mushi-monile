@@ -146,3 +146,6 @@ SET6-41 dedicated pre-damage self-destruction/matching adult selection; official
 
 ## safe463 material collection
 SET8-23/24 printed scans524/525; same skilltext reuses source-destruction effect lifecycle. full2046/0 shared73/0 server183/0; individual6,rooms4,browser4x4variants,Toolbox16each;6-41regression5. No oldadditional-cost source-loss behavior changed.
+
+## safe464 next-form discount
+SET5-56 existingrecipe certifiedusingnewlyfound officialQA7dynamicreference ruling. full2050/0 shared73/0 server185/0;individual4/rooms2/browser4x2scenarios/Toolbox16each. No Engine rulechanges. P0self HP actualcurrent/max400+resume regressionstronger.
