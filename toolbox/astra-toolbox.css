@@ -85,3 +85,19 @@ main { max-width: 960px; padding: 18px 18px calc(156px + env(safe-area-inset-bot
 @media(min-width:600px) { .card-list { grid-template-columns: repeat(3,minmax(0,1fr));gap:24px; } .filter-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
 @media(min-width:850px) { .card-list { grid-template-columns: repeat(4,minmax(0,1fr)); } .detail-dialog { margin-bottom:24px; border-radius:20px; } }
 @media(max-width:360px) { main { padding-left:12px;padding-right:12px; } .card-list {gap:16px 10px;} .deck-entry {gap:6px;grid-template-columns:38px minmax(0,1fr) 100px;} .quantity-controls {grid-template-columns:36px 28px 36px;} }
+
+/* Deck overview: two columns preserve real card art and 44px quantity controls. */
+.deck-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.deck-list .deck-entry{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:9px;min-width:0}
+.deck-list .deck-thumbnail{width:min(100%,132px);margin:0 auto;grid-row:auto}
+.deck-list .deck-entry-info{align-self:stretch;display:flex;flex-direction:column;align-items:flex-start;gap:3px;overflow-wrap:anywhere}
+.deck-list .deck-entry-info strong{font-size:13px;min-height:2.8em}
+.deck-list .copy-limit{font-weight:700;color:var(--brand)}
+.deck-list .quantity-controls{margin-top:auto;display:grid;grid-template-columns:44px minmax(24px,1fr) 44px;grid-area:auto;width:100%}
+.deck-list .quantity-controls button{min-width:44px;min-height:44px}
+.deck-list .quantity-controls button:disabled{opacity:.4;cursor:not-allowed}
+.deck-list .remove-card{width:100%;min-height:36px}
+
+.deck-list .deck-entry-info{flex-wrap:nowrap;flex-shrink:0}
+.deck-list .deck-entry-info small{flex-basis:auto}
+.deck-list .deck-thumbnail,.deck-list .quantity-controls,.deck-list .remove-card{flex-shrink:0}

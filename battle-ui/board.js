@@ -30,19 +30,21 @@
    const b=button('',()=>tap(card.ref));b.className='unit';b.dataset.ref=card.ref;b.dataset.hidden=String(card.hidden);
    b.setAttribute('aria-label',card.hidden?'裏向きのカード':card.name+(card.hp!=null?' HP '+card.hp:''));
    if(card.ref===selected)b.classList.add('selected');if(card.attacked)b.classList.add('used');
+   if(!card.hidden&&enabled()&&vm.actions.some(a=>a.sourceRef===card.ref))b.classList.add('can-act');
    if(targetGroup){const allowed=P.targetActions(targetGroup,card.ref).length>0;b.classList.add(allowed?'target':'unavailable');b.setAttribute('aria-disabled',String(!allowed));}
    if(!ctx.connected||ctx.busy)b.disabled=true;
    b.append(image(card));
    if(!card.hidden){b.dataset.cardId=card.cardId;const hp=document.createElement('span');hp.className='hp';hp.textContent=card.hp!=null?'HP '+card.hp+' / '+card.maxHp:'コスト '+card.cost;
     const ap=document.createElement('span');ap.className='ap';ap.textContent=card.skills.length?'AP '+card.skills.map(s=>s.ap).join(' / '):({SPELL:'術',ENHANCEMENT:'強化'}[card.definition.type]||'');
-    const mark=document.createElement('span');mark.className='markers';mark.textContent=[...traits(card).map(t=>t.name),card.attachments.length?'強化 '+card.attachments.length:'',card.attacked?'攻撃済み':''].filter(Boolean).join(' · ');b.append(hp,ap,mark);
+    const mark=document.createElement('span');mark.className='markers';mark.textContent=[...traits(card).map(t=>t.name),card.attachments.length?'強化 '+card.attachments.length:'',card.attacked?'攻撃済み':'',b.classList.contains('can-act')?'操作可':''].filter(Boolean).join(' · ');b.append(hp,ap,mark);
    }return b;
   }
   function tap(ref){
    if(targetGroup){const candidates=P.targetActions(targetGroup,ref);if(candidates.length)resolveVariant(candidates);return;}
    selected=ref;draw();showCard();
   }
-  function showCard(){const c=find(selected);if(!c)return;const body=open(c.name,'行動を選択');const actions=vm.actions.filter(a=>a.sourceRef===selected);
+  function showCard(){const c=find(selected);if(!c)return;const body=open(c.name,(c.zone==='HAND'?'手札':c.controllerId===view.battle.viewerId?'自分の場':'カード')+'：行動を選択');const actions=vm.actions.filter(a=>a.sourceRef===selected);
+   const guide=document.createElement('p');guide.className='battle-action-guide';guide.textContent='行動を選択 → 技を選択 → 光る対象をタップ。詳細は「カード詳細」で確認できます。';body.append(guide);
    const attacks=P.attackGroups(vm.actions,selected);if(attacks.length){const b=button('攻撃する',showSkills);b.disabled=!enabled();body.append(b);}
    for(const a of actions.filter(a=>!['ATTACK','MULTI_ATTACK','ENHANCE'].includes(a.kind)))body.append(actionButton(a));
    const enhancements=actions.filter(a=>a.kind==='ENHANCE');if(enhancements.length)body.append(button('強化を使う',()=>chooseTargets({name:'強化の装着先',actions:enhancements})));

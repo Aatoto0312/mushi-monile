@@ -1,4 +1,4 @@
-@import url('./board.css?v=feedback-461-v2');
+@import url('./board.css?v=feedback-461-v3');
 body.cpu-b-active{height:100dvh;overflow:hidden;margin:0;background:#071a19}
 .cpu-b-active>.mobile-frame{display:none!important}
 .cpu-b-active>#card-detail-modal,.cpu-b-active>#game-over,.cpu-b-active>#territory-picker,.cpu-b-active>#damage-vector{display:none!important}

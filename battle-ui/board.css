@@ -1,4 +1,4 @@
-@import url('../prototype-b/style.css?v=feedback-461-v2');
+@import url('../prototype-b/style.css?v=feedback-461-v3');
 /* Scope layout changes to the independent page; prototype-b remains untouched. */
 #board{display:block;min-height:0;flex:1;overflow:hidden}
 #b-battle{height:100%;min-height:0}
@@ -97,3 +97,6 @@
   .live-arena .field>.lane-title{flex-basis:10px}
  }
 }
+
+.live-arena .unit.can-act:not(.selected):not(.target){box-shadow:0 0 0 1px #d8c784}
+.battle-action-guide{font-size:12px;line-height:1.6;margin:0 0 8px;color:#d6dec6}

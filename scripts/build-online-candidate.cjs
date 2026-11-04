@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {ROOT,VERSIONS,createRuntime}=require('../server/lib/runtime.cjs');
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 // Release cache tag: bump for the next public release, together with Toolbox's tag.
-const ASSET_VERSION='feedback-461-v2';
+const ASSET_VERSION='feedback-461-v3';
 function versioned(url){if(/^(?:[a-z]+:|\/\/|#)/i.test(url))return url;const [base,fragment]=url.split('#'),[name,query]=base.split('?');if(!/\.(?:js|css|png|jpe?g|svg|webp|ico|woff2)$/.test(name))return url;const params=new URLSearchParams(query);params.set('v',ASSET_VERSION);return name+'?'+params+(fragment?'#'+fragment:'');}
 const explicit=['index.html','toolbox.html','online.html','online-b.html','online/client.js','online/online.css','online/battle-b-adapter.js','online/config.json','online/contract.json','battle-ui/board.js','battle-ui/presentation.js','battle-ui/board.css','battle-ui/engine-view.js','battle-ui/cpu-adapter.js','battle-ui/cpu-controller.js','battle-ui/cpu.css','prototype-b/style.css','prototype-b/base.css','prototype-b/forest.png'];
 function filesIn(dir){const base=path.join(ROOT,dir);if(!fs.existsSync(base))return [];return fs.readdirSync(base,{withFileTypes:true}).flatMap(e=>{const relative=dir+'/'+e.name;if(e.isSymbolicLink())throw Error('SYMLINK_REFUSED');if(e.name.startsWith('.'))return [];if(e.isDirectory())return filesIn(relative);return /\.(js|css|json|png|jpe?g|webp|svg|ico|woff2)$/.test(e.name)&&!/(?:\.local\.|\.test\.|credential|authtoken)/i.test(e.name)?[relative]:[];});}
