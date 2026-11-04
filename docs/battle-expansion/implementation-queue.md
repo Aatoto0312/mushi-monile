@@ -1,3 +1,11 @@
+# Resume: safe458 /565 —2026-11-04
+Objective565/565 ongoing. Baseb27dcb4/456; newSET5-46禁域の注連縄 and5-47武勇の面頬. Sets44/39/37/29;remaining107.
+- No newEngine: reused entryspell attackrestriction +hostkeyword suppression +territoryattach. Printedguards and scans355/356 checked; QA5 mask/entryattachment retention checked, QA4 resolvedstate principle retained. Ordinarysummon/ownspellentry unaffected; restriction survives sourceleave andexpires. Mask suppression/removal restores immunity without canceling committedreset; hostattachtrigger stopped, traitattachmentlimit removed; freeoptionalterritory JSON and normalpaid-entry attachment tested.
+- Engine8/8; rooms4/4 (P2normalphases/spellentry,maskreset,hidden territory/reconnect/watch/retry), keyword458-browser ChromiumCPU/online+WebKitCPU passed; isolated keyword458-webkit-online passed3scenarios after initialtargetstable timeout (no forceclick, no productionUIchange). Toolbox16each. full2023/0 shared73/0 server170/0 syntax/diff/contractgreen. Logs keyword458-* .codex/tmp.
+- Next efficient existing mapped SET5-56/57/60 spells (discountnextadult,discard2tohiddenfood,poison-skill reset). 5-60 printedtext does NOT say own so inspect targetscope beforecertification; use same genericfilter+suppression. 5-25/27 territoryfollowups also alreadymapped; no wholeSET preference. Thennewmechanics/counters/7-64. SET6-41 stillunconnected, but freshQA6 explicitly confirms selfdestroy-before-damage; mustuse dedicated effect route, not unconfirmed additional-cost handler. No need repeat rulingresearch.
+- New456 generalizedorderedfirst selection fixedcopy-first deadlock; do not conflatewithprotectedcostsource failure. Known1failure+held5/public366/main/API/ngrok/auth/stage/frozencheckpoints untouched.
+
+--- prior queue ---
 # Resume: safe456 /565 —2026-11-04
 Topobjective565/565 ongoing,basea32e4cb/454. NewSET5-28ヨツコブツノゼミ,SET6-26ツマジロスカシマダラ. Sets42/39/37/29,remaining109.
 - Shared passive effect requiresAttachment flag reuses SPELL_TARGET_IMMUNITY; ordinary damage/intercept remains legal. Printedscans337/399 checked. OfficialQA6 lines121/122 confirms targeted immunity and already-selected two-attachment exception; QA4 lines133-135 confirms max2declaredhosts and source-before-copy ordering. QA6 also NOW actually includes SET6-22 atline119, superseding older note that currentpage lackedit; no need relookup.

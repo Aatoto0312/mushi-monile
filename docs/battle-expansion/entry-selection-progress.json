@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 456,
+  "playable": 458,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -61,12 +61,12 @@
     "BOOSTER_SET_5": {
       "cataloged": 64,
       "connected": 51,
-      "implemented": 42,
-      "playable": 42,
+      "implemented": 44,
+      "playable": 44,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 42,
-        "PARTIAL": 9,
+        "PLAYABLE": 44,
+        "PARTIAL": 7,
         "RESEARCHED": 13
       }
     },
@@ -7754,12 +7754,12 @@
       "officialNumber": "46/64",
       "name": "禁域の注連縄",
       "set": "BOOSTER_SET_5",
-      "implementationStatus": "PARTIAL",
+      "implementationStatus": "PLAYABLE",
       "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -7776,12 +7776,12 @@
       "officialNumber": "47/64",
       "name": "武勇の面頬",
       "set": "BOOSTER_SET_5",
-      "implementationStatus": "PARTIAL",
+      "implementationStatus": "PLAYABLE",
       "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13695,10 +13695,10 @@
   "incrementalBase": "ea7fb09",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "a32e4cb",
+    "base": "b27dcb4",
     "ids": [
-      "set5_028",
-      "set6_026"
+      "set5_046",
+      "set5_047"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false

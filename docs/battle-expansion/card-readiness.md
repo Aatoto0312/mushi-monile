@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 456.
+All entries: 565; declared PLAYABLE: 458.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -360,8 +360,8 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_5 | 43/64 | set5_043 | メガボール | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 44/64 | set5_044 | ヘラクレスサン | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 45/64 | set5_045 | ゲンジボタル | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_5 | 46/64 | set5_046 | 禁域の注連縄 | yes | yes | pending | pending | pending | PARTIAL |
-| BOOSTER_SET_5 | 47/64 | set5_047 | 武勇の面頬 | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 46/64 | set5_046 | 禁域の注連縄 | yes | yes | yes | yes | pending | PLAYABLE |
+| BOOSTER_SET_5 | 47/64 | set5_047 | 武勇の面頬 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 48/64 | set5_048 | 蛮虫の一本槍 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 49/64 | set5_049 | 蟲神の一本槍 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 50/64 | set5_050 | 草薙の紅剣 | yes | pending | pending | pending | pending | RESEARCHED |

@@ -1,4 +1,4 @@
-@import url('./board.css?v=spell-immunity-456-v1');
+@import url('./board.css?v=keyword-458-v1');
 body.cpu-b-active{height:100dvh;overflow:hidden;margin:0;background:#071a19}
 .cpu-b-active>.mobile-frame{display:none!important}
 .cpu-b-active>#card-detail-modal,.cpu-b-active>#game-over,.cpu-b-active>#territory-picker,.cpu-b-active>#damage-vector{display:none!important}
