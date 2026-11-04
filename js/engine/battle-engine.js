@@ -477,7 +477,7 @@
       // A preceding trigger may legally move or destroy a later candidate. In
       // that case it is no longer eligible for the original move, so skip it
       // rather than reviving it from a stale snapshot.
-      if (!currentHolder || currentHolder.zone !== nextMove.from ||
+      if (!currentHolder || (nextMove.requireFaceUp && currentHolder.instance.faceDown) || currentHolder.zone !== nextMove.from ||
           (nextMove.sourcePlayerId && currentHolder.playerId !== nextMove.sourcePlayerId)) {
         resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves, afterResolution:continuation.afterResolution });
         return;
@@ -1617,9 +1617,9 @@
     var player = state.player(playerId), opponent = state.player(state.opponentOf(playerId));
     if(effect.type==='MOVE_SELECTED_ZONE_CARDS'){
       var movable=getPlayerZoneArray(state,playerId,effect.from).filter(function(card){
-        if(card.faceDown)return false;
+        if(card.faceDown||(effect.excludeSource&&card.instanceId===sourceId))return false;
         var d=getCardDefinition(card.cardId);
-        return d&&(!effect.cardType||d.type===effect.cardType)&&(!effect.nameSubstrings||effect.nameSubstrings.some(function(part){return d.name.indexOf(part)!==-1;}));
+        return d&&(!effect.cardType||d.type===effect.cardType)&&(effect.printedCostMaximum==null||d.cost<=effect.printedCostMaximum)&&(!effect.nameSubstrings||effect.nameSubstrings.some(function(part){return d.name.indexOf(part)!==-1;}));
       });
       return {options:movable,exactSelections:effect.exactSelections,minSelections:effect.minSelections,maxSelections:effect.maxSelections,zones:[effect.from]};
     }
@@ -1834,7 +1834,7 @@
         discountedPlayer.nextUseCostModifiers=(discountedPlayer.nextUseCostModifiers||[]).concat([{cardType:effect.cardType||CardTypes.INSECT,sourceZone:effect.sourceZone,nameSuffix:effect.nameSuffix,amount:-effect.amount,endTurn:state.turnNumber,sourceInstanceId:instance.instanceId}]);
       }
       if(effect.type==='MOVE_SELECTED_ZONE_CARDS'){
-        resumeAfterSelection(state,{type:'SERIAL_ZONE_MOVES',moves:chosenIds.map(function(id){return {instanceId:id,sourcePlayerId:playerId,playerId:playerId,from:effect.from,to:effect.to,faceDown:effect.faceDown,runtimeFlags:effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null};})});
+        resumeAfterSelection(state,{type:'SERIAL_ZONE_MOVES',moves:chosenIds.map(function(id){return {instanceId:id,sourcePlayerId:playerId,playerId:playerId,from:effect.from,to:effect.to,faceDown:effect.faceDown,requireFaceUp:true,runtimeFlags:effect.to===ZONES.FIELD?spellEntryFlags(state,playerId,instance,effect.enteringCannotAttackThisTurn?{attackRestrictions:[{startTurn:state.turnNumber,endTurn:state.turnNumber,whileSourceOnField:false}]}:{}):effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null};})});
       }
       if (effect.type === 'MOVE_SELF' && effect.to && CardInstance.isZone(effect.to)) {
         finalZone = effect.to;

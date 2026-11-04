@@ -19,3 +19,7 @@ Baseea7fb09 /438 -> development439. Worktree:mushi-foodpayment;branch:crossset-f
 Resume queue and local diff, not full catalog. Pages/build/deploy deferred. main/API/ngrok/auth/original stage/frozen candidates preserved. Latest implementation/test window06:29–06:37JST.
 
 441 gate complete:repeat attack synchronized CPU/online inChromium/WebKit4/4; Toolbox16/16 each. See independent441-browser-confirmed.log.
+
+443 completed:SET6-59/SET8-60; prior441 checkpoint11d4970. Engine6/server3; shared73/server141; CPU/online Chromium/WebKit allpassed including pending page reconnect and real-art checks; Toolbox16each. Full1936 before extra0candidate test, final full rerun underway.
+Next:SET8-30パンダアリバチ:compose TARGET_COLOR(COLORLESS) + existing DESTROY_WOUNDED_TARGET_BEFORE_DAMAGE; test territory, fullHP0damage, CPU/Human/WSS before certification. SET8-11 alreadyPLAYABLE:extra paid-hunter.test.js is regression-only, NOT newcard. Keep source-loss ruling/fivepending in mushi-recovery untouched.
+443 final full1937/0 confirmed. No unfinished443 gates.

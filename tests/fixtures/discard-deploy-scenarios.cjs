@@ -1,0 +1,3 @@
+'use strict';const cases=['set6_059','set8_060'];
+function setup(c,s,id){s.phase='MAIN_PHASE';s.turnNumber=3;s.activePlayerId='P1';s.pendingEffect=null;for(const p of s.playerOrder)for(const z of ['field','hand','food','discard','territory'])s.player(p)[z]=[];s.player('P1').availableCost=10;function put(id,z,p='P1'){const d=c.getCardDefinition(id),x=new c.CardInstance({instanceId:s.nextInstanceId(),cardId:id,ownerId:p,controllerId:p,zone:z,baseHp:d.baseHp,currentHp:d.baseHp});s.player(p)[z.toLowerCase()].push(x);return x;}put(id,'HAND');put('kabutomushi','FIELD','P2');if(id==='set6_059'){put('set3_045','DISCARD');put('namitentou','DISCARD');put('kabutomushi','DISCARD');}else{put('namitentou','HAND');put('kabutomushi','HAND');}}
+module.exports={cases,setup};

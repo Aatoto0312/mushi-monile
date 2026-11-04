@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 441,
+  "playable": 443,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -72,13 +72,13 @@
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
-      "connected": 35,
-      "implemented": 35,
-      "playable": 35,
+      "connected": 36,
+      "implemented": 36,
+      "playable": 36,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 35,
-        "RESEARCHED": 29
+        "PLAYABLE": 36,
+        "RESEARCHED": 28
       }
     },
     "BOOSTER_SET_7": {
@@ -95,13 +95,13 @@
     },
     "BOOSTER_SET_8": {
       "cataloged": 64,
-      "connected": 26,
-      "implemented": 26,
-      "playable": 26,
+      "connected": 27,
+      "implemented": 27,
+      "playable": 27,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 26,
-        "RESEARCHED": 38
+        "PLAYABLE": 27,
+        "RESEARCHED": 37
       }
     }
   },
@@ -10690,12 +10690,12 @@
       "officialNumber": "59/64",
       "name": "小蠅の落とし子",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -12438,12 +12438,12 @@
       "officialNumber": "60/64",
       "name": "蛹の冬籠り",
       "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13723,10 +13723,10 @@
   "incrementalBase": "ea7fb09",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "6f67d25",
+    "base": "11d4970",
     "ids": [
-      "set7_022",
-      "set8_004"
+      "set6_059",
+      "set8_060"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false

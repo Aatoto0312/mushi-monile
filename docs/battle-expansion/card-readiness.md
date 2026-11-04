@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 441.
+All entries: 565; declared PLAYABLE: 443.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -437,7 +437,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 56/64 | set6_056 | 宿命の影写し | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 57/64 | set6_057 | 砂鉄の砂嵐 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 58/64 | set6_058 | 怒濤の黒山 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_6 | 59/64 | set6_059 | 小蠅の落とし子 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 59/64 | set6_059 | 小蠅の落とし子 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 60/64 | set6_060 | 神木の息吹 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 61/64 | set6_061 | 稲妻の嵐 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 62/64 | set6_062 | 爆熱の嵐 | yes | yes | yes | yes | pending | PLAYABLE |
@@ -566,7 +566,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 57/64 | set8_057 | 水月の激流 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 58/64 | set8_058 | 神楽の烈風 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 59/64 | set8_059 | 火花の嵐 | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_8 | 60/64 | set8_060 | 蛹の冬籠り | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 60/64 | set8_060 | 蛹の冬籠り | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 61/64 | set8_061 | 断界の虫送り | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 62/64 | set8_062 | 冥府の導き | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 63/64 | set8_063 | 蚕の口封じ | yes | pending | pending | pending | pending | RESEARCHED |

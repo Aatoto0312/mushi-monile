@@ -1,5 +1,7 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
+set8_060:{text:'自分の手札からカードを1枚選び、捨て札に置く。',effect:{type:'MOVE_SELECTED_ZONE_CARDS',from:'HAND',to:'DISCARD',excludeSource:true,exactSelections:1}},
+set6_059:{text:'自分の捨て札からコスト1以下の虫を最大2つまで選び、場に出す。それらの虫はこのターン攻撃できない。',effect:{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'FIELD',cardType:'INSECT',printedCostMaximum:1,minSelections:0,maxSelections:2,enteringCannotAttackThisTurn:true}},
 set7_051:{text:'これを使用するとき、自分のエサを好きな数選び裏向きにしてもよい。そうしたなら、これのコストを裏返したエサの数と同数減らす。この虫の体力と攻撃力を1000増やす。',attachmentEntry:true,statsOnly:true,bonus:1000,foodPaymentDiscount:1},
 set5_053:{text:'これは〜バチ科の虫にしかつけられない。この虫の攻撃力と体力を800増やす。＜装着＞これを縄張りから引いたとき、自分の場に虫がいるなら、これをつけてもよい。',attachmentEntry:true,bonus:800,familySuffix:'バチ科',extraEffect:'OPTIONAL_ATTACH_FROM_TERRITORY'},
 set6_050:{text:'この虫の体力と攻撃力を200増やす。これが表向きでエサ場にあるとき、自分の甲冑と書かれた強化カードのコストを2減らす。',attachmentEntry:true,bonus:200,extraEffect:'ZONE_COST_MODIFIER',zoneCost:{sourceZone:'FOOD',cardType:'ENHANCEMENT',nameSubstring:'甲冑',amount:-2}},

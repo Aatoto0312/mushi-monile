@@ -6,6 +6,7 @@ var engine = require('./engine-loader.js');
 
 function requireAll() {
   return [
+    require('./discard-deploy.test.js'),
     require('./independent-attack.test.js'),
     require('./crossset-public-scope.test.js'),
     require('./crossset-dive.test.js'),
