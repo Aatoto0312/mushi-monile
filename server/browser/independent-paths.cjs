@@ -49,9 +49,3 @@ for(const kind of ['chromium','webkit'])for(const mode of ['cpu','online'])test(
   }catch(e){console.log('COUNT_PATH_FAILURE',kind,mode,id,variant,e.message);console.log(await a.locator('#sheet-body').textContent().catch(()=>''));throw e;}finally{await a.close();if(b)await b.close();}
  }
 });
-
-
-
-
-
-
