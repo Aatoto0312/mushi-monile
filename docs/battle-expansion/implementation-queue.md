@@ -1,3 +1,12 @@
+# Resume: safe450 /565 —2026-11-04
+Worktree mushi-independent /crossset-independent-20261104. Base5ad88ff. AddedSET8-28ヒメカブト; total450, remaining115. SET5/6/7/8 PLAYABLE38/37/37/29.
+- Gates:full1974/0 shared73/0 server154/0; target-attachment-paths CPU/onlineChromium/WebKit4/4; Toolbox16each with newcard in saved20. Logs target450-full-final/shared/server-final/browser-final2/toolbox-final in .codex/tmp. Syntax/diff/contract passed.
+- Generic TARGET_ATTACHMENT_AFTER_ATTACK -> TARGET_ATTACHMENT_OPERATION captures defender originalcontroller+fieldstay, rebuilds attachment candidates forHuman/CPU, optionalreturn toowner hand, preserves wounds; does not call destruction-only attachment handler. Seven engine tests include revival-string non-destruction, source owner,stale host/capture/serial,JSON,retry/decline,HPdeath withoutterritory. No paid-source-loss changes.
+- Next SET6-22フローレンシスニセヒメカブト: text mandatory destroy1 targetattachment beforedamage. Reuse targetattachment selection+destroyAttachedEnhancement, but needs pre-damage continuation that does NOT replay payment/attack event and fully resolves destruction triggers before0damage. Do NOT simply removeattachment then restartperformAttack when host has died/moved. Not implemented/certified this batch. Secondary scan sourcecard394? confirm actual scan before mapping; officialQA6 currentpage lacked the stored specific question, do not label secondary QA summary officialverified.
+- Next counter-use7-23/27/59/60, or globaldamage8-57/58 after correct batchtrigger design; no wholecatalog rereread. Card8-28 printedscan529 visuallychecked; QA8page unavailable so do not cite as newlyverifiedofficialQA.
+- Protected original stagepatch45016f7bd80bb86e6f6ef50b3dcef5ac6d4e28f8 and recoveryfailureSHAde696d31178e30fa195434ae8f685dfe6ba525759f7992ee2b33bf2f9e4b098c unchanged. Held5+known1failure remain isolated in recovery tree. Public366/main988e4f7/API/ngrok/auth/frozen candidates untouched. No push/Pages/process/system operations.
+
+--- prior queue ---
 # Resume: safe449 /565 —2026-11-04
 Worktree C:/Users/aatot/mushi-independent; branch crossset-independent-20261104; HEAD after this checkpoint is safe449. Previous e1dfab6(446),5d239f4(447),7e8e057(444). Working tree should be clean.
 - Added5 this batch:SET7-37ジンメンカメムシ,7-41アカスジカメムシ,SET6-7エゾオナガバチ,7-36ウォーレスシロスジカミキリ,7-38ヒゲナガカミキリ. SET5/6/7/8 PLAYABLE38/37/37/28;total449,remaining116.

@@ -500,6 +500,13 @@
       resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves, afterResolution:continuation.afterResolution });
       return;
     }
+    if(continuation.type==='TARGET_ATTACHMENT_AFTER_ATTACK'){
+      var attachmentDefender=findInZone(state,continuation.targetPlayerId,ZONES.FIELD,continuation.targetInstanceId);
+      if(state.phase===Phases.GAME_OVER||!attachmentDefender||(attachmentDefender.runtimeFlags.fieldEntrySerial||0)!==continuation.fieldEntrySerial)return;
+      var targetAttachments=(attachmentDefender.attachments||[]).filter(function(card){return !card.faceDown;});
+      if(targetAttachments.length)createCardSelection(state,{playerId:continuation.playerId,options:targetAttachments.map(function(card){return card.instanceId;}),minSelections:0,maxSelections:1,candidateZones:['ATTACHMENT'],selectionPurpose:'TARGET_ATTACHMENT_OPERATION',continuation:{type:'TARGET_ATTACHMENT_OPERATION',targetPlayerId:continuation.targetPlayerId,targetInstanceId:continuation.targetInstanceId,fieldEntrySerial:continuation.fieldEntrySerial,operation:continuation.operation}});
+      return;
+    }
     if(continuation.type==='ATTACH_AFTER_ATTACK'){
       var attachmentAttacker=findInZone(state,continuation.playerId,ZONES.FIELD,continuation.sourceInstanceId);
       if(state.phase===Phases.GAME_OVER||!attachmentAttacker||(attachmentAttacker.runtimeFlags.fieldEntrySerial||0)!==continuation.fieldEntrySerial)return;
@@ -1072,6 +1079,10 @@
   function getPendingEntrySelectionConstraints(state,pending){
     var c=pending&&pending.continuation;
     if(!c)return null;
+    if(c.type==='TARGET_ATTACHMENT_OPERATION'){
+      var currentAttachmentHost=findInZone(state,c.targetPlayerId,ZONES.FIELD,c.targetInstanceId);
+      return {options:currentAttachmentHost&&(currentAttachmentHost.runtimeFlags.fieldEntrySerial||0)===c.fieldEntrySerial?(currentAttachmentHost.attachments||[]).filter(function(card){return !card.faceDown&&pending.options.indexOf(card.instanceId)!==-1;}).map(function(card){return card.instanceId;}):[],atMostOneGroups:[]};
+    }
     if(c.type==='ENTRY_ATTACH_ENHANCEMENT'){
       var attachmentHost=findInZone(state,pending.playerId,ZONES.FIELD,c.hostInstanceId);
       var eligible=attachmentHost&&(attachmentHost.runtimeFlags.fieldEntrySerial||0)===c.fieldEntrySerial?getEntryAttachmentCandidates(state,pending.playerId,attachmentHost,c.effect):[];
@@ -1324,6 +1335,18 @@
 
   function resolveSelectionContinuation(state, pending, ids) {
     var c = pending.continuation || {};
+    if(c.type==='TARGET_ATTACHMENT_OPERATION'){
+      if(!ids.length)return;
+      var selectedTargetAttachment=findAttachment(state,ids[0]);
+      if(!selectedTargetAttachment||selectedTargetAttachment.playerId!==c.targetPlayerId||selectedTargetAttachment.host.instanceId!==c.targetInstanceId||(selectedTargetAttachment.host.runtimeFlags.fieldEntrySerial||0)!==c.fieldEntrySerial)throw new Error('強化対象が変化しました');
+      if(c.operation==='DESTROY')return destroyAttachedEnhancement(state,selectedTargetAttachment);
+      if(c.operation!=='RETURN')throw new Error('強化操作が不正です');
+      var priorTargetMax=calculateMaxHp(selectedTargetAttachment.host,state),returnedTargetAttachment=selectedTargetAttachment.instance;
+      selectedTargetAttachment.host.attachments.splice(selectedTargetAttachment.index,1);
+      returnedTargetAttachment.zone=ZONES.HAND;returnedTargetAttachment.controllerId=returnedTargetAttachment.ownerId;returnedTargetAttachment.faceDown=false;
+      state.player(returnedTargetAttachment.ownerId).hand.push(returnedTargetAttachment);
+      preserveDamageAfterMaxHpChange(state,selectedTargetAttachment.host,priorTargetMax);return returnedTargetAttachment;
+    }
     if (c.type === 'DEPLOY_FROM_FIELD_ABILITY') {
       if (!ids.length) { return; }
       var currentCandidates = getPendingFieldAbilityCandidates(state, pending);
@@ -2833,6 +2856,8 @@
 
     var def = getCardDefinition(attacker.cardId);
     var attackerFieldEntrySerial=attacker.runtimeFlags.fieldEntrySerial||0;
+    var attackedTargetSnapshot=targetType==='INSECT'&&findInZone(state,state.opponentOf(ap),ZONES.FIELD,targetInstanceId);
+    var attackedTargetFieldSerial=attackedTargetSnapshot&&(attackedTargetSnapshot.runtimeFlags.fieldEntrySerial||0);
     // 攻撃可能な技は timing === 'ATTACK' のもののみ
     var attackSkills = getEffectiveAttackSkills(state, attacker);
     if (attackSkills.length === 0) {
@@ -3183,6 +3208,9 @@
     }
     
     (skill.effects || []).forEach(function(effect) {
+      if(effect.type==='TARGET_ATTACHMENT_AFTER_ATTACK'&&targetType==='INSECT'){
+        resumeAfterSelection(state,{type:'TARGET_ATTACHMENT_AFTER_ATTACK',playerId:ap,targetPlayerId:opponentId,targetInstanceId:targetInstanceId,fieldEntrySerial:attackedTargetFieldSerial,operation:effect.operation});
+      }
       if(effect.type==='ATTACH_AFTER_ATTACK'){
         resumeAfterSelection(state,{type:'ATTACH_AFTER_ATTACK',playerId:ap,sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial,effect:effect.attachment});
       }

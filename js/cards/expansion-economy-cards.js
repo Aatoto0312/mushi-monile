@@ -1,6 +1,7 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
 set6_007:{texts:[null,'この技で相手の虫を破壊したとき、自分の捨て札に～バチ科の虫があるなら、1つ選び手札に戻してもよい。'],index:1,effect:{type:'SELECT_ON_ATTACK_KILL',selection:{type:'SELECT_ON_ENTRY',from:'DISCARD',controller:'SELF',faceDown:false,cardType:'INSECT',familySuffixes:['バチ科'],operation:'MOVE',to:'HAND'}}},
+set8_028:{texts:[null,'攻撃後、この技を受けた虫についている強化カードを1つ選び手札に戻してもよい。'],index:1,effect:{type:'TARGET_ATTACHMENT_AFTER_ATTACK',operation:'RETURN'}},
 set8_060:{text:'自分の手札からカードを1枚選び、捨て札に置く。',effect:{type:'MOVE_SELECTED_ZONE_CARDS',from:'HAND',to:'DISCARD',excludeSource:true,exactSelections:1}},
 set6_059:{text:'自分の捨て札からコスト1以下の虫を最大2つまで選び、場に出す。それらの虫はこのターン攻撃できない。',effect:{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'FIELD',cardType:'INSECT',printedCostMaximum:1,minSelections:0,maxSelections:2,enteringCannotAttackThisTurn:true}},
 set7_051:{text:'これを使用するとき、自分のエサを好きな数選び裏向きにしてもよい。そうしたなら、これのコストを裏返したエサの数と同数減らす。この虫の体力と攻撃力を1000増やす。',attachmentEntry:true,statsOnly:true,bonus:1000,foodPaymentDiscount:1},
