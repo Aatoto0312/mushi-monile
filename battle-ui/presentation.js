@@ -20,7 +20,7 @@
   }return [...groups.values()];
  }
  function targetActions(group,ref){return group.actions.filter(a=>a.targetRef===ref);}
- function optionLabel(dto,index){return dto.hidden?'裏向きのカード '+(index+1):dto.name+(dto.currentHp!=null?' HP '+dto.currentHp+'/'+dto.maxHp:'')+' / '+({HAND:'手札',FIELD:'場',FOOD:'エサ',TERRITORY:'縄張り',DISCARD:'捨て場',ATTACHMENT:'強化'}[dto.zone]||dto.zone||'公開カード');}
+ function optionLabel(dto,index,viewerId){const side=dto.controllerId?(viewerId==='SPECTATOR'||!viewerId?dto.controllerId:dto.controllerId===viewerId?'自分':'相手')+'の':'';return dto.hidden?'裏向きのカード '+(index+1):dto.name+(dto.currentHp!=null?' HP '+dto.currentHp+'/'+dto.maxHp:'')+' / '+side+({HAND:'手札',FIELD:'場',FOOD:'エサ',TERRITORY:'縄張り',DISCARD:'捨て場',ATTACHMENT:'強化'}[dto.zone]||dto.zone||'公開カード');}
  function resultLabel(room,viewerId,spectator){
   if(room.phase!=='ENDED')return '';
   if(!room.result)return '対戦終了';

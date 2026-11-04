@@ -149,3 +149,6 @@ SET8-23/24 printed scans524/525; same skilltext reuses source-destruction effect
 
 ## safe464 next-form discount
 SET5-56 existingrecipe certifiedusingnewlyfound officialQA7dynamicreference ruling. full2050/0 shared73/0 server185/0;individual4/rooms2/browser4x2scenarios/Toolbox16each. No Engine rulechanges. P0self HP actualcurrent/max400+resume regressionstronger.
+
+## safe465 poison followup
+SET5-60 printedtargetscope correctedwithopt-inANY; oldown-only spellregression retained. Normal/passivepoison/consumedonce skills,JSONstaletargetrejection/capture/CPU,realrooms/BUI bothcontrollers confirmed. full2057/0 shared73/0 server187/0;browser4x2cases+Toolbox16each. No unknownadditionalcostruling touched.

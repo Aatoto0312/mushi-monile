@@ -1796,6 +1796,8 @@
         });
       } else if(effect.target==='ANY_ATTACKED_ATTACHED_FIELD_INSECT'){
         candidates=[];state.playerOrder.forEach(function(pid){candidates=candidates.concat(state.player(pid).field.filter(function(card){return !card.faceDown&&card.attackedThisTurn&&(card.attachments||[]).length>0;}));});
+      } else if(effect.target==='ANY_ATTACKED_FIELD_INSECT'){
+        candidates=[];state.playerOrder.forEach(function(pid){candidates=candidates.concat(state.player(pid).field.filter(function(card){return !card.faceDown&&card.attackedThisTurn;}));});
       } else if (effect.target === 'OWN_ATTACKED_FIELD_INSECT') {
         candidates = state.player(playerId).field.filter(function (card) { return !card.faceDown && card.attackedThisTurn; });
       } else if (effect.target === 'OWN_FIELD_INSECT') {
@@ -1999,8 +2001,9 @@
       }
       if (effect.type === 'RESET_ATTACK') {
         var resetTarget = chosenTargetInstanceId && findAnywhere(state, chosenTargetInstanceId);
-        if (!resetTarget || resetTarget.playerId !== playerId || resetTarget.zone !== ZONES.FIELD) { throw new Error('攻撃済みの自分の虫を選んでください'); }
+        if (!resetTarget || !getSpellTargetsForDefinition(state,playerId,{type:CardTypes.SPELL,cardEffects:[effect]},instance.instanceId).some(function(card){return card.instanceId===resetTarget.instance.instanceId;})) { return; }
         resetTarget.instance.attackedThisTurn = false;
+        emitBattleEvent(state,'ATTACK_RESET',{playerId:playerId,sourceInstanceId:instance.instanceId,targetInstanceId:resetTarget.instance.instanceId});
         if (resetTarget.instance.runtimeFlags) { delete resetTarget.instance.runtimeFlags.continuousAttack; }
       }
       if (effect.type === 'MOVE_TARGET') {

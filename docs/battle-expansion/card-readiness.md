@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 464.
+All entries: 565; declared PLAYABLE: 465.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -374,7 +374,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_5 | 57/64 | set5_057 | 腐葉の沃土 | yes | yes | pending | pending | pending | PARTIAL |
 | BOOSTER_SET_5 | 58/64 | set5_058 | 燻煙の迎撃 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 59/64 | set5_059 | 稲妻の迎撃 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_5 | 60/64 | set5_060 | 毒の追い打ち | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 60/64 | set5_060 | 毒の追い打ち | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 61/64 | set5_061 | 蠱毒の祟り | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_5 | 62/64 | set5_062 | 甲冑の鍛冶 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 63/64 | set5_063 | 鉦叩の歌念仏 | yes | yes | yes | yes | pending | PLAYABLE |
