@@ -2684,6 +2684,7 @@
 
     var selectedRequirementSkill = skillId && (attackerDef.skills || []).filter(function (skill) { return skill.id === skillId; })[0];
     var skillRequirements = selectedRequirementSkill && selectedRequirementSkill.requirements || [];
+    if(skillRequirements.some(function(requirement){return requirement.type==='OPPONENT_VISIBLE_FIELD_COUNT'&&state.player(state.opponentOf(holder.playerId)).field.filter(function(card){return !card.faceDown;}).length<requirement.minimum;}))return [];
     if(skillRequirements.some(function(requirement){return requirement.type==='OWN_VISIBLE_DISCARD_COUNT'&&countVisibleDiscardCards(state,holder.playerId,{cardType:requirement.cardType})<requirement.minimum;}))return [];
     if(skillRequirements.some(function(requirement){return requirement.type==='OWN_FIELD_TAG_COUNT'&&state.player(holder.playerId).field.filter(function(card){var definition=!card.faceDown&&getCardDefinition(card.cardId);return definition&&(definition.tags||[]).indexOf(requirement.tag)!==-1;}).length<requirement.minimum;})){return [];}
     if (skillRequirements.some(function (requirement) {

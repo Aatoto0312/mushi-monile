@@ -188,7 +188,7 @@
     // D. 攻撃可能な自分の虫を探す
     var attackerCandidates = player.field.filter(function (inst) {
       if (inst.faceDown) return false;
-      if (inst.attackedThisTurn) return false;
+      // Engine legality also permits a remaining continuous attack.
       var legalTargets = global.getLegalAttackTargets(state, inst.instanceId);
       if (legalTargets.length === 0) return false;
       var def = global.getCardDefinition(inst.cardId);

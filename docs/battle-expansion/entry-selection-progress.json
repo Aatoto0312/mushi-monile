@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 439,
+  "playable": 441,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -83,25 +83,25 @@
     },
     "BOOSTER_SET_7": {
       "cataloged": 64,
-      "connected": 33,
-      "implemented": 32,
-      "playable": 32,
+      "connected": 34,
+      "implemented": 33,
+      "playable": 33,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 32,
+        "PLAYABLE": 33,
         "PARTIAL": 1,
-        "RESEARCHED": 31
+        "RESEARCHED": 30
       }
     },
     "BOOSTER_SET_8": {
       "cataloged": 64,
-      "connected": 25,
-      "implemented": 25,
-      "playable": 25,
+      "connected": 26,
+      "implemented": 26,
+      "playable": 26,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 25,
-        "RESEARCHED": 39
+        "PLAYABLE": 26,
+        "RESEARCHED": 38
       }
     }
   },
@@ -10998,12 +10998,12 @@
       "officialNumber": "22/64",
       "name": "マレーテナガコガネ",
       "set": "BOOSTER_SET_7",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -11640,12 +11640,12 @@
       "officialNumber": "4/64",
       "name": "ハナカマキリ",
       "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13533,10 +13533,6 @@
           "name": "トゲアクマツユムシ"
         },
         {
-          "id": "set8_004",
-          "name": "ハナカマキリ"
-        },
-        {
           "id": "set8_028",
           "name": "ヒメカブト"
         },
@@ -13727,9 +13723,10 @@
   "incrementalBase": "ea7fb09",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "ea7fb09",
+    "base": "6f67d25",
     "ids": [
-      "set7_051"
+      "set7_022",
+      "set8_004"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false

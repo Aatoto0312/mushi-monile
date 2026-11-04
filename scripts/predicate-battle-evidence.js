@@ -799,5 +799,101 @@ module.exports={
       ]
     },
     "notes": "58 direct Engine/CPU tests,17 currentcapability scenarios, Chromium/WebKit CPU+authenticatedWSS68 actualUI paths4/4. All16 printed scans checked. No provisional attack continuation copied. FinalAUDITED pending."
+  },
+  "set7_022": {
+    "id": "set7_022",
+    "name": "マレーテナガコガネ",
+    "status": "PLAYABLE",
+    "audited": false,
+    "source": {
+      "image": "https://mushijingi.com/images/card/459.jpg",
+      "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-04"
+    },
+    "officialRulings": [
+      "https://mushijingi.jimdofree.com/q-a-よくある質問-1/"
+    ],
+    "engine": [
+      "tests/independent-attack.test.js"
+    ],
+    "cpu": [
+      "tests/independent-attack.test.js"
+    ],
+    "human": [
+      "server/browser/independent-paths.cjs"
+    ],
+    "online": [
+      "server/test/independent.test.cjs",
+      "server/browser/independent-paths.cjs"
+    ],
+    "serialization": [
+      "tests/independent-attack.test.js",
+      "server/test/independent.test.cjs"
+    ],
+    "unresolvedRulings": [],
+    "userRulings": [],
+    "printedComponents": {
+      "skills": [
+        {
+          "name": "たいあたり",
+          "baseAp": 800,
+          "effectText": null
+        },
+        {
+          "name": "テナガ強撃",
+          "baseAp": 1000,
+          "effectText": "この技は相手の場に虫が2つ以上いないと使用できない。"
+        }
+      ],
+      "traits": []
+    },
+    "notes": "Independent of unconfirmed additional-cost source-loss path."
+  },
+  "set8_004": {
+    "id": "set8_004",
+    "name": "ハナカマキリ",
+    "status": "PLAYABLE",
+    "audited": false,
+    "source": {
+      "image": "https://mushijingi.com/images/card/505.jpg",
+      "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-04"
+    },
+    "officialRulings": [
+      "https://mushijingi.jimdofree.com/q-a-よくある質問-1/"
+    ],
+    "engine": [
+      "tests/independent-attack.test.js"
+    ],
+    "cpu": [
+      "tests/independent-attack.test.js"
+    ],
+    "human": [
+      "server/browser/independent-paths.cjs"
+    ],
+    "online": [
+      "server/test/independent.test.cjs",
+      "server/browser/independent-paths.cjs"
+    ],
+    "serialization": [
+      "tests/independent-attack.test.js",
+      "server/test/independent.test.cjs"
+    ],
+    "unresolvedRulings": [],
+    "userRulings": [],
+    "printedComponents": {
+      "skills": [
+        {
+          "name": "カマ斬撃",
+          "baseAp": 200,
+          "effectText": ""
+        },
+        {
+          "name": "蟷螂蘭舞",
+          "baseAp": 400,
+          "effectText": "この技はこれに強化カードがついていないと使用できない。攻撃後、相手の場に虫がいれば、もう1度だけ使用できる。"
+        }
+      ],
+      "traits": []
+    },
+    "notes": "Independent of unconfirmed additional-cost source-loss path."
   }
 };

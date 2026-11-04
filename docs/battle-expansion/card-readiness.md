@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 439.
+All entries: 565; declared PLAYABLE: 441.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -464,7 +464,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 19/64 | set7_019 | ニシキオオツバメガ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 20/64 | set7_020 | カブトムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 21/64 | set7_021 | オオムラサキ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 22/64 | set7_022 | マレーテナガコガネ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 22/64 | set7_022 | マレーテナガコガネ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 23/64 | set7_023 | ユカタンビワハゴロモ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 24/64 | set7_024 | ベニモンアゲハ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 25/64 | set7_025 | メルポメネドクチョウ | yes | yes | yes | yes | pending | PLAYABLE |
@@ -510,7 +510,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 1/64 | set8_001 | ペルビアンジャイアントオオムカデ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 2/64 | set8_002 | オオルリボシヤンマ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 3/64 | set8_003 | トゲアクマツユムシ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_8 | 4/64 | set8_004 | ハナカマキリ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 4/64 | set8_004 | ハナカマキリ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 5/64 | set8_005 | キララシロカネグモ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 6/64 | set8_006 | ギガスオオアリ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 7/64 | set8_007 | ミナミミイデラゴミムシ | yes | yes | yes | yes | pending | PLAYABLE |
