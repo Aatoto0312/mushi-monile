@@ -1422,7 +1422,7 @@
       var sourceHolder=findAnywhere(state,c.sourceInstanceId);
       var target=findInZone(state,c.targetPlayerId,ZONES.FIELD,ids[0]);
       if (!target || target.faceDown) { throw new Error('表向きの相手虫を選んでください'); }
-      applyDamage(state,sourceHolder&&sourceHolder.instance,target,c.amount,'EFFECT',c.sourceInstanceId,target.instanceId,{suppressTerritoryDraw:!!c.suppressTerritoryDraw,effectId:'ENTRY_DAMAGE',multiplier:1,apVal:c.amount});
+      applyDamage(state,sourceHolder&&sourceHolder.instance,target,c.amount,'EFFECT',c.sourceInstanceId,target.instanceId,{sourceControllerId:pending.playerId,suppressTerritoryDraw:!!c.suppressTerritoryDraw,effectId:'ENTRY_DAMAGE',multiplier:1,apVal:c.amount});
       return ids;
     }
     if (c.type === 'DISCARD_SELECTED_HAND') {
@@ -2383,8 +2383,15 @@
 
   function resolveAttachmentEntryEffects(state,playerId,attachment,afterResolution,transfer){
     var definition=getCardDefinition(attachment.cardId);
-    var steps=(definition.enhancementEffects||[]).filter(function(effect){return effect.timing==='ON_ATTACH'||(!transfer&&effect.timing==='ON_ENTER_FIELD');}).map(function(effect){return {type:'FIELD_ENTRY_EFFECT',playerId:playerId,sourceInstanceId:attachment.instanceId,optional:!!effect.optional,effect:effect};});
-    if(afterResolution)steps.push(afterResolution);
+    var jobs=(definition.enhancementEffects||[]).filter(function(effect){return effect.timing==='ON_ATTACH'||(!transfer&&effect.timing==='ON_ENTER_FIELD');}).map(function(effect){return {playerId:playerId,label:definition.name,continuation:{type:'FIELD_ENTRY_EFFECT',playerId:playerId,sourceInstanceId:attachment.instanceId,optional:!!effect.optional,effect:effect}};});
+    var holder=findAttachment(state,attachment.instanceId),host=holder&&holder.host;
+    if(host&&!host.faceDown&&!areInsectKeywordSkillsSuppressed(state,host)){
+      var hostDefinition=getCardDefinition(host.cardId);
+      (hostDefinition.passiveAbilities||[]).filter(function(ability){return ability.timing==='ON_HOST_ATTACHMENT';}).forEach(function(ability){
+        jobs.push({playerId:holder.playerId,label:hostDefinition.name+'〈'+ability.name+'〉',continuation:{type:'SEQUENCE',steps:(ability.effects||[]).map(function(effect){return {type:'FIELD_ENTRY_EFFECT',playerId:holder.playerId,sourceInstanceId:host.instanceId,optional:!!ability.optional,effect:effect};})}});
+      });
+    }
+    var steps=[{type:'ORDER_TRIGGER_CONTINUATIONS',steps:jobs}];if(afterResolution)steps.push(afterResolution);
     resumeAfterSelection(state,{type:'SEQUENCE',steps:steps});
   }
 

@@ -1,3 +1,9 @@
+# Resume: safe446 —2026-11-04
+Worktree mushi-independent /crossset-independent-20261104. AddedSET7-37/41; gatesfull1954/shared73/server147 all0fail; browserCPU/onlineChromium/WebKit passed,Toolbox16each. Metadata446,SET7now35. No public/main/API/ngrok/auth/originalstage changes.
+Next untracked RED test:tests/attack-kill-retrieval.test.js forSET6-7; reuse SELECT_ON_ENTRY familySuffixes + attackkill ordered queue. Need register effect and resolver, preserve protected attack-tail hash via exact reviewed inverse additions, officialQA6 poison order. Do not count until tests/CPU/WSS/UI pass.
+Held recovery5 +knownfailure remain untouched in mushi-recovery; do not repeat ruling research. Count reconciliation in food-wave-certification.md; no deleted baseline tests.
+
+--- earlier records ---
 # Resume: safe independent444 /565 — 2026-11-04
 Worktree C:/Users/aatot/mushi-independent; branch crossset-independent-20261104. Prior checkpoints11d4970(441),10c877b(443); latest gitHEAD will hold444. No unimplemented files left after final checkpoint.
 - Added5:SET7-22,SET8-4,SET6-59,SET8-60,SET8-30. SET5/6/7/8 PLAYABLE38/36/33/28; remaining121.
