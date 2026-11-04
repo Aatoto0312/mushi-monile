@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 443.
+All entries: 565; declared PLAYABLE: 444.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -536,7 +536,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 27/64 | set8_027 | ミドリシジミ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 28/64 | set8_028 | ヒメカブト | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 29/64 | set8_029 | ヒメウラナミジャノメ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_8 | 30/64 | set8_030 | パンダアリバチ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 30/64 | set8_030 | パンダアリバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_8 | 31/64 | set8_031 | サルオガセツユムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 32/64 | set8_032 | ヨナグニサン（幼虫） | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 33/64 | set8_033 | トノサマバッタ | yes | pending | pending | pending | pending | RESEARCHED |

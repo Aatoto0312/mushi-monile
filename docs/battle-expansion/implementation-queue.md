@@ -1,3 +1,13 @@
+# Resume: safe independent444 /565 — 2026-11-04
+Worktree C:/Users/aatot/mushi-independent; branch crossset-independent-20261104. Prior checkpoints11d4970(441),10c877b(443); latest gitHEAD will hold444. No unimplemented files left after final checkpoint.
+- Added5:SET7-22,SET8-4,SET6-59,SET8-60,SET8-30. SET5/6/7/8 PLAYABLE38/36/33/28; remaining121.
+- Gates:full1943/shared73/server142 all0failed. Browser independent/revival/monochrome CPU+online Chromium/WebKit passed (12 scoped tests total); actual-art transient fetch errors in combined first runs passed isolated retries. Toolbox444 Chromium/WebKit16/16 each passed; logs monochrome444-toolbox.log.
+- Changes:opponent visiblefield minimum predicate; CPU delegates repeatattack legality; generic printed-cost filter/source exclusion/serial faceup revalidation/entry attack restriction. No attack-tail/cost-source-loss handler edits.
+- Protected original recovery5/failing test stay in mushi-recovery unchanged; test SHA256de696d31178e30fa195434ae8f685dfe6ba525759f7992ee2b33bf2f9e4b098c. NEEDS_RULING investigation complete, do not repeat. Public366/main/API/ngrok/auth/originalstage unchanged; stagepatch hash verified.
+- Next:SET6-7エゾオナガバチ (kill-trigger optional own discard family retrieval); SET7-37/41 (host attach-time optional damage, simultaneous-order+suppression); SET8-57/58 (global damage +endturn; requires proper simultaneous damage/trigger lifecycle, do not implement naive serial damage). Check runtime availability before rawcatalog research; SET8-11 alreadyPLAYABLE.
+- No Pages/build/deploy in this local-only work.
+
+--- earlier incremental records ---
 # Independent implementation queue — 2026-11-04
 Base6f67d25/439; worktree mushi-independent, branch crossset-independent-20261104. Candidate441:SET7-22マレーテナガコガネ +SET8-4ハナカマキリ. Engine5/server2, full1931/0 shared73/0 server138/0; Toolbox16checks eachChromium/WebKit. Browser first-attack4paths passed; repeated-attack confirmation running (independent441-browser-confirmed.log); initial repeat test used stale skill index1 although only repeat skill remains, corrected test selector to skill name. No rule/expectation weakened.
 

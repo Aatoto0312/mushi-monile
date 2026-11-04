@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 443,
+  "playable": 444,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -95,13 +95,13 @@
     },
     "BOOSTER_SET_8": {
       "cataloged": 64,
-      "connected": 27,
-      "implemented": 27,
-      "playable": 27,
+      "connected": 28,
+      "implemented": 28,
+      "playable": 28,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 27,
-        "RESEARCHED": 37
+        "PLAYABLE": 28,
+        "RESEARCHED": 36
       }
     }
   },
@@ -11874,12 +11874,12 @@
       "officialNumber": "30/64",
       "name": "パンダアリバチ",
       "set": "BOOSTER_SET_8",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13698,10 +13698,6 @@
           "name": "ジュウサンネンゼミ"
         },
         {
-          "id": "set8_030",
-          "name": "パンダアリバチ"
-        },
-        {
           "id": "set8_049",
           "name": "黄金虫の六文銭"
         },
@@ -13723,10 +13719,9 @@
   "incrementalBase": "ea7fb09",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "11d4970",
+    "base": "10c877b",
     "ids": [
-      "set6_059",
-      "set8_060"
+      "set8_030"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false

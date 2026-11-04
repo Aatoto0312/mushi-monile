@@ -895,5 +895,53 @@ module.exports={
       "traits": []
     },
     "notes": "Independent of unconfirmed additional-cost source-loss path."
+  },
+  "set8_030": {
+    "id": "set8_030",
+    "name": "パンダアリバチ",
+    "status": "PLAYABLE",
+    "audited": false,
+    "source": {
+      "image": "https://mushijingi.com/images/card/531.jpg",
+      "verification": "PRINTED_SCAN_VISUALLY_CHECKED_2026-11-04"
+    },
+    "officialRulings": [
+      "https://mushijingi.jimdofree.com/q-a-よくある質問-1/ゲームのルールについて/"
+    ],
+    "engine": [
+      "tests/monochrome.test.js"
+    ],
+    "cpu": [
+      "tests/monochrome.test.js"
+    ],
+    "human": [
+      "server/browser/monochrome-paths.cjs"
+    ],
+    "online": [
+      "server/test/monochrome.test.cjs",
+      "server/browser/monochrome-paths.cjs"
+    ],
+    "serialization": [
+      "tests/monochrome.test.js",
+      "server/test/monochrome.test.cjs"
+    ],
+    "unresolvedRulings": [],
+    "userRulings": [],
+    "printedComponents": {
+      "skills": [
+        {
+          "name": "かみきる",
+          "baseAp": 300,
+          "effectText": ""
+        },
+        {
+          "name": "モノクロ針",
+          "baseAp": 0,
+          "effectText": "この技は無色の虫にしか使用できない。この技を受けた虫の体力が減っていたなら、それを破壊する。※このとき相手は縄張りを引く。"
+        }
+      ],
+      "traits": []
+    },
+    "notes": "Only existing Engine metadata composition; no attack-tail or cost-handling change."
   }
 };
