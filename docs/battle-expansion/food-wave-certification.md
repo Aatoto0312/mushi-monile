@@ -140,3 +140,6 @@ ExistingEngineonly, printedguards +scan355/356 checked. Engine8 includingnormalp
 
 ## safe460 territory followups
 SET5-25/27 printed scans checked; existing Engine only. Engine6, rooms2, browser4 (CPU/online xChromium/WebKit), Toolbox16each. full2029/0 shared73/0 server172/0. JSON, private food, optional0/1/2, duplicate rejection, actual post-draw threshold. Evidence scripts/set5-battle-evidence.js; not finalAUDITED.
+
+## safe461 +debuggerP0
+SET6-41 dedicated pre-damage self-destruction/matching adult selection; officialQA6 confirms no-damage/no-territory on destruction, mandatoryselfdestroy withoutadult, replacementallowsattack. Engine5, rooms2, browser4, Toolbox16each; full2037/0 shared73/0 server177/0. P0 SOURCE/SELF alias fixed generically; 10selfstat skill regression and bothseat/resume realroom +browser tested. Viewer-relative win/loss/draw presentation; serveroutcome unchanged. Public/main/API untouched.

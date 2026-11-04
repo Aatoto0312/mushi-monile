@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 460.
+All entries: 565; declared PLAYABLE: 461.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -419,7 +419,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 38/64 | set6_038 | ツユムシ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 39/64 | set6_039 | ボウバッタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 40/64 | set6_040 | トビナナフシ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_6 | 41/64 | set6_041 | ゴクラクトリバネアゲハ（幼虫） | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 41/64 | set6_041 | ゴクラクトリバネアゲハ（幼虫） | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 42/64 | set6_042 | ナガメ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 43/64 | set6_043 | オオゴマダラ（幼虫） | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 44/64 | set6_044 | ホソヘリカメムシ | yes | pending | pending | pending | pending | RESEARCHED |

@@ -12,7 +12,7 @@
  sheet.querySelector('[data-close]').onclick=()=>sheet.close();legacyButton.onclick=()=>{useB=true;ui.render();};
  function show(){if(!visible())return;const state=ui.state,key=JSON.stringify(state);if(key!==snapshot){snapshot=key;version++;prepared=adapter.prepare(runtime,state);}
  const ended=state.phase===root.Phases.GAME_OVER,blocked=prepared.view.blockedReason;
- const view={room:{version,phase:ended?'ENDED':blocked?'ABORTED':'PLAYING',paused:false,reason:blocked,result:ended?{winner:state.winner}:null},battle:prepared.view};host.dataset.version=version;host.dataset.roomPhase=view.room.phase;notice.textContent=error;
+ const view={room:{version,phase:ended?'ENDED':blocked?'ABORTED':'PLAYING',paused:false,reason:blocked,result:ended?{winner:state.winner,reason:'GAME_OVER'}:null},battle:prepared.view};host.dataset.version=version;host.dataset.roomPhase=view.room.phase;notice.textContent=error;
  board.render({view,connected:true,busy,mode:'cpu',resultLabel:ended?(state.winner==='P1'?'あなたの勝利':'CPUの勝利'):null,names:{own:'あなた',other:'CPU'},authorityLabel:'対戦エンジンの合法操作',menu,replay:()=>ui.newGame(),act(a,refs){if(busy)return;busy=true;try{if(!prepared.view.actions.some(x=>x.id===a.id))throw Error('盤面が更新されました。選び直してください。');ui.state=adapter.dispatch(runtime,ui.engine,prepared,a.id,refs);ui._resetActionState();error='';}catch(e){error=root.MushijingiUiPresenter.safeErrorMessage(e);}finally{busy=false;ui.render();}}});
  }
  const render=ui.render;ui.render=function(){render.apply(ui,arguments);show();};

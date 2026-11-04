@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 460,
+  "playable": 461,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -72,13 +72,13 @@
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
-      "connected": 39,
-      "implemented": 39,
-      "playable": 39,
+      "connected": 40,
+      "implemented": 40,
+      "playable": 40,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 39,
-        "RESEARCHED": 25
+        "PLAYABLE": 40,
+        "RESEARCHED": 24
       }
     },
     "BOOSTER_SET_7": {
@@ -9807,6 +9807,28 @@
       "rulingQuestionIds": []
     },
     {
+      "cardId": "set6_041",
+      "canonicalCardId": "set6_041",
+      "printingId": "registry:set6_041",
+      "officialNumber": "41/64",
+      "name": "ゴクラクトリバネアゲハ（幼虫）",
+      "set": "BOOSTER_SET_6",
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
+      "stages": {
+        "CATALOGED": true,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
+        "AUDITED": false
+      },
+      "auditState": "FINAL_AUDIT_PENDING",
+      "sourceRefs": [
+        "https://mushijingi.com/card/MUSHI6/41/",
+        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
+      ],
+      "rulingQuestionIds": []
+    },
+    {
       "cardId": "set6_007",
       "canonicalCardId": "set6_007",
       "printingId": "registry:set6_007",
@@ -10863,28 +10885,6 @@
       "auditState": "FINAL_AUDIT_PENDING",
       "sourceRefs": [
         "https://mushijingi.com/card/MUSHI6/37/",
-        "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
-      ],
-      "rulingQuestionIds": []
-    },
-    {
-      "cardId": "set6_041",
-      "canonicalCardId": "set6_041",
-      "printingId": "registry:set6_041",
-      "officialNumber": "41/64",
-      "name": "ゴクラクトリバネアゲハ（幼虫）",
-      "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
-      "stages": {
-        "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
-        "AUDITED": false
-      },
-      "auditState": "FINAL_AUDIT_PENDING",
-      "sourceRefs": [
-        "https://mushijingi.com/card/MUSHI6/41/",
         "https://mushijingi.jimdofree.com/q-a-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F/%E7%AC%AC%EF%BC%96%E5%BC%BE%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6/"
       ],
       "rulingQuestionIds": []
@@ -13480,6 +13480,38 @@
       "serialization": [
         "tests/territory-followups.test.js",
         "server/test/territory-followups.test.cjs"
+      ],
+      "unresolvedRulings": [],
+      "userRulings": []
+    },
+    {
+      "id": "set6_041",
+      "name": "ゴクラクトリバネアゲハ（幼虫）",
+      "status": "PLAYABLE",
+      "audited": false,
+      "source": {
+        "image": "https://mushijingi.com/images/card/414.jpg",
+        "verification": "PRINTED_SCAN_AND_OFFICIAL_QA_2026-11-04"
+      },
+      "officialRulings": [
+        "https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/"
+      ],
+      "engine": [
+        "tests/skill-emergence.test.js"
+      ],
+      "cpu": [
+        "tests/skill-emergence.test.js"
+      ],
+      "human": [
+        "server/browser/skill-emergence-paths.cjs"
+      ],
+      "online": [
+        "server/test/skill-emergence.test.cjs",
+        "server/browser/skill-emergence-paths.cjs"
+      ],
+      "serialization": [
+        "tests/skill-emergence.test.js",
+        "server/test/skill-emergence.test.cjs"
       ],
       "unresolvedRulings": [],
       "userRulings": []

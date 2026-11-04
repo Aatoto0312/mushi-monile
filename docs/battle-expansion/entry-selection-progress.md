@@ -59,3 +59,5 @@ Original four timing hypotheses and additional-cost-source-loss stop route stay 
 2026-11-04 incremental economy batch: SET6-02/12/60, SET7-13/58; tests/economy-batch.test.js, server/test/economy-batch.test.cjs, server/browser/economy-paths.cjs. Queue:implementation-queue.md. No whole-catalog reclassification.
 
 - SET5-25/27: territory followups; tests/territory-followups.test.js, server/test/territory-followups.test.cjs, server/browser/territory-followups-paths.cjs.
+
+- SET6-41: dedicated pre-damage self destruction and matching adult deployment; QA6 replacement exception; evidence scripts/entry-selection-evidence.js.

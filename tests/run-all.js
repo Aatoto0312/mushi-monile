@@ -6,6 +6,9 @@ var engine = require('./engine-loader.js');
 
 function requireAll() {
   return [
+    require('./self-skill-targeting.test.js'),
+    require('./battle-result-label.test.js'),
+    require('./skill-emergence.test.js'),
     require('./territory-followups.test.js'),
     require('./keyword-enhancements.test.js'),
     require('./spell-target-immunity.test.js'),

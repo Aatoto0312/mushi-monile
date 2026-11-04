@@ -1,5 +1,6 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
+set6_041:{texts:[null,'これを破壊し、自分の捨て札からこれと同名の(幼虫)と書かれていない虫を場に出す。 ※ダメージを与える前に破壊する。'],index:1,effect:{type:'DESTROY_SOURCE_DEPLOY_MATCHING_FORM',from:'DISCARD',nameSuffix:'（幼虫）'}},
 set6_007:{texts:[null,'この技で相手の虫を破壊したとき、自分の捨て札に～バチ科の虫があるなら、1つ選び手札に戻してもよい。'],index:1,effect:{type:'SELECT_ON_ATTACK_KILL',selection:{type:'SELECT_ON_ENTRY',from:'DISCARD',controller:'SELF',faceDown:false,cardType:'INSECT',familySuffixes:['バチ科'],operation:'MOVE',to:'HAND'}}},
 set6_022:{texts:[null,'この技を受けた虫についている強化カードを1つ選び破壊する。'],index:1,requirements:[{type:'TARGET_HAS_ATTACHMENT'}],targetRule:'INSECT_ONLY',effect:{type:'TARGET_ATTACHMENT_BEFORE_DAMAGE',operation:'DESTROY'}},
 set8_028:{texts:[null,'攻撃後、この技を受けた虫についている強化カードを1つ選び手札に戻してもよい。'],index:1,effect:{type:'TARGET_ATTACHMENT_AFTER_ATTACK',operation:'RETURN'}},

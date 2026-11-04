@@ -500,6 +500,14 @@
       resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves, afterResolution:continuation.afterResolution });
       return;
     }
+    if(continuation.type==='DEPLOY_ATTACK_MATCHING_FORM'){
+      var formOptions=state.player(continuation.playerId).discard.filter(function(card){var def=!card.faceDown&&getCardDefinition(card.cardId);return def&&def.type===CardTypes.INSECT&&String(def.name).normalize('NFKC')===continuation.adultName;});
+      if(formOptions.length){createCardSelection(state,{playerId:continuation.playerId,options:formOptions.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:[ZONES.DISCARD],selectionPurpose:'DEPLOY_ATTACK_MATCHING_FORM',continuation:{type:'DEPLOY_ATTACK_MATCHING_FORM_SELECTED',playerId:continuation.playerId,adultName:continuation.adultName,attack:continuation.attack}});}else resumeAfterSelection(state,{type:'FINISH_FORM_ATTACK',attack:continuation.attack});return;
+    }
+    if(continuation.type==='FINISH_FORM_ATTACK'){
+      var formAttack=continuation.attack,formSource=findInZone(state,formAttack.playerId,ZONES.FIELD,formAttack.attackerInstanceId);
+      if(formSource&&!formSource.faceDown&&(formSource.runtimeFlags.fieldEntrySerial||0)===formAttack.attackerFieldEntrySerial){formAttack.recalculateAp=true;resolveCommittedAttack(state,formAttack);}return;
+    }
     if(continuation.type==='RESOLVE_COMMITTED_ATTACK'){resolveCommittedAttack(state,continuation);return;}
     if(continuation.type==='TARGET_ATTACHMENT_AFTER_ATTACK'){
       var attachmentDefender=findInZone(state,continuation.targetPlayerId,ZONES.FIELD,continuation.targetInstanceId);
@@ -1080,6 +1088,10 @@
   function getPendingEntrySelectionConstraints(state,pending){
     var c=pending&&pending.continuation;
     if(!c)return null;
+    if(c.type==='DEPLOY_ATTACK_MATCHING_FORM_SELECTED'){
+      var formIds=state.player(c.playerId).discard.filter(function(card){var def=!card.faceDown&&getCardDefinition(card.cardId);return pending.options.indexOf(card.instanceId)!==-1&&def&&def.type===CardTypes.INSECT&&String(def.name).normalize('NFKC')===c.adultName;}).map(function(card){return card.instanceId;});
+      return {options:formIds,atMostOneGroups:[],selectionBounds:formIds.length?null:{minSelections:0,maxSelections:0,exactSelections:0}};
+    }
     if(c.type==='ATTACH_FOOD_ENHANCEMENT_TO_HOST'){
       var foodChoice=findInZone(state,pending.playerId,ZONES.FOOD,c.attachmentInstanceId);
       var foodHosts=foodChoice?insectCards(state.player(pending.playerId).field).filter(function(host){if(pending.options.indexOf(host.instanceId)===-1)return false;if(c.selectedHosts)return c.selectedHosts.some(function(target){return target.instanceId===host.instanceId&&(host.runtimeFlags.fieldEntrySerial||0)===target.fieldEntrySerial;})&&isForcedAttachmentHostLegal(state,pending.playerId,foodChoice,host);return isSpellSelectionTargetLegal(state,pending.playerId,host)&&[foodChoice].concat((c.remainingAttachmentIds||[]).map(function(id){return findInZone(state,pending.playerId,ZONES.FOOD,id);}).filter(Boolean)).some(function(food){return isForcedAttachmentHostLegal(state,pending.playerId,food,host);});}):[];
@@ -1377,6 +1389,11 @@
       var offeringDef = offering && getCardDefinition(offering.cardId);
       if (!offeringDef || (c.cardType && offeringDef.type !== c.cardType)) { throw new Error('供物にできる自分のカードを選んでください'); }
       return moveCard(state,offering.instanceId,c.from,c.to,{playerId:c.playerId});
+    }
+    if(c.type==='DEPLOY_ATTACK_MATCHING_FORM_SELECTED'){
+      var formSelected=findInZone(state,c.playerId,ZONES.DISCARD,ids[0]),formDef=formSelected&&!formSelected.faceDown&&getCardDefinition(formSelected.cardId);
+      if(formDef&&formDef.type===CardTypes.INSECT&&String(formDef.name).normalize('NFKC')===c.adultName)moveCard(state,formSelected.instanceId,ZONES.DISCARD,ZONES.FIELD,{playerId:c.playerId,faceDown:false,runtimeFlags:{fieldEntryCause:{kind:'ABILITY',sourceInstanceId:c.attack.attackerInstanceId,playerId:c.playerId}}});
+      resumeAfterSelection(state,{type:'FINISH_FORM_ATTACK',attack:c.attack});return;
     }
     if (c.type === 'USE_ENHANCEMENT') { return useEnhancement(state, pending.playerId, c.sourceInstanceId, ids[0]); }
     if (c.type === 'USE_COPY_ENHANCEMENT') { return useEnhancement(state, pending.playerId, c.sourceInstanceId, c.targetInstanceId, null, {copySourceId:ids[0]}); }
@@ -3039,6 +3056,12 @@
     });
 
     var committedAttack={type:'RESOLVE_COMMITTED_ATTACK',playerId:ap,opponentId:opponentId,attackerInstanceId:attacker.instanceId,attackerFieldEntrySerial:attackerFieldEntrySerial,targetInstanceId:targetInstanceId,targetType:targetType,targetFieldEntrySerial:attackedTargetFieldSerial,skill:skill,apVal:apVal,result:result,attackOptions:attackOptions};
+    var sourceFormEffect=(skill.effects||[]).find(function(effect){return effect.type==='DESTROY_SOURCE_DEPLOY_MATCHING_FORM';});
+    if(sourceFormEffect){
+      var adultName=String(def.name).normalize('NFKC').replace(String(sourceFormEffect.nameSuffix).normalize('NFKC'),'');
+      destroyInsect(state,attacker.instanceId,'ABILITY',attacker.instanceId,{}, {skipTerritoryDraw:true,sourceControllerId:ap});
+      resumeAfterSelection(state,{type:'DEPLOY_ATTACK_MATCHING_FORM',playerId:ap,adultName:adultName,attack:committedAttack});return result;
+    }
     var preDamageAttachmentEffect=(skill.effects||[]).find(function(effect){return effect.type==='TARGET_ATTACHMENT_BEFORE_DAMAGE';});
     var preDamageHost=targetType==='INSECT'&&findInZone(state,opponentId,ZONES.FIELD,targetInstanceId);
     if(preDamageAttachmentEffect&&preDamageHost&&(preDamageHost.attachments||[]).length){
@@ -3094,7 +3117,7 @@
       if (skill.effects && skill.effects.length > 0) {
         skill.effects.forEach(function (effect) {
           if (!effect) { return; }
-          if (effect.type === 'APPLY_STAT_MODIFIER' && effect.target !== 'SELF' && targetType === 'INSECT') {
+          if (effect.type === 'APPLY_STAT_MODIFIER' && effect.target !== 'SELF' && effect.target !== 'SOURCE' && targetType === 'INSECT') {
             var mod = {
               id: effect.id,
               sourceInstanceId: attacker.instanceId,
@@ -3192,7 +3215,7 @@
           sourceType: effect.sourceType || null, used: false });
         attacker.runtimeFlags.damageShields = shields;
       }
-      if (effect.type !== 'APPLY_STAT_MODIFIER' || effect.target !== 'SELF' || attacker.zone !== ZONES.FIELD) { return; }
+      if (effect.type !== 'APPLY_STAT_MODIFIER' || (effect.target !== 'SELF' && effect.target !== 'SOURCE') || attacker.zone !== ZONES.FIELD) { return; }
       addStatModifier(state, attacker, {
         id: effect.id, sourceInstanceId: attacker.instanceId,
         stat: effect.stat, amount: effect.amount,

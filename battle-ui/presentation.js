@@ -21,5 +21,12 @@
  }
  function targetActions(group,ref){return group.actions.filter(a=>a.targetRef===ref);}
  function optionLabel(dto,index){return dto.hidden?'裏向きのカード '+(index+1):dto.name+(dto.currentHp!=null?' HP '+dto.currentHp+'/'+dto.maxHp:'')+' / '+({HAND:'手札',FIELD:'場',FOOD:'エサ',TERRITORY:'縄張り',DISCARD:'捨て場',ATTACHMENT:'強化'}[dto.zone]||dto.zone||'公開カード');}
- return {publicCard,board,attackGroups,targetActions,optionLabel};
+ function resultLabel(room,viewerId,spectator){
+  if(room.phase!=='ENDED')return '';
+  if(!room.result)return '対戦終了';
+  const winner=room.result.winner;
+  if(winner==null)return room.result.reason==='GAME_OVER'?'引き分け':'対戦終了';
+  return spectator?winner+'の勝利':winner===viewerId?'あなたの勝利':'あなたの敗北';
+ }
+ return {publicCard,board,attackGroups,targetActions,optionLabel,resultLabel};
 });
