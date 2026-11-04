@@ -1,6 +1,6 @@
 {
   "total": 565,
-  "playable": 454,
+  "playable": 456,
   "notes": [
     "Declared legacy availability is preserved; no final audit inferred from tests or file existence.",
     "PARTIAL connected definitions are not counted as completed IMPLEMENTED cards.",
@@ -61,24 +61,24 @@
     "BOOSTER_SET_5": {
       "cataloged": 64,
       "connected": 51,
-      "implemented": 41,
-      "playable": 41,
+      "implemented": 42,
+      "playable": 42,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 41,
-        "PARTIAL": 10,
+        "PLAYABLE": 42,
+        "PARTIAL": 9,
         "RESEARCHED": 13
       }
     },
     "BOOSTER_SET_6": {
       "cataloged": 64,
-      "connected": 38,
-      "implemented": 38,
-      "playable": 38,
+      "connected": 39,
+      "implemented": 39,
+      "playable": 39,
       "audited": 0,
       "statuses": {
-        "PLAYABLE": 38,
-        "RESEARCHED": 26
+        "PLAYABLE": 39,
+        "RESEARCHED": 25
       }
     },
     "BOOSTER_SET_7": {
@@ -7402,12 +7402,12 @@
       "officialNumber": "28/64",
       "name": "ヨツコブツノゼミ",
       "set": "BOOSTER_SET_5",
-      "implementationStatus": "PARTIAL",
+      "implementationStatus": "PLAYABLE",
       "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -10184,12 +10184,12 @@
       "officialNumber": "26/64",
       "name": "ツマジロスカシマダラ",
       "set": "BOOSTER_SET_6",
-      "implementationStatus": "RESEARCHED",
-      "battleDefinitionConnected": false,
+      "implementationStatus": "PLAYABLE",
+      "battleDefinitionConnected": true,
       "stages": {
         "CATALOGED": true,
-        "IMPLEMENTED": false,
-        "PLAYABLE": false,
+        "IMPLEMENTED": true,
+        "PLAYABLE": true,
         "AUDITED": false
       },
       "auditState": "FINAL_AUDIT_PENDING",
@@ -13493,10 +13493,6 @@
           "name": "フローレンシスニセヒメカブト"
         },
         {
-          "id": "set6_026",
-          "name": "ツマジロスカシマダラ"
-        },
-        {
           "id": "set6_049",
           "name": "花潜の甲冑"
         },
@@ -13699,10 +13695,10 @@
   "incrementalBase": "ea7fb09",
   "implementationQueue": "docs/battle-expansion/implementation-queue.md",
   "lastIncrementalBatch": {
-    "base": "3bec84e",
+    "base": "a32e4cb",
     "ids": [
-      "set5_006",
-      "set5_013"
+      "set5_028",
+      "set6_026"
     ],
     "evidence": "docs/battle-expansion/food-wave-certification.md",
     "audited": false

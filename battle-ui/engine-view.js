@@ -97,7 +97,7 @@ function prepareView(r,s,viewer){
       const options=paymentStatus?paymentStatus.candidateIds:costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
       if(options.length<min){view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
       const id=add({kind},'選択を決定',null,null,options,false);
-      view.decision={actionId:id,min,max,exact:bounds.exactSelections??(kind==='CARDS'?null:1),ordered:true,
+      view.decision={actionId:id,min,max,exact:bounds.exactSelections??(kind==='CARDS'?null:1),ordered:true,firstOptions:pending.firstSelectionOptions?.filter(id=>options.includes(id)).map(ref)||null,
         options:options.map(id=>locate(id,!!pending.hiddenSelection,!!pending.continuation?.effect?.inspectOwnHidden)),atMostOneGroups:(entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups||[]).map(group=>group.map(ref)),groups:(pending.selectionGroups||[]).map(group=>group.map(ref)),partitions:(pending.selectionPartitions||[]).map(group=>group.map(ref)),combinations:(pending.allowedCombinations||[]).map(group=>group.map(ref))};
       if(pending.hiddenSelection)view.decision.options.sort((a,b)=>a.ref.localeCompare(b.ref));
     }

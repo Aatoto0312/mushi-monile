@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 454.
+All entries: 565; declared PLAYABLE: 456.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -342,7 +342,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_5 | 25/64 | set5_025 | プリモスマルガタクワガタ | yes | yes | pending | pending | pending | PARTIAL |
 | BOOSTER_SET_5 | 26/64 | set5_026 | チビクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 27/64 | set5_027 | ニイニイゼミ | yes | yes | pending | pending | pending | PARTIAL |
-| BOOSTER_SET_5 | 28/64 | set5_028 | ヨツコブツノゼミ | yes | yes | pending | pending | pending | PARTIAL |
+| BOOSTER_SET_5 | 28/64 | set5_028 | ヨツコブツノゼミ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 29/64 | set5_029 | リーガルモス（幼虫） | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 30/64 | set5_030 | ヤエヤマツダナナフシ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_5 | 31/64 | set5_031 | フィジーオオウスバカミキリ | yes | yes | yes | yes | pending | PLAYABLE |
@@ -404,7 +404,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 23/64 | set6_023 | コノハチョウ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 24/64 | set6_024 | ハルゼミ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 25/64 | set6_025 | パプアキンイロクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_6 | 26/64 | set6_026 | ツマジロスカシマダラ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_6 | 26/64 | set6_026 | ツマジロスカシマダラ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 27/64 | set6_027 | ジュウシチネンゼミ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 28/64 | set6_028 | シマハナアブ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 29/64 | set6_029 | コルリクワガタ | yes | yes | yes | yes | pending | PLAYABLE |

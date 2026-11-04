@@ -6,6 +6,7 @@ var engine = require('./engine-loader.js');
 
 function requireAll() {
   return [
+    require('./spell-target-immunity.test.js'),
     require('./destroyed-host-return.test.js'),
     require('./named-enhancement-recovery.test.js'),
     require('./pre-damage-attachment.test.js'),

@@ -10,7 +10,7 @@
   // Only connect definitions whose full text has been mapped. Registration is
   // deliberately separate from completion evidence and release status.
   var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 56, 57, 60, 62, 63, 64];
-  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 26, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 62, 63, 64];
+  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 26, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 62, 63, 64];
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {

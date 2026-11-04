@@ -75,6 +75,7 @@
       if(pending.selectionPartitions&&pending.selectionPartitions.length){var partition=pending.selectionPartitions.find(function(group){return group.length>=pending.minSelections;});if(!partition)return null;selected=partition.slice(0,count);}
       var uniqueGroups=entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups;
       if(uniqueGroups&&uniqueGroups.length){selected=uniqueGroups.filter(function(group){return group.length;}).map(function(group){return group[0];});}
+      if(selected.length&&pending.firstSelectionOptions&&pending.firstSelectionOptions.indexOf(selected[0])===-1){var first=currentOptions.find(function(id){return pending.firstSelectionOptions.indexOf(id)!==-1;});if(!first)return null;selected=[first].concat(selected.filter(function(id){return id!==first;}));}
       return { type:'RESOLVE_CARD_SELECTION', instanceIds:selected.slice(0,count) };
     }
 
