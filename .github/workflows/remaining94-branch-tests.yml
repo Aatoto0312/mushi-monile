@@ -1,0 +1,19 @@
+name: Remaining 94 isolated regression tests
+on:
+  push:
+    branches:
+      - dev/remaining94-wave1-20261106
+  workflow_dispatch:
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Focused SET7-44
+        run: node tests/set7-44-delayed-hp.test.js
+      - name: Full engine regression
+        run: node tests/run-all.js
