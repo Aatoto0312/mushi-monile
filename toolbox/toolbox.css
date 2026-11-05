@@ -134,3 +134,14 @@ input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(23,107
   .detail-dialog[open] { animation: sheet-in .2s ease-out; }
   @keyframes sheet-in { from { transform: translateY(24px); opacity: 0; } }
 }
+/* Self-contained deck sharing sheet; no battle or transport dependencies. */
+.deck-share-dialog[open]{display:flex;flex-direction:column;max-height:88vh;max-height:88dvh}
+.deck-share-dialog .detail-toolbar{flex:none;gap:12px;justify-content:space-between}
+.deck-share-dialog h2{font-size:1.1rem;margin:0}.deck-share-dialog .detail-toolbar button{min-height:44px;flex:none}
+.share-content{overflow:auto;min-height:0;padding:16px 16px max(16px,env(safe-area-inset-bottom));overscroll-behavior:contain}
+.share-content section:not([hidden]){display:grid;gap:12px}.share-content label{display:block;font-weight:600;margin-top:8px}
+.share-content textarea,.share-content input{box-sizing:border-box;width:100%;min-width:0;font-size:16px;padding:12px;border:1px solid #9cae9f;border-radius:8px;background:white;color:#142c25}
+.share-content textarea{resize:vertical;overflow-wrap:anywhere;word-break:break-all;font-family:monospace}
+.share-content button{min-height:44px;width:100%;margin:4px 0}.share-content #share-status{white-space:pre-wrap;overflow-wrap:anywhere}
+#share-preview{list-style:none;margin:12px 0;padding:0;display:grid;gap:10px}#share-preview li{display:flex;gap:12px;align-items:center}
+#share-preview [data-art]{width:58px;flex:none}#share-preview [data-art] img{width:100%;height:auto}#share-preview li>span:last-child{min-width:0;overflow-wrap:anywhere}#share-preview small{display:block;color:#875528}

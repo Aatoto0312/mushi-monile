@@ -5,6 +5,7 @@ require('./engine-loader.js');
 var suites = [
   require('./shared-card-data.test.js'),
   require('./deck-format.test.js'),
+    require('./deck-share-code.test.js'),
   require('./starter-card-data-v1.test.js'),
   require('./battle-adapter.test.js'),
   require('./shadow-comparison.test.js'),

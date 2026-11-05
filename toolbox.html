@@ -68,6 +68,8 @@
         </label>
         <div class="deck-actions">
           <button id="save-deck" class="primary-button" type="button">保存</button>
+          <button id="share-deck" class="secondary-button" type="button">共有コードを発行</button>
+          <button id="import-deck" class="secondary-button" type="button">コードから読み込む</button>
           <button id="duplicate-deck" class="secondary-button" type="button">複製</button>
           <button id="delete-deck" class="danger-button" type="button">削除</button>
           <button id="battle-deck" class="primary-button" type="button">このデッキで対戦</button>
@@ -108,6 +110,14 @@
     <div id="detail-content" class="detail-content"></div>
   </dialog>
 
+  <dialog id="share-dialog" class="detail-dialog deck-share-dialog" aria-labelledby="share-title">
+    <div class="detail-toolbar"><h2 id="share-title">デッキ共有</h2><button id="close-share" type="button" aria-label="デッキ共有を閉じる">閉じる</button></div>
+    <div class="share-content">
+      <section id="share-export"><p>カード構成だけを共有します。デッキ名は含まれません。</p><label for="share-output">共有コード</label><textarea id="share-output" rows="4" readonly spellcheck="false"></textarea><button id="copy-share" class="primary-button" type="button">コピー</button></section>
+      <section id="share-import" hidden><label for="share-input">共有コードを貼り付け</label><textarea id="share-input" rows="4" maxlength="4096" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea><button id="preview-share" class="secondary-button" type="button">内容を確認</button><div id="share-review" hidden><h3>読み込むデッキ</h3><p id="share-total"></p><ul id="share-preview"></ul><label for="share-name">自分のデッキ名</label><input id="share-name" type="text" maxlength="80" autocomplete="off"><button id="save-share" class="primary-button" type="button" disabled>自分のデッキに保存</button></div></section>
+      <p id="share-status" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
   <div id="collection-toast" class="ui-toast" role="status" aria-live="polite" hidden></div>
   <script src="shared/card-art-manifest.js?v=leave-465-v1"></script>
   <script src="shared/card-visuals.js?v=leave-465-v1"></script>
@@ -129,6 +139,7 @@
   <script src="shared/ui-presenter.js?v=leave-465-v1"></script>
   <script src="shared/deck-format/runtime.js?v=leave-465-v1"></script>
   <script src="toolbox/toolbox-core.js?v=leave-465-v1"></script>
+  <script src="shared/deck-format/share-code.js?v=leave-465-v1"></script>
   <script src="toolbox/toolbox-v1-app.js?v=leave-465-v1"></script>
 </body>
 </html>

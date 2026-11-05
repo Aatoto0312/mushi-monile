@@ -83,9 +83,53 @@
     ['set','type','color','cost','rarity'].forEach(function(k){values[k].forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=label(v,k);el[k].appendChild(o);});});
     var seen=Object.create(null);values.implementationStatus.forEach(function(v){var group=presenter.statusGroup(v);if(seen[group])return;seen[group]=true;var o=document.createElement('option');o.value=group;o.textContent=label(v,'implementationStatus');el.status.appendChild(o);});
   }
+  var sharedComposition=null;
+  function shareStatus(message){el.shareStatus.textContent=message||'';}
+  function invalidateShare(){sharedComposition=null;el.shareReview.hidden=true;el.shareSave.disabled=true;el.sharePreview.replaceChildren();shareStatus('');}
+  function openShare(importing){
+    if(importing&&dirty){notify('編集中のデッキを保存してから読み込んでください。');return;}
+    try{
+      var code=importing?'':window.MushijingiDeckShare.encode(ensure(),cards);
+      if(!importing&&dirty&&!save())return;
+      invalidateShare();el.shareTitle.textContent=importing?'コードから読み込む':'共有コードを発行';
+      el.shareExport.hidden=importing;el.shareImport.hidden=!importing;el.shareInput.value='';el.shareOutput.value=code;el.shareName.value='共有デッキ';
+      el.shareDialog.showModal();(importing?el.shareInput:el.shareOutput).focus();
+    }catch(e){notify(e.message);}
+  }
+  function previewShare(){
+    invalidateShare();
+    try{
+      sharedComposition=window.MushijingiDeckShare.decode(el.shareInput.value,cards);
+      var total=0,unavailable=false;
+      sharedComposition.cards.forEach(function(entry){var c=byId[entry.canonicalCardId];total+=entry.quantity;if(!c.playable)unavailable=true;var li=document.createElement('li');li.innerHTML='<span data-art="'+esc(c.cardId)+'"></span><span>'+esc(c.name)+'<strong> × '+entry.quantity+'枚</strong>'+(c.playable?'':'<small>対戦未対応</small>')+'</span>';el.sharePreview.appendChild(li);});
+      mountArt(el.sharePreview);el.shareTotal.textContent='合計 '+total+'枚 · '+sharedComposition.cards.length+'種類';el.shareReview.hidden=false;el.shareSave.disabled=false;
+      shareStatus(unavailable?'対戦未対応のカードが含まれます。保存できますが、現在は対戦に使用できません。':'内容を確認し、自分のデッキ名を入力して保存してください。');
+    }catch(e){sharedComposition=null;shareStatus(e.message);}
+  }
+  function saveSharedDeck(){
+    if(!sharedComposition)return;
+    if(!el.shareName.value.trim()){shareStatus('デッキ名を入力してください。');el.shareName.focus();return;}
+    try{
+      var latest=core.parseDeckStore(localStorage.getItem(core.DECK_STORAGE_KEY));
+      if(latest.recoveryWarning)throw new Error('既存の保存データを確認できません。デッキを上書きせず、読み込みを中止しました。');
+      var d=makeDeck(),baseId=d.deckId,n=1;
+      while(latest.decks.some(function(x){return x.deckId===d.deckId;}))d.deckId=baseId+'_'+n++;
+      d=core.renameDeck(d,el.shareName.value);
+      sharedComposition.cards.forEach(function(entry){for(var i=0;i<entry.quantity;i++)d=core.addCatalogCard(d,byId[entry.canonicalCardId]);});d=core.buildDeckFormat(d);
+      var next={storageVersion:1,activeDeckId:d.deckId,decks:latest.decks.concat([d])};
+      localStorage.setItem(core.DECK_STORAGE_KEY,core.serializeDeckStore(next));
+      store=next;dirty=false;el.shareDialog.close();renderDeck();updateCounts();notify('「'+d.deckName+'」を新しいデッキとして保存しました。');
+    }catch(e){shareStatus('保存できませんでした。'+e.message);}
+  }
   function bind() {
     [el.search,el.set,el.type,el.color,el.cost,el.rarity,el.status,el.sort].forEach(function(x){x.addEventListener(x===el.search?'input':'change',renderCards);});
     el.clear.onclick=function(){[el.search,el.set,el.type,el.color,el.cost,el.rarity,el.status].forEach(function(x){x.value='';});el.sort.value='officialNumber';renderCards();};
+    document.getElementById('share-deck').onclick=function(){openShare(false);};
+    document.getElementById('import-deck').onclick=function(){openShare(true);};
+    document.getElementById('close-share').onclick=function(){el.shareDialog.close();};
+    el.shareDialog.addEventListener('close',invalidateShare);el.shareInput.oninput=invalidateShare;
+    document.getElementById('preview-share').onclick=previewShare;el.shareSave.onclick=saveSharedDeck;
+    document.getElementById('copy-share').onclick=async function(){try{await navigator.clipboard.writeText(el.shareOutput.value);shareStatus('共有コードをコピーしました。');}catch(e){el.shareOutput.focus();el.shareOutput.select();el.shareOutput.setSelectionRange(0,el.shareOutput.value.length);shareStatus('自動コピーできません。コードを長押ししてコピーしてください。');}};
     el.close.onclick=function(){el.detail.close();};el.detailAdd.onclick=function(){add(selected);};el.save.onclick=save;
     el.detail.addEventListener('click',function(e){if(e.target===el.detail){var r=el.detail.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)el.detail.close();}});
     el.duplicate.onclick=function(){var d=core.duplicateDeck(ensure(),{deckId:id()});store.decks.push(d);store.activeDeckId=d.deckId;persist('デッキを複製しました。');renderDeck();updateCounts();};
@@ -99,6 +143,7 @@
   }
   function init() {
     var m={search:'search-input',set:'set-filter',type:'type-filter',color:'color-filter',cost:'cost-filter',rarity:'rarity-filter',status:'status-filter',sort:'sort-select',clear:'clear-filters',count:'result-count',list:'card-list',empty:'empty-message',detail:'card-detail',close:'close-detail',detailAdd:'detail-add',detailContent:'detail-content',cardsView:'cards-view',decksView:'decks-view',selector:'deck-selector',name:'deck-name',save:'save-deck',duplicate:'duplicate-deck',newDeck:'new-deck',deleteDeck:'delete-deck',battle:'battle-deck',onlineBattle:'online-battle-deck',message:'storage-message',deckTotal:'deck-total',navTotal:'nav-deck-total',deckStats:'deck-stats',costStats:'cost-stats',entryCount:'deck-entry-count',emptyDeck:'empty-deck-message',deckList:'deck-list',toast:'collection-toast'};
+    Object.assign(m,{shareDialog:'share-dialog',shareTitle:'share-title',shareExport:'share-export',shareImport:'share-import',shareInput:'share-input',shareOutput:'share-output',shareReview:'share-review',sharePreview:'share-preview',shareName:'share-name',shareSave:'save-share',shareTotal:'share-total',shareStatus:'share-status'});
     Object.keys(m).forEach(function(k){el[k]=document.getElementById(m[k]);});
     try{cards=catalog.fromRegistry(window.cardRegistry);cards.forEach(function(c){byId[c.cardId]=c;});
       try{store=core.parseDeckStore(localStorage.getItem(core.DECK_STORAGE_KEY));}catch(e){store=core.parseDeckStore(null);store.recoveryWarning='保存データを読み込めません。ブラウザの保存設定を確認してください。';}
