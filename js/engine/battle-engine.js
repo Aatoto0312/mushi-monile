@@ -2362,6 +2362,11 @@
       // ---- RESOLVE_EFFECT: HAND → RESOLVING(一時領域) ----
       moveCard(state, handInstanceId, ZONES.HAND, ZONES.RESOLVING, { playerId: playerId });
 
+      // A hand-to-field spell declares its selected insect before use triggers
+      // can counter the spell (official SET7 QA). Do not expose other hand slots.
+      if((def.cardEffects||[]).some(function(effect){return effect.from===ZONES.HAND&&effect.to===ZONES.FIELD;})){
+        [].concat(chosenTargetInstanceId||[]).forEach(function(id){var declared=findInZone(state,playerId,ZONES.HAND,id);if(declared&&getCardDefinition(declared.cardId).type===CardTypes.INSECT)emitBattleEvent(state,'SPELL_TARGET_REVEALED',{sourceInstanceId:held.instanceId,playerId:playerId,cardId:declared.cardId});});
+      }
       emitBattleEvent(state,'SPELL_USED',{sourceInstanceId:held.instanceId,playerId:playerId});
       var spellUseTriggers=[];
       state.player(state.opponentOf(playerId)).field.forEach(function(watcher){

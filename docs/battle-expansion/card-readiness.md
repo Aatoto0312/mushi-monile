@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 465.
+All entries: 565; declared PLAYABLE: 467.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -465,11 +465,11 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 20/64 | set7_020 | カブトムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 21/64 | set7_021 | オオムラサキ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 22/64 | set7_022 | マレーテナガコガネ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 23/64 | set7_023 | ユカタンビワハゴロモ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 23/64 | set7_023 | ユカタンビワハゴロモ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 24/64 | set7_024 | ベニモンアゲハ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 25/64 | set7_025 | メルポメネドクチョウ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 26/64 | set7_026 | オオルリアゲハ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 27/64 | set7_027 | テングビワハゴロモ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 27/64 | set7_027 | テングビワハゴロモ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 28/64 | set7_028 | オキピタリスノコギリクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 29/64 | set7_029 | コムラサキ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 30/64 | set7_030 | ナミハナアブ | yes | pending | pending | pending | pending | RESEARCHED |
