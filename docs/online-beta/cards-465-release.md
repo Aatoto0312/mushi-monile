@@ -15,3 +15,10 @@ Paired cutover after safety gate: launch only immutable verified465 API from its
 Paired rollback: first protect active matches/obtain maintenance; restore old immutable366 API at8791 and revert onlyrelease frontend commit(s) by ordinary revert/push; wait for Pages success and compare old contract/asset hashes. No reset/force/credential changes; saved decks retained. Do not run366 client against465 API or reverse.
 
 iPhone Safari physical test remains unperformed. Chromium/WebKit smallviewport tests are automated evidence only. Final receipts remain outsideGit until gate completes.
+
+## Fresh gate receipts
+- full2057/0, shared73/0; server187plus candidatebuilder1=188/0. No held diagnostics altered/skipped.
+- Browser24/24 logical gates: CPU2 (two completed matches each), Toolbox-online2 (127legal UI actions each, watcher/resume), candidate-validation4, source-target4, public-log4, result2, deck2, responsive4 (17sizes each withcollapsed/expanded andsafearea). Initial invocation omitted candidate-directory env; old CPU test needed current settings submenu and exact viewer-relative outcome; partial-deck fixture nowasserts actualPARTIAL set5_007 instead of newlyPLAYABLE set5_006. CorrectedCPU2/2 and candidate-validation4/4 passed; remaining18/18 passed unchanged. No skip/deletion/unconditional success.
+- Public-role isolated API health200, exact allowedOriginHELLO, unapprovedOrigin403,465runtime, contractexact. This was ephemeral localhost, not live WSS465.
+- Official LinuxJekyll build succeeded: https://github.com/Aatoto0312/mushi-monile/actions/runs/41942604434 . Downloaded artifact87files, everySHA256 andfront/APIcontract matchedmanifest88entries (one build-onlyconfig). Forbiddenroots/prototypeapp absent.
+- Rollback remains paired366 API+main988e4f7 archive. LiveAPI/ngrok/main/Pages untouched. Live366 API still lacks in-memory room/reconnect introspection; operational safety gate remains BLOCKED, not inferred idle from health or sockets.
