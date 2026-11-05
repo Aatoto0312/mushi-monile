@@ -1,8 +1,8 @@
 {
-  "createdAt": "2026-11-05T12:43:21.665Z",
-  "assetVersion": "leave-465-v1",
-  "sourceHead": "8d0af592ec24f508eff9b6e3bb5d39dfc62d1163",
-  "mainHead": "8d0af592ec24f508eff9b6e3bb5d39dfc62d1163",
+  "createdAt": "2026-11-05T13:29:34.014Z",
+  "assetVersion": "share-465-v1",
+  "sourceHead": "42ff9fcdb83989a748af6abda0ca6cdd6f215e90",
+  "mainHead": "779bf231204716965d0cbdab1ebe47aed84f38f3",
   "versions": {
     "protocol": "mushi-online/1",
     "engine": "5d9d32ad821b916466c06401b75825cd8ed944d136bdb461147610416c68c459",
@@ -19,7 +19,7 @@
     {
       "path": "battle-ui/board.css",
       "bytes": 9449,
-      "sha256": "25409718eab1fb182722b9ea662be4600956d2f41f496e73b6c86262cb4566dc",
+      "sha256": "b49a9063f89e3dfda5402071a74b4fc7f7e22a4998cd5b318f6be36d08263e37",
       "main": "modified"
     },
     {
@@ -43,7 +43,7 @@
     {
       "path": "battle-ui/cpu.css",
       "bytes": 1146,
-      "sha256": "10b076ffa91af37e2633989988dffbf69d32cc87ae1d8580bb02913f63f5bd1b",
+      "sha256": "23f3333fa63643f8ac81809b0c02fa7bd7fec3002f26100d9e27626c0951cbdf",
       "main": "modified"
     },
     {
@@ -85,7 +85,7 @@
     {
       "path": "index.html",
       "bytes": 16139,
-      "sha256": "89142615a04e4b10ca4e2af9e2183d9ae7c7de366e939dca8c93c4892c48145a",
+      "sha256": "dd1be6df41a092ed01818cca49df3be806751cc77a5ab85e60d45819ebc773d6",
       "main": "modified"
     },
     {
@@ -319,13 +319,13 @@
     {
       "path": "online-b.html",
       "bytes": 4316,
-      "sha256": "3d4ef706063ad92e5ac54af43de0dbd6c6adbbb1128ef4510beb95092204dd9e",
+      "sha256": "839ec9e6956207b3a13bcc894bf162e7a8a180809570c58080d4acf7779031d4",
       "main": "modified"
     },
     {
       "path": "online.html",
       "bytes": 4774,
-      "sha256": "b6a93d1b68f99e5d5388a1a8b03e5ff9922cc6d32db7c7c727b2f511c6fb4c9e",
+      "sha256": "a1224efda9115259def9d0850371e34ee71ca2ca9f2131dfb102514ed951a2d9",
       "main": "modified"
     },
     {
@@ -338,7 +338,7 @@
       "path": "online/client.js",
       "bytes": 24447,
       "sha256": "3c4fb4c162b713f282acec4e624beaf4cd8f08ac196ecc3a1dc7ddcde56a11b7",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "online/config.json",
@@ -361,7 +361,7 @@
     {
       "path": "prototype-b/base.css",
       "bytes": 9618,
-      "sha256": "c6b91cf6789576bc72798a67ea8dae1e3627b66cf8e81b1ad7310d6edea99f7b",
+      "sha256": "ef476a648e98afcda5eb571d7ace5e5457759d173d6f04a36f63d7266d5f05a0",
       "main": "modified"
     },
     {
@@ -373,7 +373,7 @@
     {
       "path": "prototype-b/style.css",
       "bytes": 12518,
-      "sha256": "6db628fa3f6b7838334bdfdeec0c77d12348f62ee755f14cff683cf8654bfdd0",
+      "sha256": "42fde05a24c9944d503d4ff0f73a8a9e992b4bdac2050aa003e36dfe8405dcb9",
       "main": "modified"
     },
     {
@@ -485,6 +485,12 @@
       "main": "unchanged"
     },
     {
+      "path": "shared/deck-format/share-code.js",
+      "bytes": 4226,
+      "sha256": "6892859bd4840025cec153d4798d3239ae2dd0dd28e8de488f50fe7caee54010",
+      "main": "added"
+    },
+    {
       "path": "shared/deck-format/validator.js",
       "bytes": 2634,
       "sha256": "605b12010baccae195669c6727de8ee6758b66ae44baacd79ec96a655b3a8bf4",
@@ -504,8 +510,8 @@
     },
     {
       "path": "toolbox.html",
-      "bytes": 8223,
-      "sha256": "ce6afd2df974570e795988d1482132ccceb5d6cebea2e8d06659280e1c3f1ae6",
+      "bytes": 9918,
+      "sha256": "2697c848cdad6a4ec8e7534ac10be6177105825885063b0da0e71401c85bd608",
       "main": "modified"
     },
     {
@@ -528,15 +534,15 @@
     },
     {
       "path": "toolbox/toolbox-v1-app.js",
-      "bytes": 15803,
-      "sha256": "754f61e2cef4bcc1085a8405af053b97b393588b37c4f51c6282b60dc69f057d",
-      "main": "unchanged"
+      "bytes": 20226,
+      "sha256": "d504ff4b4be2afe5e75c57d26c737378292cc2b7a81fb6174f9209817f3d3ecb",
+      "main": "modified"
     },
     {
       "path": "toolbox/toolbox.css",
-      "bytes": 11112,
-      "sha256": "2961b4cb159b32a04c88354affff5b4115604be2fd00361c81bf9ef02baae843",
-      "main": "unchanged"
+      "bytes": 12531,
+      "sha256": "bacba29f97a5a25d4a9bf86fefe0d8c17a58f951f23afbb3f6b8a99f8f3cda2c",
+      "main": "modified"
     },
     {
       "path": "_config.yml",
