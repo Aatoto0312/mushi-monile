@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 468.
+All entries: 565; declared PLAYABLE: 469.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -570,7 +570,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 61/64 | set8_061 | 断界の虫送り | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 62/64 | set8_062 | 冥府の導き | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 63/64 | set8_063 | 蚕の口封じ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_8 | 64/64 | set8_064 | 金色の腕 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 64/64 | set8_064 | 金色の腕 | yes | yes | yes | yes | pending | PLAYABLE |
 
 ## Open ruling questions
 

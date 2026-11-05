@@ -23,6 +23,7 @@ set6_002:{texts:[null,'この技は1度だけ使用できる。この技によ�
 set6_012:{texts:['この技により、相手が縄張りを引いたとき、自分の裏向きの赤のエサを最大2つまで選び、表向きにしてもよい。'],index:0,effect:{type:'OPTIONAL_FLIP_FOOD_ON_TERRITORY',controller:'SELF',faceDown:true,color:'RED',maxSelections:2,targetFaceDown:false,inspectOwnHidden:true}},
 set7_013:{texts:['この技により相手が縄張りを引いたとき、相手の捨て札から虫を１つ選び、山札の１番下に置いてもよい。'],index:0,effect:{type:'BOTTOM_DISCARD_ON_TERRITORY',cardType:'INSECT',faceDown:true}},
 set6_060:{text:'これをエサ場に置き、コストを6発生させる。その後、自分の捨て札から1枚カードを選び、裏向きでエサ場に置いてもよい。 ※このエサのコストはこのターン発生しない。',effect:{type:'SELF_TO_FOOD_WITH_COST',amount:6}},
+set8_064:{text:'自分の虫を1つ選ぶ。次の相手のターン終了時まで、その虫の体力を800増やす。',effect:{type:'APPLY_STAT_MODIFIER',target:'OWN_FIELD_INSECT',requiresTarget:true,stat:'HP',amount:800,endTurnOffset:1}},
 set7_060:{text:'次の相手のターン、相手が最初に使用した術カードを打ち消す。※使用したカードのコストは支払われるが、効果は発揮されず捨て札に置かれる。',effect:{type:'NEXT_OPPONENT_CARD_COUNTER',cardType:'SPELL'}},
 set7_058:{text:'相手の虫を1つ選び、自分のエサを好きな数選んで裏向きにする。選んだ虫に裏向きにしたエサの数×200のダメージを与える。',effect:{type:'FLIP_FOOD_FOR_DAMAGE',requiresTarget:true,target:'OPPONENT_FIELD_INSECT',perFood:200,deferFinalization:true}}
 };
