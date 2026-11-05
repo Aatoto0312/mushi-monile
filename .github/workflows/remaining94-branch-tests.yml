@@ -18,6 +18,8 @@ jobs:
           node-version: '22'
       - name: Focused SET7-44
         run: node tests/set7-44-delayed-hp.test.js
+      - name: Ryujin and queen bee bag regression
+        run: node tests/ryujin-bee-bag-regression.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
