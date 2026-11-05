@@ -170,10 +170,20 @@
   $('deck-select').onchange=()=>{deckNote();render();};
   $('deck-apply').onclick=()=>{if(deckErrors(selectedDeck()).length){deckNote();return;}const value=$('deck-select').value,[kind,id]=value.split(':');send('DECK',{version:current.room.version,...(kind==='preset'?{preset:id}:{deck:localDecks[Number(id)]})});};
   $('ready').onclick=()=>send('READY',{version:current.room.version,ready:!current.room.players.find(p=>p.id===seat.playerId)?.ready});
-  $('leave').onclick=()=>{if(confirm('このルームを退出しますか？'))send('LEAVE',{version:current.room.version});};
+  function requestLeave(){
+    if(!current||!seat||!connected||busy)return;
+    const roomCode=current.room.code,body=openOverlay('ルームを退出');
+    const explanation=document.createElement('p');
+    explanation.textContent=seat.role==='SPECTATOR'?'観戦を終了してルーム選択へ戻りますか？':current.room.phase==='LOBBY'&&seat.playerId==='P1'?'退出すると、このルームは終了します。退出しますか？':'このルームを退出しますか？';
+    body.append(explanation,button('退出する',()=>{
+      if(!current||current.room.code!==roomCode||!connected||busy)return;
+      closeOverlay();send('LEAVE',{version:current.room.version});
+    },'CONFIRM_LEAVE'),button('戻る',closeOverlay,'CANCEL_LEAVE'));
+  }
+  $('leave').onclick=requestLeave;
   $('copy-code').onclick=async()=>{try{await navigator.clipboard.writeText(current.room.code);notice('ルームコードをコピーしました。');}catch{notice('表示されているルームコードを手動で共有してください。');}};
   $('close-overlay').onclick=()=>{closeOverlay();};
-  $('menu').onclick=()=>{const body=openOverlay('オンライン対戦 β');body.append(document.createTextNode('接続状態: '+$('connection').textContent));if(current){body.append(document.createTextNode('対戦ID '+current.room.matchId));body.append(button('現在できる操作の一覧',showActions,'ACTION_LIST'));body.append(button('サーバーの状態を再取得',()=>{closeOverlay();send('SYNC');}));body.append(button('選択へ戻る',()=>{closeOverlay();decisionVersion=null;render();}));if(current.room.phase==='PLAYING'&&seat.role!=='SPECTATOR')body.append(button('投了',()=>{if(confirm('この試合を投了しますか？')){closeOverlay();send('RESIGN',{version:current.room.version});}}));else body.append(button(seat.role==='SPECTATOR'?'観戦を終了して戻る':'ルームを終了して戻る',()=>{closeOverlay();send('LEAVE',{version:current.room.version});}));}const home=document.createElement('a');home.href='index.html';home.textContent='ホーム（接続中の試合は一時切断）';body.append(home);};
+  $('menu').onclick=()=>{const body=openOverlay('オンライン対戦 β');body.append(document.createTextNode('接続状態: '+$('connection').textContent));if(current){body.append(document.createTextNode('対戦ID '+current.room.matchId));body.append(button('現在できる操作の一覧',showActions,'ACTION_LIST'));body.append(button('サーバーの状態を再取得',()=>{closeOverlay();send('SYNC');}));body.append(button('選択へ戻る',()=>{closeOverlay();decisionVersion=null;render();}));if(current.room.phase==='PLAYING'&&seat.role!=='SPECTATOR')body.append(button('投了',()=>{if(confirm('この試合を投了しますか？')){closeOverlay();send('RESIGN',{version:current.room.version});}}));else body.append(button(seat.role==='SPECTATOR'?'観戦を終了して戻る':'ルームを終了して戻る',requestLeave));}const home=document.createElement('a');home.href='index.html';home.textContent='ホーム（接続中の試合は一時切断）';body.append(home);};
   Promise.all([fetch('online/config.json',{cache:'no-store'}).then(r=>r.json()),fetch('online/contract.json',{cache:'no-store'}).then(r=>r.json())]).then(([config,versions])=>{
     contract=versions;const local=['127.0.0.1','localhost'].includes(location.hostname);let endpoint=local?config.localEndpoint:config.productionEnabled&&config.productionEndpoint;
     if(!endpoint){notice('オンライン対戦は公開準備中です。Toolbox・CPU対戦はホームから利用できます。');$('connection').textContent='未公開';return;}

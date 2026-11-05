@@ -1,8 +1,8 @@
 {
-  "createdAt": "2026-11-05T00:33:25.315Z",
-  "assetVersion": "poison-465-v1",
-  "sourceHead": "1471cb2c2533d5f95c7263dd68b233ef1b375035",
-  "mainHead": "988e4f765c3faea90551de673946e9f8945d899e",
+  "createdAt": "2026-11-05T12:43:21.665Z",
+  "assetVersion": "leave-465-v1",
+  "sourceHead": "8d0af592ec24f508eff9b6e3bb5d39dfc62d1163",
+  "mainHead": "8d0af592ec24f508eff9b6e3bb5d39dfc62d1163",
   "versions": {
     "protocol": "mushi-online/1",
     "engine": "5d9d32ad821b916466c06401b75825cd8ed944d136bdb461147610416c68c459",
@@ -18,15 +18,15 @@
   "files": [
     {
       "path": "battle-ui/board.css",
-      "bytes": 9450,
-      "sha256": "049f650b90a6bbbcca3004e035dd7e6955e0a3d1dd34f7a45cdae5a7303b73e4",
+      "bytes": 9449,
+      "sha256": "25409718eab1fb182722b9ea662be4600956d2f41f496e73b6c86262cb4566dc",
       "main": "modified"
     },
     {
       "path": "battle-ui/board.js",
       "bytes": 19241,
       "sha256": "3a7a93728d0a0fddfe5dacdc1108d8449e6bda09e2e198f1e4f4308a3739c207",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "battle-ui/cpu-adapter.js",
@@ -38,25 +38,25 @@
       "path": "battle-ui/cpu-controller.js",
       "bytes": 4907,
       "sha256": "528489938bc6fb182de1f41dc2b12030b0e5a670764f487687073e735e81d807",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "battle-ui/cpu.css",
-      "bytes": 1147,
-      "sha256": "9535851665ee6def88fae94e784ab039bedaeccf4d040ad6cb52a0b3e8c8d1f2",
+      "bytes": 1146,
+      "sha256": "10b076ffa91af37e2633989988dffbf69d32cc87ae1d8580bb02913f63f5bd1b",
       "main": "modified"
     },
     {
       "path": "battle-ui/engine-view.js",
       "bytes": 13961,
       "sha256": "41b16c005076664720ce5449762da74f1eca1fcc25b321308d4d7268e2646c42",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "battle-ui/presentation.js",
       "bytes": 2539,
       "sha256": "4ac4c987b3f58876dda9cb45151487a07b298d7d405fca0a1ae833e2bee0c76e",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "css/astra-battle.css",
@@ -84,8 +84,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 16190,
-      "sha256": "4d6b2cad2d0084ddb0a8c67bc4a5f83479d2c3f49e009be065a2c21e43b60524",
+      "bytes": 16139,
+      "sha256": "89142615a04e4b10ca4e2af9e2183d9ae7c7de366e939dca8c93c4892c48145a",
       "main": "modified"
     },
     {
@@ -122,37 +122,37 @@
       "path": "js/cards/expansion-count-cards.js",
       "bytes": 3415,
       "sha256": "57602710c92e7338bd9fa6144f20f0a9af8dade11b228f881a2abc2d77b89683",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-dive-cards.js",
       "bytes": 1884,
       "sha256": "266e9dc6316f6e6f6e261162e49afd0909e1362796b139596c34a54c1b044310",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-economy-cards.js",
       "bytes": 10476,
       "sha256": "cfe106ab1a8c5ad7195c5a860cbbc2b4f8f8b6a45e5ae5a626b1fe1aae3fc406",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-entry-cards.js",
       "bytes": 10023,
       "sha256": "bde6f139f2669773ede32f6fa7fa2d4012944304e5d7ab093292dbdc9aa439a0",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-predicate-cards.js",
       "bytes": 6168,
       "sha256": "abf0a1f580e94bb3ac291135a1692013e8a2dc0f6e04b8f30da56c87672ddf80",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-repeat-cards.js",
       "bytes": 2889,
       "sha256": "29e5021862583aeb2b9a6f07bbdb3f0abd8f1443a8558a86ac5b75c1ad5ccfde",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-reuse-cards.js",
@@ -164,7 +164,7 @@
       "path": "js/cards/full-catalog-data.js",
       "bytes": 713513,
       "sha256": "1e3772383493b977214d97e6dbc449c7acbf2a58b7e6b0f87d2e10f3640f90a6",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/set1-cards.js",
@@ -194,7 +194,7 @@
       "path": "js/cards/set5-cards.js",
       "bytes": 12944,
       "sha256": "947086398a93286a49b35364fee11ee2c3d6525872db9c717b9b207bba4be333",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/starter-cards.js",
@@ -212,13 +212,13 @@
       "path": "js/engine/battle-engine.js",
       "bytes": 310993,
       "sha256": "d2f70aad0dbdccfbe5f41fdcd1b789fe4f6411c2631571f7f3766a90966da965",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/engine/cpu-agent.js",
       "bytes": 18752,
       "sha256": "400523a40533059f699b1c0e4b0f00161772ab97acd47a6c83ec6c3e48a8c235",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/engine/cpu-runner.js",
@@ -248,7 +248,7 @@
       "path": "js/engine/stat-modifier.js",
       "bytes": 12700,
       "sha256": "3bd09ecd34601e5a868a1b1a2602e4d9404a58ed143eb3c77055bc4b91731e47",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/engine/turn-engine.js",
@@ -260,7 +260,7 @@
       "path": "js/engine/zone-engine.js",
       "bytes": 11550,
       "sha256": "7bdff7db45b6dc2a5518fdb964d02c6f3638944567da84345930efc9b20b9563",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/tutorial/tutorial-controller.js",
@@ -318,14 +318,14 @@
     },
     {
       "path": "online-b.html",
-      "bytes": 4345,
-      "sha256": "fc6173161a953f0485f7173a55c006537012f85db8f79f3c3e2420a0eb5b3403",
+      "bytes": 4316,
+      "sha256": "3d4ef706063ad92e5ac54af43de0dbd6c6adbbb1128ef4510beb95092204dd9e",
       "main": "modified"
     },
     {
       "path": "online.html",
-      "bytes": 4799,
-      "sha256": "d61b34ca92c2ca21be56a4c722859956e7a113657378c8037e8683b198c5e553",
+      "bytes": 4774,
+      "sha256": "b6a93d1b68f99e5d5388a1a8b03e5ff9922cc6d32db7c7c727b2f511c6fb4c9e",
       "main": "modified"
     },
     {
@@ -336,8 +336,8 @@
     },
     {
       "path": "online/client.js",
-      "bytes": 23835,
-      "sha256": "2aebfe1d06dc416c891fa43a06a58d94d1638c55dec67f02e66bd8c9d40e98ff",
+      "bytes": 24447,
+      "sha256": "3c4fb4c162b713f282acec4e624beaf4cd8f08ac196ecc3a1dc7ddcde56a11b7",
       "main": "modified"
     },
     {
@@ -350,7 +350,7 @@
       "path": "online/contract.json",
       "bytes": 194,
       "sha256": "a7eda206e842818a44207fbf0f16977dc953f662872d2b1e3d8707d5ffe62745",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "online/online.css",
@@ -360,8 +360,8 @@
     },
     {
       "path": "prototype-b/base.css",
-      "bytes": 9619,
-      "sha256": "1c9bd7283bcee2076106a49a853c7c05643f87afe187e1aabfdfabebaa8d94bd",
+      "bytes": 9618,
+      "sha256": "c6b91cf6789576bc72798a67ea8dae1e3627b66cf8e81b1ad7310d6edea99f7b",
       "main": "modified"
     },
     {
@@ -372,8 +372,8 @@
     },
     {
       "path": "prototype-b/style.css",
-      "bytes": 12520,
-      "sha256": "fc891aa0ee0a051318e335077fbf3681014f296eacc50d7e92d2a692f09c5c4c",
+      "bytes": 12518,
+      "sha256": "6db628fa3f6b7838334bdfdeec0c77d12348f62ee755f14cff683cf8654bfdd0",
       "main": "modified"
     },
     {
@@ -504,15 +504,15 @@
     },
     {
       "path": "toolbox.html",
-      "bytes": 8251,
-      "sha256": "1ff421c97fc63218da0d37554962faf9332d75fdb80d8edb63c367ef0bfeeaa8",
+      "bytes": 8223,
+      "sha256": "ce6afd2df974570e795988d1482132ccceb5d6cebea2e8d06659280e1c3f1ae6",
       "main": "modified"
     },
     {
       "path": "toolbox/astra-toolbox.css",
       "bytes": 9142,
       "sha256": "403c452eed4ad61a125b161dfb83e0b64a264578d6c490b975b0160bb076256c",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "toolbox/toolbox-app.js",
@@ -530,7 +530,7 @@
       "path": "toolbox/toolbox-v1-app.js",
       "bytes": 15803,
       "sha256": "754f61e2cef4bcc1085a8405af053b97b393588b37c4f51c6282b60dc69f057d",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "toolbox/toolbox.css",
