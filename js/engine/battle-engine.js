@@ -340,6 +340,17 @@
         destroyInsect(state,entryWatcher.instance.instanceId,'ABILITY',entryWatcher.instance.instanceId,null,{skipTerritoryDraw:true});
       }return;
     }
+    if(continuation.type==='COUNTER_COMMITTED_SPELL'){
+      // The card cost and declaration are already committed. This continuation
+      // deliberately skips spell effects (and any payments made by effects).
+      // Recheck RESOLVING so concurrent counters or restored work cannot move it twice.
+      var counteredSpell=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.sourceInstanceId);
+      if(counteredSpell){
+        emitBattleEvent(state,'SPELL_COUNTERED',{sourceInstanceId:counteredSpell.instanceId,playerId:continuation.playerId});
+        finalizeCommittedSpell(state,continuation.playerId,counteredSpell,getCardDefinition(counteredSpell.cardId),ZONES.DISCARD);
+      }
+      return;
+    }
     if(continuation.type==='RESOLVE_COMMITTED_SPELL'){
       var committedSpell=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.sourceInstanceId);
       if(committedSpell)completeCommittedSpell(state,continuation.playerId,committedSpell,getCardDefinition(committedSpell.cardId),continuation.targetInstanceId,continuation.spellOptions);
@@ -2346,6 +2357,12 @@
         var watcherDef=getCardDefinition(watcher.cardId);
         (watcherDef&&watcherDef.passiveAbilities||[]).filter(function(ability){return ability.timing==='ON_OPPONENT_SPELL_USED';}).forEach(function(ability){
           (ability.effects||[]).filter(function(effect){return effect.type==='DESTROY_SELF';}).forEach(function(){spellUseTriggers.push({playerId:watcher.controllerId||watcher.ownerId,label:watcherDef.name+'／'+ability.name,continuation:{type:'DESTROY_ENTRY_WATCHER',sourceInstanceId:watcher.instanceId,fieldEntrySerial:watcher.runtimeFlags.fieldEntrySerial||0}});});
+          (ability.effects||[]).filter(function(effect){return effect.type==='DESTROY_SELF_AND_COUNTER_SPELL'&&(effect.maxPrintedCost==null||def.cost<=effect.maxPrintedCost);}).forEach(function(){
+            spellUseTriggers.push({playerId:watcher.controllerId||watcher.ownerId,label:watcherDef.name+'／'+ability.name,continuation:{type:'SEQUENCE',steps:[
+              {type:'DESTROY_ENTRY_WATCHER',sourceInstanceId:watcher.instanceId,fieldEntrySerial:watcher.runtimeFlags.fieldEntrySerial||0},
+              {type:'COUNTER_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId}
+            ]}});
+          });
         });
       });
       if(spellUseTriggers.length){
