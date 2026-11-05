@@ -32,3 +32,13 @@ Before marking PLAYABLE:
 - SET7-11/12: next-turn shields require zero-damage consumption timing ruling.
 
 Status: research checkpoint only; **0 additional cards implemented, 0 tests executed** in this commit. Next step is an isolated test-first implementation of SET7-44.
+
+## Wave 1 code checkpoint (2026-11-06)
+
+- Implemented **candidate** SET7-44 in `js/cards/expansion-economy-cards.js` using existing attack `APPLY_STAT_MODIFIER` with `target: SELF`, `startTurnOffset: 1`, `endTurnOffset: 1`, and `ONCE_PER_FIELD_STAY`.
+- Added three regression tests in `tests/set7-44-delayed-hp.test.js` and registered them in `tests/run-all.js`.
+- **Not yet executed**: no local Node/browser environment is connected to this GitHub-only editing session. This is unverified code, not a certified PLAYABLE addition; readiness count remains 471 until tests pass.
+- Important regression gate: verify next-opponent-turn HP timing, original-turn attack damage, re-entry cleanup, JSON restoration, attack target validity, CPU/online, and no impact to existing cards.
+- Bug-first policy: when any new or existing test fails, isolate and fix the smallest reproducible regression before adding more cards. Never suppress a failing test or adjust its expected result merely to make a build green.
+- Existing known risks to retain: unresolved SET5 watcher trigger ordering (SET5-WATCHER-CONDITION-TIMING-001), protected paid-attack source-loss boundary, and any live online API contract mismatch. Do not guess official rulings.
+- To validate in a checkout of this branch: `node tests/set7-44-delayed-hp.test.js`, `node tests/run-all.js`, and the repository's shared/server/browser suites. Confirm readiness audit before any PLAYABLE count or public release update.
