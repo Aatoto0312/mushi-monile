@@ -218,13 +218,10 @@
     var p1Territory = state.player('P1').territory.length;
     var p2Territory = state.player('P2').territory.length;
     log(state, state.turnNumber, playerId + ' は山札がなくカードを引けなかった');
-    if (p1Territory === p2Territory) {
-      state.phase = Phases.DRAW_PHASE;
-      throw new Error('山札切れ時の縄張りが同数です（同数時の公式裁定未確認）');
-    }
-    state.winner = p1Territory > p2Territory ? 'P1' : 'P2';
+    // Official common QA (checked 2026-11-05): equal territory is a draw.
+    state.winner = p1Territory === p2Territory ? null : p1Territory > p2Territory ? 'P1' : 'P2';
     state.phase = Phases.GAME_OVER;
-    log(state, state.turnNumber, '山札切れ：縄張り枚数 ' + p1Territory + ' 対 ' + p2Territory + ' で ' + state.winner + ' の勝利');
+    log(state, state.turnNumber, '山札切れ：縄張り枚数 ' + p1Territory + ' 対 ' + p2Territory + ' で ' + (state.winner ? state.winner + ' の勝利' : '引き分け'));
     emitBattleEvent(state, 'GAME_OVER', {
       reason: 'FAILED_DRAW',
       failedPlayerId: playerId,

@@ -15,5 +15,6 @@ runner.test('FixDeckOut1 最後の1枚では終了しない',function(){var s=em
 runner.test('FixDeckOut2 必要ドロー失敗で縄張り多数側が勝利',function(){var s=emptyDraw(5,2);drawCardOnce(s,'P2');runner.assertEqual(s.phase,Phases.GAME_OVER);runner.assertEqual(s.winner,'P1');});
 runner.test('FixDeckOut3 先攻初手スキップは誤発火しない',function(){var s=h.newGame({rng:h.firstPlayerRng});s.player('P1').deck=[];runner.assertEqual(s.turnNumber,1);runner.assertEqual(s.phase,Phases.SET_PHASE);runner.assertEqual(s.winner,null);});
 runner.test('FixDeckOut4 GAME_OVER後は双方追加行動不能',function(){var s=emptyDraw(5,2);drawCardOnce(s,'P2');var cpu=new CpuAgent('P2',{rng:function(){return 0;}});runner.assertEqual(cpu.step(s),null);var threw=false;try{enterSetPhase(s);}catch(e){threw=true;}runner.assertTrue(threw);});
-runner.test('FixDeckOut5 同数なら勝者を推測しない',function(){var s=emptyDraw(3,3),blocked=false;try{drawCardOnce(s,'P2');}catch(e){blocked=/同数/.test(e.message);}runner.assertTrue(blocked);runner.assertEqual(s.winner,null);runner.assertEqual(s.phase,Phases.DRAW_PHASE);});
+// Official common QA now explicitly confirms a draw for equal territory.
+runner.test('FixDeckOut5 公式QAにより同数は引き分け',function(){var s=emptyDraw(3,3);drawCardOnce(s,'P2');runner.assertEqual(s.winner,null);runner.assertEqual(s.phase,Phases.GAME_OVER);runner.assertEqual(s.battleEvents.filter(function(e){return e.type==='GAME_OVER'&&e.reason==='FAILED_DRAW';}).length,1);});
 if(require.main===module)runner.runAll();module.exports=runner;
