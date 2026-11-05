@@ -20,3 +20,7 @@ jobs:
         run: node tests/set7-44-delayed-hp.test.js
       - name: Full engine regression
         run: node tests/run-all.js
+      - name: Server dependency install
+        run: npm ci --prefix server --ignore-scripts
+      - name: Online server regression
+        run: node --test server/test/runtime.test.cjs server/test/hawk-queen.test.cjs server/test/lasting-hp-spell.test.cjs
