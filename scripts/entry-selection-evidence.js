@@ -17,3 +17,12 @@ for(const [id,scan]of [['set7_037',474],['set7_041',478]])module.exports[id]={id
 module.exports.set6_026={id:'set6_026',name:'ツマジロスカシマダラ',status:'PLAYABLE',audited:false,source:{image:'https://mushijingi.com/images/card/399.jpg',verification:'PRINTED_SCAN_VISUALLY_CHECKED_2026-11-04'},officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/'],engine:['tests/spell-target-immunity.test.js'],cpu:['tests/spell-target-immunity.test.js'],human:['server/browser/spell-target-immunity-paths.cjs'],online:['server/test/spell-target-immunity.test.cjs','server/browser/spell-target-immunity-paths.cjs'],serialization:['tests/spell-target-immunity.test.js','server/test/spell-target-immunity.test.cjs'],unresolvedRulings:[],userRulings:[]};
 
 module.exports.set6_041={id:'set6_041',name:'ゴクラクトリバネアゲハ（幼虫）',status:'PLAYABLE',audited:false,source:{image:'https://mushijingi.com/images/card/414.jpg',verification:'PRINTED_SCAN_AND_OFFICIAL_QA_2026-11-04'},officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/'],engine:['tests/skill-emergence.test.js'],cpu:['tests/skill-emergence.test.js'],human:['server/browser/skill-emergence-paths.cjs'],online:['server/test/skill-emergence.test.cjs','server/browser/skill-emergence-paths.cjs'],serialization:['tests/skill-emergence.test.js','server/test/skill-emergence.test.cjs'],unresolvedRulings:[],userRulings:[]};
+
+// Wave 2: engine regressions are green; CPU/browser/online and printed-image audits remain open.
+for(const id of ['set6_013','set6_030','set7_016'])module.exports[id]={
+ id,name:records.find(c=>c.id===id).name,status:'PLAYABLE',audited:false,
+ source:{verification:'CATALOG_TEXT_ONLY; PRINTED_IMAGE_NOT_YET_AUDITED'},
+ officialRulings:[],engine:['tests/food-dependent-insects.test.js'],
+ cpu:[],human:[],online:[],serialization:[],
+ unresolvedRulings:['Official card text/image verification and end-to-end CPU/browser/online regression pending']
+};
