@@ -13,6 +13,7 @@ function requireAll() {
     require('./hawk-queen.test.js'),
     require('./lasting-hp-spell.test.js'),
     require('./set7-44-delayed-hp.test.js'),
+    require('./food-dependent-insects.test.js'),
     require('./deck-share-code.test.js'),
     require('./poison-followup.test.js'),
     require('./battle-choice-label.test.js'),
