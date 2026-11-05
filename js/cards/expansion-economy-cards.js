@@ -1,5 +1,7 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
+set7_001:{texts:['攻撃後、自分のエサ場からコスト5以下の～バチ科の虫を1つ選び、裏向きで場に出してもよい。次の自分のターン開始時にそれを表向きにする。'],index:0,effect:{type:'SELECT_AFTER_ATTACK',selection:{type:'SELECT_ON_ENTRY',from:'FOOD',controller:'SELF',faceDown:false,cardType:'INSECT',familySuffixes:['バチ科'],printedCostMax:5,operation:'MOVE',to:'FIELD',targetFaceDown:true,revealNextOwnTurn:true}}},
+set7_002:{texts:[null,'この技は＜＞の技を持つ虫にしか使用できない。この技を受けた虫は、ターン終了時まで「破壊されたとき」、「破壊されるとき」と書かれた＜＞の技を使用できない。'],index:1,requirements:[{type:'TARGET_HAS_KEYWORD_SKILL'}],targetRule:'INSECT_ONLY',effect:{type:'SUPPRESS_TARGET_DESTRUCTION_KEYWORDS'}},
 set8_023:{texts:[null,'これを破壊し、コストを1発生させる。※ダメージを与える前に破壊する。'],index:1,effect:{type:'DESTROY_SOURCE_BEFORE_DAMAGE',gainCost:1}},
 set8_024:{texts:[null,'これを破壊し、コストを1発生させる。※ダメージを与える前に破壊する。'],index:1,effect:{type:'DESTROY_SOURCE_BEFORE_DAMAGE',gainCost:1}},
 set6_041:{texts:[null,'これを破壊し、自分の捨て札からこれと同名の(幼虫)と書かれていない虫を場に出す。 ※ダメージを与える前に破壊する。'],index:1,effect:{type:'DESTROY_SOURCE_DEPLOY_MATCHING_FORM',from:'DISCARD',nameSuffix:'（幼虫）'}},

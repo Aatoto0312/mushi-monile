@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 469.
+All entries: 565; declared PLAYABLE: 471.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -443,8 +443,8 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 62/64 | set6_062 | 爆熱の嵐 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 63/64 | set6_063 | 贄虫の転生 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 64/64 | set6_064 | 蠱毒の輪廻 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 1/64 | set7_001 | オオスズメバチ（女王） | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 2/64 | set7_002 | タランチュラホーク | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 1/64 | set7_001 | オオスズメバチ（女王） | yes | yes | yes | yes | pending | PLAYABLE |
+| BOOSTER_SET_7 | 2/64 | set7_002 | タランチュラホーク | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 3/64 | set7_003 | オオスズメバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 4/64 | set7_004 | トビズムカデ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 5/64 | set7_005 | ケンランカマキリ | yes | yes | yes | yes | pending | PLAYABLE |

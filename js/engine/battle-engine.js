@@ -120,6 +120,7 @@
     state.pendingUseCounters=(state.pendingUseCounters||[]).filter(function(counter){return counter.turnNumber>=state.turnNumber;});
     var ap = state.activePlayerId;
     state.phase = Phases.TURN_START;
+    state.playerOrder.forEach(function(pid){state.player(pid).field.forEach(function(card){var reveal=card.runtimeFlags&&card.runtimeFlags.revealOnPlayerTurn;if(reveal&&reveal.playerId===ap&&state.turnNumber>reveal.afterTurn){card.faceDown=false;delete card.runtimeFlags.revealOnPlayerTurn;emitBattleEvent(state,'TURN_FACE_UP',{targetInstanceId:card.instanceId,playerId:pid});}});});
 
     var isFirstTurnFirstPlayer =
       state.turnNumber === 1 && state.activePlayerId === state.firstPlayerId;
@@ -1487,7 +1488,11 @@
         if(c.effect.operation==='SET_FACE')card.faceDown=c.effect.targetFaceDown;
         else if(c.effect.operation==='STAT_MODIFIER')addStatModifier(state,card,{sourceInstanceId:c.sourceInstanceId,stat:c.effect.stat,amount:c.effect.amount});
         else if(c.effect.operation==='DESTROY')destroyInsect(state,id,'EFFECT',c.sourceInstanceId);
-        else if(c.effect.operation==='MOVE')moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,faceDown:c.effect.targetFaceDown,runtimeFlags:c.effect.to===ZONES.FIELD?{fieldEntryCause:c.effect.entryCause||{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:c.effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null});
+        else if(c.effect.operation==='MOVE'){
+          var entryFlags=c.effect.to===ZONES.FIELD?{fieldEntryCause:c.effect.entryCause||{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:c.effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null;
+          if(c.effect.revealNextOwnTurn){entryFlags=entryFlags||{};entryFlags.revealOnPlayerTurn={playerId:c.playerId,afterTurn:state.turnNumber};}
+          moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,faceDown:c.effect.targetFaceDown,runtimeFlags:entryFlags});
+        }
         else throw new Error('未対応の登場時操作');
       });
       if(ids.length&&c.effect.sourceGrowth){var growHolder=findAnywhere(state,c.sourceInstanceId),growSource=growHolder&&growHolder.zone===ZONES.FIELD&&growHolder.instance;if(growSource&&(growSource.runtimeFlags.fieldEntrySerial||0)===c.effect.sourceEntrySerial)(c.effect.sourceGrowth.stats||[]).forEach(function(stat){addStatModifier(state,growSource,{sourceInstanceId:c.sourceInstanceId,stat:stat,amount:c.effect.sourceGrowth.amount,duration:'FIELD_STAY'});});}
@@ -1860,7 +1865,7 @@
     if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,card)){return false;}
     var def = getCardDefinition(card.cardId);
     return (def && def.passiveAbilities || []).some(function (ability) {
-      return (ability.effects || []).some(function (effect) { return effect.type === type && (!effect.requiresAttachment || (card.attachments||[]).length>0); });
+      return !isDestructionKeywordBlocked(state,card,ability)&&(ability.effects || []).some(function (effect) { return effect.type === type && (!effect.requiresAttachment || (card.attachments||[]).length>0); });
     });
   }
 
@@ -2848,6 +2853,7 @@
     }
     legalPool=legalPool.filter(function(defender){return !skillRequirements.some(function(requirement){
       if(requirement.type==='TARGET_PRINTED_COST'){var d=getCardDefinition(defender.cardId);return !d||(requirement.minimum!=null&&d.cost<requirement.minimum)||(requirement.maximum!=null&&d.cost>requirement.maximum);}
+      if(requirement.type==='TARGET_HAS_KEYWORD_SKILL')return !hasAvailableKeywordSkill(state,defender);
       if(requirement.type==='TARGET_DAMAGED')return defender.currentHp>=calculateMaxHp(defender,state);
       if(requirement.type==='TARGET_COLOR')return getEffectiveColor(defender)!==requirement.color;
       return false;
@@ -2893,6 +2899,17 @@
     });
   }
 
+  function hasAvailableKeywordSkill(state,card){
+    if(!card||card.faceDown||areInsectKeywordSkillsSuppressed(state,card))return false;
+    var d=getCardDefinition(card.cardId);
+    return !!d&&((d.passiveAbilities||[]).length>0||(d.skills||[]).some(function(skill){return skill.timing&&skill.timing!=='ATTACK';})||!!getGrantedTerritorySkillId(state,card.controllerId||card.ownerId,d));
+  }
+  function isDestructionKeywordBlocked(state,card,ability){
+    if(!card||!card.runtimeFlags||card.runtimeFlags.suppressDestructionKeywordUntilTurn==null||state.turnNumber>card.runtimeFlags.suppressDestructionKeywordUntilTurn)return false;
+    if(ability.timing==='ON_DESTROYED'||ability.timing==='ON_WOULD_BE_DESTROYED')return true;
+    var text=String(ability.effectText||'').split('※')[0].normalize('NFKC').replace(/\s/g,'');
+    return /破壊されたとき|破壊されるとき|破壊された時|破壊される時/.test(text);
+  }
   function hasIndividualKeywordSuppression(instance) {
     return !!(instance && ((instance.runtimeFlags && instance.runtimeFlags.suppressKeywordSkills) ||
       (instance.attachments || []).some(function(attachment) {
@@ -3161,6 +3178,7 @@
       if ((skill.effects || []).some(function(effect) { return effect.type === 'DESTROY_WOUNDED_TARGET_BEFORE_DAMAGE'; }) && defender.currentHp < calculateMaxHp(defender, state)) {
         destroyInsect(state, defender.instanceId, 'ATTACK', attacker.instanceId, result);
       }
+      if((skill.effects||[]).some(function(effect){return effect.type==='SUPPRESS_TARGET_DESTRUCTION_KEYWORDS';})){defender.runtimeFlags=defender.runtimeFlags||{};defender.runtimeFlags.suppressDestructionKeywordUntilTurn=state.turnNumber;}
       var selfDestructAfterDamage = (skill.effects || []).some(function(effect){return effect.type === 'SELF_DESTRUCT_AFTER_DAMAGE_BEFORE_TARGET_DESTRUCTION';});
       applyDamage(state, attacker, defender, finalDmg, 'ATTACK', attacker.instanceId, targetInstanceId, result, { deferDestruction:selfDestructAfterDamage });
       if (selfDestructAfterDamage && attacker.zone === ZONES.FIELD) {
@@ -3334,6 +3352,7 @@
     }
     
     (skill.effects || []).forEach(function(effect) {
+      if(effect.type==='SELECT_AFTER_ATTACK'){resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:ap,sourceInstanceId:attacker.instanceId,optional:true,effect:effect.selection});}
       if(effect.type==='TARGET_ATTACHMENT_AFTER_ATTACK'&&targetType==='INSECT'){
         resumeAfterSelection(state,{type:'TARGET_ATTACHMENT_AFTER_ATTACK',playerId:ap,targetPlayerId:opponentId,targetInstanceId:targetInstanceId,fieldEntrySerial:attackedTargetFieldSerial,operation:effect.operation});
       }
@@ -3867,7 +3886,7 @@
       if(watcher.instanceId===destroyedCard.instanceId||watcher.faceDown||areInsectKeywordSkillsSuppressed(state,watcher))return;
       var definition=getCardDefinition(watcher.cardId),snapshot=JSON.parse(JSON.stringify(watcher));snapshot.controllerId=controllerId;
       (definition&&definition.passiveAbilities||[]).forEach(function(ability,index){
-        if(ability.timing!=='ON_OTHER_OWN_INSECT_DESTROYED'||!checkCondition(state,snapshot,ability.condition,sourceType,sourceInstanceId))return;
+        if(ability.timing!=='ON_OTHER_OWN_INSECT_DESTROYED'||isDestructionKeywordBlocked(state,watcher,ability)||!checkCondition(state,snapshot,ability.condition,sourceType,sourceInstanceId))return;
         jobs.push({triggerId:'watcher-'+watcher.instanceId+'-'+index,playerId:controllerId,label:definition.name+'〈'+ability.name+'〉',continuation:{type:'RESOLVE_DESTROYED_ABILITY',sourceCard:snapshot,ability:ability,sourceType:sourceType,sourceInstanceId:sourceInstanceId}});
       });
     });return jobs;
@@ -3877,7 +3896,7 @@
     var def=getCardDefinition(destroyedCard.cardId),before=[],after=[],attachmentSteps=[];
     function step(ability){return {type:'RESOLVE_DESTROYED_ABILITY',sourceCard:destroyedCard,ability:ability,sourceType:sourceType,sourceInstanceId:sourceInstanceId};}
     if(!suppressHostKeywords)(def&&def.passiveAbilities||[]).forEach(function(ability){
-      if(ability.timing!=='ON_DESTROYED')return;
+      if(ability.timing!=='ON_DESTROYED'||isDestructionKeywordBlocked(state,destroyedCard,ability))return;
       (ability.resolutionPhase==='AFTER_ATTACHMENT_TRIGGERS'?after:before).push(step(ability));
     });
     (attachmentsSnapshot||[]).forEach(function(attachment){

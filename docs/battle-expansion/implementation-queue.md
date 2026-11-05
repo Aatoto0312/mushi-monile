@@ -1,3 +1,9 @@
+# Resume: safe471 /565 —2026-11-06
+- Isolated cards/hawk-queen-20261106 at C:/Users/aatot/mushi-hawk-queen, base775f665/469. AddedSET7-01オオスズメバチ（女王） andSET7-02タランチュラホーク; sets5/6/7/8=48/40/42/32, remaining94. Printed438/439 +officialQA7 rows101–107 checked; details hawk-queen-evidence.md.
+- Generic SELECT_AFTER_ATTACK + existing current-candidate SELECT_ON_ENTRY, opt-in next-original-player-turn reveal marker/field-leave cleanup. Hawk current keyword target condition, host-only destruction-keyword blocking before damage; attachment retaliation/replacement unchanged. No card-id Engine switch.
+- Unit13/server3/browser4x2cards8flows, Toolbox16each. Finalfull2118/0 shared73/0 server206/0, syntax/diff green. Protected attack-tail baseline hash retained, exact4 new hook inversions; no paid-attacker-loss fix or held5 imported. Localcontract/cache hawk-queen-471-v1/readiness updated. AUDITED pending.
+- Original469 tree775f665 preserved. Publicmain02e6231/465 (deckshare/leave release) untouched by this card task; no push, Pages or API/ngrok/auth operations. New checkpoint is current branch HEAD. Next general candidate7-44 per prior queue; enhancement-counter7-59 still needs lifecycle review. Do not repeat completed QA research or assume public465 has these cards.
+
 # Resume: safe469 /565 —2026-11-05
 - Added SET8-64 金色の腕 using existing APPLY_STAT_MODIFIER/HP+800/endTurnOffset1; exact scanned printed text checked (card565). No Engine change. Sets5/6/7/8=48/40/40/32; remaining96. Current task added4 cards total (7-23/27/60,8-64).
 - Unit7/7 includes stacking, JSON, stale-controller target rejection, same FIELD controller change, leave/resummon reset, naturalCPU, and actual トビズムカデ unhealable attack lethal expiry. Official How-to confirms ordinary damage heals at turn end; new test fixture corrected accordingly, no existing protected expectation changed.

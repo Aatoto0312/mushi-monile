@@ -10,6 +10,7 @@ function requireAll() {
     require('./spell-counter-cards.test.js'),
     require('./delayed-spell-counter.test.js'),
     require('./failed-draw-result.test.js'),
+    require('./hawk-queen.test.js'),
     require('./lasting-hp-spell.test.js'),
     require('./poison-followup.test.js'),
     require('./battle-choice-label.test.js'),
