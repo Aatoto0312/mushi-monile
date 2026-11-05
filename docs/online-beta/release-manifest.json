@@ -1,31 +1,31 @@
 {
-  "createdAt": "2026-11-03T15:10:32.555Z",
-  "assetVersion": "food-wave-421-v1",
-  "sourceHead": "9fa6a1480009e45bf08964847abdc7b58db2d324",
+  "createdAt": "2026-11-05T00:33:25.315Z",
+  "assetVersion": "poison-465-v1",
+  "sourceHead": "1471cb2c2533d5f95c7263dd68b233ef1b375035",
   "mainHead": "988e4f765c3faea90551de673946e9f8945d899e",
   "versions": {
     "protocol": "mushi-online/1",
-    "engine": "b42eb8e0a2095ffc471399b0e07ef83126aaa5605eb60a27f100c0964591f1f4",
-    "cards": "4f63ce7cd84b6acc7d2e5432b2d4e5813d5e5b437534408d8bc375c217c6f204"
+    "engine": "5d9d32ad821b916466c06401b75825cd8ed944d136bdb461147610416c68c459",
+    "cards": "058c9160d5b36786f4e275d13426d7174f9d3839733195df4c088d89c58c6d69"
   },
   "runtime": {
     "protocol": "mushi-online/1",
-    "engine": "b42eb8e0a2095ffc471399b0e07ef83126aaa5605eb60a27f100c0964591f1f4",
-    "cards": "4f63ce7cd84b6acc7d2e5432b2d4e5813d5e5b437534408d8bc375c217c6f204",
+    "engine": "5d9d32ad821b916466c06401b75825cd8ed944d136bdb461147610416c68c459",
+    "cards": "058c9160d5b36786f4e275d13426d7174f9d3839733195df4c088d89c58c6d69",
     "catalogCount": 565,
-    "playableCount": 421
+    "playableCount": 465
   },
   "files": [
     {
       "path": "battle-ui/board.css",
-      "bytes": 9286,
-      "sha256": "bd86548a1854960feeb64030bfb4d26a2b637ab1f2e3fd93409874f53c4163ca",
+      "bytes": 9450,
+      "sha256": "049f650b90a6bbbcca3004e035dd7e6955e0a3d1dd34f7a45cdae5a7303b73e4",
       "main": "modified"
     },
     {
       "path": "battle-ui/board.js",
-      "bytes": 17777,
-      "sha256": "e385da4e0eabf1ffdcd39479e1307b9cc9d67d68c87fd68e297da11599a45d49",
+      "bytes": 19241,
+      "sha256": "3a7a93728d0a0fddfe5dacdc1108d8449e6bda09e2e198f1e4f4308a3739c207",
       "main": "modified"
     },
     {
@@ -36,27 +36,27 @@
     },
     {
       "path": "battle-ui/cpu-controller.js",
-      "bytes": 4897,
-      "sha256": "40d41c65de426f33c3b9ca028d47a7389d24929df755905c2a68a50e352ede5d",
-      "main": "unchanged"
+      "bytes": 4907,
+      "sha256": "528489938bc6fb182de1f41dc2b12030b0e5a670764f487687073e735e81d807",
+      "main": "modified"
     },
     {
       "path": "battle-ui/cpu.css",
-      "bytes": 1150,
-      "sha256": "484221c6b0361d5ee53240b9c113fc7ae8dc7686d2d3f7877f54e1ffe5ed7691",
+      "bytes": 1147,
+      "sha256": "9535851665ee6def88fae94e784ab039bedaeccf4d040ad6cb52a0b3e8c8d1f2",
       "main": "modified"
     },
     {
       "path": "battle-ui/engine-view.js",
-      "bytes": 11855,
-      "sha256": "ba251e8b878293658fa3783462eb64775b0482c927286f3a02e0ca422d75431c",
+      "bytes": 13961,
+      "sha256": "41b16c005076664720ce5449762da74f1eca1fcc25b321308d4d7268e2646c42",
       "main": "modified"
     },
     {
       "path": "battle-ui/presentation.js",
-      "bytes": 2025,
-      "sha256": "3a785131427da3ab06a612a16a08b35fbfb1ca9db9393f59d6e577c45e5e2709",
-      "main": "unchanged"
+      "bytes": 2539,
+      "sha256": "4ac4c987b3f58876dda9cb45151487a07b298d7d405fca0a1ae833e2bee0c76e",
+      "main": "modified"
     },
     {
       "path": "css/astra-battle.css",
@@ -84,8 +84,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 16264,
-      "sha256": "ea704a30bd5abb87814830c36d7fe7e4310acc45d942e834704ea0efd7dd3ffe",
+      "bytes": 16190,
+      "sha256": "4d6b2cad2d0084ddb0a8c67bc4a5f83479d2c3f49e009be065a2c21e43b60524",
       "main": "modified"
     },
     {
@@ -131,15 +131,21 @@
       "main": "added"
     },
     {
+      "path": "js/cards/expansion-economy-cards.js",
+      "bytes": 10476,
+      "sha256": "cfe106ab1a8c5ad7195c5a860cbbc2b4f8f8b6a45e5ae5a626b1fe1aae3fc406",
+      "main": "added"
+    },
+    {
       "path": "js/cards/expansion-entry-cards.js",
-      "bytes": 8482,
-      "sha256": "910a927636dfde9df25a9af902517234fc0bf3173fba564545ba6e1814cedaf9",
+      "bytes": 10023,
+      "sha256": "bde6f139f2669773ede32f6fa7fa2d4012944304e5d7ab093292dbdc9aa439a0",
       "main": "added"
     },
     {
       "path": "js/cards/expansion-predicate-cards.js",
-      "bytes": 5324,
-      "sha256": "5b6031ac95f1a9f85597c14d36fad783e0842b19227c4f0fb43d3bd938602155",
+      "bytes": 6168,
+      "sha256": "abf0a1f580e94bb3ac291135a1692013e8a2dc0f6e04b8f30da56c87672ddf80",
       "main": "added"
     },
     {
@@ -157,7 +163,7 @@
     {
       "path": "js/cards/full-catalog-data.js",
       "bytes": 713513,
-      "sha256": "774a5fe117880a134d859f55469cd2740864edfc7d20501a2f8b2c03481a9a81",
+      "sha256": "1e3772383493b977214d97e6dbc449c7acbf2a58b7e6b0f87d2e10f3640f90a6",
       "main": "modified"
     },
     {
@@ -186,8 +192,8 @@
     },
     {
       "path": "js/cards/set5-cards.js",
-      "bytes": 9490,
-      "sha256": "01237e5c94e87b42026098db065f7d8566c8485049cfd1d2e3903e5b54c05d8a",
+      "bytes": 12944,
+      "sha256": "947086398a93286a49b35364fee11ee2c3d6525872db9c717b9b207bba4be333",
       "main": "modified"
     },
     {
@@ -204,14 +210,14 @@
     },
     {
       "path": "js/engine/battle-engine.js",
-      "bytes": 279473,
-      "sha256": "6d90e1d915f25eb9c0fb4a0f6f27bbfa410bdbba4d42db01249ec3be2caf7d15",
+      "bytes": 310993,
+      "sha256": "d2f70aad0dbdccfbe5f41fdcd1b789fe4f6411c2631571f7f3766a90966da965",
       "main": "modified"
     },
     {
       "path": "js/engine/cpu-agent.js",
-      "bytes": 17672,
-      "sha256": "41f83a47dcfffc695b23a698d7d80944281849c6bbc919adb6e139809cb4cc8f",
+      "bytes": 18752,
+      "sha256": "400523a40533059f699b1c0e4b0f00161772ab97acd47a6c83ec6c3e48a8c235",
       "main": "modified"
     },
     {
@@ -240,8 +246,8 @@
     },
     {
       "path": "js/engine/stat-modifier.js",
-      "bytes": 12465,
-      "sha256": "3276f7c29252f21daaed8f6039346e73798ac749965027ae0473389e8f3b8c1d",
+      "bytes": 12700,
+      "sha256": "3bd09ecd34601e5a868a1b1a2602e4d9404a58ed143eb3c77055bc4b91731e47",
       "main": "modified"
     },
     {
@@ -312,14 +318,14 @@
     },
     {
       "path": "online-b.html",
-      "bytes": 4354,
-      "sha256": "2ac2905dc9d29f3ee84f24b5314b08a83d17fefc39af86b7319b3acbf87403a1",
+      "bytes": 4345,
+      "sha256": "fc6173161a953f0485f7173a55c006537012f85db8f79f3c3e2420a0eb5b3403",
       "main": "modified"
     },
     {
       "path": "online.html",
-      "bytes": 4796,
-      "sha256": "14e78527131cdb7220fd8c2febf2c33ab1e8f0d012a034dbbc45b108af1dc592",
+      "bytes": 4799,
+      "sha256": "d61b34ca92c2ca21be56a4c722859956e7a113657378c8037e8683b198c5e553",
       "main": "modified"
     },
     {
@@ -330,9 +336,9 @@
     },
     {
       "path": "online/client.js",
-      "bytes": 23824,
-      "sha256": "89be9777310b855b4defec8689718fd2b47a721f0e856a26ff5848c7f1d3354e",
-      "main": "unchanged"
+      "bytes": 23835,
+      "sha256": "2aebfe1d06dc416c891fa43a06a58d94d1638c55dec67f02e66bd8c9d40e98ff",
+      "main": "modified"
     },
     {
       "path": "online/config.json",
@@ -343,7 +349,7 @@
     {
       "path": "online/contract.json",
       "bytes": 194,
-      "sha256": "068dbb96cf852fc92b67c1aa9d69684191602fd6595aca1c00c578d5eac31bdf",
+      "sha256": "a7eda206e842818a44207fbf0f16977dc953f662872d2b1e3d8707d5ffe62745",
       "main": "modified"
     },
     {
@@ -354,8 +360,8 @@
     },
     {
       "path": "prototype-b/base.css",
-      "bytes": 9622,
-      "sha256": "afa0c4bd81665c04bd4c9fb8bc6e2f7dddbd5d8413e7d4ac9f81e47a87a1823e",
+      "bytes": 9619,
+      "sha256": "1c9bd7283bcee2076106a49a853c7c05643f87afe187e1aabfdfabebaa8d94bd",
       "main": "modified"
     },
     {
@@ -366,8 +372,8 @@
     },
     {
       "path": "prototype-b/style.css",
-      "bytes": 12526,
-      "sha256": "3e29b7b00fd55d250eb17b76241c29aa78c2942c89ae2729236fe7b237001840",
+      "bytes": 12520,
+      "sha256": "fc891aa0ee0a051318e335077fbf3681014f296eacc50d7e92d2a692f09c5c4c",
       "main": "modified"
     },
     {
@@ -498,15 +504,15 @@
     },
     {
       "path": "toolbox.html",
-      "bytes": 8256,
-      "sha256": "46349de235f2981995f3b61bf0206433c16ddb68b1b099094b275f73294d4734",
+      "bytes": 8251,
+      "sha256": "1ff421c97fc63218da0d37554962faf9332d75fdb80d8edb63c367ef0bfeeaa8",
       "main": "modified"
     },
     {
       "path": "toolbox/astra-toolbox.css",
-      "bytes": 7996,
-      "sha256": "a91c4658ae28cb28b97a0b7474068125c4f7a18933b3219fea8df1a4be95f124",
-      "main": "unchanged"
+      "bytes": 9142,
+      "sha256": "403c452eed4ad61a125b161dfb83e0b64a264578d6c490b975b0160bb076256c",
+      "main": "modified"
     },
     {
       "path": "toolbox/toolbox-app.js",
@@ -522,9 +528,9 @@
     },
     {
       "path": "toolbox/toolbox-v1-app.js",
-      "bytes": 15488,
-      "sha256": "4a075225bcaa30f895a83588e345b4e14a8100fede2e4ed6326ec73d2a30c209",
-      "main": "unchanged"
+      "bytes": 15803,
+      "sha256": "754f61e2cef4bcc1085a8405af053b97b393588b37c4f51c6282b60dc69f057d",
+      "main": "modified"
     },
     {
       "path": "toolbox/toolbox.css",
