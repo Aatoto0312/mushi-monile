@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - dev/remaining94-wave1-20261106
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 jobs:
   node-tests:
