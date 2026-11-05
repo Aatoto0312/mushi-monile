@@ -27,7 +27,8 @@ set7_013:{texts:['この技により相手が縄張りを引いたとき、相�
 set6_060:{text:'これをエサ場に置き、コストを6発生させる。その後、自分の捨て札から1枚カードを選び、裏向きでエサ場に置いてもよい。 ※このエサのコストはこのターン発生しない。',effect:{type:'SELF_TO_FOOD_WITH_COST',amount:6}},
 set8_064:{text:'自分の虫を1つ選ぶ。次の相手のターン終了時まで、その虫の体力を800増やす。',effect:{type:'APPLY_STAT_MODIFIER',target:'OWN_FIELD_INSECT',requiresTarget:true,stat:'HP',amount:800,endTurnOffset:1}},
 set7_060:{text:'次の相手のターン、相手が最初に使用した術カードを打ち消す。※使用したカードのコストは支払われるが、効果は発揮されず捨て札に置かれる。',effect:{type:'NEXT_OPPONENT_CARD_COUNTER',cardType:'SPELL'}},
-set7_058:{text:'相手の虫を1つ選び、自分のエサを好きな数選んで裏向きにする。選んだ虫に裏向きにしたエサの数×200のダメージを与える。',effect:{type:'FLIP_FOOD_FOR_DAMAGE',requiresTarget:true,target:'OPPONENT_FIELD_INSECT',perFood:200,deferFinalization:true}}
+set7_058:{text:'相手の虫を1つ選び、自分のエサを好きな数選んで裏向きにする。選んだ虫に裏向きにしたエサの数×200のダメージを与える。',effect:{type:'FLIP_FOOD_FOR_DAMAGE',requiresTarget:true,target:'OPPONENT_FIELD_INSECT',perFood:200,deferFinalization:true}},
+set7_044:{texts:[null,'この技は1度だけ使用できる。次の相手のターン、この虫の体力を500増やす。'],index:1,once:true,effect:{type:'APPLY_STAT_MODIFIER',target:'SELF',stat:'HP',amount:500,startTurnOffset:1,endTurnOffset:1}}
 };
 ['set7_036','set7_038'].forEach(function(id){specs[id]={texts:[null,'この技は1度だけ使用できる。攻撃後、自分のエサ場にあるコスト3以下の強化カードを1つ選び、この虫につけてもよい。'],index:1,once:true,effect:{type:'ATTACH_AFTER_ATTACK',attachment:{type:'ATTACH_FROM_OWN_ZONE_ON_ENTRY',from:'FOOD',maxPrintedCost:3}}};});
 function same(a,b){return String(a||'').normalize('NFKC').replace(/\s/g,'')===String(b||'').normalize('NFKC').replace(/\s/g,'');}
