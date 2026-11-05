@@ -353,7 +353,7 @@
     }
     if(continuation.type==='RESOLVE_COMMITTED_SPELL'){
       var committedSpell=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.sourceInstanceId);
-      if(committedSpell)completeCommittedSpell(state,continuation.playerId,committedSpell,getCardDefinition(committedSpell.cardId),continuation.targetInstanceId,continuation.spellOptions);
+      if(committedSpell)completeCommittedSpell(state,continuation.playerId,committedSpell,getCardDefinition(committedSpell.cardId),continuation.targetInstanceId,continuation.spellOptions,continuation.deferredVariablePayment);
       return;
     }
     if(continuation.type==='FINALIZE_COMMITTED_SPELL'){
@@ -1274,6 +1274,12 @@
       resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='USE_SPELL_VARIABLE_COST'){
       var paid=Number(value);state.pendingEffect=null;return useSpell(state,playerId,continuation.sourceInstanceId,continuation.targetInstanceId,{variablePayment:paid});
+    } else if(continuation.type==='COMMITTED_SPELL_VARIABLE_COST'){
+      var variableSource=findInZone(state,playerId,ZONES.RESOLVING,continuation.sourceInstanceId),variablePaid=Number(value);
+      if(!variableSource||!Number.isInteger(variablePaid)||variablePaid<0||variablePaid>state.player(playerId).availableCost)throw new Error('支払い条件が変化しました');
+      state.pendingEffect=null;
+      var variableResult=completeCommittedSpell(state,playerId,variableSource,getCardDefinition(variableSource.cardId),continuation.targetInstanceId,Object.assign({},continuation.spellOptions,{variablePayment:variablePaid}),true);
+      resumeAfterSelection(state,pending.afterResolution);return variableResult;
     } else if(continuation.type==='USE_SPELL_PAYMENT_METHOD'){
       state.pendingEffect=null;return useSpell(state,playerId,continuation.sourceInstanceId,continuation.targetInstanceId,{paymentMode:value});
     } else if(continuation.type==='SUPPRESS_DESTROYED_TERRITORY'){
@@ -2310,12 +2316,18 @@
     if(territoryCostEffect&&spellOptions.paymentMode==='NORMAL'&&!canPayNormally){throw new Error('コストが不足しています');}
 
     var variableCostEffect=(def.cardEffects||[]).filter(function(effect){return effect.type==='VARIABLE_COST_DAMAGE';})[0];
-    if(variableCostEffect&&spellOptions.variablePayment!=null){
+    // Opt in only for the new counter lifecycle. Legacy variable-cost choices
+    // retain their pre-commit cancellation/error behavior when no counter exists.
+    var deferredVariablePayment=!!variableCostEffect&&state.player(state.opponentOf(playerId)).field.some(function(watcher){
+      if(watcher.faceDown||areInsectKeywordSkillsSuppressed(state,watcher))return false;
+      return (getCardDefinition(watcher.cardId).passiveAbilities||[]).some(function(ability){return ability.timing==='ON_OPPONENT_SPELL_USED'&&(ability.effects||[]).some(function(effect){return effect.type==='DESTROY_SELF_AND_COUNTER_SPELL'&&(effect.maxPrintedCost==null||def.cost<=effect.maxPrintedCost);});});
+    });
+    if(variableCostEffect&&!deferredVariablePayment&&spellOptions.variablePayment!=null){
       var additionalPayment=spellOptions.variablePayment;
       var basePayment=territoryCostEffect&&spellOptions.paymentMode==='TERRITORY'?0:spellCost;
       if(typeof additionalPayment!=='number'||!isFinite(additionalPayment)||Math.floor(additionalPayment)!==additionalPayment||additionalPayment<0||additionalPayment>player.availableCost-basePayment)throw new Error('追加支払いは使用可能コスト以内の整数を指定してください');
     }
-    if(variableCostEffect&&spellOptions.variablePayment==null){
+    if(variableCostEffect&&!deferredVariablePayment&&spellOptions.variablePayment==null){
       var paymentOptions=[];for(var payment=0;payment<=player.availableCost-spellCost;payment++){paymentOptions.push({value:String(payment),label:String(payment)+'コスト'});}
       state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,selectionPurpose:'VARIABLE_COST_PAYMENT',prompt:'追加で支払うコストを選んでください',options:paymentOptions,continuation:{type:'USE_SPELL_VARIABLE_COST',sourceInstanceId:handInstanceId,targetInstanceId:chosenTargetInstanceId}};
       return {pending:true};
@@ -2336,7 +2348,7 @@
         if(territoryIds.length!==territoryCostEffect.count||territoryIds.some(function(id){return !findInZone(state,playerId,ZONES.TERRITORY,id);}))throw new Error('代替コストの縄張りが不正です');
         territoryIds.forEach(function(id){moveCard(state,id,ZONES.TERRITORY,ZONES.DISCARD,{playerId:playerId});});
       }else{
-        player.availableCost -= spellCost + (spellOptions.variablePayment || 0);
+        player.availableCost -= spellCost + (deferredVariablePayment?0:(spellOptions.variablePayment || 0));
       }
 
       player.nextUseCostModifiers=(player.nextUseCostModifiers||[]).filter(function(modifier){return state.turnNumber<=modifier.endTurn&&!matchesNextUseCostModifier(state,playerId,def,modifier);});
@@ -2370,10 +2382,10 @@
         if(chosenTargetInstanceId){
           committedOptions.committedTargetSnapshots=[].concat(chosenTargetInstanceId).map(function(id){return snapshotCommittedSpellTarget(state,id);}).filter(Boolean);
         }
-        resumeAfterSelection(state,{type:'SEQUENCE',steps:[{type:'ORDER_TRIGGER_CONTINUATIONS',steps:spellUseTriggers},{type:'RESOLVE_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId,targetInstanceId:chosenTargetInstanceId,spellOptions:committedOptions}]});
+        resumeAfterSelection(state,{type:'SEQUENCE',steps:[{type:'ORDER_TRIGGER_CONTINUATIONS',steps:spellUseTriggers},{type:'RESOLVE_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId,targetInstanceId:chosenTargetInstanceId,spellOptions:committedOptions,deferredVariablePayment:deferredVariablePayment}]});
         result.pending=!!state.pendingEffect;result.finalZone=held.zone===ZONES.RESOLVING?null:held.zone;result.foodDelta=result.finalZone===ZONES.FOOD?1:0;return result;
       }
-      return completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions);
+      return completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions,deferredVariablePayment);
     } catch (err) {
       // 効果解決中・最終移動中の内部エラー → 使用直前の状態へ復旧して再送出。
       rollbackSpellToHand(state, playerId, held.instanceId, snapshot);
@@ -2381,7 +2393,17 @@
     }
   }
 
-  function completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions){
+  function completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions,deferredVariablePayment){
+    if(deferredVariablePayment){
+      spellOptions=spellOptions||{};
+      if(spellOptions.variablePayment==null){
+        var committedPaymentOptions=[];for(var amount=0;amount<=state.player(playerId).availableCost;amount++)committedPaymentOptions.push({value:String(amount),label:String(amount)+'コスト'});
+        state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,selectionPurpose:'VARIABLE_COST_PAYMENT',prompt:'追加で支払うコストを選んでください',options:committedPaymentOptions,continuation:{type:'COMMITTED_SPELL_VARIABLE_COST',sourceInstanceId:held.instanceId,targetInstanceId:chosenTargetInstanceId,spellOptions:spellOptions}};
+        return {pending:true,spellInstance:held,def:def,finalZone:null,foodDelta:0};
+      }
+      if(!Number.isInteger(spellOptions.variablePayment)||spellOptions.variablePayment<0||spellOptions.variablePayment>state.player(playerId).availableCost)throw new Error('追加支払いは使用可能コスト以内の整数を指定してください');
+      state.player(playerId).availableCost-=spellOptions.variablePayment;
+    }
     var finalZone=resolveSpellEffects(state,playerId,held,def,chosenTargetInstanceId,spellOptions);
     if(state.pendingEffect&&(def.cardEffects||[]).some(function(effect){return !!effect.repeat||!!effect.deferFinalization;})){
       resumeAfterSelection(state,{type:'FINALIZE_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId,finalZone:finalZone});
