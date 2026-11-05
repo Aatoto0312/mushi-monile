@@ -78,10 +78,17 @@
   function execute(a,refs=[]){if(!enabled()||!vm.actions.some(x=>x.id===a.id))return;dismiss();targetGroup=null;selected=null;ctx.act(a,refs);}
   function cancel(){selected=null;targetGroup=null;dismiss();draw();}
   function allActions(){const body=open('現在できる操作',ctx.mode==='cpu'?'対戦エンジンの合法操作':'すべてサーバー発行の操作');if(vm.decision)body.append(button('効果の選択へ戻る',showDecision));for(const a of vm.actions)if(a.id!==vm.decision?.actionId)body.append(actionButton(a));if(!vm.actions.length)body.textContent=vm.spectator?'観戦中です':'現在は操作を待っています';body.append(button('盤面へ戻る',cancel));}
+  function showChoice(){
+   const actions=vm.actions.filter(a=>a.kind==='CHOICE'||a.kind==='TERRITORY_CHOICE');
+   if(!actions.length||!enabled())return;
+   const body=open('効果を選択','色などの選択');
+   const hint=document.createElement('p');hint.textContent='使用する効果を選んでください。';body.append(hint);
+   for(const action of actions)body.append(actionButton(action));
+  }
   function showDecision(){
    const d=vm.decision;if(!d||!enabled())return;
    const body=open('カードを選択','効果の解決');chosen=[];
-   const summary=document.createElement('p');summary.textContent=d.min+'〜'+d.max+'枚を順に選択してください。';body.append(summary);
+   const summary=document.createElement('p');summary.textContent=d.min+'〜'+d.max+'枚を選択できます。2枚出す場合は2枚とも選んでから「選択を決定」を押してください。';body.append(summary);
    const list=document.createElement('div');list.className='online-choice-list';body.append(list);
    const confirm=button('選択を決定',()=>{const a=vm.actions.find(a=>a.id===d.actionId);if(a)execute(a,chosen.slice());},'CONFIRM_SELECTION');
    function refresh(){confirm.disabled=(chosen.length>0&&d.firstOptions?.length&&!d.firstOptions.includes(chosen[0]))||(d.atMostOneGroups||[]).some(group=>group.filter(ref=>chosen.includes(ref)).length>1)||!enabled()||chosen.length<d.min||chosen.length>d.max||(d.exact!=null&&chosen.length!==d.exact)||(d.combinations?.length&&!d.combinations.some(group=>group.length===chosen.length&&group.every(ref=>chosen.includes(ref))));for(const b of list.children){const n=chosen.indexOf(b.dataset.ref);b.disabled=n<0&&((!chosen.length&&d.firstOptions?.length&&!d.firstOptions.includes(b.dataset.ref))||(d.atMostOneGroups||[]).some(group=>group.includes(b.dataset.ref)&&group.some(ref=>chosen.includes(ref))));b.setAttribute('aria-pressed',String(n>=0));b.textContent=b.dataset.label+(n>=0?' ['+(n+1)+']':'');}}
@@ -115,7 +122,7 @@
   host.querySelectorAll('[data-role="menu"]').forEach(b=>b.onclick=()=>{const body=open('対戦メニュー');body.append(button('対戦ログ',showPublicLog),button('設定・退出など',()=>{dismiss();ctx.menu();}));});
   $('back').onclick=()=>{const enhancement=targetGroup?.actions.every(a=>a.kind==='ENHANCE');targetGroup=null;draw();if(enhancement)showCard();else showSkills();};$('cancel').onclick=cancel;$('close').onclick=cancel;
   dialog.addEventListener('cancel',e=>{e.preventDefault();cancel();});
-  return {render(next){const changed=view!==next.view||version!==next.view.room.version;ctx=next;view=next.view;vm=P.board(view.battle,definition);if(changed||!next.connected||next.busy){version=view.room.version;selected=null;targetGroup=null;dismiss();}draw();if(vm.decision&&!dialog.open)showDecision();},reset:cancel};
+  return {render(next){const changed=view!==next.view||version!==next.view.room.version;ctx=next;view=next.view;vm=P.board(view.battle,definition);if(changed||!next.connected||next.busy){version=view.room.version;selected=null;targetGroup=null;dismiss();}draw();if(!dialog.open){if(vm.decision)showDecision();else if(vm.actions.some(a=>a.kind==='CHOICE'||a.kind==='TERRITORY_CHOICE'))showChoice();}},reset:cancel};
  }
  root.MushiBattleBoard={create};
 })(window);
