@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 467.
+All entries: 565; declared PLAYABLE: 468.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -502,7 +502,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 57/64 | set7_057 | 封印の怨念 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 58/64 | set7_058 | 供物の封印 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 59/64 | set7_059 | 蟲装の演舞 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 60/64 | set7_060 | 蟲術の演舞 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 60/64 | set7_060 | 蟲術の演舞 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 61/64 | set7_061 | 五色の解放 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 62/64 | set7_062 | 宝石虫の置き土産 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 63/64 | set7_063 | 常闇の繭籠もり | yes | yes | yes | yes | pending | PLAYABLE |

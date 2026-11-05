@@ -8,6 +8,7 @@ function requireAll() {
   return [
     require('./spell-counter-core.test.js'),
     require('./spell-counter-cards.test.js'),
+    require('./delayed-spell-counter.test.js'),
     require('./poison-followup.test.js'),
     require('./battle-choice-label.test.js'),
     require('./next-form-discount.test.js'),

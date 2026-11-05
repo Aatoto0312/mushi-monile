@@ -117,6 +117,7 @@
 
   function beginTurn(state) {
     if (state.phase === Phases.GAME_OVER) { return state; }
+    state.pendingUseCounters=(state.pendingUseCounters||[]).filter(function(counter){return counter.turnNumber>=state.turnNumber;});
     var ap = state.activePlayerId;
     state.phase = Phases.TURN_START;
 
@@ -1903,6 +1904,9 @@
         var lostTarget=spellOptions.committedTargetSnapshots.some(function(snapshot){return !isCommittedSpellTargetCurrent(state,snapshot);});
         if(lostTarget)return;
       }
+      if(effect.type==='NEXT_OPPONENT_CARD_COUNTER'){
+        state.pendingUseCounters=(state.pendingUseCounters||[]).concat([{playerId:state.opponentOf(playerId),controllerId:playerId,cardType:effect.cardType||CardTypes.SPELL,turnNumber:state.turnNumber+(state.activePlayerId===playerId?1:2),sourceCardId:def.id}]);
+      }
       if(effect.type==='SELF_TO_FOOD_WITH_COST'){
         moveCard(state,instance.instanceId,ZONES.RESOLVING,ZONES.FOOD,{playerId:playerId,faceDown:false});finalZone=ZONES.FOOD;state.player(playerId).availableCost+=effect.amount;
         resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:playerId,sourceInstanceId:instance.instanceId,optional:true,effect:{type:'SELECT_ON_ENTRY',from:ZONES.DISCARD,controller:'SELF',operation:'MOVE',to:ZONES.FOOD,targetFaceDown:true,suppressFoodCostThisTurn:true}});
@@ -2318,10 +2322,10 @@
     var variableCostEffect=(def.cardEffects||[]).filter(function(effect){return effect.type==='VARIABLE_COST_DAMAGE';})[0];
     // Opt in only for the new counter lifecycle. Legacy variable-cost choices
     // retain their pre-commit cancellation/error behavior when no counter exists.
-    var deferredVariablePayment=!!variableCostEffect&&state.player(state.opponentOf(playerId)).field.some(function(watcher){
+    var deferredVariablePayment=!!variableCostEffect&&(getActiveUseCounters(state,playerId,CardTypes.SPELL).length>0||state.player(state.opponentOf(playerId)).field.some(function(watcher){
       if(watcher.faceDown||areInsectKeywordSkillsSuppressed(state,watcher))return false;
       return (getCardDefinition(watcher.cardId).passiveAbilities||[]).some(function(ability){return ability.timing==='ON_OPPONENT_SPELL_USED'&&(ability.effects||[]).some(function(effect){return effect.type==='DESTROY_SELF_AND_COUNTER_SPELL'&&(effect.maxPrintedCost==null||def.cost<=effect.maxPrintedCost);});});
-    });
+    }));
     if(variableCostEffect&&!deferredVariablePayment&&spellOptions.variablePayment!=null){
       var additionalPayment=spellOptions.variablePayment;
       var basePayment=territoryCostEffect&&spellOptions.paymentMode==='TERRITORY'?0:spellCost;
@@ -2369,6 +2373,11 @@
       }
       emitBattleEvent(state,'SPELL_USED',{sourceInstanceId:held.instanceId,playerId:playerId});
       var spellUseTriggers=[];
+      var scheduledCounters=getActiveUseCounters(state,playerId,CardTypes.SPELL);
+      // All matching copies observe the same first use. Consume together, so
+      // stacking copies cannot cancel later spells in this turn instead.
+      state.pendingUseCounters=(state.pendingUseCounters||[]).filter(function(counter){return scheduledCounters.indexOf(counter)===-1&&counter.turnNumber>=state.turnNumber;});
+      scheduledCounters.forEach(function(counter){spellUseTriggers.push({playerId:counter.controllerId,label:getCardDefinition(counter.sourceCardId).name,continuation:{type:'COUNTER_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId}});});
       state.player(state.opponentOf(playerId)).field.forEach(function(watcher){
         if(watcher.faceDown||areInsectKeywordSkillsSuppressed(state,watcher))return;
         var watcherDef=getCardDefinition(watcher.cardId);
@@ -2415,6 +2424,10 @@
       return {pending:true,spellInstance:held,def:def,finalZone:finalZone,foodDelta:0};
     }
     return finalizeCommittedSpell(state,playerId,held,def,finalZone);
+  }
+
+  function getActiveUseCounters(state,playerId,cardType){
+    return (state.pendingUseCounters||[]).filter(function(counter){return counter.playerId===playerId&&counter.cardType===cardType&&counter.turnNumber===state.turnNumber&&state.activePlayerId===playerId;});
   }
 
   function finalizeCommittedSpell(state,playerId,held,def,finalZone){
