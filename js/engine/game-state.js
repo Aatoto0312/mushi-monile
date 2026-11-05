@@ -34,6 +34,8 @@
     this.players = {};
     this.playerOrder = [];
     this.pendingEffect = null;
+    // Serializable, public card-use effects scheduled for a specific turn.
+    this.pendingUseCounters = [];
     this.battleLog = [];
     // UI・ログ・将来のリプレイが同じ事実を参照できる軽量イベント列。
     // UIはイベントを削除せず、idカーソルで未表示分だけを読む。

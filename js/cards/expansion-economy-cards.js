@@ -1,5 +1,7 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
+set7_001:{texts:['攻撃後、自分のエサ場からコスト5以下の～バチ科の虫を1つ選び、裏向きで場に出してもよい。次の自分のターン開始時にそれを表向きにする。'],index:0,effect:{type:'SELECT_AFTER_ATTACK',selection:{type:'SELECT_ON_ENTRY',from:'FOOD',controller:'SELF',faceDown:false,cardType:'INSECT',familySuffixes:['バチ科'],printedCostMax:5,operation:'MOVE',to:'FIELD',targetFaceDown:true,revealNextOwnTurn:true}}},
+set7_002:{texts:[null,'この技は＜＞の技を持つ虫にしか使用できない。この技を受けた虫は、ターン終了時まで「破壊されたとき」、「破壊されるとき」と書かれた＜＞の技を使用できない。'],index:1,requirements:[{type:'TARGET_HAS_KEYWORD_SKILL'}],targetRule:'INSECT_ONLY',effect:{type:'SUPPRESS_TARGET_DESTRUCTION_KEYWORDS'}},
 set8_023:{texts:[null,'これを破壊し、コストを1発生させる。※ダメージを与える前に破壊する。'],index:1,effect:{type:'DESTROY_SOURCE_BEFORE_DAMAGE',gainCost:1}},
 set8_024:{texts:[null,'これを破壊し、コストを1発生させる。※ダメージを与える前に破壊する。'],index:1,effect:{type:'DESTROY_SOURCE_BEFORE_DAMAGE',gainCost:1}},
 set6_041:{texts:[null,'これを破壊し、自分の捨て札からこれと同名の(幼虫)と書かれていない虫を場に出す。 ※ダメージを与える前に破壊する。'],index:1,effect:{type:'DESTROY_SOURCE_DEPLOY_MATCHING_FORM',from:'DISCARD',nameSuffix:'（幼虫）'}},
@@ -23,6 +25,8 @@ set6_002:{texts:[null,'この技は1度だけ使用できる。この技によ�
 set6_012:{texts:['この技により、相手が縄張りを引いたとき、自分の裏向きの赤のエサを最大2つまで選び、表向きにしてもよい。'],index:0,effect:{type:'OPTIONAL_FLIP_FOOD_ON_TERRITORY',controller:'SELF',faceDown:true,color:'RED',maxSelections:2,targetFaceDown:false,inspectOwnHidden:true}},
 set7_013:{texts:['この技により相手が縄張りを引いたとき、相手の捨て札から虫を１つ選び、山札の１番下に置いてもよい。'],index:0,effect:{type:'BOTTOM_DISCARD_ON_TERRITORY',cardType:'INSECT',faceDown:true}},
 set6_060:{text:'これをエサ場に置き、コストを6発生させる。その後、自分の捨て札から1枚カードを選び、裏向きでエサ場に置いてもよい。 ※このエサのコストはこのターン発生しない。',effect:{type:'SELF_TO_FOOD_WITH_COST',amount:6}},
+set8_064:{text:'自分の虫を1つ選ぶ。次の相手のターン終了時まで、その虫の体力を800増やす。',effect:{type:'APPLY_STAT_MODIFIER',target:'OWN_FIELD_INSECT',requiresTarget:true,stat:'HP',amount:800,endTurnOffset:1}},
+set7_060:{text:'次の相手のターン、相手が最初に使用した術カードを打ち消す。※使用したカードのコストは支払われるが、効果は発揮されず捨て札に置かれる。',effect:{type:'NEXT_OPPONENT_CARD_COUNTER',cardType:'SPELL'}},
 set7_058:{text:'相手の虫を1つ選び、自分のエサを好きな数選んで裏向きにする。選んだ虫に裏向きにしたエサの数×200のダメージを与える。',effect:{type:'FLIP_FOOD_FOR_DAMAGE',requiresTarget:true,target:'OPPONENT_FIELD_INSECT',perFood:200,deferFinalization:true}}
 };
 ['set7_036','set7_038'].forEach(function(id){specs[id]={texts:[null,'この技は1度だけ使用できる。攻撃後、自分のエサ場にあるコスト3以下の強化カードを1つ選び、この虫につけてもよい。'],index:1,once:true,effect:{type:'ATTACH_AFTER_ATTACK',attachment:{type:'ATTACH_FROM_OWN_ZONE_ON_ENTRY',from:'FOOD',maxPrintedCost:3}}};});

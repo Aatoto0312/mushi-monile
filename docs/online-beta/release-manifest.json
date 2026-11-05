@@ -1,25 +1,25 @@
 {
-  "createdAt": "2026-11-05T13:29:34.014Z",
-  "assetVersion": "share-465-v1",
-  "sourceHead": "42ff9fcdb83989a748af6abda0ca6cdd6f215e90",
-  "mainHead": "779bf231204716965d0cbdab1ebe47aed84f38f3",
+  "createdAt": "2026-11-05T15:52:15.114Z",
+  "assetVersion": "cards-471-v1",
+  "sourceHead": "02e6231c0298b1ae39656f8b125c4daa9711f207",
+  "mainHead": "02e6231c0298b1ae39656f8b125c4daa9711f207",
   "versions": {
     "protocol": "mushi-online/1",
-    "engine": "5d9d32ad821b916466c06401b75825cd8ed944d136bdb461147610416c68c459",
-    "cards": "058c9160d5b36786f4e275d13426d7174f9d3839733195df4c088d89c58c6d69"
+    "engine": "45a652f826db2c67d150af44a4dd0b3b505ef87e37f674b71112f7a5df70908c",
+    "cards": "db8af7019ac6d3a112012edbdd4ce9a9df0a79b0b06d0d701bbad6778991bfe2"
   },
   "runtime": {
     "protocol": "mushi-online/1",
-    "engine": "5d9d32ad821b916466c06401b75825cd8ed944d136bdb461147610416c68c459",
-    "cards": "058c9160d5b36786f4e275d13426d7174f9d3839733195df4c088d89c58c6d69",
+    "engine": "45a652f826db2c67d150af44a4dd0b3b505ef87e37f674b71112f7a5df70908c",
+    "cards": "db8af7019ac6d3a112012edbdd4ce9a9df0a79b0b06d0d701bbad6778991bfe2",
     "catalogCount": 565,
-    "playableCount": 465
+    "playableCount": 471
   },
   "files": [
     {
       "path": "battle-ui/board.css",
       "bytes": 9449,
-      "sha256": "b49a9063f89e3dfda5402071a74b4fc7f7e22a4998cd5b318f6be36d08263e37",
+      "sha256": "08c2af41fd9dd91ce3dcfec5871fcb4877a5b390ac468c77d084ec627875b030",
       "main": "modified"
     },
     {
@@ -43,14 +43,14 @@
     {
       "path": "battle-ui/cpu.css",
       "bytes": 1146,
-      "sha256": "23f3333fa63643f8ac81809b0c02fa7bd7fec3002f26100d9e27626c0951cbdf",
+      "sha256": "5390f4d702a5354688f6718488473c5e3cd2518896ce8cb743b0ae8fbe81507f",
       "main": "modified"
     },
     {
       "path": "battle-ui/engine-view.js",
-      "bytes": 13961,
-      "sha256": "41b16c005076664720ce5449762da74f1eca1fcc25b321308d4d7268e2646c42",
-      "main": "unchanged"
+      "bytes": 14252,
+      "sha256": "317f8d0809ca983c8d8a24cc994731129e2d6870293f5c1f00a88cad7b5a998d",
+      "main": "modified"
     },
     {
       "path": "battle-ui/presentation.js",
@@ -85,7 +85,7 @@
     {
       "path": "index.html",
       "bytes": 16139,
-      "sha256": "dd1be6df41a092ed01818cca49df3be806751cc77a5ab85e60d45819ebc773d6",
+      "sha256": "acd0b1bbcf314c808b4f5cb4e55ebd7e189f014996e4e95bf5fbce1a4e5d8054",
       "main": "modified"
     },
     {
@@ -132,15 +132,15 @@
     },
     {
       "path": "js/cards/expansion-economy-cards.js",
-      "bytes": 10476,
-      "sha256": "cfe106ab1a8c5ad7195c5a860cbbc2b4f8f8b6a45e5ae5a626b1fe1aae3fc406",
-      "main": "unchanged"
+      "bytes": 11866,
+      "sha256": "0feebb4d031011c05e466012ae4c1afc3921da2bc48c4fd2fe0731189dae4124",
+      "main": "modified"
     },
     {
       "path": "js/cards/expansion-entry-cards.js",
-      "bytes": 10023,
-      "sha256": "bde6f139f2669773ede32f6fa7fa2d4012944304e5d7ab093292dbdc9aa439a0",
-      "main": "unchanged"
+      "bytes": 10765,
+      "sha256": "c1cc15ec6478da63abb33c73a20575cc1793d3ef2dfc74c240e81b074a89b26a",
+      "main": "modified"
     },
     {
       "path": "js/cards/expansion-predicate-cards.js",
@@ -162,9 +162,9 @@
     },
     {
       "path": "js/cards/full-catalog-data.js",
-      "bytes": 713513,
-      "sha256": "1e3772383493b977214d97e6dbc449c7acbf2a58b7e6b0f87d2e10f3640f90a6",
-      "main": "unchanged"
+      "bytes": 713525,
+      "sha256": "e8537b53f26a65674b96d4017208236b984919c09e01b74d3a456ee06849eaa2",
+      "main": "modified"
     },
     {
       "path": "js/cards/set1-cards.js",
@@ -210,9 +210,9 @@
     },
     {
       "path": "js/engine/battle-engine.js",
-      "bytes": 310993,
-      "sha256": "d2f70aad0dbdccfbe5f41fdcd1b789fe4f6411c2631571f7f3766a90966da965",
-      "main": "unchanged"
+      "bytes": 319338,
+      "sha256": "48705c70411d60de531510f2d285ea1c755ae6a32de9c9ee764a63a117513ccc",
+      "main": "modified"
     },
     {
       "path": "js/engine/cpu-agent.js",
@@ -234,9 +234,9 @@
     },
     {
       "path": "js/engine/game-state.js",
-      "bytes": 2238,
-      "sha256": "e27a97be0b8b49c408655c3da883b5a760fcac1566d2d8af7291897f93454529",
-      "main": "unchanged"
+      "bytes": 2348,
+      "sha256": "dd810718bce15de8e8e95802eedbba315771b968b140e69e2c927552bb0782c1",
+      "main": "modified"
     },
     {
       "path": "js/engine/rules.js",
@@ -258,9 +258,9 @@
     },
     {
       "path": "js/engine/zone-engine.js",
-      "bytes": 11550,
-      "sha256": "7bdff7db45b6dc2a5518fdb964d02c6f3638944567da84345930efc9b20b9563",
-      "main": "unchanged"
+      "bytes": 11735,
+      "sha256": "85726ad68b520445df8237ea92ac947e00dee26490c1fe7b73e1de3dcbd6c371",
+      "main": "modified"
     },
     {
       "path": "js/tutorial/tutorial-controller.js",
@@ -319,13 +319,13 @@
     {
       "path": "online-b.html",
       "bytes": 4316,
-      "sha256": "839ec9e6956207b3a13bcc894bf162e7a8a180809570c58080d4acf7779031d4",
+      "sha256": "a20cb4fab0ce9a91fd4764baa8efa49de6c26393fbf75d531de48b57c12b3695",
       "main": "modified"
     },
     {
       "path": "online.html",
       "bytes": 4774,
-      "sha256": "a1224efda9115259def9d0850371e34ee71ca2ca9f2131dfb102514ed951a2d9",
+      "sha256": "5651d7a23b2f7ba71f4d9868a39758122f1a729898b06a0590846b6f4494126a",
       "main": "modified"
     },
     {
@@ -349,8 +349,8 @@
     {
       "path": "online/contract.json",
       "bytes": 194,
-      "sha256": "a7eda206e842818a44207fbf0f16977dc953f662872d2b1e3d8707d5ffe62745",
-      "main": "unchanged"
+      "sha256": "f78f8e3a34c4412b9928e6b88b04904b80460571cbc6bf5dc6190f334d8a3cd4",
+      "main": "modified"
     },
     {
       "path": "online/online.css",
@@ -361,7 +361,7 @@
     {
       "path": "prototype-b/base.css",
       "bytes": 9618,
-      "sha256": "ef476a648e98afcda5eb571d7ace5e5457759d173d6f04a36f63d7266d5f05a0",
+      "sha256": "d7ae5ebe0603593e3a2ee2caecbd0b867c6be20368d6cfc0f4addb85fce50d62",
       "main": "modified"
     },
     {
@@ -373,7 +373,7 @@
     {
       "path": "prototype-b/style.css",
       "bytes": 12518,
-      "sha256": "42fde05a24c9944d503d4ff0f73a8a9e992b4bdac2050aa003e36dfe8405dcb9",
+      "sha256": "80d8ebb9bec6ac6918597796fd857744c48d9afd26e5e7cb72c112cc8f608d44",
       "main": "modified"
     },
     {
@@ -488,7 +488,7 @@
       "path": "shared/deck-format/share-code.js",
       "bytes": 4226,
       "sha256": "6892859bd4840025cec153d4798d3239ae2dd0dd28e8de488f50fe7caee54010",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "shared/deck-format/validator.js",
@@ -511,7 +511,7 @@
     {
       "path": "toolbox.html",
       "bytes": 9918,
-      "sha256": "2697c848cdad6a4ec8e7534ac10be6177105825885063b0da0e71401c85bd608",
+      "sha256": "0a21be8f33daaca79f759e91ca526971384c6540458ab22769de29852da37bb9",
       "main": "modified"
     },
     {
@@ -536,13 +536,13 @@
       "path": "toolbox/toolbox-v1-app.js",
       "bytes": 20226,
       "sha256": "d504ff4b4be2afe5e75c57d26c737378292cc2b7a81fb6174f9209817f3d3ecb",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "toolbox/toolbox.css",
       "bytes": 12531,
       "sha256": "bacba29f97a5a25d4a9bf86fefe0d8c17a58f951f23afbb3f6b8a99f8f3cda2c",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "_config.yml",

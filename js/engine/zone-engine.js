@@ -206,6 +206,8 @@
         delete card.runtimeFlags.attackRestrictions;
         delete card.runtimeFlags.destroyAtEndTurn;
         delete card.runtimeFlags.suppressKeywordSkills;
+        delete card.runtimeFlags.suppressDestructionKeywordUntilTurn;
+        if(card.runtimeFlags.revealOnPlayerTurn){card.faceDown=false;delete card.runtimeFlags.revealOnPlayerTurn;}
         delete card.runtimeFlags.trackedByAttachmentIds;
         delete card.runtimeFlags.territoryDrawApBonus;
         delete card.runtimeFlags.fieldEntryCause;

@@ -1,7 +1,7 @@
 # Battle card readiness snapshot
 
 Generated with `node scripts/audit-all-card-readiness.js --markdown`.
-All entries: 565; declared PLAYABLE: 465.
+All entries: 565; declared PLAYABLE: 471.
 This is a progress inventory. AUDITED requires a new explicit final audit; historical labels are not certificates. Partial wiring is listed separately from completed implementation.
 
 | SET | Number | ID | Name | CATALOGED | Battle connected | IMPLEMENTED | PLAYABLE | AUDITED | Runtime status |
@@ -443,8 +443,8 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_6 | 62/64 | set6_062 | 爆熱の嵐 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_6 | 63/64 | set6_063 | 贄虫の転生 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_6 | 64/64 | set6_064 | 蠱毒の輪廻 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 1/64 | set7_001 | オオスズメバチ（女王） | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 2/64 | set7_002 | タランチュラホーク | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 1/64 | set7_001 | オオスズメバチ（女王） | yes | yes | yes | yes | pending | PLAYABLE |
+| BOOSTER_SET_7 | 2/64 | set7_002 | タランチュラホーク | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 3/64 | set7_003 | オオスズメバチ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 4/64 | set7_004 | トビズムカデ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 5/64 | set7_005 | ケンランカマキリ | yes | yes | yes | yes | pending | PLAYABLE |
@@ -465,11 +465,11 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 20/64 | set7_020 | カブトムシ | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 21/64 | set7_021 | オオムラサキ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 22/64 | set7_022 | マレーテナガコガネ | yes | yes | yes | yes | pending | PLAYABLE |
-| BOOSTER_SET_7 | 23/64 | set7_023 | ユカタンビワハゴロモ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 23/64 | set7_023 | ユカタンビワハゴロモ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 24/64 | set7_024 | ベニモンアゲハ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 25/64 | set7_025 | メルポメネドクチョウ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 26/64 | set7_026 | オオルリアゲハ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 27/64 | set7_027 | テングビワハゴロモ | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 27/64 | set7_027 | テングビワハゴロモ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 28/64 | set7_028 | オキピタリスノコギリクワガタ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 29/64 | set7_029 | コムラサキ | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 30/64 | set7_030 | ナミハナアブ | yes | pending | pending | pending | pending | RESEARCHED |
@@ -502,7 +502,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_7 | 57/64 | set7_057 | 封印の怨念 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 58/64 | set7_058 | 供物の封印 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 59/64 | set7_059 | 蟲装の演舞 | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_7 | 60/64 | set7_060 | 蟲術の演舞 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_7 | 60/64 | set7_060 | 蟲術の演舞 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 61/64 | set7_061 | 五色の解放 | yes | yes | yes | yes | pending | PLAYABLE |
 | BOOSTER_SET_7 | 62/64 | set7_062 | 宝石虫の置き土産 | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_7 | 63/64 | set7_063 | 常闇の繭籠もり | yes | yes | yes | yes | pending | PLAYABLE |
@@ -570,7 +570,7 @@ This is a progress inventory. AUDITED requires a new explicit final audit; histo
 | BOOSTER_SET_8 | 61/64 | set8_061 | 断界の虫送り | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 62/64 | set8_062 | 冥府の導き | yes | pending | pending | pending | pending | RESEARCHED |
 | BOOSTER_SET_8 | 63/64 | set8_063 | 蚕の口封じ | yes | pending | pending | pending | pending | RESEARCHED |
-| BOOSTER_SET_8 | 64/64 | set8_064 | 金色の腕 | yes | pending | pending | pending | pending | RESEARCHED |
+| BOOSTER_SET_8 | 64/64 | set8_064 | 金色の腕 | yes | yes | yes | yes | pending | PLAYABLE |
 
 ## Open ruling questions
 
