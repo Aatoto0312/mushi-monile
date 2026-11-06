@@ -46,6 +46,7 @@
       if(rule.type==='OWN_TERRITORY_COUNT'){total+=player.territory.length*rule.multiplier;}
       if(rule.type==='SOLE_VISIBLE_OWN_INSECT'&&player.field.filter(function(c){return !c.faceDown;}).length===1){total+=rule.amount;}
       if(rule.type==='RUNTIME_COUNTER'){total+=(instance.runtimeFlags&&instance.runtimeFlags[rule.flag])||0;}
+      if(rule.type==='OWN_FACE_DOWN_FOOD_COUNT'){total+=player.food.filter(function(card){return card.faceDown;}).length*rule.multiplier;}
       if(rule.type==='OWN_FACE_UP_FOOD_FAMILY_COUNT'){
         total+=player.food.filter(function(card){
           if(card.faceDown){return false;}
