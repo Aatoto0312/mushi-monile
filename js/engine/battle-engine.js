@@ -1317,7 +1317,8 @@
         if(coin){
           moveCard(state,coin.instanceId,ZONES.DISCARD,ZONES.DECK,{playerId:continuation.ownerId,faceDown:true});
           var coinDeck=state.player(continuation.ownerId).deck;
-          coinDeck.unshift(coinDeck.pop());
+          // moveCard appends to the deck; index 0 is the draw/top side.
+          // Leave the recovered coin at the final index (deck bottom).
           drawCard(state,continuation.ownerId);
         }
       }
