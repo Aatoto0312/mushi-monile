@@ -87,3 +87,19 @@ console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotio
   assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),false,'removing engraving stops global effect');
   console.log('WAVE2_WARRIOR_KEYWORD_LOCK_OK');
 }
+
+// Jewel beetle crown: both accepting and declining the optional recovery.
+for(const accept of [true,false]){
+  const h=require('./helpers.js');
+  const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const host=h.putInsectOnField(s,'P1','set2_001');
+  const crown={instanceId:s.nextInstanceId(),cardId:'set7_056',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
+  host.attachments.push(crown);
+  global.destroyInsect(s,host.instanceId,'EFFECT',null,null,{skipTerritoryDraw:true});
+  assert.equal(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_CROWN_RECOVERY','destruction must offer crown choice');
+  global.resolveChoiceSelection(s,'P1',accept?'USE':'DECLINE');
+  const zone=accept?'food':'discard';
+  assert.ok(s.player('P1')[zone].some(c=>c.instanceId===crown.instanceId),'crown should remain in selected destination');
+  assert.equal(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_CROWN_RECOVERY',false,'no duplicate recovery prompt');
+}
+console.log('WAVE2_CROWN_RECOVERY_OK');
