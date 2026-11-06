@@ -331,6 +331,19 @@
       }
       state.pendingEffect={type:'CHOICE_SELECTION',playerId:triggerController,controller:triggerController,selectionPurpose:'SIMULTANEOUS_TRIGGER_ORDER',prompt:'先に解決する効果を選んでください',options:triggerOptions,continuation:{type:'ORDER_TRIGGER_CONTINUATIONS',steps:triggerSteps}};return;
     }
+    if(continuation.type==='POISON_MIST_AFTER_ATTACK'){
+      var poisonSource=findAnywhere(state,continuation.sourceInstanceId);
+      // The attack was already committed; destroy the source before selecting
+      // another insect. A missing source must not cancel its queued effect.
+      if(poisonSource&&poisonSource.zone===ZONES.FIELD&&(poisonSource.instance.runtimeFlags.fieldEntrySerial||0)===continuation.fieldEntrySerial){
+        destroyInsect(state,poisonSource.instance.instanceId,'ABILITY',continuation.sourceInstanceId,null,{skipTerritoryDraw:true});
+      }
+      var poisonTargets=state.player(continuation.targetPlayerId).field.filter(function(card){return !card.faceDown;});
+      if(poisonTargets.length){
+        createCardSelection(state,{playerId:continuation.playerId,options:poisonTargets.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:[ZONES.FIELD],selectionPurpose:'POISON_MIST_TARGET',continuation:{type:'POISON_MIST_DAMAGE',playerId:continuation.playerId,targetPlayerId:continuation.targetPlayerId,sourceInstanceId:continuation.sourceInstanceId,damage:continuation.damage}});
+      }
+      return;
+    }
     if(continuation.type==='DESTROY_ENTRY_WATCHER'){
       // The entry event has already happened; the entrant leaving does not
       // undo this trigger. Only the affected watcher must still be in play.
@@ -1113,6 +1126,14 @@
       var foodChoice=findInZone(state,pending.playerId,ZONES.FOOD,c.attachmentInstanceId);
       var foodHosts=foodChoice?insectCards(state.player(pending.playerId).field).filter(function(host){if(pending.options.indexOf(host.instanceId)===-1)return false;if(c.selectedHosts)return c.selectedHosts.some(function(target){return target.instanceId===host.instanceId&&(host.runtimeFlags.fieldEntrySerial||0)===target.fieldEntrySerial;})&&isForcedAttachmentHostLegal(state,pending.playerId,foodChoice,host);return isSpellSelectionTargetLegal(state,pending.playerId,host)&&[foodChoice].concat((c.remainingAttachmentIds||[]).map(function(id){return findInZone(state,pending.playerId,ZONES.FOOD,id);}).filter(Boolean)).some(function(food){return isForcedAttachmentHostLegal(state,pending.playerId,food,host);});}):[];
       return {options:foodHosts.map(function(host){return host.instanceId;}),atMostOneGroups:[],selectionBounds:foodHosts.length?null:{minSelections:0,maxSelections:0,exactSelections:0}};
+    }
+    if(c.type==='POISON_MIST_DAMAGE'){
+      if(ids.length!==1)throw new Error('毒霧爆弾の対象を1つ選んでください');
+      var poisonTarget=findInZone(state,c.targetPlayerId,ZONES.FIELD,ids[0]);
+      if(!poisonTarget||poisonTarget.faceDown)throw new Error('毒霧爆弾の対象が場にいません');
+      var poisonActor=findAnywhere(state,c.sourceInstanceId),poisonResult={skill:null};
+      applyDamage(state,poisonActor&&poisonActor.instance||null,poisonTarget,c.damage,'ABILITY',c.sourceInstanceId,poisonTarget.instanceId,poisonResult);
+      return poisonTarget;
     }
     if(c.type==='TARGET_ATTACHMENT_OPERATION'){
       var currentAttachmentHost=findInZone(state,c.targetPlayerId,ZONES.FIELD,c.targetInstanceId);
@@ -3366,6 +3387,9 @@
     }
     
     (skill.effects || []).forEach(function(effect) {
+      if(effect.type==='DESTROY_SELF_AND_CHOOSE_DAMAGE_AFTER_ATTACK'){
+        resumeAfterSelection(state,{type:'POISON_MIST_AFTER_ATTACK',playerId:ap,targetPlayerId:opponentId,sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial,damage:effect.damage});
+      }
       if(effect.type==='SELECT_AFTER_ATTACK'){resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:ap,sourceInstanceId:attacker.instanceId,optional:true,effect:effect.selection});}
       if(effect.type==='TARGET_ATTACHMENT_AFTER_ATTACK'&&targetType==='INSECT'){
         resumeAfterSelection(state,{type:'TARGET_ATTACHMENT_AFTER_ATTACK',playerId:ap,targetPlayerId:opponentId,targetInstanceId:targetInstanceId,fieldEntrySerial:attackedTargetFieldSerial,operation:effect.operation});
