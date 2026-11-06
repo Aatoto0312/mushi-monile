@@ -16,7 +16,16 @@ r.test('Queen bee bag allows two eligible hand wasps in one selection and destro
   assert.equal(s.pendingEffect,null);endTurn(s);
   assert.equal(a.zone,'DISCARD');assert.equal(b.zone,'DISCARD');
 });
+r.test('Queen bee bag follows printed hand / wasp family / up to two / end-turn destroy text',()=>{
+ const d=getCardDefinition('set3_050'),e=d.cardEffects[0];assert.equal(d.name,'女王蜂の匂い袋');assert.equal(e.type,'SUMMON_HAND_BY_FAMILY_SUFFIX');assert.equal(e.familySuffix,'バチ科');assert.equal(e.minSelections,0);assert.equal(e.maxSelections,2);assert.equal(e.destroyAtEndTurn,true);
+ assert(d.cardEffects[0]);
+});
+r.test('Queen bee bag selects two different wasp families and excludes non-wasps',()=>{
+ const s=game(),a=hand(s,'set2_005'),b=hand(s,'set5_020'),notWasp=hand(s,'set2_001'),spell=hand(s,'set3_050');useSpell(s,'P1',spell.instanceId);
+ assert(s.pendingEffect.options.includes(a.instanceId));assert(s.pendingEffect.options.includes(b.instanceId));assert(!s.pendingEffect.options.includes(notWasp.instanceId));
+ resolveCardSelection(s,'P1',[a.instanceId,b.instanceId],true);assert.equal(a.zone,'FIELD');assert.equal(b.zone,'FIELD');endTurn(s);assert.equal(a.zone,'DISCARD');assert.equal(b.zone,'DISCARD');
+});
 r.test('Battle board opens color choices automatically and explains two-card selection',()=>{
- const board=fs.readFileSync('battle-ui/board.js','utf8');assert(board.includes('function showChoice()'));assert(board.includes("else if(vm.actions.some(a=>a.kind==='CHOICE'||a.kind==='TERRITORY_CHOICE'))showChoice()"));assert(board.includes('2枚とも選んでから'));
+ const board=fs.readFileSync('battle-ui/board.js','utf8');assert(board.includes('function showChoice()'));assert(board.includes("else if(vm.actions.some(a=>a.kind==='CHOICE'||a.kind==='TERRITORY_CHOICE'))showChoice()"));assert(board.includes('2枚とも選んでから'));assert(board.includes("選択中：'+chosen.length"));assert(board.includes("選択を決定（'+chosen.length"));
 });
 module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});
