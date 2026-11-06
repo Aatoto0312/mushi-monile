@@ -103,3 +103,21 @@ for(const accept of [true,false]){
   assert.notEqual(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_CROWN_RECOVERY','no duplicate recovery prompt');
 }
 console.log('WAVE2_CROWN_RECOVERY_OK');
+
+// Both single-blade enhancements: optional payment of one face-up food.
+for(const cardId of ['set7_052','set7_053'])for(const accept of [true,false]){
+  const h=require('./helpers.js');
+  const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const host=h.putInsectOnField(s,'P1','set2_001');
+  const food=h.addToFoodRaw(s,'P1',h.defById('test_red_1'));
+  const blade={instanceId:s.nextInstanceId(),cardId,ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
+  host.attachments.push(blade);
+  global.destroyInsect(s,host.instanceId,'EFFECT',null,null,{skipTerritoryDraw:true});
+  assert.equal(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_BLADE_RECOVERY',cardId+' must offer recovery');
+  const foodId=s.player('P1').food.find(c=>!c.faceDown).instanceId;
+  global.resolveChoiceSelection(s,'P1',accept?foodId:'DECLINE');
+  assert.ok(s.player('P1')[accept?'hand':'discard'].some(c=>c.instanceId===blade.instanceId),cardId+' destination');
+  assert.equal(s.player('P1').food.find(c=>c.instanceId===foodId).faceDown,accept,cardId+' food flip');
+  assert.notEqual(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_BLADE_RECOVERY','no duplicate blade prompt');
+}
+console.log('WAVE2_BLADE_RECOVERY_OK');
