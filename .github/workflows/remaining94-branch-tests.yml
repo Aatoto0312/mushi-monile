@@ -28,6 +28,8 @@ jobs:
         run: node tests/set7-020-weakness.test.js
       - name: SET7-034 hidden-food scaling regression
         run: node tests/set7-034-hidden-food.test.js
+      - name: Two summon discount insects
+        run: node tests/economy-new-insects.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
