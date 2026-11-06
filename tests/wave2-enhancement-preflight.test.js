@@ -78,6 +78,25 @@ console.log('WAVE2_SINGLE_BLADE_HOST_GATE_OK');
 }
 console.log('WAVE2_SINGLE_BLADE_ENGINE_TARGET_GATE_OK');
 
+{
+  const h=require('./helpers.js');
+  const familyHost=catalog.find(card=>card.type==='INSECT'&&global.getCardDefinition(card.id)&&(card.tags||[]).some(tag=>tag.endsWith('ナナフシ科')));
+  const otherHost=catalog.find(card=>card.type==='INSECT'&&global.getCardDefinition(card.id)&&!(card.tags||[]).some(tag=>tag.endsWith('ナナフシ科')));
+  assert.ok(familyHost&&otherHost,'both family and nonfamily insects required');
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+  const allowed=h.putInsectOnField(state,'P1',familyHost.id);
+  const forbidden=h.putInsectOnField(state,'P1',otherHost.id);
+  const scroll=h.addToHandRaw(state,'P1',h.defById('set6_054'));
+  const candidates=global.getEnhancementTargetCandidates(state,'P1',scroll.instanceId).map(card=>card.instanceId);
+  assert.ok(candidates.includes(allowed.instanceId),'seven-segment scroll must allow stick insects');
+  assert.ok(!candidates.includes(forbidden.instanceId),'seven-segment scroll must reject other families');
+  const restored=Object.assign(new global.GameState(),JSON.parse(JSON.stringify(state)));
+  const afterRestore=global.getEnhancementTargetCandidates(restored,'P1',scroll.instanceId).map(card=>card.instanceId);
+  assert.deepEqual(afterRestore,candidates,'seven-segment eligibility must survive JSON restore');
+}
+console.log('WAVE2_SEVEN_SEGMENT_ENGINE_TARGET_GATE_OK');
+
+
 }
 
 
