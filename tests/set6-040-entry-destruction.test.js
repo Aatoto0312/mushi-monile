@@ -1,0 +1,5 @@
+'use strict';require('./engine-loader.js');const h=require('./helpers.js'),R=require('./lib.js'),r=new R();
+function game(){const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.player('P1').availableCost=20;return s;}
+r.test('Tobinanafushi only destroys itself after another friendly insect enters',()=>{const s=game(),a=h.addToHandRaw(s,'P1',getCardDefinition('set6_040')),b=h.addToHandRaw(s,'P1',getCardDefinition('set2_007'));r.assert(getCardDefinition('set6_040').isPlayable());summonInsect(s,'P1',a.instanceId);r.assertEqual(a.zone,'FIELD');summonInsect(s,'P1',b.instanceId);r.assertEqual(a.zone,'DISCARD');r.assertEqual(b.zone,'FIELD');});
+r.test('Opponent insect entry does not trigger Tobinanafushi',()=>{const s=game(),a=h.putInsectOnField(s,'P1','set6_040'),b=h.addToHandRaw(s,'P2',getCardDefinition('set2_007'));s.activePlayerId='P2';s.player('P2').availableCost=20;summonInsect(s,'P2',b.instanceId);r.assertEqual(a.zone,'FIELD');});
+module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});
