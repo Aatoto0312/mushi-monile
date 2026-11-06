@@ -30,6 +30,8 @@ jobs:
         run: node tests/set7-034-hidden-food.test.js
       - name: Two summon discount insects
         run: node tests/economy-new-insects.test.js
+      - name: Tobinanafushi entry-destruction regression
+        run: node tests/set6-040-entry-destruction.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
