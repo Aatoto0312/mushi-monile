@@ -1311,6 +1311,12 @@
       }
     } else if(continuation.type==='SET_OWN_FOOD_COLOR'){
       if(value!=='DECLINE'){state.player(continuation.playerId).food.forEach(function(food){if(!food.faceDown){food.runtimeFlags=food.runtimeFlags||{};food.runtimeFlags.colorOverride=value;food.runtimeFlags.colorOverrideUntilTurn=continuation.endTurn;}});}
+    } else if(continuation.type==='WAVE2_CROWN_RECOVERY'){
+      if(value==='USE'){
+        var crown=findInZone(state,continuation.ownerId,ZONES.DISCARD,continuation.attachmentInstanceId);
+        if(crown)moveCard(state,crown.instanceId,ZONES.DISCARD,ZONES.FOOD,{playerId:continuation.ownerId,faceDown:false});
+      }
+      resumeAfterSelection(state,{type:'DESTROYED_CARD_FOLLOWUP',destroyedCard:continuation.context.destroyedCard,defenderPlayerId:continuation.context.defenderPlayerId,sourceType:continuation.context.sourceType,sourceInstanceId:continuation.context.sourceInstanceId,deferredAttachmentIds:continuation.context.deferredAttachmentIds,attachmentsSnapshot:continuation.context.attachmentsSnapshot,suppressHostKeywords:continuation.context.suppressHostKeywords,skipTerritoryDraw:continuation.context.skipTerritoryDraw,skill:continuation.context.skill,captureEffect:continuation.context.captureEffect,captureControllerId:continuation.context.captureControllerId,attackKillEffects:continuation.context.attackKillEffects,hasBottomDeckTrigger:continuation.context.hasBottomDeckTrigger,destructionWatchers:continuation.context.destructionWatchers,crownChecked:true});
     } else if(continuation.type==='RESOLVE_TERRITORY_RETALIATION'){
       var retaliationCard=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.cardInstanceId);
       if(!retaliationCard)throw new Error('毒汁噴出の縄張りカードが解決領域にありません');
@@ -3823,6 +3829,17 @@
   function finishDestroyedCard(state, context) {
     var destroyedCard = context.destroyedCard, sourceType = context.sourceType, sourceInstanceId = context.sourceInstanceId;
     var defenderPlayerId = context.defenderPlayerId;
+    // 宝石虫の冠: after its host is destroyed, its owner may place the
+    // discarded crown face up in food. Never recover attachments on a
+    // non-destruction field exit or from a destruction replacement.
+    if(!context.crownChecked){
+      context.crownChecked=true;
+      var crownCandidate=(context.attachmentsSnapshot||[]).find(function(att){var def=getCardDefinition(att.cardId);return !!(def&&(def.enhancementEffects||[]).some(function(e){return e.type==='OPTIONAL_SELF_TO_FOOD_ON_HOST_DESTROYED';})&&findInZone(state,att.ownerId,ZONES.DISCARD,att.instanceId));});
+      if(crownCandidate){
+        state.pendingEffect={type:'CHOICE_SELECTION',playerId:crownCandidate.ownerId,controller:crownCandidate.ownerId,selectionPurpose:'WAVE2_CROWN_RECOVERY',prompt:'宝石虫の冠をエサ場に置きますか？',options:[{value:'USE',label:'表向きでエサ場に置く'},{value:'DECLINE',label:'捨て札に残す'}],continuation:{type:'WAVE2_CROWN_RECOVERY',ownerId:crownCandidate.ownerId,attachmentInstanceId:crownCandidate.instanceId,context:context}};
+        return destroyedCard;
+      }
+    }
     if(context.attackKillEffects){
       var killEffects=context.attackKillEffects;delete context.attackKillEffects;
       // Legacy saved continuations below retain their original schema. New
