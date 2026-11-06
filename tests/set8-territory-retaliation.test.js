@@ -1,0 +1,6 @@
+'use strict';require('./engine-loader.js');const h=require('./helpers.js'),R=require('./lib.js'),r=new R();
+for(const [id,damage] of [['set8_040',800],['set8_041',400]]){
+for(const use of [true,false])r.test(id+' territory retaliation '+(use?'used':'declined'),()=>{const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);const attacker=h.putInsectOnField(s,'P1','set2_001',{hp:9999});const card=h.addToTerritoryRaw(s,'P2',getCardDefinition(id));const initialHp=attacker.currentHp;triggerTerritoryDrawSelection(s,'P2',{attackSourceInstanceId:attacker.instanceId});resolveTerritoryDrawSelection(s,'P2',card.instanceId);r.assertEqual(s.pendingEffect.selectionPurpose,'TERRITORY_RETALIATION');resolveChoiceSelection(s,'P2',use?'USE':'DECLINE');r.assertEqual(card.zone,use?'DISCARD':'HAND');r.assertEqual(attacker.currentHp,initialHp-(use?damage:0));});
+r.test(id+' non-attack territory draw does not trigger retaliation',()=>{const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);const card=h.addToTerritoryRaw(s,'P2',getCardDefinition(id));triggerTerritoryDrawSelection(s,'P2',{});resolveTerritoryDrawSelection(s,'P2',card.instanceId);r.assertEqual(card.zone,'HAND');});
+}
+module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});
