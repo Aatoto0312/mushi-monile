@@ -41,6 +41,8 @@ jobs:
         run: node tests/set7-oni-spider-shields.test.js
       - name: Gigas Slash next-turn lock
         run: node tests/set8-006-gigas-slash.test.js
+      - name: Poison mist bomb regressions
+        run: node tests/set6-poison-mist.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
