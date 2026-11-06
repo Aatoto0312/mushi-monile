@@ -772,6 +772,12 @@
   function checkTerritoryDrawTrigger(state, playerId, card, context) {
     var def = getCardDefinition(card.cardId);
     var keywordSuppressed=card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,card);
+    var retaliation=!keywordSuppressed&&def&&(def.passiveAbilities||[]).filter(function(ability){return ability.timing==='TERRITORY_DRAW';}).reduce(function(all,ability){return all.concat(ability.effects||[]);},[]).find(function(effect){return effect.type==='OPTIONAL_RETALIATE_TERRITORY_ATTACKER';});
+    var retaliationSource=context&&context.attackSourceInstanceId&&findAnywhere(state,context.attackSourceInstanceId);
+    if(retaliation&&retaliationSource&&retaliationSource.zone===ZONES.FIELD&&retaliationSource.playerId!==playerId){
+      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,selectionPurpose:'TERRITORY_RETALIATION',prompt:def.name+'の毒汁噴出を使いますか？',options:[{value:'USE',label:'毒汁噴出を使う'},{value:'DECLINE',label:'手札に加える'}],continuation:{type:'RESOLVE_TERRITORY_RETALIATION',playerId:playerId,cardInstanceId:card.instanceId,attackerInstanceId:retaliationSource.instance.instanceId,attackerFieldEntrySerial:retaliationSource.instance.runtimeFlags.fieldEntrySerial||0,damage:retaliation.damage}};
+      return card;
+    }
     var route=!keywordSuppressed&&def&&(def.passiveAbilities||[]).filter(function(ability){return ability.timing==='TERRITORY_DRAW';}).reduce(function(all,ability){return all.concat(ability.effects||[]);},[]).find(function(effect){return effect.type==='OPTIONAL_SELF_DRAW_DESTINATION';});
     if(route){
       var destinationLabels={FOOD:'エサ場に置く',TERRITORY:'表向きで縄張りに置く',HAND:'手札に加える'};
@@ -1305,6 +1311,19 @@
       }
     } else if(continuation.type==='SET_OWN_FOOD_COLOR'){
       if(value!=='DECLINE'){state.player(continuation.playerId).food.forEach(function(food){if(!food.faceDown){food.runtimeFlags=food.runtimeFlags||{};food.runtimeFlags.colorOverride=value;food.runtimeFlags.colorOverrideUntilTurn=continuation.endTurn;}});}
+    } else if(continuation.type==='RESOLVE_TERRITORY_RETALIATION'){
+      var retaliationCard=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.cardInstanceId);
+      if(!retaliationCard)throw new Error('毒汁噴出の縄張りカードが解決領域にありません');
+      if(value==='USE'){
+        var retaliationTarget=findAnywhere(state,continuation.attackerInstanceId);
+        // Damage is directed at the original attacker, not a new target.
+        if(retaliationTarget&&retaliationTarget.zone===ZONES.FIELD&&(retaliationTarget.instance.runtimeFlags.fieldEntrySerial||0)===continuation.attackerFieldEntrySerial){
+          applyDamage(state,retaliationCard,retaliationTarget.instance,continuation.damage,'ABILITY',retaliationCard.instanceId,retaliationTarget.instance.instanceId,{skill:null});
+        }
+        finalizeTerritoryDraw(state,continuation.playerId,retaliationCard,ZONES.DISCARD);
+      }else{
+        finalizeTerritoryDraw(state,continuation.playerId,retaliationCard,ZONES.HAND);
+      }
     } else if(continuation.type==='ROUTE_DRAWN_TERRITORY_CARD'){
       var routedCard=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.sourceInstanceId);
       if(!routedCard)throw new Error('引いた縄張りが解決領域にありません');
