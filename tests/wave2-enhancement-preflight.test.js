@@ -39,3 +39,24 @@ for (const id of ids) {
   }));
 }
 console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotion');
+
+// Cross-player global lock: only insect movement from DISCARD to FIELD is blocked.
+{
+  const h=require('./helpers.js');
+  const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const host=h.putInsectOnField(s,'P1','set2_001');
+  const att=global.createCardInstance?global.createCardInstance('set8_050','P1'):null;
+  const fake=att||{instanceId:'wave2-pouch-test',cardId:'set8_050',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
+  host.attachments.push(fake);
+  for(const pid of ['P1','P2']){
+    const insect=h.putInsectOnField(s,pid,'set2_002');
+    moveCard(s,insect.instanceId,'FIELD','DISCARD',{playerId:pid});
+    assert.throws(()=>moveCard(s,insect.instanceId,'DISCARD','FIELD',{playerId:pid}),/幻惑の蛍袋/);
+    assert.ok(s.player(pid).discard.some(c=>c.instanceId===insect.instanceId),'failed summon must leave card in discard');
+  }
+  host.attachments.pop();
+  const insect=s.player('P2').discard.find(c=>c.cardId==='set2_002');
+  moveCard(s,insect.instanceId,'DISCARD','FIELD',{playerId:'P2',deferEntryEffects:true});
+  assert.ok(s.player('P2').field.some(c=>c.instanceId===insect.instanceId),'summon allowed after pouch removed');
+  console.log('WAVE2_FIREFLY_LOCK_OK');
+}
