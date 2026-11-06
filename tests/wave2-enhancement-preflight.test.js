@@ -49,6 +49,16 @@ console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotio
   assert.ok(family.every(card=>(card.tags||[]).some(tag=>tag.endsWith(scroll.attachmentHostFamilySuffix))));
   assert.ok(outsiders.every(card=>!(card.tags||[]).some(tag=>tag.endsWith(scroll.attachmentHostFamilySuffix))));
   console.log('WAVE2_SEVEN_SEGMENT_FAMILY_GATE_OK');
+
+// Both single-blade cards require hosts whose printed techniques have no effects.
+for(const id of ['set7_052','set7_053']){
+  const def=global.getCardDefinition(id);
+  assert.equal(def.requiresEffectlessHostSkills,true,id+' must restrict hosts');
+  const plain=catalog.filter(card=>card.type==='INSECT'&&(card.skills||[]).every(skill=>!String(skill.effectText||'').trim()));
+  const effectful=catalog.filter(card=>card.type==='INSECT'&&(card.skills||[]).some(skill=>String(skill.effectText||'').trim()));
+  assert.ok(plain.length>0&&effectful.length>0,'need both host classes');
+}
+console.log('WAVE2_SINGLE_BLADE_HOST_GATE_OK');
 }
 
 
