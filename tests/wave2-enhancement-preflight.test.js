@@ -10,6 +10,7 @@ const ids = [
   'set8_049', 'set8_050', 'set8_052'
 ];
 assert.equal(new Set(ids).size, 9, 'Wave 2 ID list must be unique');
+const expectedStats = {set6_049:[1000,1000],set6_051:[300,300],set6_054:[0,0],set7_052:[0,600],set7_053:[0,300],set7_056:[500,500],set8_049:[100,100],set8_050:[100,100],set8_052:[400,0]};
 for (const id of ids) {
   const matches = catalog.filter(record => record.id === id);
   assert.equal(matches.length, 1, id + ': expected one catalog record');
@@ -30,6 +31,8 @@ for (const id of ids) {
     assert.ok(['HP','AP'].includes(effect.stat));
     assert.ok(Number.isFinite(effect.amount) && effect.amount > 0);
   }
+  const totals = statEffects.reduce((acc,effect)=>{acc[effect.stat]+=effect.amount;return acc;},{HP:0,AP:0});
+  assert.deepEqual([totals.HP,totals.AP],expectedStats[id],id+': exact printed stat bonuses');
   console.log('WAVE2_CARD ' + JSON.stringify({
     id, name: record.name, state,
     effectText: (record.enhancementEffects || []).map(effect => effect.effectText || '')
