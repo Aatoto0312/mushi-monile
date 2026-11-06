@@ -32,6 +32,8 @@ jobs:
         run: node tests/economy-new-insects.test.js
       - name: Tobinanafushi entry-destruction regression
         run: node tests/set6-040-entry-destruction.test.js
+      - name: Omizuao larva spell-trigger regression
+        run: node tests/set6-036-spell-trigger.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
