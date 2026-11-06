@@ -59,6 +59,25 @@ for(const id of ['set7_052','set7_053']){
   assert.ok(plain.length>0&&effectful.length>0,'need both host classes');
 }
 console.log('WAVE2_SINGLE_BLADE_HOST_GATE_OK');
+
+// Exercise the actual engine target selector, not just the printed metadata.
+{
+  const h=require('./helpers.js');
+  const plain=catalog.find(card=>card.type==='INSECT'&&global.getCardDefinition(card.id)&&(card.skills||[]).length>0&&(card.skills||[]).every(skill=>!String(skill.effectText||'').trim()));
+  const effectful=catalog.find(card=>card.type==='INSECT'&&global.getCardDefinition(card.id)&&(card.skills||[]).some(skill=>String(skill.effectText||'').trim()));
+  assert.ok(plain&&effectful,'registered plain and effectful hosts required');
+  for(const bladeId of ['set7_052','set7_053']){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+    const allowed=h.putInsectOnField(state,'P1',plain.id);
+    const forbidden=h.putInsectOnField(state,'P1',effectful.id);
+    const blade=h.addToHandRaw(state,'P1',h.defById(bladeId));
+    const candidates=global.getEnhancementTargetCandidates(state,'P1',blade.instanceId).map(card=>card.instanceId);
+    assert.ok(candidates.includes(allowed.instanceId),bladeId+' must allow an effectless host');
+    assert.ok(!candidates.includes(forbidden.instanceId),bladeId+' must reject a host with skill effects');
+  }
+}
+console.log('WAVE2_SINGLE_BLADE_ENGINE_TARGET_GATE_OK');
+
 }
 
 
