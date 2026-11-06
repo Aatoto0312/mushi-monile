@@ -68,3 +68,22 @@ console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotio
   assert.ok(s.player('P2').field.some(c=>c.instanceId===insect.instanceId),'summon allowed after pouch removed');
   console.log('WAVE2_FIREFLY_LOCK_OK');
 }
+
+// Warrior engraving affects both players, but only while its host is face up.
+{
+  const h=require('./helpers.js');
+  const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const p1=h.putInsectOnField(s,'P1','set2_001');
+  const p2=h.putInsectOnField(s,'P2','set2_002');
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p1),false);
+  const engraving={instanceId:'wave2-engraving-test',cardId:'set6_051',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
+  p1.attachments.push(engraving);
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p1),true,'own insect suppressed');
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),true,'opponent insect suppressed');
+  p1.faceDown=true;
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),false,'face-down host stops global effect');
+  p1.faceDown=false;
+  p1.attachments.pop();
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),false,'removing engraving stops global effect');
+  console.log('WAVE2_WARRIOR_KEYWORD_LOCK_OK');
+}
