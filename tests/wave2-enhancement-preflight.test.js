@@ -121,3 +121,20 @@ for(const cardId of ['set7_052','set7_053'])for(const accept of [true,false]){
   assert.notEqual(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_BLADE_RECOVERY','no duplicate blade prompt');
 }
 console.log('WAVE2_BLADE_RECOVERY_OK');
+
+// Six-mon coin: only attack destruction offers bottom-deck-and-draw choice.
+for(const attack of [true,false])for(const accept of [true,false]){
+  const h=require('./helpers.js');const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const host=h.putInsectOnField(s,'P1','set2_001');
+  const coin={instanceId:s.nextInstanceId(),cardId:'set8_049',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
+  host.attachments.push(coin);
+  const initialHand=s.player('P1').hand.length;
+  global.destroyInsect(s,host.instanceId,attack?'ATTACK':'EFFECT',null,null,{skipTerritoryDraw:true});
+  if(!attack){assert.notEqual(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_COIN_RECOVERY');continue;}
+  assert.equal(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_COIN_RECOVERY');
+  global.resolveChoiceSelection(s,'P1',accept?'USE':'DECLINE');
+  assert.ok(s.player('P1')[accept?'deck':'discard'].some(c=>c.instanceId===coin.instanceId));
+  if(accept){assert.equal(s.player('P1').deck.at(-1).instanceId,coin.instanceId,'coin at deck bottom');assert.equal(s.player('P1').hand.length,initialHand+1,'draw exactly one');}
+  else assert.equal(s.player('P1').hand.length,initialHand,'decline does not draw');
+}
+console.log('WAVE2_COIN_RECOVERY_OK');
