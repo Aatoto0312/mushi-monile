@@ -145,6 +145,12 @@ console.log('WAVE2_SEVEN_SEGMENT_ENGINE_TARGET_GATE_OK');
   p1.faceDown=false;
   p1.attachments.pop();
   assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),false,'removing engraving stops global effect');
+  // The same rule applies when the opponent equips their own engraving.
+  const opponentEngraving={instanceId:'wave2-engraving-p2',cardId:'set6_051',ownerId:'P2',controllerId:'P2',zone:'ATTACHMENT'};
+  p2.attachments.push(opponentEngraving);
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),true,'P2 engraving suppresses P2 insects');
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p1),false,'P2 engraving does not suppress P1 insects');
+  p2.attachments.pop();
   console.log('WAVE2_WARRIOR_KEYWORD_LOCK_OK');
 }
 
