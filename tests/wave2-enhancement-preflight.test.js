@@ -39,6 +39,18 @@ for (const id of ids) {
   }));
 }
 console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotion');
+// Seven-segment scroll must only target insects in the nanaphasmid family.
+{
+  const scroll=global.getCardDefinition('set6_054');
+  assert.equal(scroll.attachmentHostFamilySuffix,'ナナフシ科');
+  const family=catalog.filter(card=>card.type==='INSECT'&&(card.tags||[]).some(tag=>tag.endsWith('ナナフシ科')));
+  const outsiders=catalog.filter(card=>card.type==='INSECT'&&!(card.tags||[]).some(tag=>tag.endsWith('ナナフシ科')));
+  assert.ok(family.length>0&&outsiders.length>0,'both host categories must exist');
+  assert.ok(family.every(card=>(card.tags||[]).some(tag=>tag.endsWith(scroll.attachmentHostFamilySuffix))));
+  assert.ok(outsiders.every(card=>!(card.tags||[]).some(tag=>tag.endsWith(scroll.attachmentHostFamilySuffix))));
+  console.log('WAVE2_SEVEN_SEGMENT_FAMILY_GATE_OK');
+}
+
 
 // Cross-player global lock: only insect movement from DISCARD to FIELD is blocked.
 {
