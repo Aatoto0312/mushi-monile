@@ -22,6 +22,8 @@ jobs:
         run: node tests/ryujin-bee-bag-regression.test.js
       - name: SET7-008 dragonfly regression
         run: node tests/set7-008-dragonfly.test.js
+      - name: Three protect-other insects regression
+        run: node tests/protect-other-insects.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
