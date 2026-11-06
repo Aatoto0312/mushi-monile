@@ -154,7 +154,7 @@
         var summonLocked=['P1','P2'].some(function(pid){
           return state.player(pid).field.some(function(host){
             return !host.faceDown&&(host.attachments||[]).some(function(att){
-              return att.cardId==='set8_050'&&!!(global.getCardDefinition&&global.getCardDefinition(att.cardId));
+              var def=global.getCardDefinition&&global.getCardDefinition(att.cardId);return !!(def&&(def.enhancementEffects||[]).some(function(effect){return effect.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS'&&effect.scope==='BOTH_PLAYERS';}));
             });
           });
         });
