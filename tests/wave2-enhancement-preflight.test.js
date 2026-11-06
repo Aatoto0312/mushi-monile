@@ -151,6 +151,9 @@ console.log('WAVE2_SEVEN_SEGMENT_ENGINE_TARGET_GATE_OK');
   assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),true,'P2 engraving suppresses P2 insects');
   assert.equal(global.areInsectKeywordSkillsSuppressed(s,p1),false,'P2 engraving does not suppress P1 insects');
   p2.attachments.pop();
+  // Cost and color evaluations may use a temporary insect without owner metadata.
+  const transient={cardId:'set2_001'};
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,transient),false,'ownerless temporary insect must not crash');
   console.log('WAVE2_WARRIOR_KEYWORD_LOCK_OK');
 }
 
