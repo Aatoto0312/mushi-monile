@@ -1127,14 +1127,6 @@
       var foodHosts=foodChoice?insectCards(state.player(pending.playerId).field).filter(function(host){if(pending.options.indexOf(host.instanceId)===-1)return false;if(c.selectedHosts)return c.selectedHosts.some(function(target){return target.instanceId===host.instanceId&&(host.runtimeFlags.fieldEntrySerial||0)===target.fieldEntrySerial;})&&isForcedAttachmentHostLegal(state,pending.playerId,foodChoice,host);return isSpellSelectionTargetLegal(state,pending.playerId,host)&&[foodChoice].concat((c.remainingAttachmentIds||[]).map(function(id){return findInZone(state,pending.playerId,ZONES.FOOD,id);}).filter(Boolean)).some(function(food){return isForcedAttachmentHostLegal(state,pending.playerId,food,host);});}):[];
       return {options:foodHosts.map(function(host){return host.instanceId;}),atMostOneGroups:[],selectionBounds:foodHosts.length?null:{minSelections:0,maxSelections:0,exactSelections:0}};
     }
-    if(c.type==='POISON_MIST_DAMAGE'){
-      if(ids.length!==1)throw new Error('毒霧爆弾の対象を1つ選んでください');
-      var poisonTarget=findInZone(state,c.targetPlayerId,ZONES.FIELD,ids[0]);
-      if(!poisonTarget||poisonTarget.faceDown)throw new Error('毒霧爆弾の対象が場にいません');
-      var poisonActor=findAnywhere(state,c.sourceInstanceId),poisonResult={skill:null};
-      applyDamage(state,poisonActor&&poisonActor.instance||null,poisonTarget,c.damage,'ABILITY',c.sourceInstanceId,poisonTarget.instanceId,poisonResult);
-      return poisonTarget;
-    }
     if(c.type==='TARGET_ATTACHMENT_OPERATION'){
       var currentAttachmentHost=findInZone(state,c.targetPlayerId,ZONES.FIELD,c.targetInstanceId);
       var currentAttachmentIds=currentAttachmentHost&&(currentAttachmentHost.runtimeFlags.fieldEntrySerial||0)===c.fieldEntrySerial?(currentAttachmentHost.attachments||[]).filter(function(card){return !card.faceDown&&pending.options.indexOf(card.instanceId)!==-1;}).map(function(card){return card.instanceId;}):[];
@@ -1401,6 +1393,14 @@
 
   function resolveSelectionContinuation(state, pending, ids) {
     var c = pending.continuation || {};
+    if(c.type==='POISON_MIST_DAMAGE'){
+      if(ids.length!==1)throw new Error('毒霧爆弾の対象を1つ選んでください');
+      var poisonTarget=findInZone(state,c.targetPlayerId,ZONES.FIELD,ids[0]);
+      if(!poisonTarget||poisonTarget.faceDown)throw new Error('毒霧爆弾の対象が場にいません');
+      var poisonActor=findAnywhere(state,c.sourceInstanceId),poisonResult={skill:null};
+      applyDamage(state,poisonActor&&poisonActor.instance||null,poisonTarget,c.damage,'ABILITY',c.sourceInstanceId,poisonTarget.instanceId,poisonResult);
+      return poisonTarget;
+    }
     if(c.type==='TARGET_ATTACHMENT_OPERATION'){
       if(!ids.length)return;
       var selectedTargetAttachment=findAttachment(state,ids[0]);
