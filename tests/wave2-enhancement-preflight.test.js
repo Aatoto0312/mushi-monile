@@ -129,12 +129,13 @@ for(const attack of [true,false])for(const accept of [true,false]){
   const coin={instanceId:s.nextInstanceId(),cardId:'set8_049',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
   host.attachments.push(coin);
   const initialHand=s.player('P1').hand.length;
+  const originalDeckTop=s.player('P1').deck[0]&&s.player('P1').deck[0].instanceId;
   global.destroyInsect(s,host.instanceId,attack?'ATTACK':'EFFECT',null,null,{skipTerritoryDraw:true});
   if(!attack){assert.notEqual(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_COIN_RECOVERY');continue;}
   assert.equal(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_COIN_RECOVERY');
   global.resolveChoiceSelection(s,'P1',accept?'USE':'DECLINE');
   assert.ok(s.player('P1')[accept?'deck':'discard'].some(c=>c.instanceId===coin.instanceId));
-  if(accept){assert.equal(s.player('P1').deck.at(-1).instanceId,coin.instanceId,'coin at deck bottom');assert.equal(s.player('P1').hand.length,initialHand+1,'draw exactly one');}
+  if(accept){assert.equal(s.player('P1').deck.at(-1).instanceId,coin.instanceId,'coin at deck bottom');assert.equal(s.player('P1').hand.length,initialHand+1,'draw exactly one');assert.ok(s.player('P1').hand.some(card=>card.instanceId===originalDeckTop),'draw the original top card, not the recovered coin');assert.ok(!s.player('P1').hand.some(card=>card.instanceId===coin.instanceId),'recovered coin must remain in deck');}
   else assert.equal(s.player('P1').hand.length,initialHand,'decline does not draw');
 }
 console.log('WAVE2_COIN_RECOVERY_OK');
