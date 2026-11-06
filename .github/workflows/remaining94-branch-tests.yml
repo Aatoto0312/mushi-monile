@@ -39,6 +39,8 @@ jobs:
         run: node tests/card-inventory-report.js
       - name: Oni spider first-hit shields
         run: node tests/set7-oni-spider-shields.test.js
+      - name: Gigas Slash next-turn lock
+        run: node tests/set8-006-gigas-slash.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
