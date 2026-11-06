@@ -26,3 +26,11 @@ for(const id of ['set6_013','set6_030','set7_016'])module.exports[id]={
  cpu:[],human:[],online:[],serialization:[],
  unresolvedRulings:['Official card text/image verification and end-to-end CPU/browser/online regression pending']
 };
+
+// Protect-other traits: engine legality verified; end-to-end channels pending.
+for(const id of ['set6_028','set7_014','set7_030'])module.exports[id]={
+ id,name:records.find(c=>c.id===id).name,status:'PLAYABLE',audited:false,
+ source:{verification:'CATALOG_TEXT_ONLY; PRINTED_IMAGE_NOT_YET_AUDITED'},officialRulings:[],
+ engine:['tests/protect-other-insects.test.js'],cpu:[],human:[],online:[],serialization:[],
+ unresolvedRulings:['CPU/browser/online interaction and official printed image audit pending']
+};
