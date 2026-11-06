@@ -54,6 +54,14 @@ console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotio
     assert.throws(()=>moveCard(s,insect.instanceId,'DISCARD','FIELD',{playerId:pid}),/幻惑の蛍袋/);
     assert.ok(s.player(pid).discard.some(c=>c.instanceId===insect.instanceId),'failed summon must leave card in discard');
   }
+  // A face-down host cannot project its continuous attachment restriction.
+  host.faceDown=true;
+  const temporarilyAllowed=s.player('P1').discard.find(c=>c.cardId==='set2_002');
+  moveCard(s,temporarilyAllowed.instanceId,'DISCARD','FIELD',{playerId:'P1',deferEntryEffects:true});
+  host.faceDown=false;
+  const resumed=h.putInsectOnField(s,'P2','set2_003');
+  moveCard(s,resumed.instanceId,'FIELD','DISCARD',{playerId:'P2'});
+  assert.throws(()=>moveCard(s,resumed.instanceId,'DISCARD','FIELD',{playerId:'P2'}),/幻惑の蛍袋/);
   host.attachments.pop();
   const insect=s.player('P2').discard.find(c=>c.cardId==='set2_002');
   moveCard(s,insect.instanceId,'DISCARD','FIELD',{playerId:'P2',deferEntryEffects:true});
