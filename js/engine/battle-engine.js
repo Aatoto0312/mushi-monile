@@ -3304,6 +3304,15 @@
           sourceType: effect.sourceType || null, used: false });
         attacker.runtimeFlags.damageShields = shields;
       }
+      if (effect.type === 'APPLY_ATTACK_RESTRICTION' && (effect.target === 'SELF' || effect.target === 'SOURCE') && attacker.zone === ZONES.FIELD) {
+        attacker.runtimeFlags = attacker.runtimeFlags || {};
+        attacker.runtimeFlags.attackRestrictions = (attacker.runtimeFlags.attackRestrictions || []).concat([{
+          sourceInstanceId: attacker.instanceId,
+          startTurn: state.turnNumber + (effect.startTurnOffset || 0),
+          endTurn: state.turnNumber + (effect.endTurnOffset || 0),
+          whileSourceOnField: false
+        }]);
+      }
       if (effect.type !== 'APPLY_STAT_MODIFIER' || (effect.target !== 'SELF' && effect.target !== 'SOURCE') || attacker.zone !== ZONES.FIELD) { return; }
       addStatModifier(state, attacker, {
         id: effect.id, sourceInstanceId: attacker.instanceId,
