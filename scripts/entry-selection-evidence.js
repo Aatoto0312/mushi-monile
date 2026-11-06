@@ -34,3 +34,6 @@ for(const id of ['set6_028','set7_014','set7_030'])module.exports[id]={
  engine:['tests/protect-other-insects.test.js'],cpu:[],human:[],online:[],serialization:[],
  unresolvedRulings:['CPU/browser/online interaction and official printed image audit pending']
 };
+
+// Hidden-food scaling: engine-only verification; printed-image and UI channels pending.
+module.exports.set7_034={id:'set7_034',name:'シロスジカミキリ',status:'PLAYABLE',audited:false,source:{verification:'CATALOG_TEXT_ONLY'},officialRulings:[],engine:['tests/set7-034-hidden-food.test.js'],cpu:[],human:[],online:[],serialization:[],unresolvedRulings:['Printed card and CPU/browser/online audit pending']};
