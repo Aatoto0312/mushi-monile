@@ -129,7 +129,7 @@ console.log('WAVE2_SEVEN_SEGMENT_ENGINE_TARGET_GATE_OK');
   console.log('WAVE2_FIREFLY_LOCK_OK');
 }
 
-// Warrior engraving affects both players, but only while its host is face up.
+// Warrior engraving affects only its controller's insects while its host is face up.
 {
   const h=require('./helpers.js');
   const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
@@ -139,7 +139,7 @@ console.log('WAVE2_SEVEN_SEGMENT_ENGINE_TARGET_GATE_OK');
   const engraving={instanceId:'wave2-engraving-test',cardId:'set6_051',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
   p1.attachments.push(engraving);
   assert.equal(global.areInsectKeywordSkillsSuppressed(s,p1),true,'own insect suppressed');
-  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),true,'opponent insect suppressed');
+  assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),false,'opponent insect must remain unaffected');
   p1.faceDown=true;
   assert.equal(global.areInsectKeywordSkillsSuppressed(s,p2),false,'face-down host stops global effect');
   p1.faceDown=false;
