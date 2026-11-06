@@ -2997,7 +2997,8 @@
     // 武勇の刻印: the equipped player's own insects lose keyword skills.
     // The opponent's insects are unaffected by this enhancement.
     var targetController=instance.controllerId||instance.ownerId;
-    var ownKeywordLock=state.player(targetController).field.some(function(host){return !host.faceDown&&(host.attachments||[]).some(function(att){var d=getCardDefinition(att.cardId);return !!(d&&(d.enhancementEffects||[]).some(function(e){return e.type==='SUPPRESS_ALL_INSECT_KEYWORD_SKILLS'&&e.scope==='OWN_INSECTS';}));});});
+    var targetPlayer=targetController&&state.player(targetController);
+    var ownKeywordLock=!!targetPlayer&&targetPlayer.field.some(function(host){return !host.faceDown&&(host.attachments||[]).some(function(att){var d=getCardDefinition(att.cardId);return !!(d&&(d.enhancementEffects||[]).some(function(e){return e.type==='SUPPRESS_ALL_INSECT_KEYWORD_SKILLS'&&e.scope==='OWN_INSECTS';}));});});
     if(ownKeywordLock)return true;
 
     var isSuppressor=(targetDef.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SUPPRESS_ALL_OTHER_INSECT_KEYWORD_SKILLS';});});
