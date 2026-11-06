@@ -45,6 +45,8 @@ jobs:
         run: node tests/set6-poison-mist.test.js
       - name: Territory retaliation regressions
         run: node tests/set8-territory-retaliation.test.js
+      - name: Wave 2 enhancement partial mapping
+        run: node tests/wave2-enhancement-preflight.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
