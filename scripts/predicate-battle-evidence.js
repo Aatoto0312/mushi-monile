@@ -1,5 +1,7 @@
 'use strict';
 module.exports={
+  "set8_006":{"id":"set8_006","name":"ギガスオオアリ","status":"PLAYABLE","audited":false,"source":{"verification":"CATALOG_TEXT_MATCH_PENDING_IMAGE_AUDIT","provenance":"Catalog text mapping; printed scan and specific UI/WSS paths not independently audited."},"officialRulings":[],"engine":["tests/set8-006-gigas-slash.test.js"],"cpu":["tests/set8-006-gigas-slash.test.js"],"human":["server/browser/predicate-paths.cjs"],"online":["server/test/predicate-capabilities.test.cjs"],"serialization":["tests/set8-006-gigas-slash.test.js"],"unresolvedRulings":[],"userRulings":[],"notes":"Next own turn restriction uses turn+2, not next opponent turn. Individual integration audit pending."},
+
   "set7_011": {
     "id":"set7_011","name":"アカオニグモ","status":"PLAYABLE","audited":false,
     "source":{"verification":"CATALOG_TEXT_MATCH_PENDING_IMAGE_AUDIT","provenance":"Canonical catalog text compared against metadata; printed scan not independently audited."},
