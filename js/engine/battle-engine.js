@@ -3170,7 +3170,7 @@
       if (skill.bonusApAgainstAttached && (defender.attachments || []).length) { apVal += skill.bonusApAgainstAttached; result.apVal = apVal; }
       var attackerColor = getEffectiveColor(attacker);
       var defenderColor = getEffectiveColor(defender);
-      var multiplier = getAttackMultiplier(state, attackerColor, defender);
+      var multiplier = skill.forceWeakness ? 2 : getAttackMultiplier(state, attackerColor, defender);
       var dmg = apVal * multiplier;
       result.multiplier = multiplier;
       result.finalAp = dmg;
