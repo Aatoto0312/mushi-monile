@@ -20,6 +20,8 @@ jobs:
         run: node tests/set7-44-delayed-hp.test.js
       - name: Ryujin and queen bee bag regression
         run: node tests/ryujin-bee-bag-regression.test.js
+      - name: SET7-008 dragonfly regression
+        run: node tests/set7-008-dragonfly.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
