@@ -2828,6 +2828,11 @@
       }
     });
 
+    // Protect-other traits are mutually targetable when only protected insects remain.
+    // A normal visible insect takes priority; hidden and already untargetable insects do not.
+    var unprotected = targetable.filter(function(defender){return !hasPassiveEffect(state,defender,'PROTECT_IF_OTHER_INSECT');});
+    if(unprotected.length)targetable=unprotected;
+
     // 段階2: 攻撃対象を自分へ強制する能力を持ち、かつ攻撃可能な虫群を検出
     var forcing = targetable.filter(function (defender) {
       return hasTargetRule(state, defender, 'FORCE_ATTACK_TO_SELF_GROUP');
