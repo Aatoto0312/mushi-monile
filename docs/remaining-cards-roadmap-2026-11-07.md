@@ -136,3 +136,11 @@
 - CI成功: https://github.com/Aatoto0312/mushi-monile/actions/runs/42301250424 。**PLAYABLE 487 / 565、残り78種**。
 - Wave 1の残りは `set8_040` ハサミツノカメムシ、`set8_041` クサギカメムシ。縄張りから引いた際の任意発動と攻撃元へのダメージ、捨て札への移動を共通化する。
 - 画像原文・個別のCPU/Human/オンライン/再接続実機監査は未了。公開mainは未変更。
+
+## Wave 1 完了（2026-11-07）
+
+- `set8_040` ハサミツノカメムシ、`set8_041` クサギカメムシをPLAYABLE化。
+- 共通効果 `OPTIONAL_RETALIATE_TERRITORY_ATTACKER`: 縄張りから引いたとき元の攻撃虫が場に残っていれば使用可否を選択。使用時は800/400のABILITYダメージを与え、この縄張りカードを捨て札に置く。辞退時は手札へ。攻撃以外で縄張りを引いたときは発動しない。
+- 専用テスト `tests/set8-territory-retaliation.test.js`、全エンジン回帰、オンラインサーバーテスト成功。CI: https://github.com/Aatoto0312/mushi-monile/actions/runs/42301804709
+- **PLAYABLE 489 / 565、残り76種。Wave 1 7種完了。**
+- 注意: 公式カード画像との独立照合、CPU/Human/WSSのカード個別実機確認、再接続の固有動作監査は未了。公開mainは未変更。
