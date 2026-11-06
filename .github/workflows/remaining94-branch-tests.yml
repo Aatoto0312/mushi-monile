@@ -24,6 +24,8 @@ jobs:
         run: node tests/set7-008-dragonfly.test.js
       - name: Three protect-other insects regression
         run: node tests/protect-other-insects.test.js
+      - name: SET7-020 weakness regression
+        run: node tests/set7-020-weakness.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
