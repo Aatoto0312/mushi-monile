@@ -1311,6 +1311,17 @@
       }
     } else if(continuation.type==='SET_OWN_FOOD_COLOR'){
       if(value!=='DECLINE'){state.player(continuation.playerId).food.forEach(function(food){if(!food.faceDown){food.runtimeFlags=food.runtimeFlags||{};food.runtimeFlags.colorOverride=value;food.runtimeFlags.colorOverrideUntilTurn=continuation.endTurn;}});}
+    } else if(continuation.type==='WAVE2_COIN_RECOVERY'){
+      if(value==='USE'){
+        var coin=findInZone(state,continuation.ownerId,ZONES.DISCARD,continuation.attachmentInstanceId);
+        if(coin){
+          moveCard(state,coin.instanceId,ZONES.DISCARD,ZONES.DECK,{playerId:continuation.ownerId,faceDown:true});
+          var coinDeck=state.player(continuation.ownerId).deck;
+          coinDeck.unshift(coinDeck.pop());
+          drawCard(state,continuation.ownerId);
+        }
+      }
+      resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
     } else if(continuation.type==='WAVE2_BLADE_RECOVERY'){
       if(value!=='DECLINE'){
         var food=state.player(continuation.ownerId).food.find(function(card){return card.instanceId===value&&!card.faceDown;});
@@ -3836,6 +3847,17 @@
   function finishDestroyedCard(state, context) {
     var destroyedCard = context.destroyedCard, sourceType = context.sourceType, sourceInstanceId = context.sourceInstanceId;
     var defenderPlayerId = context.defenderPlayerId;
+    // 黄金虫の六文銭: only insect-attack destruction can recover the coin.
+    if(!context.coinChecked){
+      context.coinProcessedIds=context.coinProcessedIds||[];
+      var coinCandidate=sourceType==='ATTACK'&&(context.attachmentsSnapshot||[]).find(function(att){var def=getCardDefinition(att.cardId);return context.coinProcessedIds.indexOf(att.instanceId)===-1&&!!(def&&(def.enhancementEffects||[]).some(function(e){return e.type==='OPTIONAL_BOTTOM_DECK_SELF_AND_DRAW_ON_HOST_ATTACK_DESTRUCTION';})&&findInZone(state,att.ownerId,ZONES.DISCARD,att.instanceId));});
+      if(coinCandidate){
+        context.coinProcessedIds.push(coinCandidate.instanceId);
+        state.pendingEffect={type:'CHOICE_SELECTION',playerId:coinCandidate.ownerId,controller:coinCandidate.ownerId,selectionPurpose:'WAVE2_COIN_RECOVERY',prompt:'黄金虫の六文銭を山札の下に置き、1枚引きますか？',options:[{value:'USE',label:'山札の下に置いて1枚引く'},{value:'DECLINE',label:'捨て札に残す'}],continuation:{type:'WAVE2_COIN_RECOVERY',ownerId:coinCandidate.ownerId,attachmentInstanceId:coinCandidate.instanceId,context:context}};
+        return destroyedCard;
+      }
+      context.coinChecked=true;
+    }
     // 一本刀: after host destruction, optionally flip one face-up own food
     // face down to recover the discarded attachment to its owner's hand.
     if(!context.bladeChecked){
