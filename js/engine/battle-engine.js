@@ -1311,6 +1311,13 @@
       }
     } else if(continuation.type==='SET_OWN_FOOD_COLOR'){
       if(value!=='DECLINE'){state.player(continuation.playerId).food.forEach(function(food){if(!food.faceDown){food.runtimeFlags=food.runtimeFlags||{};food.runtimeFlags.colorOverride=value;food.runtimeFlags.colorOverrideUntilTurn=continuation.endTurn;}});}
+    } else if(continuation.type==='WAVE2_BLADE_RECOVERY'){
+      if(value!=='DECLINE'){
+        var food=state.player(continuation.ownerId).food.find(function(card){return card.instanceId===value&&!card.faceDown;});
+        var blade=findInZone(state,continuation.ownerId,ZONES.DISCARD,continuation.attachmentInstanceId);
+        if(food&&blade){food.faceDown=true;moveCard(state,blade.instanceId,ZONES.DISCARD,ZONES.HAND,{playerId:continuation.ownerId});}
+      }
+      resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
     } else if(continuation.type==='WAVE2_CROWN_RECOVERY'){
       if(value==='USE'){
         var crown=findInZone(state,continuation.ownerId,ZONES.DISCARD,continuation.attachmentInstanceId);
@@ -3829,6 +3836,21 @@
   function finishDestroyedCard(state, context) {
     var destroyedCard = context.destroyedCard, sourceType = context.sourceType, sourceInstanceId = context.sourceInstanceId;
     var defenderPlayerId = context.defenderPlayerId;
+    // 一本刀: after host destruction, optionally flip one face-up own food
+    // face down to recover the discarded attachment to its owner's hand.
+    if(!context.bladeChecked){
+      context.bladeProcessedIds=context.bladeProcessedIds||[];
+      var bladeCandidate=(context.attachmentsSnapshot||[]).find(function(att){var def=getCardDefinition(att.cardId);return context.bladeProcessedIds.indexOf(att.instanceId)===-1&&!!(def&&(def.enhancementEffects||[]).some(function(e){return e.type==='OPTIONAL_FLIP_OWN_FOOD_AND_RETURN_SELF_ON_HOST_DESTROYED';})&&findInZone(state,att.ownerId,ZONES.DISCARD,att.instanceId));});
+      if(bladeCandidate){
+        context.bladeProcessedIds.push(bladeCandidate.instanceId);
+        var bladeFoods=state.player(bladeCandidate.ownerId).food.filter(function(card){return !card.faceDown;});
+        if(bladeFoods.length){
+          state.pendingEffect={type:'CHOICE_SELECTION',playerId:bladeCandidate.ownerId,controller:bladeCandidate.ownerId,selectionPurpose:'WAVE2_BLADE_RECOVERY',prompt:'エサを1枚裏返して一本刀を手札に戻しますか？',options:bladeFoods.map(function(card){return {value:card.instanceId,label:'エサ '+card.instanceId+' を裏返す'};}).concat([{value:'DECLINE',label:'戻さない'}]),continuation:{type:'WAVE2_BLADE_RECOVERY',ownerId:bladeCandidate.ownerId,attachmentInstanceId:bladeCandidate.instanceId,context:context}};
+          return destroyedCard;
+        }
+      }else context.bladeChecked=true;
+      if(bladeCandidate)return finishDestroyedCard(state,context);
+    }
     // 宝石虫の冠: after its host is destroyed, its owner may place the
     // discarded crown face up in food. Never recover attachments on a
     // non-destruction field exit or from a destruction replacement.
