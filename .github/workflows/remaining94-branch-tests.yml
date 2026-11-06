@@ -37,6 +37,8 @@ jobs:
         run: node tests/set6-036-spell-trigger.test.js
       - name: Runtime card inventory
         run: node tests/card-inventory-report.js
+      - name: Oni spider first-hit shields
+        run: node tests/set7-oni-spider-shields.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
