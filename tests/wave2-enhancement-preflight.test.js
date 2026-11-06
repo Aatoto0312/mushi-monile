@@ -100,6 +100,6 @@ for(const accept of [true,false]){
   global.resolveChoiceSelection(s,'P1',accept?'USE':'DECLINE');
   const zone=accept?'food':'discard';
   assert.ok(s.player('P1')[zone].some(c=>c.instanceId===crown.instanceId),'crown should remain in selected destination');
-  assert.equal(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_CROWN_RECOVERY',false,'no duplicate recovery prompt');
+  assert.notEqual(s.pendingEffect&&s.pendingEffect.selectionPurpose,'WAVE2_CROWN_RECOVERY','no duplicate recovery prompt');
 }
 console.log('WAVE2_CROWN_RECOVERY_OK');
