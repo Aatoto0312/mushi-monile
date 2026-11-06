@@ -43,6 +43,8 @@ jobs:
         run: node tests/set8-006-gigas-slash.test.js
       - name: Poison mist bomb regressions
         run: node tests/set6-poison-mist.test.js
+      - name: Territory retaliation regressions
+        run: node tests/set8-territory-retaliation.test.js
       - name: Full engine regression
         run: node tests/run-all.js
       - name: Server dependency install
