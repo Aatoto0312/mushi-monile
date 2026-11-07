@@ -490,3 +490,33 @@ console.log('WAVE2_SHIELD_ARMOR_MULTIPLE_FOOD_CHOICES_OK');
   assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
 }
 console.log('WAVE2_SHIELD_ARMOR_TARGET_SCOPE_OK');
+
+
+{
+  // An opponent's mandatory spell counter resolves before shield-armor choice.
+  // A countered spell never consumes defensive food.
+  const h=require('./helpers.js');
+  const watcherRaw=JSON.parse(JSON.stringify(global.getCardDefinition('set1_003')));
+  watcherRaw.id='test_wave2_shield_counter_watcher';watcherRaw.implementationStatus='test';
+  watcherRaw.passiveAbilities=[{name:'counter fixture',timing:'ON_OPPONENT_SPELL_USED',effects:[{type:'DESTROY_SELF_AND_COUNTER_SPELL'}]}];
+  global.cardRegistry.register(new global.CardDefinition(watcherRaw));
+  const spellRaw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  spellRaw.id='test_wave2_shield_countered_spell';spellRaw.implementationStatus='test';spellRaw.cost=0;
+  spellRaw.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:100,ignoreAttributeMultiplier:true}];
+  global.cardRegistry.register(new global.CardDefinition(spellRaw));
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+  state.turnNumber=3;state.player('P1').availableCost=20;
+  const target=h.putInsectOnField(state,'P2','set2_001');
+  target.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P2',controllerId:'P2',zone:'ATTACHMENT'});
+  const shield=h.addToFoodRaw(state,'P2',h.defById('set8_052'));
+  const watcher=h.putInsectOnField(state,'P2',watcherRaw.id);
+  const spell=h.addToHandRaw(state,'P1',global.getCardDefinition(spellRaw.id));
+  const hp=target.currentHp;
+  global.useSpell(state,'P1',spell.instanceId,target.instanceId);
+  assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION','countered spell must not offer shield');
+  assert.equal(target.currentHp,hp,'countered spell deals no damage');
+  assert.equal(shield.faceDown,false,'counter does not consume shield food');
+  assert.equal(watcher.zone,'DISCARD','counter watcher sacrifices itself');
+  assert.equal(spell.zone,'DISCARD','countered spell is discarded');
+}
+console.log('WAVE2_SHIELD_ARMOR_COUNTER_PRECEDENCE_OK');
