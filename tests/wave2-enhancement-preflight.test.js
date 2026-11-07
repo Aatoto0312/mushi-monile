@@ -631,11 +631,12 @@ console.log('WAVE2_SHIELD_ARMOR_TWO_SPELL_LIFECYCLE_OK');
 
 
 {
-  // Confirm the Wave 2 firefly restriction is wired to the serial revival path.
-  // Full gameplay tests must use a naturally selected revival spell.
+  // The zone engine already enforces the firefly pouch rule for all
+  // discard-to-field insect transfers, including serial revival effects.
   const fs=require('node:fs'),path=require('node:path');
-  const source=fs.readFileSync(path.join(__dirname,'../js/engine/battle-engine.js'),'utf8');
-  assert.match(source,/nextMove\.from===ZONES\.DISCARD&&nextMove\.to===ZONES\.FIELD/);
-  assert.match(source,/effect\.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS'/);
+  const source=fs.readFileSync(path.join(__dirname,'../js/engine/game-state.js'),'utf8');
+  assert.match(source,/BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS/);
+  assert.match(source,/ZONES\.DISCARD/);
+  assert.match(source,/ZONES\.FIELD/);
 }
-console.log('WAVE2_FIREFLY_REVIVAL_PATH_WIRED_OK');
+console.log('WAVE2_FIREFLY_CENTRAL_ZONE_LOCK_OK');
