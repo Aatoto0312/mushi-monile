@@ -1,0 +1,24 @@
+name: Wave 2 release validation
+on:
+  push:
+    branches:
+      - release/wave2-nine-enhancements-20261107
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  wave2-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Wave 2 enhancement behavior
+        run: node tests/wave2-enhancement-preflight.test.js
+      - name: All browser-game regression tests
+        run: node tests/run-all.js
+      - name: Server runtime and snapshots
+        run: node --test server/test/*.test.cjs

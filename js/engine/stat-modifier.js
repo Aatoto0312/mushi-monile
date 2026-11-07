@@ -46,6 +46,18 @@
       if(rule.type==='OWN_TERRITORY_COUNT'){total+=player.territory.length*rule.multiplier;}
       if(rule.type==='SOLE_VISIBLE_OWN_INSECT'&&player.field.filter(function(c){return !c.faceDown;}).length===1){total+=rule.amount;}
       if(rule.type==='RUNTIME_COUNTER'){total+=(instance.runtimeFlags&&instance.runtimeFlags[rule.flag])||0;}
+      if(rule.type==='OWN_FACE_DOWN_FOOD_COUNT'){total+=player.food.filter(function(card){return card.faceDown;}).length*rule.multiplier;}
+      if(rule.type==='OWN_FACE_UP_FOOD_FAMILY_COUNT'){
+        total+=player.food.filter(function(card){
+          if(card.faceDown){return false;}
+          var foodDef=global.getCardDefinition(card.cardId);
+          return foodDef&&foodDef.type==='INSECT'&&(foodDef.tags||[]).some(function(tag){return tag===rule.familySuffix||tag.endsWith(rule.familySuffix);});
+        }).length*rule.multiplier;
+      }
+      if(rule.type==='OWN_FACE_UP_FOOD_ALL_COLORS'){
+        var colors={};player.food.forEach(function(card){if(!card.faceDown){var foodDef=global.getCardDefinition(card.cardId);if(foodDef){colors[global.getEffectiveColor?global.getEffectiveColor(card):foodDef.color]=true;}}});
+        if((rule.colors||[]).every(function(color){return colors[color];})){total+=rule.amount;}
+      }
       if(rule.type==='OWN_FOOD_MINIMUM'&&player.food.length>=rule.minimum){total+=rule.amount;}
       if(rule.type==='HAS_ATTACHMENT'&&(instance.attachments||[]).length>0){total+=rule.amount;}
       if(rule.type==='OWN_FIELD_CARD_ID'&&player.field.some(function(card){return !card.faceDown&&card.cardId===rule.cardId;})){total+=rule.amount;}
