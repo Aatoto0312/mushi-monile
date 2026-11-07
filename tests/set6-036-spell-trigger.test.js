@@ -1,0 +1,3 @@
+'use strict';require('./engine-loader.js');const h=require('./helpers.js'),R=require('./lib.js'),r=new R();
+r.test('Omizuao larva is destroyed when opponent uses a spell, without countering it',()=>{const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);const a=h.putInsectOnField(s,'P1','set6_036'),spell=h.addToHandRaw(s,'P2',getCardDefinition('set8_055'));r.assert(getCardDefinition('set6_036').isPlayable());s.activePlayerId='P2';s.player('P2').availableCost=20;useSpell(s,'P2',spell.instanceId);r.assertEqual(a.zone,'DISCARD');r.assertEqual(spell.zone,'DISCARD');});
+module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});
