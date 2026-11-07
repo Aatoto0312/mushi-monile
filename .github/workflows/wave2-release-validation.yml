@@ -15,10 +15,26 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
+      - name: Install authoritative server dependencies
+        run: npm ci --prefix server
       - name: Wave 2 enhancement behavior
         run: node tests/wave2-enhancement-preflight.test.js
       - name: All browser-game regression tests
         run: node tests/run-all.js
-      - name: Server runtime and snapshots
-        run: node --test server/test/*.test.cjs
+      - name: Server runtime, rooms and network compatibility
+        run: >-
+          node --test --test-concurrency=1
+          server/test/runtime.test.cjs
+          server/test/rooms.test.cjs
+          server/test/transport.test.cjs
+          server/test/spectators.test.cjs
+          server/test/entry-selection-rooms.test.cjs
+          server/test/discard-deploy.test.cjs
+          server/test/known-mirror-deckout.test.cjs
+          server/test/unsupported-engine-room.test.cjs
+          server/test/named-enhancement-recovery.test.cjs
+          server/test/attack-kill-retrieval.test.cjs
+          server/test/host-attachment.test.cjs
+          server/test/food-wave-rooms.test.cjs
+          server/test/predicate-capabilities.test.cjs

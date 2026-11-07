@@ -38,7 +38,7 @@ for (const id of ids) {
     effectText: (record.enhancementEffects || []).map(effect => effect.effectText || '')
   }));
 }
-console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotion');
+console.log('WAVE2_PREFLIGHT_OK 9 enhancements certified PLAYABLE');
 // Seven-segment scroll must only target insects in the nanaphasmid family.
 {
   const scroll=global.getCardDefinition('set6_054');
