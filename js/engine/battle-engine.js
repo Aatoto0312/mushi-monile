@@ -1940,6 +1940,19 @@
     });
   }
 
+  function isOwnArmoredInsectProtectedByFood(state,target,sourceType,sourceInstanceId){
+    if(sourceType!=='SPELL'||!target||target.faceDown)return false;
+    var targetHolder=findAnywhere(state,target.instanceId),sourceHolder=findAnywhere(state,sourceInstanceId);
+    if(!targetHolder||targetHolder.zone!==ZONES.FIELD||!sourceHolder||targetHolder.playerId===sourceHolder.playerId)return false;
+    var armored=(target.attachments||[]).some(function(att){var d=getCardDefinition(att.cardId);return !!(d&&d.name&&d.name.indexOf('甲冑')!==-1);});
+    if(!armored)return false;
+    return state.player(targetHolder.playerId).food.some(function(food){
+      if(food.faceDown)return false;
+      var d=getCardDefinition(food.cardId);
+      return !!(d&&(d.enhancementEffects||[]).some(function(e){return e.type==='PROTECT_OWN_ARMORED_INSECTS_FROM_OPPONENT_SPELL_DAMAGE_AND_DESTRUCTION_WHILE_FACEUP_FOOD';}));
+    });
+  }
+
   function isOpponentSpellPreventedByEntryWindow(state,target,sourceType,sourceInstanceId){
     if(sourceType!=='SPELL'||!target||target.enteredFieldTurn==null)return false;
     if(!hasPassiveEffect(state,target,'PREVENT_OPPONENT_SPELL_DAMAGE_AND_DESTRUCTION'))return false;
@@ -3728,7 +3741,7 @@
     if (target.zone !== ZONES.FIELD) {
       return target;
     }
-    if(isOpponentSpellPreventedByEntryWindow(state,target,sourceType,sourceInstanceId))damage=0;
+    if(isOpponentSpellPreventedByEntryWindow(state,target,sourceType,sourceInstanceId)||isOwnArmoredInsectProtectedByFood(state,target,sourceType,sourceInstanceId))damage=0;
     damage = preventDamage(state, target, damage, sourceType, result && result.skill);
     if (sourceType === 'ATTACK' && result && result.skill && (result.skill.effects || []).some(function(effect) { return effect.type === 'DAMAGE_DOES_NOT_HEAL'; })) {
       target.runtimeFlags = target.runtimeFlags || {};
@@ -3772,7 +3785,7 @@
       return null;
     }
     var destroyedCard = holder.instance;
-    if(isOpponentSpellPreventedByEntryWindow(state,destroyedCard,sourceType,sourceInstanceId))return destroyedCard;
+    if(isOpponentSpellPreventedByEntryWindow(state,destroyedCard,sourceType,sourceInstanceId)||isOwnArmoredInsectProtectedByFood(state,destroyedCard,sourceType,sourceInstanceId))return destroyedCard;
     var defenderPlayerId = holder.playerId;
     var destroyedSnapshot = JSON.parse(JSON.stringify(destroyedCard));
     destroyedSnapshot.controllerId = defenderPlayerId;
