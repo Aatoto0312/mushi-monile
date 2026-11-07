@@ -97,6 +97,27 @@ console.log('WAVE2_SINGLE_BLADE_ENGINE_TARGET_GATE_OK');
 }
 console.log('WAVE2_SEVEN_SEGMENT_ENGINE_TARGET_GATE_OK');
 
+{
+  const h=require('./helpers.js');
+  const hostDef=catalog.find(card=>card.type==='INSECT'&&global.getCardDefinition(card.id)&&(card.tags||[]).some(tag=>tag.endsWith('ナナフシ科')));
+  assert.ok(hostDef,'registered stick-insect host required');
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+  const host=h.putInsectOnField(state,'P1',hostDef.id);
+  const originalColor=global.getEffectiveColor(host);
+  const scroll={instanceId:state.nextInstanceId(),cardId:'set6_054',ownerId:'P1',controllerId:'P1',zone:'FIELD'};
+  host.attachments.push(scroll);
+  for(const color of ['RED','BLUE','GREEN']){
+    scroll.chosenColor=color;
+    assert.equal(global.getEffectiveColor(host),color,'scroll must apply selected '+color);
+    const restored=JSON.parse(JSON.stringify(host));
+    assert.equal(global.getEffectiveColor(restored),color,'scroll color must survive serialization');
+  }
+  host.attachments.pop();
+  assert.equal(global.getEffectiveColor(host),originalColor,'removing scroll must restore printed color');
+}
+console.log('WAVE2_SEVEN_SEGMENT_COLOR_ENGINE_OK');
+
+
 
 }
 
