@@ -1323,6 +1323,12 @@
         }
       }
       resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
+    } else if(continuation.type==='WAVE2_SCROLL_RECOVERY'){
+      if(value==='USE'){
+        var scroll=findInZone(state,continuation.ownerId,ZONES.DISCARD,continuation.attachmentInstanceId);
+        if(scroll)moveCard(state,scroll.instanceId,ZONES.DISCARD,ZONES.HAND,{playerId:continuation.ownerId});
+      }
+      resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
     } else if(continuation.type==='WAVE2_BLADE_RECOVERY'){
       if(value!=='DECLINE'){
         var food=state.player(continuation.ownerId).food.find(function(card){return card.instanceId===value&&!card.faceDown;});
@@ -3860,6 +3866,17 @@
         return destroyedCard;
       }
       context.coinChecked=true;
+    }
+    // 七節の変化巻: only an insect attack destroying the host permits an optional return.
+    if(!context.scrollChecked){
+      context.scrollProcessedIds=context.scrollProcessedIds||[];
+      var scrollCandidate=sourceType==='ATTACK'&&(context.attachmentsSnapshot||[]).find(function(att){var def=getCardDefinition(att.cardId);return context.scrollProcessedIds.indexOf(att.instanceId)===-1&&!!(def&&(def.enhancementEffects||[]).some(function(e){return e.type==='OPTIONAL_RETURN_SELF_TO_HAND_ON_HOST_ATTACK_DESTRUCTION';})&&findInZone(state,att.ownerId,ZONES.DISCARD,att.instanceId));});
+      if(scrollCandidate){
+        context.scrollProcessedIds.push(scrollCandidate.instanceId);
+        state.pendingEffect={type:'CHOICE_SELECTION',playerId:scrollCandidate.ownerId,controller:scrollCandidate.ownerId,selectionPurpose:'WAVE2_SCROLL_RECOVERY',prompt:'七節の変化巻を手札に戻しますか？',options:[{value:'USE',label:'手札に戻す'},{value:'DECLINE',label:'捨て札に残す'}],continuation:{type:'WAVE2_SCROLL_RECOVERY',ownerId:scrollCandidate.ownerId,attachmentInstanceId:scrollCandidate.instanceId,context:context}};
+        return destroyedCard;
+      }
+      context.scrollChecked=true;
     }
     // 一本刀: after host destruction, optionally flip one face-up own food
     // face down to recover the discarded attachment to its owner's hand.
