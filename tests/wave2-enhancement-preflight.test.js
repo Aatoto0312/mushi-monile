@@ -358,3 +358,35 @@ console.log('WAVE2_SHIELD_ARMOR_EFFECT_CONTRACT_OK');
   }
 }
 console.log('WAVE2_SHIELD_ARMOR_ELIGIBILITY_OK');
+
+
+{
+  // End-to-end committed spell: the defender decides after the spell is paid,
+  // and accepting protection flips exactly one shield food.
+  const h=require('./helpers.js');
+  const base=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  base.id='test_wave2_shield_target_spell';
+  base.implementationStatus='test';
+  base.cost=0;
+  base.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,damage:100}];
+  global.cardRegistry.register(new global.CardDefinition(base));
+  const spellDef=global.getCardDefinition(base.id);
+  for(const decision of ['DECLINE','USE']){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+    state.activePlayerId='P2';
+    const host=h.putInsectOnField(state,'P1','set2_001');
+    host.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+    const shield=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+    const spell=h.addToHandRaw(state,'P2',spellDef);
+    const originalHp=host.currentHp;
+    global.useSpell(state,'P2',spell.instanceId,host.instanceId);
+    assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION','defender must get choice');
+    assert.equal(state.pendingEffect.playerId,'P1');
+    global.resolveChoiceSelection(state,'P1',decision==='USE'?shield.instanceId:'DECLINE');
+    assert.equal(shield.faceDown,decision==='USE','food flip only on acceptance');
+    assert.equal(host.currentHp,originalHp-(decision==='USE'?0:100),'targeted damage prevented only on acceptance');
+    assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId),'spell must finalize');
+    assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION');
+  }
+}
+console.log('WAVE2_SHIELD_ARMOR_COMMITTED_SPELL_OK');
