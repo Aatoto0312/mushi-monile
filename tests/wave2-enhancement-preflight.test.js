@@ -548,3 +548,25 @@ console.log('WAVE2_SHIELD_ARMOR_COUNTER_PRECEDENCE_OK');
   assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
 }
 console.log('WAVE2_SHIELD_ARMOR_MIXED_EFFECT_SCOPE_OK');
+
+
+{
+  // Only face-up food can activate shield armor; face-down food must stay inert.
+  const h=require('./helpers.js');
+  const raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  raw.id='test_wave2_shield_face_down_food';raw.implementationStatus='test';raw.cost=0;
+  raw.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:100,ignoreAttributeMultiplier:true}];
+  global.cardRegistry.register(new global.CardDefinition(raw));
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);state.activePlayerId='P2';
+  const target=h.putInsectOnField(state,'P1','set2_001');
+  target.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+  const shield=h.addToFoodRaw(state,'P1',h.defById('set8_052'));shield.faceDown=true;
+  const spell=h.addToHandRaw(state,'P2',global.getCardDefinition(raw.id));
+  const hp=target.currentHp;
+  global.useSpell(state,'P2',spell.instanceId,target.instanceId);
+  assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION');
+  assert.equal(target.currentHp,hp-100,'face-down shield cannot prevent damage');
+  assert.equal(shield.faceDown,true);
+  assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
+}
+console.log('WAVE2_SHIELD_ARMOR_FACE_DOWN_FOOD_OK');
