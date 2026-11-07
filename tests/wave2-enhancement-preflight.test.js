@@ -640,3 +640,22 @@ console.log('WAVE2_SHIELD_ARMOR_TWO_SPELL_LIFECYCLE_OK');
   assert.match(source,/ZONES\.FIELD/);
 }
 console.log('WAVE2_FIREFLY_CENTRAL_ZONE_LOCK_OK');
+
+
+{
+  // Integration test against the real central zone engine, not a string check.
+  const h=require('./helpers.js');
+  for(const blockedPlayer of ['P1','P2']){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+    const host=h.putInsectOnField(state,'P1','set2_001');
+    host.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_050',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+    const revived=h.putInsectOnField(state,blockedPlayer,'set2_001');
+    global.moveCard(state,revived.instanceId,'FIELD','DISCARD',{playerId:blockedPlayer});
+    assert.throws(()=>global.moveCard(state,revived.instanceId,'DISCARD','FIELD',{playerId:blockedPlayer}),/幻惑の蛍袋/,'both players blocked');
+    assert.equal(revived.zone,'DISCARD');
+    host.faceDown=true;
+    global.moveCard(state,revived.instanceId,'DISCARD','FIELD',{playerId:blockedPlayer});
+    assert.equal(revived.zone,'FIELD','hidden pouch host no longer blocks');
+  }
+}
+console.log('WAVE2_FIREFLY_ZONE_ENGINE_INTEGRATION_OK');
