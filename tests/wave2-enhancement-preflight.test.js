@@ -291,3 +291,23 @@ console.log('WAVE2_SCROLL_MULTI_ATTACHMENT_OK');
   assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_CROWN_RECOVERY');
 }
 console.log('WAVE2_SCROLL_CROWN_CHAIN_OK');
+
+
+{
+  const armor=global.getCardDefinition('set6_049');
+  assert.ok(armor.enhancementEffects.some(e=>e.type==='PROTECT_OWN_ARMORED_INSECTS_FROM_OPPONENT_SPELL_DAMAGE_AND_DESTRUCTION_WHILE_FACEUP_FOOD'),'floral armor must declare food protection');
+  const h=require('./helpers.js');
+  for(const foodFaceDown of [false,true])for(const hasArmorAttachment of [false,true]){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+    const host=h.putInsectOnField(state,'P1','set2_001');
+    const originalHp=host.currentHp;
+    if(hasArmorAttachment)host.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+    const food=h.addToFoodRaw(state,'P1',h.defById('set6_049'));
+    food.faceDown=foodFaceDown;
+    const spell=h.addToHandRaw(state,'P2',h.defById('set2_001'));
+    const protectedNow=!foodFaceDown&&hasArmorAttachment;
+    global.applyDamage(state,spell,host,100,'SPELL',spell.instanceId,host.instanceId,{},{deferDestruction:true});
+    assert.equal(host.currentHp,originalHp-(protectedNow?0:100),'floral armor food spell damage gate');
+  }
+}
+console.log('WAVE2_FLORAL_ARMOR_FOOD_DAMAGE_GATE_OK');
