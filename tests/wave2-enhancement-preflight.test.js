@@ -585,3 +585,46 @@ console.log('WAVE2_SHIELD_ARMOR_FACE_DOWN_FOOD_OK');
   assert.equal(shield.faceDown,false,'ineligible target does not consume shield');
 }
 console.log('WAVE2_SHIELD_ARMOR_HIDDEN_TARGET_OK');
+
+
+{
+  // Regression matrix: optional shield choices must leave the committed spell
+  // in a consistent state across both decline and activation, including a
+  // second spell after the shield has been spent.
+  const h=require('./helpers.js');
+  const raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  raw.id='test_wave2_shield_two_spells_regression';raw.implementationStatus='test';raw.cost=0;
+  raw.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:100,ignoreAttributeMultiplier:true}];
+  global.cardRegistry.register(new global.CardDefinition(raw));
+  for(const firstChoice of ['DECLINE','ACTIVATE']){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);state.activePlayerId='P2';
+    const target=h.putInsectOnField(state,'P1','set2_001');
+    target.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+    const shield=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+    const first=h.addToHandRaw(state,'P2',global.getCardDefinition(raw.id));
+    const second=h.addToHandRaw(state,'P2',global.getCardDefinition(raw.id));
+    const initialHp=target.currentHp;
+    global.useSpell(state,'P2',first.instanceId,target.instanceId);
+    assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION');
+    global.resolveChoiceSelection(state,'P1',firstChoice==='DECLINE'?'DECLINE':shield.instanceId);
+    assert.equal(state.pendingEffect,null);
+    assert.equal(first.zone,'DISCARD');
+    assert.equal(target.currentHp,initialHp-(firstChoice==='DECLINE'?100:0));
+    assert.equal(shield.faceDown,firstChoice==='ACTIVATE');
+    const beforeSecond=target.currentHp;
+    global.useSpell(state,'P2',second.instanceId,target.instanceId);
+    if(firstChoice==='DECLINE'){
+      assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION','declined shield stays available');
+      global.resolveChoiceSelection(state,'P1',shield.instanceId);
+      assert.equal(target.currentHp,beforeSecond);
+      assert.equal(shield.faceDown,true);
+    }else{
+      assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION','spent shield cannot reactivate');
+      assert.equal(target.currentHp,beforeSecond-100);
+    }
+    assert.equal(second.zone,'DISCARD');
+    assert.equal(state.pendingEffect,null);
+    assert.equal(state.player('P2').resolving.length,0);
+  }
+}
+console.log('WAVE2_SHIELD_ARMOR_TWO_SPELL_LIFECYCLE_OK');
