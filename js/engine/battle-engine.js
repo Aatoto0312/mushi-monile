@@ -1940,6 +1940,18 @@
     });
   }
 
+  function getShieldArmorFoodCandidates(state,spellPlayerId,targetInstanceId){
+    var targetHolder=findAnywhere(state,targetInstanceId);
+    if(!targetHolder||targetHolder.zone!==ZONES.FIELD||targetHolder.playerId===spellPlayerId||targetHolder.instance.faceDown)return [];
+    var armored=(targetHolder.instance.attachments||[]).some(function(att){var def=getCardDefinition(att.cardId);return !!(def&&def.name&&def.name.indexOf('甲冑')!==-1);});
+    if(!armored)return [];
+    return state.player(targetHolder.playerId).food.filter(function(food){
+      if(food.faceDown)return false;
+      var def=getCardDefinition(food.cardId);
+      return !!(def&&(def.enhancementEffects||[]).some(function(effect){return effect.type==='OPTIONAL_FLIP_SELF_FOOD_TO_PREVENT_OPPONENT_TARGETED_SPELL_ON_ARMORED_INSECT';}));
+    });
+  }
+
   function isOwnArmoredInsectProtectedByFood(state,target,sourceType,sourceInstanceId){
     if(sourceType!=='SPELL'||!target||target.faceDown)return false;
     var targetHolder=findAnywhere(state,target.instanceId),sourceHolder=findAnywhere(state,sourceInstanceId);
@@ -4413,6 +4425,7 @@ function endTurn(state) {
   global.endTurn = endTurn;
   global.useEnhancement = useEnhancement;
   global.getEffectiveColor = getEffectiveColor;
+  global.getShieldArmorFoodCandidates = getShieldArmorFoodCandidates;
   global.resolveOnDestroyedTriggers = resolveOnDestroyedTriggers;
   global.resolveAttachmentDiscarded = resolveAttachmentDiscarded;
   global.resolveEffect = resolveEffect;
