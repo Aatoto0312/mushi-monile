@@ -1311,6 +1311,16 @@
       }
     } else if(continuation.type==='SET_OWN_FOOD_COLOR'){
       if(value!=='DECLINE'){state.player(continuation.playerId).food.forEach(function(food){if(!food.faceDown){food.runtimeFlags=food.runtimeFlags||{};food.runtimeFlags.colorOverride=value;food.runtimeFlags.colorOverrideUntilTurn=continuation.endTurn;}});}
+    } else if(continuation.type==='WAVE2_SHIELD_ARMOR_PROTECTION'){
+      var shieldOpts=Object.assign({},continuation.spellOptions,{shieldArmorDecisionComplete:true});
+      if(value!=='DECLINE'){
+        var shieldFood=getShieldArmorFoodCandidates(state,continuation.spellPlayerId,continuation.targetInstanceId).find(function(food){return food.instanceId===value;});
+        if(shieldFood){shieldFood.faceDown=true;shieldOpts.shieldArmorProtectedTargetId=continuation.targetInstanceId;}
+      }
+      state.pendingEffect=null;
+      var shieldSpell=findInZone(state,continuation.spellPlayerId,ZONES.RESOLVING,continuation.sourceInstanceId);
+      if(shieldSpell)completeCommittedSpell(state,continuation.spellPlayerId,shieldSpell,getCardDefinition(shieldSpell.cardId),continuation.targetInstanceId,shieldOpts,false);
+      resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='WAVE2_COIN_RECOVERY'){
       if(value==='USE'){
         var coin=findInZone(state,continuation.ownerId,ZONES.DISCARD,continuation.attachmentInstanceId);
@@ -1996,6 +2006,7 @@
     var finalZone = ZONES.DISCARD;
     effects.forEach(function (effect) {
       if (!effect) { return; }
+      if(spellOptions.shieldArmorProtectedTargetId===chosenTargetInstanceId&&(effect.requiresTarget||effect.type==='DEAL_DAMAGE_TO_TARGET'))return;
       // Targets were chosen before spell-use triggers. A departed/re-entered or
       // captured target cannot be replaced by a newly selected insect.
       if(spellOptions.committedTargetSnapshots&&(effect.requiresTarget||effect.type==='DEAL_DAMAGE_TO_TARGET'||['EXCHANGE_OPPONENT_FIELD_FOOD','EXCHANGE_INSECTS','EXCHANGE_MATCHING_FORM','DESTROY_OPPONENT_ATTACHMENT','TRANSFER_OWN_ATTACHMENT','DESTROY_OWN_ATTACHMENT_OPTIONAL_DAMAGE','DESTROY_OWN_ATTACHMENT_TO_MOVE_SELF'].indexOf(effect.type)!==-1)){
@@ -2515,6 +2526,15 @@
       }
       if(!Number.isInteger(spellOptions.variablePayment)||spellOptions.variablePayment<0||spellOptions.variablePayment>state.player(playerId).availableCost)throw new Error('追加支払いは使用可能コスト以内の整数を指定してください');
       state.player(playerId).availableCost-=spellOptions.variablePayment;
+    }
+    spellOptions=spellOptions||{};
+    if(!spellOptions.shieldArmorDecisionComplete&&chosenTargetInstanceId&&!Array.isArray(chosenTargetInstanceId)&&(def.cardEffects||[]).some(function(effect){return !!effect.requiresTarget||effect.type==='DEAL_DAMAGE_TO_TARGET';})){
+      var shieldCandidates=getShieldArmorFoodCandidates(state,playerId,chosenTargetInstanceId);
+      if(shieldCandidates.length){
+        var defenderId=state.opponentOf(playerId);
+        state.pendingEffect={type:'CHOICE_SELECTION',playerId:defenderId,controller:defenderId,selectionPurpose:'WAVE2_SHIELD_ARMOR_PROTECTION',prompt:'亀虫の盾甲冑を裏返して術の効果を防ぎますか？',options:[{value:'DECLINE',label:'防がない'}].concat(shieldCandidates.map(function(food){return {value:food.instanceId,label:'盾甲冑を裏返す'};})),continuation:{type:'WAVE2_SHIELD_ARMOR_PROTECTION',spellPlayerId:playerId,sourceInstanceId:held.instanceId,targetInstanceId:chosenTargetInstanceId,spellOptions:spellOptions,deferredVariablePayment:false}};
+        return {pending:true,spellInstance:held,def:def,finalZone:null,foodDelta:0};
+      }
     }
     var finalZone=resolveSpellEffects(state,playerId,held,def,chosenTargetInstanceId,spellOptions);
     if(state.pendingEffect&&(def.cardEffects||[]).some(function(effect){return !!effect.repeat||!!effect.deferFinalization;})){
