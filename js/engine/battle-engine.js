@@ -505,6 +505,21 @@
         resumeAfterSelection(state, { type: 'SERIAL_ZONE_MOVES', moves: remainingMoves, afterResolution:continuation.afterResolution });
         return;
       }
+      // Wave 2 firefly pouch: while attached to a face-up field insect,
+      // neither player may summon an insect from discard.
+      if(nextMove.from===ZONES.DISCARD&&nextMove.to===ZONES.FIELD&&
+         getCardDefinition(currentHolder.instance.cardId)?.type===CardTypes.INSECT&&
+         state.playerOrder.some(function(pid){return state.player(pid).field.some(function(host){
+           return !host.faceDown&&(host.attachments||[]).some(function(att){
+             var attachmentDef=getCardDefinition(att.cardId);
+             return !!(attachmentDef&&(attachmentDef.enhancementEffects||[]).some(function(effect){
+               return effect.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS';
+             }));
+           });
+         });})){
+        resumeAfterSelection(state,{type:'SERIAL_ZONE_MOVES',moves:remainingMoves,afterResolution:continuation.afterResolution});
+        return;
+      }
       var serialMoved = moveCard(state, nextMove.instanceId, nextMove.from, nextMove.to, {
         playerId: nextMove.playerId || currentHolder.playerId,
         faceDown: nextMove.faceDown,
