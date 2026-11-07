@@ -269,3 +269,25 @@ console.log('WAVE2_SCROLL_RECOVERY_OK');
   assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SCROLL_RECOVERY','both scrolls must finish');
 }
 console.log('WAVE2_SCROLL_MULTI_ATTACHMENT_OK');
+
+
+{
+  // A scroll and crown can share one host. Recovery must advance through
+  // both optional effects without losing the pending continuation.
+  const h=require('./helpers.js');
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+  const host=h.putInsectOnField(state,'P1','set2_001');
+  const scroll={instanceId:state.nextInstanceId(),cardId:'set6_054',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT',chosenColor:'GREEN'};
+  const crown={instanceId:state.nextInstanceId(),cardId:'set7_056',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'};
+  host.attachments.push(scroll,crown);
+  global.destroyInsect(state,host.instanceId,'ATTACK',null,null,{skipTerritoryDraw:true});
+  assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_SCROLL_RECOVERY');
+  global.resolveChoiceSelection(state,'P1','USE');
+  assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_CROWN_RECOVERY','crown choice must follow scroll');
+  global.resolveChoiceSelection(state,'P1','USE');
+  assert.ok(state.player('P1').hand.some(card=>card.instanceId===scroll.instanceId));
+  assert.ok(state.player('P1').food.some(card=>card.instanceId===crown.instanceId));
+  assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SCROLL_RECOVERY');
+  assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_CROWN_RECOVERY');
+}
+console.log('WAVE2_SCROLL_CROWN_CHAIN_OK');
