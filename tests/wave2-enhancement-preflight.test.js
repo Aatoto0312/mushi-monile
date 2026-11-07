@@ -311,3 +311,23 @@ console.log('WAVE2_SCROLL_CROWN_CHAIN_OK');
   }
 }
 console.log('WAVE2_FLORAL_ARMOR_FOOD_DAMAGE_GATE_OK');
+
+
+{
+  // Direct spell destruction is prevented only with face-up floral armor food
+  // and a matching armor-named enhancement on the threatened insect.
+  const h=require('./helpers.js');
+  for(const sourceType of ['SPELL','ATTACK','EFFECT'])for(const foodFaceDown of [false,true])for(const hasArmorAttachment of [false,true]){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+    const host=h.putInsectOnField(state,'P1','set2_001');
+    if(hasArmorAttachment)host.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+    const food=h.addToFoodRaw(state,'P1',h.defById('set6_049'));
+    food.faceDown=foodFaceDown;
+    const source=h.addToHandRaw(state,'P2',h.defById('set2_001'));
+    const protectedNow=sourceType==='SPELL'&&!foodFaceDown&&hasArmorAttachment;
+    global.destroyInsect(state,host.instanceId,sourceType,source.instanceId,null,{skipTerritoryDraw:true});
+    const remains=state.player('P1').field.some(card=>card.instanceId===host.instanceId);
+    assert.equal(remains,protectedNow,'floral armor direct destruction gate '+[sourceType,foodFaceDown,hasArmorAttachment].join('/'));
+  }
+}
+console.log('WAVE2_FLORAL_ARMOR_DIRECT_DESTRUCTION_GATE_OK');
