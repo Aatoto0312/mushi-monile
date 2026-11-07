@@ -7,7 +7,7 @@ r.test('Five restriction-only attack skills are fully wired without phantom effe
  for(const id of ['set7_003','set7_017'])r.assertEqual(getCardDefinition(id).skills[1].usageLimit,'ONCE_PER_FIELD_STAY');
 });
 r.test('Cost-limited and colorless-only skills reject invalid targets',()=>{
- for(const [id,valid,invalid] of [['set7_015','set2_016','set6_016'],['set7_017','set7_049','set2_001']]){
+ for(const [id,valid,invalid] of [['set7_015','set7_049','set6_016'],['set7_017','set7_049','set2_001']]){
   const {s,a,skill}=setup(id);const yes=h.putInsectOnField(s,'P2',valid,{hp:9999}),no=h.putInsectOnField(s,'P2',invalid,{hp:9999});
   const targets=getLegalAttackTargets(s,a.instanceId,skill.id).filter(t=>t.targetType==='INSECT').map(t=>t.instance.instanceId);
   r.assert(targets.includes(yes.instanceId),id+' valid');r.assert(!targets.includes(no.instanceId),id+' invalid');
