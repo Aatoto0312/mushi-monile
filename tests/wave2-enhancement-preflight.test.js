@@ -43,6 +43,7 @@ console.log('WAVE2_PREFLIGHT_OK 9 catalog entries verified; no PLAYABLE promotio
 {
   const scroll=global.getCardDefinition('set6_054');
   assert.equal(scroll.attachmentHostFamilySuffix,'ナナフシ科');
+  assert.deepEqual(scroll.enhancementEffects.find(effect=>effect.type==='COLOR_OVERRIDE')?.colors,['RED','BLUE','GREEN'],'scroll must offer exactly the three printed colors');
   const family=catalog.filter(card=>card.type==='INSECT'&&(card.tags||[]).some(tag=>tag.endsWith('ナナフシ科')));
   const outsiders=catalog.filter(card=>card.type==='INSECT'&&!(card.tags||[]).some(tag=>tag.endsWith('ナナフシ科')));
   assert.ok(family.length>0&&outsiders.length>0,'both host categories must exist');
