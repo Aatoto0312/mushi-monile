@@ -466,3 +466,27 @@ console.log('WAVE2_SHIELD_ARMOR_UNTARGETED_SPELL_OK');
   assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
 }
 console.log('WAVE2_SHIELD_ARMOR_MULTIPLE_FOOD_CHOICES_OK');
+
+
+{
+  // Protection is scoped to the armored insect actually selected as a spell target.
+  const h=require('./helpers.js');
+  const raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  raw.id='test_wave2_shield_target_scope';raw.implementationStatus='test';raw.cost=0;
+  raw.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:100,ignoreAttributeMultiplier:true}];
+  global.cardRegistry.register(new global.CardDefinition(raw));
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);state.activePlayerId='P2';
+  const armored=h.putInsectOnField(state,'P1','set2_001');
+  armored.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+  const unarmored=h.putInsectOnField(state,'P1','set2_001');
+  const shield=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+  const spell=h.addToHandRaw(state,'P2',global.getCardDefinition(raw.id));
+  const armoredHp=armored.currentHp,unarmoredHp=unarmored.currentHp;
+  global.useSpell(state,'P2',spell.instanceId,unarmored.instanceId);
+  assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION','unarmored target must not offer shield');
+  assert.equal(armored.currentHp,armoredHp,'other armored insect unchanged');
+  assert.equal(unarmored.currentHp,unarmoredHp-100,'actual unarmored target takes damage');
+  assert.equal(shield.faceDown,false,'shield remains available');
+  assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
+}
+console.log('WAVE2_SHIELD_ARMOR_TARGET_SCOPE_OK');
