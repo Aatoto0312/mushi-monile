@@ -368,7 +368,7 @@ console.log('WAVE2_SHIELD_ARMOR_ELIGIBILITY_OK');
   base.id='test_wave2_shield_target_spell';
   base.implementationStatus='test';
   base.cost=0;
-  base.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,damage:100}];
+  base.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:100,ignoreAttributeMultiplier:true}];
   global.cardRegistry.register(new global.CardDefinition(base));
   const spellDef=global.getCardDefinition(base.id);
   for(const decision of ['DECLINE','USE']){
