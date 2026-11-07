@@ -230,3 +230,21 @@ for(const attack of [true,false])for(const accept of [true,false]){
   else assert.equal(s.player('P1').hand.length,initialHand,'decline does not draw');
 }
 console.log('WAVE2_COIN_RECOVERY_OK');
+
+
+for(const attack of [true,false])for(const accept of [true,false]){
+  const h=require('./helpers.js');
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+  const host=h.putInsectOnField(state,'P1','set2_001');
+  const scroll={instanceId:state.nextInstanceId(),cardId:'set6_054',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT',chosenColor:'BLUE'};
+  host.attachments.push(scroll);
+  global.destroyInsect(state,host.instanceId,attack?'ATTACK':'EFFECT',null,null,{skipTerritoryDraw:true});
+  if(attack){
+    assert.equal(state.pendingEffect&&state.pendingEffect.selectionPurpose,'WAVE2_SCROLL_RECOVERY','attack destruction must offer scroll recovery');
+    global.resolveChoiceSelection(state,'P1',accept?'USE':'DECLINE');
+  }else assert.notEqual(state.pendingEffect&&state.pendingEffect.selectionPurpose,'WAVE2_SCROLL_RECOVERY','non-attack destruction must not offer scroll recovery');
+  const expectedZone=attack&&accept?'hand':'discard';
+  assert.ok(state.player('P1')[expectedZone].some(c=>c.instanceId===scroll.instanceId),'scroll destination '+expectedZone);
+  assert.notEqual(state.pendingEffect&&state.pendingEffect.selectionPurpose,'WAVE2_SCROLL_RECOVERY','scroll recovery must not prompt twice');
+}
+console.log('WAVE2_SCROLL_RECOVERY_OK');
