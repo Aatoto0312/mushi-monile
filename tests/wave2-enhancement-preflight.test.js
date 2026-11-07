@@ -331,3 +331,14 @@ console.log('WAVE2_FLORAL_ARMOR_FOOD_DAMAGE_GATE_OK');
   }
 }
 console.log('WAVE2_FLORAL_ARMOR_DIRECT_DESTRUCTION_GATE_OK');
+
+
+{
+  const shield=global.getCardDefinition('set8_052');
+  const guard=shield.enhancementEffects.find(e=>e.type==='OPTIONAL_FLIP_SELF_FOOD_TO_PREVENT_OPPONENT_TARGETED_SPELL_ON_ARMORED_INSECT');
+  assert.ok(guard,'shield armor must declare optional target protection');
+  assert.equal(guard.requiresFaceUpFood,true);
+  assert.equal(guard.requiresOwnArmoredTarget,true);
+  assert.equal(shield.isPlayable(),false,'metadata alone must never promote shield armor');
+}
+console.log('WAVE2_SHIELD_ARMOR_EFFECT_CONTRACT_OK');
