@@ -628,3 +628,25 @@ console.log('WAVE2_SHIELD_ARMOR_HIDDEN_TARGET_OK');
   }
 }
 console.log('WAVE2_SHIELD_ARMOR_TWO_SPELL_LIFECYCLE_OK');
+
+
+{
+  // Firefly pouch must block both players' discard-to-field insect moves
+  // while attached, but permit revival after its host is face-down.
+  const h=require('./helpers.js');
+  for(const blockedPlayer of ['P1','P2']){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+    const host=h.putInsectOnField(state,'P1','set2_001');
+    host.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_050',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+    const revived=h.putInsectOnField(state,blockedPlayer,'set2_001');
+    const id=revived.instanceId;
+    global.moveCard(state,id,'FIELD','DISCARD',{playerId:blockedPlayer});
+    assert.equal(revived.zone,'DISCARD');
+    global.resumeAfterSelection(state,{type:'SERIAL_ZONE_MOVES',moves:[{instanceId:id,sourcePlayerId:blockedPlayer,playerId:blockedPlayer,from:'DISCARD',to:'FIELD'}]});
+    assert.equal(revived.zone,'DISCARD','firefly lock blocks '+blockedPlayer);
+    host.faceDown=true;
+    global.resumeAfterSelection(state,{type:'SERIAL_ZONE_MOVES',moves:[{instanceId:id,sourcePlayerId:blockedPlayer,playerId:blockedPlayer,from:'DISCARD',to:'FIELD'}]});
+    assert.equal(revived.zone,'FIELD','hidden host releases lock for '+blockedPlayer);
+  }
+}
+console.log('WAVE2_FIREFLY_DISCARD_REVIVAL_LOCK_OK');
