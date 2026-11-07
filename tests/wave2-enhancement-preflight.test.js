@@ -634,7 +634,7 @@ console.log('WAVE2_SHIELD_ARMOR_TWO_SPELL_LIFECYCLE_OK');
   // The zone engine already enforces the firefly pouch rule for all
   // discard-to-field insect transfers, including serial revival effects.
   const fs=require('node:fs'),path=require('node:path');
-  const source=fs.readFileSync(path.join(__dirname,'../js/engine/game-state.js'),'utf8');
+  const source=fs.readFileSync(path.join(__dirname,'../js/engine/zone-engine.js'),'utf8');
   assert.match(source,/BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS/);
   assert.match(source,/ZONES\.DISCARD/);
   assert.match(source,/ZONES\.FIELD/);
