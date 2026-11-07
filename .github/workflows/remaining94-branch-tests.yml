@@ -1,0 +1,55 @@
+name: Remaining 94 isolated regression tests
+# Verify latest sequence evidence additions
+on:
+  push:
+    branches:
+      - dev/remaining94-wave1-20261106
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Focused SET7-44
+        run: node tests/set7-44-delayed-hp.test.js
+      - name: Ryujin and queen bee bag regression
+        run: node tests/ryujin-bee-bag-regression.test.js
+      - name: SET7-008 dragonfly regression
+        run: node tests/set7-008-dragonfly.test.js
+      - name: Three protect-other insects regression
+        run: node tests/protect-other-insects.test.js
+      - name: SET7-020 weakness regression
+        run: node tests/set7-020-weakness.test.js
+      - name: SET7-034 hidden-food scaling regression
+        run: node tests/set7-034-hidden-food.test.js
+      - name: Two summon discount insects
+        run: node tests/economy-new-insects.test.js
+      - name: Tobinanafushi entry-destruction regression
+        run: node tests/set6-040-entry-destruction.test.js
+      - name: Omizuao larva spell-trigger regression
+        run: node tests/set6-036-spell-trigger.test.js
+      - name: Runtime card inventory
+        run: node tests/card-inventory-report.js
+      - name: Oni spider first-hit shields
+        run: node tests/set7-oni-spider-shields.test.js
+      - name: Gigas Slash next-turn lock
+        run: node tests/set8-006-gigas-slash.test.js
+      - name: Poison mist bomb regressions
+        run: node tests/set6-poison-mist.test.js
+      - name: Territory retaliation regressions
+        run: node tests/set8-territory-retaliation.test.js
+      - name: Wave 2 enhancement partial mapping
+        run: node tests/wave2-enhancement-preflight.test.js
+      - name: Full engine regression
+        run: node tests/run-all.js
+      - name: Server dependency install
+        run: npm ci --prefix server --ignore-scripts
+      - name: Online server regression
+        run: node --test server/test/runtime.test.cjs server/test/hawk-queen.test.cjs server/test/lasting-hp-spell.test.cjs

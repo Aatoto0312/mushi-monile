@@ -1,5 +1,21 @@
 'use strict';
 module.exports={
+  "set6_037":{"id":"set6_037","name":"キマダラカメムシ","status":"PLAYABLE","audited":false,"source":{"verification":"CATALOG_TEXT_MATCH_PENDING_IMAGE_AUDIT","provenance":"Catalog text; printed image and ruling audit pending."},"officialRulings":[],"engine":["tests/set6-poison-mist.test.js"],"cpu":["tests/set6-poison-mist.test.js"],"human":["server/browser/predicate-paths.cjs"],"online":["server/test/predicate-capabilities.test.cjs"],"serialization":["tests/set6-poison-mist.test.js"],"unresolvedRulings":[],"userRulings":[],"notes":"Self-destruct after attack, then target choice and 500 ability damage without territory draw. Specific online UI audit pending."},
+  "set6_042":{"id":"set6_042","name":"ナガメ","status":"PLAYABLE","audited":false,"source":{"verification":"CATALOG_TEXT_MATCH_PENDING_IMAGE_AUDIT","provenance":"Catalog text; printed image and ruling audit pending."},"officialRulings":[],"engine":["tests/set6-poison-mist.test.js"],"cpu":["tests/set6-poison-mist.test.js"],"human":["server/browser/predicate-paths.cjs"],"online":["server/test/predicate-capabilities.test.cjs"],"serialization":["tests/set6-poison-mist.test.js"],"unresolvedRulings":[],"userRulings":[],"notes":"Self-destruct after attack, then target choice and 200 ability damage without territory draw. Specific online UI audit pending."},
+
+  "set8_006":{"id":"set8_006","name":"ギガスオオアリ","status":"PLAYABLE","audited":false,"source":{"verification":"CATALOG_TEXT_MATCH_PENDING_IMAGE_AUDIT","provenance":"Catalog text mapping; printed scan and specific UI/WSS paths not independently audited."},"officialRulings":[],"engine":["tests/set8-006-gigas-slash.test.js"],"cpu":["tests/set8-006-gigas-slash.test.js"],"human":["server/browser/predicate-paths.cjs"],"online":["server/test/predicate-capabilities.test.cjs"],"serialization":["tests/set8-006-gigas-slash.test.js"],"unresolvedRulings":[],"userRulings":[],"notes":"Next own turn restriction uses turn+2, not next opponent turn. Individual integration audit pending."},
+
+  "set7_011": {
+    "id":"set7_011","name":"アカオニグモ","status":"PLAYABLE","audited":false,
+    "source":{"verification":"CATALOG_TEXT_MATCH_PENDING_IMAGE_AUDIT","provenance":"Canonical catalog text compared against metadata; printed scan not independently audited."},
+    "officialRulings":[],"engine":["tests/set7-oni-spider-shields.test.js"],"cpu":["tests/set7-oni-spider-shields.test.js"],"human":["server/browser/predicate-paths.cjs"],"online":["server/test/predicate-capabilities.test.cjs"],"serialization":["tests/set7-oni-spider-shields.test.js"],"unresolvedRulings":[],"userRulings":[],"notes":"Next-turn first attack hit shield; independent image, CPU/UI and WSS card-specific audit pending."
+  },
+  "set7_012": {
+    "id":"set7_012","name":"アオオニグモ","status":"PLAYABLE","audited":false,
+    "source":{"verification":"CATALOG_TEXT_MATCH_PENDING_IMAGE_AUDIT","provenance":"Canonical catalog text compared against metadata; printed scan not independently audited."},
+    "officialRulings":[],"engine":["tests/set7-oni-spider-shields.test.js"],"cpu":["tests/set7-oni-spider-shields.test.js"],"human":["server/browser/predicate-paths.cjs"],"online":["server/test/predicate-capabilities.test.cjs"],"serialization":["tests/set7-oni-spider-shields.test.js"],"unresolvedRulings":[],"userRulings":[],"notes":"Next-turn first spell hit shield; independent image, CPU/UI and WSS card-specific audit pending."
+  },
+
   "set7_031": {
     "id": "set7_031",
     "name": "ニホンミツバチ",
