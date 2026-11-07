@@ -1,0 +1,5 @@
+'use strict';require('./engine-loader.js');const h=require('./helpers.js'),R=require('./lib.js'),r=new R();
+for(const [id,source] of [['set7_011','ATTACK'],['set7_012','SPELL']]){
+r.test(id+' blocks only first matching hit during next opponent turn',()=>{const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.turnNumber=3;const a=h.putInsectOnField(s,'P1',id),target=h.putInsectOnField(s,'P2','set2_001',{hp:9999});const d=getCardDefinition(id);r.assert(d.isPlayable());const skill=d.skills[1];performAttack(s,a.instanceId,target.instanceId,'INSECT',skill.id);const shields=a.runtimeFlags.damageShields||[];r.assertEqual(shields.length,1);r.assertEqual(shields[0].sourceType,source);r.assertEqual(shields[0].startTurn,4);r.assertEqual(shields[0].endTurn,4);const before=a.currentHp;s.turnNumber=4;applyDamage(s,target,a,100,source,target.instanceId,a.instanceId,{});r.assertEqual(a.currentHp,before);applyDamage(s,target,a,100,source,target.instanceId,a.instanceId,{});r.assertEqual(a.currentHp,before-100);});
+}
+module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});

@@ -1,0 +1,4 @@
+'use strict';require('./engine-loader.js');const h=require('./helpers.js'),R=require('./lib.js'),r=new R();
+r.test('SET7-020 has a one-use weakness attack with no phantom effect',()=>{const d=getCardDefinition('set7_020'),skill=d.skills[1];r.assert(d.isPlayable());r.assertEqual(skill.usageLimit,'ONCE_PER_FIELD_STAY');r.assertEqual(skill.forceWeakness,true);r.assertEqual(skill.effects.length,0);});
+r.test('SET7-020 weakness override doubles even neutral-color attacks',()=>{const s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.turnNumber=3;const a=h.putInsectOnField(s,'P1','set7_020'),b=h.putInsectOnField(s,'P2','set2_001',{hp:9999});const skill=getCardDefinition('set7_020').skills[1];const result=performAttack(s,a.instanceId,b.instanceId,'INSECT',skill.id);r.assertEqual(result.multiplier,2);});
+module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});

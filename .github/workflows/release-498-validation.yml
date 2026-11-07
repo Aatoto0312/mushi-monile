@@ -1,0 +1,57 @@
+name: Remaining 18 cards to 498 release validation
+on:
+  push:
+    branches:
+      - release/remaining18-to-498-20261108
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  full-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install WebSocket dependency
+        run: npm ci --prefix server
+      - name: Print canonical 498-card inventory
+        run: node tests/card-inventory-report.js
+      - name: Full browser-game regression
+        run: node tests/run-all.js
+      - name: Remaining card scenario regressions
+        run: |
+          node tests/attack-restriction-wave.test.js
+          node tests/economy-new-insects.test.js
+          node tests/food-dependent-insects.test.js
+          node tests/protect-other-insects.test.js
+          node tests/ryujin-bee-bag-regression.test.js
+          node tests/set6-036-spell-trigger.test.js
+          node tests/set6-040-entry-destruction.test.js
+          node tests/set6-poison-mist.test.js
+          node tests/set7-008-dragonfly.test.js
+          node tests/set7-020-weakness.test.js
+          node tests/set7-034-hidden-food.test.js
+          node tests/set7-44-delayed-hp.test.js
+          node tests/set7-oni-spider-shields.test.js
+          node tests/set8-006-gigas-slash.test.js
+          node tests/set8-territory-retaliation.test.js
+      - name: Online rooms, recovery and WebSocket regression
+        run: >-
+          node --test --test-concurrency=1
+          server/test/runtime.test.cjs
+          server/test/rooms.test.cjs
+          server/test/transport.test.cjs
+          server/test/spectators.test.cjs
+          server/test/entry-selection-rooms.test.cjs
+          server/test/discard-deploy.test.cjs
+          server/test/known-mirror-deckout.test.cjs
+          server/test/unsupported-engine-room.test.cjs
+          server/test/named-enhancement-recovery.test.cjs
+          server/test/attack-kill-retrieval.test.cjs
+          server/test/host-attachment.test.cjs
+          server/test/food-wave-rooms.test.cjs
+          server/test/predicate-capabilities.test.cjs
