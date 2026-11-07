@@ -342,3 +342,19 @@ console.log('WAVE2_FLORAL_ARMOR_DIRECT_DESTRUCTION_GATE_OK');
   assert.equal(shield.isPlayable(),false,'metadata alone must never promote shield armor');
 }
 console.log('WAVE2_SHIELD_ARMOR_EFFECT_CONTRACT_OK');
+
+
+{
+  const h=require('./helpers.js');
+  for(const faceDown of [false,true])for(const hasArmor of [false,true])for(const ownSpell of [false,true]){
+    const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+    const host=h.putInsectOnField(state,'P1','set2_001');
+    if(hasArmor)host.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+    const food=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+    food.faceDown=faceDown;
+    const candidates=global.getShieldArmorFoodCandidates(state,ownSpell?'P1':'P2',host.instanceId);
+    assert.equal(candidates.length,(!faceDown&&hasArmor&&!ownSpell)?1:0,'shield food eligibility '+[faceDown,hasArmor,ownSpell].join('/'));
+    if(candidates.length)assert.equal(candidates[0].instanceId,food.instanceId);
+  }
+}
+console.log('WAVE2_SHIELD_ARMOR_ELIGIBILITY_OK');
