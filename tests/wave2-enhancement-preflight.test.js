@@ -420,3 +420,24 @@ console.log('WAVE2_SHIELD_ARMOR_COMMITTED_SPELL_OK');
   }
 }
 console.log('WAVE2_SHIELD_ARMOR_MULTI_EFFECT_OK');
+
+
+{
+  // A shield decision must not be offered for an untargeted area spell.
+  const h=require('./helpers.js');
+  const raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  raw.id='test_wave2_shield_untargeted_spell';
+  raw.implementationStatus='test';raw.cost=0;
+  raw.cardEffects=[{type:'NEXT_OPPONENT_CARD_COUNTER',cardType:'SPELL'}];
+  global.cardRegistry.register(new global.CardDefinition(raw));
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);state.activePlayerId='P2';
+  const target=h.putInsectOnField(state,'P1','set2_001');
+  target.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+  const shield=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+  const spell=h.addToHandRaw(state,'P2',global.getCardDefinition(raw.id));
+  global.useSpell(state,'P2',spell.instanceId);
+  assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION','untargeted spell must not trigger shield');
+  assert.equal(shield.faceDown,false);
+  assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
+}
+console.log('WAVE2_SHIELD_ARMOR_UNTARGETED_SPELL_OK');
