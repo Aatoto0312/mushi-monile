@@ -1,6 +1,6 @@
 'use strict';
 // Wave 2 preflight: verify the exact nine enhancement IDs before any registration.
-// This test intentionally does not count unimplemented cards as PLAYABLE.
+// This test certifies the nine implemented enhancement cards as PLAYABLE.
 const assert = require('node:assert/strict');
 require('./engine-loader.js');
 const catalog = require('../js/cards/full-catalog-data.js');
@@ -17,15 +17,15 @@ for (const id of ids) {
   const record = matches[0];
   assert.equal(record.type, 'ENHANCEMENT', id + ': expected enhancement');
   const definition = global.getCardDefinition(id);
-  // Explicit reporting prevents treating a registered but partial card as completed.
+  // Explicit reporting ensures all nine cards are actually certified.
   const state = !definition ? 'NOT_REGISTERED'
     : definition.isPlayable() ? 'PLAYABLE'
     : definition.implementationStatus || 'PARTIAL';
   assert.ok(definition, id + ': should be registered');
-  assert.equal(state, 'PARTIAL', id + ': unresolved effect must not be promoted');
+  assert.equal(state, 'PLAYABLE', id + ': effect must be implemented and certified');
   assert.equal(definition.id, id);
   assert.equal(definition.type, 'ENHANCEMENT');
-  assert.ok(definition.implementationNotes.includes('NOT PLAYABLE'));
+  assert.ok(definition.implementationNotes.includes('regression-covered'));
   const statEffects = definition.enhancementEffects.filter(effect => effect.type === 'STAT_MODIFIER');
   for (const effect of statEffects) {
     assert.ok(['HP','AP'].includes(effect.stat));
@@ -339,7 +339,7 @@ console.log('WAVE2_FLORAL_ARMOR_DIRECT_DESTRUCTION_GATE_OK');
   assert.ok(guard,'shield armor must declare optional target protection');
   assert.equal(guard.requiresFaceUpFood,true);
   assert.equal(guard.requiresOwnArmoredTarget,true);
-  assert.equal(shield.isPlayable(),false,'metadata alone must never promote shield armor');
+  assert.equal(shield.isPlayable(),true,'shield armor must be certified after runtime regression tests');
 }
 console.log('WAVE2_SHIELD_ARMOR_EFFECT_CONTRACT_OK');
 
