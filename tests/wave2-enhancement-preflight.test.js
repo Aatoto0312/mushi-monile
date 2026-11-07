@@ -248,3 +248,24 @@ for(const attack of [true,false])for(const accept of [true,false]){
   assert.notEqual(state.pendingEffect&&state.pendingEffect.selectionPurpose,'WAVE2_SCROLL_RECOVERY','scroll recovery must not prompt twice');
 }
 console.log('WAVE2_SCROLL_RECOVERY_OK');
+
+
+{
+  // Two scrolls on one destroyed host must resolve independently, including a
+  // declined first recovery followed by an accepted second recovery.
+  const h=require('./helpers.js');
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);
+  const host=h.putInsectOnField(state,'P1','set2_001');
+  const first={instanceId:state.nextInstanceId(),cardId:'set6_054',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT',chosenColor:'RED'};
+  const second={instanceId:state.nextInstanceId(),cardId:'set6_054',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT',chosenColor:'GREEN'};
+  host.attachments.push(first,second);
+  global.destroyInsect(state,host.instanceId,'ATTACK',null,null,{skipTerritoryDraw:true});
+  assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_SCROLL_RECOVERY');
+  global.resolveChoiceSelection(state,'P1','DECLINE');
+  assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_SCROLL_RECOVERY','second scroll should get its own choice');
+  global.resolveChoiceSelection(state,'P1','USE');
+  assert.ok(state.player('P1').discard.some(card=>card.instanceId===first.instanceId),'declined scroll stays discarded');
+  assert.ok(state.player('P1').hand.some(card=>card.instanceId===second.instanceId),'accepted second scroll returns');
+  assert.notEqual(state.pendingEffect?.selectionPurpose,'WAVE2_SCROLL_RECOVERY','both scrolls must finish');
+}
+console.log('WAVE2_SCROLL_MULTI_ATTACHMENT_OK');
