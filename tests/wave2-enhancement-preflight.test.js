@@ -441,3 +441,28 @@ console.log('WAVE2_SHIELD_ARMOR_MULTI_EFFECT_OK');
   assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
 }
 console.log('WAVE2_SHIELD_ARMOR_UNTARGETED_SPELL_OK');
+
+
+{
+  // Two face-up shields: the defender chooses exactly one to consume.
+  const h=require('./helpers.js');
+  const raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  raw.id='test_wave2_shield_two_food_choices';raw.implementationStatus='test';raw.cost=0;
+  raw.cardEffects=[{type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:100,ignoreAttributeMultiplier:true}];
+  global.cardRegistry.register(new global.CardDefinition(raw));
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);state.activePlayerId='P2';
+  const target=h.putInsectOnField(state,'P1','set2_001');
+  target.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+  const first=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+  const second=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+  const spell=h.addToHandRaw(state,'P2',global.getCardDefinition(raw.id));
+  const hp=target.currentHp;
+  global.useSpell(state,'P2',spell.instanceId,target.instanceId);
+  assert.deepEqual(state.pendingEffect.options.map(x=>x.value),['DECLINE',first.instanceId,second.instanceId]);
+  global.resolveChoiceSelection(state,'P1',second.instanceId);
+  assert.equal(first.faceDown,false,'unselected food stays face up');
+  assert.equal(second.faceDown,true,'selected food flips');
+  assert.equal(target.currentHp,hp,'damage prevented');
+  assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
+}
+console.log('WAVE2_SHIELD_ARMOR_MULTIPLE_FOOD_CHOICES_OK');
