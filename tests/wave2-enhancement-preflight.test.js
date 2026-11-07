@@ -520,3 +520,31 @@ console.log('WAVE2_SHIELD_ARMOR_TARGET_SCOPE_OK');
   assert.equal(spell.zone,'DISCARD','countered spell is discarded');
 }
 console.log('WAVE2_SHIELD_ARMOR_COUNTER_PRECEDENCE_OK');
+
+
+{
+  // Shield blocks only effects aimed at the protected insect, not other
+  // independent effects printed on the same spell.
+  const h=require('./helpers.js');
+  const raw=JSON.parse(JSON.stringify(global.getCardDefinition('set2_054')));
+  raw.id='test_wave2_shield_mixed_effect_spell';raw.implementationStatus='test';raw.cost=0;
+  raw.cardEffects=[
+    {type:'DEAL_DAMAGE_TO_TARGET',target:'OPPONENT_FIELD_INSECT',requiresTarget:true,amount:100,ignoreAttributeMultiplier:true},
+    {type:'NEXT_OPPONENT_CARD_COUNTER',cardType:'SPELL'}
+  ];
+  global.cardRegistry.register(new global.CardDefinition(raw));
+  const state=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(state);state.activePlayerId='P2';
+  const target=h.putInsectOnField(state,'P1','set2_001');
+  target.attachments.push({instanceId:state.nextInstanceId(),cardId:'set8_052',ownerId:'P1',controllerId:'P1',zone:'ATTACHMENT'});
+  const shield=h.addToFoodRaw(state,'P1',h.defById('set8_052'));
+  const spell=h.addToHandRaw(state,'P2',global.getCardDefinition(raw.id));
+  const hp=target.currentHp,before=(state.pendingUseCounters||[]).length;
+  global.useSpell(state,'P2',spell.instanceId,target.instanceId);
+  assert.equal(state.pendingEffect?.selectionPurpose,'WAVE2_SHIELD_ARMOR_PROTECTION');
+  global.resolveChoiceSelection(state,'P1',shield.instanceId);
+  assert.equal(target.currentHp,hp,'targeted damage prevented');
+  assert.equal(shield.faceDown,true);
+  assert.equal((state.pendingUseCounters||[]).length,before+1,'unrelated spell effect still resolves');
+  assert.ok(state.player('P2').discard.some(card=>card.instanceId===spell.instanceId));
+}
+console.log('WAVE2_SHIELD_ARMOR_MIXED_EFFECT_SCOPE_OK');
