@@ -1565,6 +1565,16 @@
       if(ids.some(function(id){return !legalEntries.some(function(card){return card.instanceId===id;});}))throw new Error('登場時効果の対象が現在の条件を満たしません');
       if(c.effect.distinctColor){var selectedColors={};ids.forEach(function(id){var card=legalEntries.find(function(card){return card.instanceId===id;}),color=getEffectiveColor(card);if(selectedColors[color])throw new Error('同じ色の虫は1つまでです');selectedColors[color]=true;});}
       var entryTargetPlayer=c.effect.controller==='OPPONENT'?state.opponentOf(c.playerId):c.playerId;
+      // Preserve damage taken while a continuous discard-count HP bonus changes.
+      // Concealed discards have no identity for other card queries, but colony
+      // specifically counts their quantity.
+      var changingDiscardFaces=c.effect.operation==='SET_FACE'&&c.effect.from===ZONES.DISCARD;
+      var colonyHpBefore=changingDiscardFaces?state.player(entryTargetPlayer).field.filter(function(host){
+        var d=!host.faceDown&&getCardDefinition(host.cardId);
+        return d&&(d.continuousStatModifiers||[]).some(function(rule){
+          return rule.type==='OWN_FACE_DOWN_DISCARD_COUNT'&&(rule.stats||[]).indexOf('HP')!==-1;
+        });
+      }).map(function(host){return {host:host,maxHp:calculateMaxHp(host,state)};}):[];
       ids.forEach(function(id){var card=legalEntries.filter(function(candidate){return candidate.instanceId===id;})[0];
         if(c.effect.operation==='SET_FACE')card.faceDown=c.effect.targetFaceDown;
         else if(c.effect.operation==='STAT_MODIFIER')addStatModifier(state,card,{sourceInstanceId:c.sourceInstanceId,stat:c.effect.stat,amount:c.effect.amount});
@@ -1575,6 +1585,10 @@
           moveCard(state,id,c.effect.from,c.effect.to,{playerId:entryTargetPlayer,faceDown:c.effect.targetFaceDown,runtimeFlags:entryFlags});
         }
         else throw new Error('未対応の登場時操作');
+      });
+      colonyHpBefore.forEach(function(record){
+        if(record.host.zone!==ZONES.FIELD)return;
+        record.host.currentHp+=calculateMaxHp(record.host,state)-record.maxHp;
       });
       if(ids.length&&c.effect.sourceGrowth){var growHolder=findAnywhere(state,c.sourceInstanceId),growSource=growHolder&&growHolder.zone===ZONES.FIELD&&growHolder.instance;if(growSource&&(growSource.runtimeFlags.fieldEntrySerial||0)===c.effect.sourceEntrySerial)(c.effect.sourceGrowth.stats||[]).forEach(function(stat){addStatModifier(state,growSource,{sourceInstanceId:c.sourceInstanceId,stat:stat,amount:c.effect.sourceGrowth.amount,duration:'FIELD_STAY'});});}
       return ids;
