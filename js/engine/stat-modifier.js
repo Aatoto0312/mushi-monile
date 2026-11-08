@@ -47,6 +47,7 @@
       if(rule.type==='SOLE_VISIBLE_OWN_INSECT'&&player.field.filter(function(c){return !c.faceDown;}).length===1){total+=rule.amount;}
       if(rule.type==='RUNTIME_COUNTER'){total+=(instance.runtimeFlags&&instance.runtimeFlags[rule.flag])||0;}
       if(rule.type==='OWN_FACE_DOWN_FOOD_COUNT'){total+=player.food.filter(function(card){return card.faceDown;}).length*rule.multiplier;}
+      if(rule.type==='OWN_FACE_DOWN_DISCARD_COUNT'){total+=player.discard.filter(function(card){return card.faceDown;}).length*rule.multiplier;}
       if(rule.type==='OWN_FACE_UP_FOOD_FAMILY_COUNT'){
         total+=player.food.filter(function(card){
           if(card.faceDown){return false;}
@@ -62,7 +63,7 @@
       if(rule.type==='HAS_ATTACHMENT'&&(instance.attachments||[]).length>0){total+=rule.amount;}
       if(rule.type==='OWN_FIELD_CARD_ID'&&player.field.some(function(card){return !card.faceDown&&card.cardId===rule.cardId;})){total+=rule.amount;}
       if(rule.type==='OWN_DISCARD_COLORS'){
-        var present={};player.discard.forEach(function(card){var discarded=global.getCardDefinition(card.cardId);if(discarded){present[discarded.color]=true;}});
+        var present={};player.discard.forEach(function(card){var discarded=!card.faceDown&&global.getCardDefinition(card.cardId);if(discarded){present[discarded.color]=true;}});
         if((rule.colors||[]).every(function(color){return present[color];})){total+=rule.amount;}
       }
     });
@@ -114,7 +115,7 @@
       } else if (rule.type === 'FILTERED_DISCARD_COUNT') {
         baseAp = countVisibleDiscardCards(state, controllerId, rule.filter) * rule.multiplier;
       } else if (rule.type === 'DISCARD_COUNT') {
-        baseAp = player.discard.length * rule.multiplier;
+        baseAp = player.discard.filter(function(card){return !card.faceDown;}).length * rule.multiplier;
       } else if (rule.type === 'OWN_FIELD_COUNT') {
         baseAp = player.field.filter(function (card) { return !card.faceDown; }).length * rule.multiplier;
       } else if (rule.type === 'OWN_FIELD_COLOR_COUNT') {
