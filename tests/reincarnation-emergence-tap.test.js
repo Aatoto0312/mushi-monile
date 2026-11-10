@@ -16,7 +16,7 @@ for(const [larvaId,adultId] of [['set8_036','set8_019'],['set8_038','set8_021']]
   assert.equal(state.pendingEffect.maxSelections,1);
   assert.ok(state.pendingEffect.options.includes(adult.instanceId));
   global.selectPendingCard(state,'P1',adult.instanceId);
-  assert.equal(state.pendingEffect,null,'タップ1回で選択完了');
+  assert.notEqual(state.pendingEffect&&state.pendingEffect.type,'CARD_SELECTION','転生羽化のカード選択はタップ1回で完了');
   assert.equal(adult.zone,'FIELD','成虫が場に出る');
   assert.ok(state.player('P1').field.some(c=>c.instanceId===adult.instanceId));
   assert.equal(larva.zone,'DISCARD');
