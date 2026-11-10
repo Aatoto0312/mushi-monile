@@ -3,7 +3,7 @@ require('./engine-loader.js');
 const catalog=require('../js/cards/full-catalog-data.js');
 const all=global.cardRegistry.getAll();
 const known=new Map(catalog.map(x=>[x.id,x]));
-const remaining=all.filter(d=>!d.isPlayable()&&d.implementationStatus!=='test');
+const remaining=catalog.filter(rec=>{const d=global.getCardDefinition(rec.id);return !d||!d.isPlayable();}).map(rec=>global.getCardDefinition(rec.id)||rec);
 function textOf(d){const x=known.get(d.id)||d;return [...(x.skills||[]).map(v=>v.effectText||''),...(x.passiveAbilities||[]).map(v=>v.effectText||''),...(x.cardEffects||[]).map(v=>v.effectText||''),...(x.enhancementEffects||[]).map(v=>v.effectText||'')].filter(Boolean).join(' / ');}
 function classify(d){const text=textOf(d);const t=(d.type||'');let score=0;const reasons=[];
 if(!text.trim()){score-=10;reasons.push('効果テキストなし');}
@@ -19,5 +19,5 @@ if(d.implementationStatus==='PARTIAL'){score-=4;reasons.push('既存部分実装
 const tier=score<=2?'A':score<=10?'B':score<=19?'C':'D';
 return {id:d.id,name:d.name,type:t,set:d.set,status:d.implementationStatus,score,tier,reasons,text:text.slice(0,350)};}
 const ranked=remaining.map(classify).sort((a,b)=>a.score-b.score||a.id.localeCompare(b.id));
-const statuses={};all.forEach(d=>statuses[d.implementationStatus]=(statuses[d.implementationStatus]||0)+1);
-console.log('REMAINING_PRIORITY_JSON '+JSON.stringify({total:all.length,playable:all.filter(d=>d.isPlayable()).length,remaining:ranked.length,statuses,ranked}));
+const statuses={};catalog.forEach(rec=>{const d=global.getCardDefinition(rec.id);const status=!d?'NOT_REGISTERED':d.isPlayable()?'PLAYABLE':(d.implementationStatus||'UNKNOWN');statuses[status]=(statuses[status]||0)+1;});
+console.log('REMAINING_PRIORITY_JSON '+JSON.stringify({total:catalog.length,playable:catalog.length-remaining.length,remaining:ranked.length,statuses,ranked}));
