@@ -1442,14 +1442,6 @@
     var selected=(pending.selectedIds||[]).slice(), index=selected.indexOf(instanceId);
     if(index===-1){if(selected.length>=pending.maxSelections)throw new Error('選択上限です');selected.push(instanceId);}else{selected.splice(index,1);}
     pending.selectedIds=selected;
-    // 転生羽化は手札の成虫を1枚タップした時点で場に出す。
-    // ほかの任意選択は従来どおり「決定」を必要とする。
-    var emergence=pending.continuation&&pending.continuation.type==='RESOLVE_ENTRY_SELECTION'&&
-      pending.continuation.effect&&pending.continuation.effect.entryCause&&
-      pending.continuation.effect.entryCause.abilityName==='転生羽化'&&
-      pending.continuation.effect.operation==='MOVE'&&pending.continuation.effect.from===ZONES.HAND&&
-      pending.continuation.effect.to===ZONES.FIELD;
-    if(emergence&&selected.length===1)return resolveCardSelection(state,playerId,selected,true);
     if(pending.exactSelections!=null&&selected.length===pending.exactSelections)return resolveCardSelection(state,playerId,selected,true);
     return pending;
   }
