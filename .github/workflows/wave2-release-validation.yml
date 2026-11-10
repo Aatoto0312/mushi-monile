@@ -25,6 +25,8 @@ jobs:
         run: node tests/termite-colony-preflight.test.js
       - name: Reincarnation emergence adult tap
         run: node tests/reincarnation-emergence-tap.test.js
+      - name: White Night real-card selection
+        run: node tests/white-night-real-card.test.js
       - name: All browser-game regression tests
         run: node tests/run-all.js
       - name: Server runtime, rooms and network compatibility

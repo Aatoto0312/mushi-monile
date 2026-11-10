@@ -1847,7 +1847,7 @@
         var name = getCardDefinition(first.cardId).name;
         if (!name.endsWith(effect.nameSuffix)) { return; }
         var otherName = name.slice(0, -effect.nameSuffix.length);
-        insectCards(player[effect.secondZone.toLowerCase()]).forEach(function(second) {
+        (effect.secondZone === ZONES.HAND ? player.hand.filter(function(card) { var def = getCardDefinition(card.cardId); return def && def.type === CardTypes.INSECT; }) : insectCards(player[effect.secondZone.toLowerCase()])).forEach(function(second) {
           if (getCardDefinition(second.cardId).name !== otherName) { return; }
           combinations.push([first.instanceId, second.instanceId]);
           [first, second].forEach(function(card) { if (candidates.indexOf(card) === -1) { candidates.push(card); } });
