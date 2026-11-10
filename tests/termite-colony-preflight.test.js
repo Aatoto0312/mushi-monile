@@ -65,7 +65,8 @@ ids.forEach(id=>{
   global.moveCard(state,discardA.instanceId,'HAND','DISCARD',{playerId:'P1'});
   global.moveCard(state,discardB.instanceId,'HAND','DISCARD',{playerId:'P1'});
   global.moveCard(state,discardC.instanceId,'HAND','DISCARD',{playerId:'P1'});
-  global.performAttack(state,host.instanceId,null,'LEADER',def.skills[0].id);
+  const defender=h.putInsectOnField(state,'P2','test_red_2',{hp:5000});
+  global.performAttack(state,host.instanceId,defender.instanceId,'INSECT',def.skills[0].id);
   assert.equal(state.pendingEffect.type,'CARD_SELECTION');
   assert.equal(state.pendingEffect.playerId,'P1');
   assert.equal(state.pendingEffect.minSelections,0);
