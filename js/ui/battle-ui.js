@@ -1154,12 +1154,12 @@ BattleUI.prototype.renderPendingEffect = function (state) {
 
   BattleUI.prototype.onHandCardTap = function (playerId, instance) {
     if (this.actionState.mode === 'colorPicker') return;
-    if (!this._tutorialAllows('HAND_CARD', { instanceId: instance.instanceId })) return;
-    // CPUターン中は人間側の操作を無効化
-    if (this.cpuMode && this.state.activePlayerId === 'P2') {
-      return;
-    }
     var pending = getPendingEffect(this.state);
+    // 相手ターン中の死亡誘発（転生羽化など）でも、選択権が自分にあるなら手札を操作できる。
+    // 通常の手札操作だけをCPUターン・チュートリアル制限で保護する。
+    var ownPendingChoice = pending && pending.playerId === playerId;
+    if (!ownPendingChoice && !this._tutorialAllows('HAND_CARD', { instanceId: instance.instanceId })) return;
+    if (this.cpuMode && this.state.activePlayerId === 'P2' && !ownPendingChoice) return;
     if (pending) {
       if (pending.type === 'CARD_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) { global.selectPendingCard(this.state,playerId,instance.instanceId);this.render(); }
       if (pending.type === 'SPELL_TARGET_SELECTION' && pending.playerId === playerId && pending.options.indexOf(instance.instanceId) !== -1) {
