@@ -35,4 +35,21 @@ runner.test('Hatching rejects mismatched pairs without moving cards or losing se
  runner.assert(rejected);runner.assertEqual(s.pendingEffect,pending);runner.assertEqual(a.zone,'FIELD');runner.assertEqual(y.zone,'HAND');
  global.resolveCardSelection(s,'P1',[a.instanceId,x.instanceId],true);runner.assertEqual(s.pendingEffect,null);
 });
+runner.test('Real White Night Emergence accepts an adult drawn from face-down territory',function(){
+ var s=fixture(),p=s.player('P1'),cost=p.availableCost;
+ var spell=h.addToHandRaw(s,'P1',global.getCardDefinition('set2_051'));
+ var larva=h.putInsectOnField(s,'P1','namiageha_larva');
+ var adult=h.addToHandRaw(s,'P1',global.getCardDefinition('namiageha'));
+ global.moveCard(s,adult.instanceId,'HAND','TERRITORY',{playerId:'P1',faceDown:true});
+ global.drawTerritoryCard(s,'P1');
+ global.resolveTerritoryDrawSelection(s,'P1',adult.instanceId);
+ runner.assertEqual(adult.zone,'HAND');
+ global.useSpell(s,'P1',spell.instanceId);
+ runner.assertEqual(JSON.stringify(s.pendingEffect.allowedCombinations),JSON.stringify([[larva.instanceId,adult.instanceId]]));
+ global.resolveCardSelection(s,'P1',[larva.instanceId,adult.instanceId],true);
+ runner.assertEqual(larva.zone,'FOOD');
+ runner.assertEqual(adult.zone,'FIELD');
+ runner.assertEqual(spell.zone,'DISCARD');
+ runner.assertEqual(p.availableCost,cost);
+});
 module.exports=runner;if(require.main===module)runner.runAll().then(function(r){if(r.failed)process.exitCode=1;});

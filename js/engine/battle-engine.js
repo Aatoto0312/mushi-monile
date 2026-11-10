@@ -1189,8 +1189,8 @@
     else entryTriggers.forEach(function(trigger){resumeAfterSelection(state,trigger.continuation);});
   }
 
-  function insectCards(cards) {
-    return (cards || []).filter(function (card) { var def = getCardDefinition(card.cardId); return !card.faceDown && def && def.type === CardTypes.INSECT; });
+  function insectCards(cards, includeFaceDown) {
+    return (cards || []).filter(function (card) { var def = getCardDefinition(card.cardId); return (includeFaceDown || !card.faceDown) && def && def.type === CardTypes.INSECT; });
   }
 
   function collectFieldAbilityActions(state, playerId, sourceInstanceId, allowPending) {
@@ -1847,7 +1847,8 @@
         var name = getCardDefinition(first.cardId).name;
         if (!name.endsWith(effect.nameSuffix)) { return; }
         var otherName = name.slice(0, -effect.nameSuffix.length);
-        insectCards(player[effect.secondZone.toLowerCase()]).forEach(function(second) {
+        // The owner can identify cards in hand even if a territory draw left faceDown set.
+        insectCards(player[effect.secondZone.toLowerCase()], effect.secondZone === ZONES.HAND).forEach(function(second) {
           if (getCardDefinition(second.cardId).name !== otherName) { return; }
           combinations.push([first.instanceId, second.instanceId]);
           [first, second].forEach(function(card) { if (candidates.indexOf(card) === -1) { candidates.push(card); } });
