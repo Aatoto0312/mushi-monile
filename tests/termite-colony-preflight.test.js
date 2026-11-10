@@ -29,3 +29,30 @@ ids.forEach((id,i)=>{
   assert.equal(def.passiveAbilities[0].effectText,record.passiveAbilities[0].effectText);
 });
 console.log('TERMITE_PREFLIGHT_OK 3 cards, attack-after decomposition and colony stat scaling');
+
+const h=require('./helpers.js');
+function scenario(id){
+  const state=h.newGame({rng:h.firstPlayerRng});
+  h.toMainPhase(state);
+  const host=h.putInsectOnField(state,'P1',id);
+  state.player('P1').discard=[];
+  return {state,host,def:global.getCardDefinition(id)};
+}
+ids.forEach(id=>{
+  const {state,host,def}=scenario(id);
+  const baseAp=def.skills[0].baseAp,baseHp=def.baseHp;
+  assert.equal(global.getEffectiveAP(state,host,baseAp,def.skills[0]),baseAp);
+  assert.equal(global.calculateMaxHp(host,state),baseHp);
+  state.player('P1').discard.push({faceDown:false,cardId:'set1_003'});
+  state.player('P1').discard.push({faceDown:true});
+  state.player('P1').discard.push({faceDown:true});
+  assert.equal(global.getEffectiveAP(state,host,baseAp,def.skills[0]),baseAp+400);
+  assert.equal(global.calculateMaxHp(host,state),baseHp+400);
+  state.player('P1').discard[0].faceDown=true;
+  assert.equal(global.getEffectiveAP(state,host,baseAp,def.skills[0]),baseAp+600);
+  assert.equal(global.calculateMaxHp(host,state),baseHp+600);
+  state.player('P1').discard[1].faceDown=false;
+  assert.equal(global.getEffectiveAP(state,host,baseAp,def.skills[0]),baseAp+400);
+  assert.equal(global.calculateMaxHp(host,state),baseHp+400);
+});
+console.log('TERMITE_DYNAMIC_STATS_OK 3 cards, visible/hidden discard transitions');
