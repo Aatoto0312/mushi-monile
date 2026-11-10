@@ -56,3 +56,28 @@ ids.forEach(id=>{
   assert.equal(global.calculateMaxHp(host,state),baseHp+400);
 });
 console.log('TERMITE_DYNAMIC_STATS_OK 3 cards, visible/hidden discard transitions');
+
+ids.forEach(id=>{
+  const {state,host,def}=scenario(id);
+  const discardA=h.addToHandRaw(state,'P1',global.getCardDefinition('set1_003'));
+  const discardB=h.addToHandRaw(state,'P1',global.getCardDefinition('set1_004'));
+  const discardC=h.addToHandRaw(state,'P1',global.getCardDefinition('set1_005'));
+  global.moveCard(state,discardA.instanceId,'HAND','DISCARD',{playerId:'P1'});
+  global.moveCard(state,discardB.instanceId,'HAND','DISCARD',{playerId:'P1'});
+  global.moveCard(state,discardC.instanceId,'HAND','DISCARD',{playerId:'P1'});
+  global.performAttack(state,host.instanceId,null,'LEADER',def.skills[0].id);
+  assert.equal(state.pendingEffect.type,'CARD_SELECTION');
+  assert.equal(state.pendingEffect.playerId,'P1');
+  assert.equal(state.pendingEffect.minSelections,0);
+  assert.equal(state.pendingEffect.maxSelections,2);
+  assert.deepEqual(state.pendingEffect.options.slice().sort(),[discardA.instanceId,discardB.instanceId,discardC.instanceId].sort());
+  state.pendingEffect=JSON.parse(JSON.stringify(state.pendingEffect));
+  global.resolveCardSelection(state,'P1',[discardA.instanceId,discardB.instanceId],true);
+  assert.equal(state.pendingEffect,null);
+  assert.equal(discardA.faceDown,true);
+  assert.equal(discardB.faceDown,true);
+  assert.equal(discardC.faceDown,false);
+  assert.equal(global.getEffectiveAP(state,host,def.skills[0].baseAp,def.skills[0]),def.skills[0].baseAp+400);
+  assert.equal(global.calculateMaxHp(host,state),def.baseHp+400);
+});
+console.log('TERMITE_ATTACK_SELECTION_OK 3 cards, attack/selection/serialization/colony');
