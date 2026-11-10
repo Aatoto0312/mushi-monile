@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - release/wave2-nine-enhancements-20261107
+      - dev/termite-colony-20261108
   pull_request:
     branches:
       - main
