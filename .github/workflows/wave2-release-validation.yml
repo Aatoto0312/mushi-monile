@@ -23,6 +23,8 @@ jobs:
         run: node tests/wave2-enhancement-preflight.test.js
       - name: Termite attack and colony behavior
         run: node tests/termite-colony-preflight.test.js
+      - name: Unimplemented card priority inventory
+        run: node tests/remaining-priority-report.js
       - name: All browser-game regression tests
         run: node tests/run-all.js
       - name: Server runtime, rooms and network compatibility
