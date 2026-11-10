@@ -16,9 +16,17 @@ for(const [larvaId,adultId] of [['set8_036','set8_019'],['set8_038','set8_021']]
   assert.equal(state.pendingEffect.maxSelections,1);
   assert.ok(state.pendingEffect.options.includes(adult.instanceId));
   global.selectPendingCard(state,'P1',adult.instanceId);
-  assert.notEqual(state.pendingEffect&&state.pendingEffect.type,'CARD_SELECTION','転生羽化のカード選択はタップ1回で完了');
+  assert.equal(state.pendingEffect.type,'CARD_SELECTION','決定待ちを維持');
+  assert.deepEqual(state.pendingEffect.selectedIds,[adult.instanceId],'タップで0/1から1/1へ');
+  global.completeCardSelection(state,'P1');
   assert.equal(adult.zone,'FIELD','成虫が場に出る');
   assert.ok(state.player('P1').field.some(c=>c.instanceId===adult.instanceId));
   assert.equal(larva.zone,'DISCARD');
 }
-console.log('REINCARNATION_EMERGENCE_TAP_OK 2 larvae -> adult field');
+const fs=require('node:fs');
+const ui=fs.readFileSync(require('node:path').join(__dirname,'../js/ui/battle-ui.js'),'utf8');
+const hand=ui.slice(ui.indexOf('prototype.onHandCardTap ='),ui.indexOf('prototype.onFieldCardTap ='));
+assert.ok(hand.indexOf('var pending = getPendingEffect(this.state)')<hand.indexOf('this.cpuMode && this.state.activePlayerId'), '相手ターン制限より前に選択権を判定');
+assert.match(hand,/this.cpuMode && this.state.activePlayerId === 'P2' && !ownPendingChoice/, '相手ターンでも自分の選択は許可');
+assert.match(hand,/global.selectPendingCard\(this.state,playerId,instance.instanceId\)/,'手札タップで選択状態更新');
+console.log('REINCARNATION_EMERGENCE_TAP_OK 2 larvae, select 1/1, confirm, UI opponent-turn gate');
