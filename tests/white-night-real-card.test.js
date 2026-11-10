@@ -36,7 +36,7 @@ const online=require('../battle-ui/engine-view.js');
  const spell=h.addToHandRaw(state,'P1',spellDef);
  const larva=h.putInsectOnField(state,'P1','set8_038');
  const adult=h.addToHandRaw(state,'P1',global.getCardDefinition('set8_021'));
- const runtime={context:global,restore:s=>s};
+ const runtime={context:global,restore:s=>Object.assign(new global.GameState(),JSON.parse(JSON.stringify(s)))};
  const first=online.prepareView(runtime,state,'P1');
  const spellAction=first.view.actions.find(a=>a.kind==='SPELL'&&a.sourceRef===first.view.players.P1.hand.find(x=>x.cardId==='set2_051').ref);
  assert.ok(spellAction,'オンラインの術使用アクション');
