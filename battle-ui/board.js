@@ -1,7 +1,7 @@
 /* Common presentation only. Adapter supplies a redacted view and a capability sender. */
 (function(root){'use strict';
  const P=root.MushiBattlePresentation;
- function create(host){
+ function create(host,options={}){
   host.innerHTML=`<main class="arena live-arena" aria-label="B案 共通対戦盤面">
    <header class="player opponent"><span class="avatar">◈</span><b data-role="other-name">相手</b><div class="stats" data-role="other-stats"></div><button data-role="menu">☰</button></header>
    <section class="field enemy"><div class="lane-title">相手の場 <small>横へスワイプ ›</small></div><div id="enemy" class="cards" data-role="other-field"></div></section>
@@ -12,7 +12,8 @@
    <footer class="rail"><button data-role="all-actions">操作一覧</button><button data-role="menu">ログ・設定</button><button id="end" class="primary" data-role="end">ターン終了</button></footer>
   </main><dialog id="sheet" aria-label="カード・操作"><header><div><small data-role="kicker"></small><h1 data-role="title"></h1></div><button id="close" data-role="close" aria-label="閉じる">×</button></header><div id="sheet-body" data-role="body"></div><footer id="sheet-actions" data-role="footer" hidden></footer></dialog>`;
   const $=name=>host.querySelector('[data-role="'+name+'"]'),arena=host.querySelector('.arena'),dialog=host.querySelector('dialog');
-  let ctx,view,vm,version,selected=null,targetGroup=null,expanded=false,chosen=[];
+  if(options.arenaLabel)arena.setAttribute('aria-label',options.arenaLabel);
+  let ctx,view,vm,version,selected=null,targetGroup=null,expanded=!!options.handExpanded,chosen=[];
   const definition=id=>root.getCardDefinition(id);
   const enabled=()=>!!ctx?.connected&&!ctx.busy&&!view.room.paused&&view.room.phase==='PLAYING'&&!vm.spectator;
   function button(text,fn,kind){const b=document.createElement('button');b.type='button';b.textContent=text;if(kind)b.dataset.kind=kind;b.onclick=fn;return b;}
@@ -33,6 +34,12 @@
    if(!card.hidden&&enabled()&&vm.actions.some(a=>a.sourceRef===card.ref))b.classList.add('can-act');
    if(targetGroup){const allowed=P.targetActions(targetGroup,card.ref).length>0;b.classList.add(allowed?'target':'unavailable');b.setAttribute('aria-disabled',String(!allowed));}
    if(!ctx.connected||ctx.busy)b.disabled=true;
+   if(options.cardHeadings&&!card.hidden){
+    const heading=document.createElement('span');heading.className='card-heading';
+    const cost=document.createElement('span');cost.className='printed-cost';cost.textContent=card.cost;cost.setAttribute('aria-label','印刷コスト '+card.cost);
+    const name=document.createElement('span');name.className='card-title';name.textContent=card.name;
+    heading.append(cost,name);b.append(heading);
+   }
    b.append(image(card));
    if(!card.hidden){b.dataset.cardId=card.cardId;const hp=document.createElement('span');hp.className='hp';hp.textContent=card.hp!=null?'HP '+card.hp+' / '+card.maxHp:'コスト '+card.cost;
     const ap=document.createElement('span');ap.className='ap';ap.textContent=card.skills.length?'AP '+card.skills.map(s=>s.ap).join(' / '):({SPELL:'術',ENHANCEMENT:'強化'}[card.definition.type]||'');
@@ -102,6 +109,10 @@
   function draw(){
    if(!ctx||!vm)return;if(!vm.own.hand.length)expanded=false;arena.classList.toggle('hand-expanded',expanded);arena.dataset.mode=targetGroup?'target':'idle';
    for(const [role,cards] of [['other-field',vm.other.field],['own-field',vm.own.field],['hand',vm.own.hand]]){const lane=$(role),left=lane.scrollLeft;lane.dataset.count=cards.length;lane.replaceChildren(...cards.map(unit));lane.scrollLeft=left;}
+   if(options.cardHeadings){
+    arena.querySelector('.enemy .lane-title').textContent='相手の場 · '+vm.other.field.length+'体';
+    arena.querySelector('.own .lane-title').textContent='自分の場 · '+vm.own.field.length+'体';
+   }
    const b=view.battle;stats('other-stats',vm.other);stats('own-stats',vm.own);$('own-name').textContent=vm.spectator?'P1':ctx.names?.own||'あなた';$('other-name').textContent=vm.spectator?'P2':ctx.names?.other||'相手';
    $('turn').textContent='TURN '+b.turn;$('phase').textContent=({SET_PHASE:'SET',MAIN_PHASE:'MAIN',DRAW_PHASE:'DRAW',GAME_OVER:'END'}[b.phase]||b.phase);
    let instruction=vm.spectator?'観戦中':b.activePlayerId===b.viewerId?'あなたの番':'相手の番';
