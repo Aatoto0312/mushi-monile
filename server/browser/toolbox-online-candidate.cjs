@@ -5,8 +5,8 @@ const pw=require(process.env.MUSHI_PLAYWRIGHT_PATH||'playwright');
 for(const engine of ['chromium','webkit'])test(engine+' Pages-subpath Toolbox save → B room → real match, spectator and reconnect',async t=>{
  const parent=fs.mkdtempSync(path.join(os.tmpdir(),'mushi-toolbox-online-'));
  t.after(()=>{assert.equal(path.dirname(parent),path.resolve(os.tmpdir()));assert(path.basename(parent).startsWith('mushi-toolbox-online-'));fs.rmSync(parent,{recursive:true,force:true});});
- build(path.join(parent,'candidate'));const app=createCandidateServer(path.join(parent,'candidate'),{rng:()=>0});await app.start();t.after(()=>app.stop());
- const browser=await pw[engine].launch(engine==='chromium'?{channel:'msedge'}:{});t.after(()=>browser.close());
+ if(process.env.MUSHI_CANDIDATE_DIRECTORY)fs.cpSync(process.env.MUSHI_CANDIDATE_DIRECTORY,path.join(parent,'candidate'),{recursive:true});else build(path.join(parent,'candidate'));const app=createCandidateServer(path.join(parent,'candidate'),{rng:()=>0});await app.start();t.after(()=>app.stop());
+ const browser=await pw[engine].launch(engine==='chromium'&&process.env.MUSHI_CHROMIUM_CHANNEL!=='bundled'?{channel:process.env.MUSHI_CHROMIUM_CHANNEL||'msedge'}:{});t.after(()=>browser.close());
  const context=await browser.newContext({viewport:{width:390,height:740},isMobile:true,hasTouch:true}),a=await context.newPage(),b=await(await browser.newContext({viewport:{width:390,height:740}})).newPage(),w=await(await browser.newContext()).newPage();
  for(const p of [a,b,w])p.setDefaultTimeout(8000);
  const runtime=createRuntime(),sentinel=JSON.parse(JSON.stringify(runtime.preset('OKAMAKIRI')));sentinel.deckName='既存デッキ保持';
