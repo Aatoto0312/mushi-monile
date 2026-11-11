@@ -1,0 +1,36 @@
+name: A prototype browser review
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'prototype-a/**'
+      - 'battle-ui/board.js'
+      - '.github/workflows/prototype-a-review.yml'
+permissions:
+  contents: read
+jobs:
+  browser-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --prefix server
+      - name: Prepare isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/a-browser-tools" playwright@1.61.1
+          "$RUNNER_TEMP/a-browser-tools/node_modules/.bin/playwright" install --with-deps chromium webkit
+      - name: Validate A prototype in Chromium and WebKit
+        env:
+          MUSHI_A_CHROMIUM_CHANNEL: bundled
+        run: |
+          export MUSHI_PLAYWRIGHT_PATH="$RUNNER_TEMP/a-browser-tools/node_modules/playwright"
+          export MUSHI_A_EVIDENCE="$RUNNER_TEMP/a-evidence"
+          node --test prototype-a/e2e.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a-prototype-screenshots-and-metrics
+          path: ${{ runner.temp }}/a-evidence
