@@ -9,7 +9,7 @@ html[data-a-version='v2'] .live-arena[data-mode='target']{
  --a-hand:108px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'opponent' 'enemy' 'hud' 'own' 'self' 'hand' 'actions';grid-template-rows:32px minmax(0,1fr) auto minmax(0,1fr) 32px var(--a-hand) 48px;gap:3px;height:100%;min-height:0;max-width:780px;overflow:hidden;padding:4px max(6px,env(safe-area-inset-right,0px)) max(4px,env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));
 }
 html[data-a-version='v2'] .live-arena.hand-expanded{--a-hand:154px}
-html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:82px}
+html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:104px}
 html[data-a-version='v2'] .live-arena>.player{min-height:0;height:32px;padding:1px 6px;border-radius:7px;gap:5px}
 html[data-a-version='v2'] .live-arena .player>b{font-size:12px;max-width:48px}
 html[data-a-version='v2'] .live-arena .stats button,
@@ -60,7 +60,7 @@ html[data-a-version='v2'] .live-arena:has([data-role='own-field'][data-count='0'
 @container aViewport (max-height:580px){
  html[data-a-version='v2'] .live-arena,html[data-a-version='v2'] .live-arena.hand-expanded{--a-hand:100px;gap:2px;padding-block:2px}
  html[data-a-version='v2'] .live-arena.hand-expanded{--a-hand:124px}
- html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:78px}
+ html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:104px}
 }
 @media(orientation:landscape){
  html[data-a-version='v2'] .live-arena,html[data-a-version='v2'] .live-arena.hand-expanded,html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:112px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:'opponent self' 'enemy own' 'hud hud' 'hand hand' 'actions actions';grid-template-rows:32px minmax(0,1fr) auto var(--a-hand) 48px;max-width:1100px}

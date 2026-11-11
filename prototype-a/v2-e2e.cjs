@@ -28,7 +28,7 @@ async function measure(page,kind,mode,state){
   const box=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom};};
   const root=legacy?document.querySelector('.mobile-frame'):document.querySelector('#board');
   const scrollable=[document.documentElement,document.body,...root.querySelectorAll('*'),root].filter(e=>e.getBoundingClientRect().height>0&&(e===root||e===document.documentElement||e===document.body||['auto','scroll'].includes(getComputedStyle(e).overflowY)));
-  const lanes=legacy?[]:['other-field','own-field','hand'].map(role=>{const e=document.querySelector('[data-role="'+role+'"]');return {role,...box(e),count:e.querySelectorAll('.unit').length,horizontalScroll:e.scrollWidth-e.clientWidth};});
+  const lanes=legacy?[]:['other-field','own-field','hand'].map(role=>{const e=document.querySelector('[data-role="'+role+'"]'),heading=e.querySelector('.card-heading'),hp=e.querySelector('.hp');return {role,...box(e),count:e.querySelectorAll('.unit').length,horizontalScroll:e.scrollWidth-e.clientWidth,headingBottom:heading?.getBoundingClientRect().bottom,hpTop:hp?.getBoundingClientRect().top};});
   return {kind,mode,state,viewport:{width:innerWidth,height:innerHeight},card:card&&box(card),hpFont:hp&&parseFloat(getComputedStyle(hp).fontSize),apFont:ap&&parseFloat(getComputedStyle(ap).fontSize),verticalScroll:Math.max(0,...scrollable.map(e=>e.scrollHeight-e.clientHeight)),pageWidth:document.documentElement.scrollWidth,lanes,rail:legacy?null:box(document.querySelector('.rail'))};
  },{kind,mode,state});metrics.push(data);return data;
 }
@@ -37,7 +37,7 @@ function validate(data){
  assert(data.hpFont>=12&&data.apFont>=12);
  assert(data.verticalScroll<=1,'vertical scrolling '+JSON.stringify(data));
  assert(data.pageWidth<=data.viewport.width);
- for(const lane of data.lanes){assert(lane.height>=50,lane.role+' too short');assert(lane.y>=0&&lane.bottom<=data.rail.y+1,lane.role+' out of view');}
+ for(const lane of data.lanes){assert(lane.height>=50,lane.role+' too short');assert(lane.y>=0&&lane.bottom<=data.rail.y+1,lane.role+' out of view');assert(lane.headingBottom<=lane.hpTop,lane.role+' name and stats overlap');}
  assert(data.rail.bottom<=data.viewport.height+1);
 }
 for(const kind of ['chromium','webkit']){
@@ -78,6 +78,8 @@ for(const kind of ['chromium','webkit']){
   await page.locator('[data-role="own-field"] .target').first().click();
   await page.locator('[data-role="own-field"] .unit').first().click();await page.getByRole('button',{name:'攻撃する',exact:true}).click();await page.locator('[data-skill]').first().click();
   validate(await measure(page,kind,'v2','target'));await capture(page,kind+'-v2-target');
+  await page.setViewportSize({width:375,height:560});validate(await measure(page,kind,'v2','target-560'));await capture(page,kind+'-v2-target-560');
+  await page.setViewportSize({width:375,height:667});
   await page.locator('[data-role="cancel"]').click();
   await page.locator('[data-role="end"]').click();await page.waitForFunction(()=>MushiBattle.ui.state.turnNumber>3);
   assert.deepEqual(errors,[]);
