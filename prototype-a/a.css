@@ -30,7 +30,7 @@ html[data-battle-ui='a'] .live-arena.hand-expanded .hand>.cards{
 html[data-battle-ui='a'] .live-arena .unit,
 html[data-battle-ui='a'] .live-arena .cards[data-count] .unit,
 html[data-battle-ui='a'] .live-arena.hand-expanded .hand .unit{
- display:grid;grid-template-rows:34px 160px 23px auto auto;flex:0 0 var(--a-card-width);width:var(--a-card-width);min-width:var(--a-card-width);max-width:var(--a-card-width);height:auto;min-height:0;max-height:none;padding:0;border:1px solid #d3c080;border-radius:9px;overflow:hidden;background:#03291e;color:#fff;box-shadow:0 3px 7px #0009;transform:none;scroll-snap-align:start;text-align:left;
+ display:grid;grid-template-rows:max-content 160px 23px auto auto;flex:0 0 var(--a-card-width);width:var(--a-card-width);min-width:var(--a-card-width);max-width:var(--a-card-width);height:auto;min-height:0;max-height:none;padding:0;border:1px solid #d3c080;border-radius:9px;overflow:hidden;background:#03291e;color:#fff;box-shadow:0 3px 7px #0009;transform:none;scroll-snap-align:start;text-align:left;
 }
 html[data-battle-ui='a'] .live-arena .card-heading{display:flex;align-items:center;gap:4px;min-height:34px;padding:2px 4px;background:linear-gradient(#102a22,#001910);min-width:0}
 html[data-battle-ui='a'] .live-arena .printed-cost{display:grid;place-items:center;flex:0 0 25px;height:25px;border:1px solid #c5ad6d;border-radius:50%;font-size:18px;font-weight:800;color:#ffdf8d}
@@ -69,5 +69,5 @@ html[data-battle-ui='a'] #sheet-body>button{min-height:44px;font-size:14px;margi
 html[data-battle-ui='a'] .detail-art{width:min(270px,75vw);height:auto;aspect-ratio:5/7}
 html[data-battle-ui='a'] .skills-text{font-size:14px;line-height:1.65}
 html[data-battle-ui='a'] #sheet-actions button{min-height:44px;font-size:13px}
-@media(min-width:700px){html[data-battle-ui='a']{--a-card-width:144px}html[data-battle-ui='a'] .live-arena .unit,html[data-battle-ui='a'] .live-arena .cards[data-count] .unit,html[data-battle-ui='a'] .live-arena.hand-expanded .hand .unit{grid-template-rows:36px 200px 25px auto auto}html[data-battle-ui='a'] .live-arena .unit .art{height:200px}html[data-battle-ui='a'] .live-arena .card-title{font-size:12px}}
+@media(min-width:700px){html[data-battle-ui='a']{--a-card-width:144px}html[data-battle-ui='a'] .live-arena .unit,html[data-battle-ui='a'] .live-arena .cards[data-count] .unit,html[data-battle-ui='a'] .live-arena.hand-expanded .hand .unit{grid-template-rows:max-content 200px 25px auto auto}html[data-battle-ui='a'] .live-arena .unit .art{height:200px}html[data-battle-ui='a'] .live-arena .card-heading{min-height:36px}html[data-battle-ui='a'] .live-arena .card-title{font-size:12px}}
 @media(orientation:landscape) and (max-height:500px){html[data-battle-ui='a'] .live-arena{max-width:900px}html[data-battle-ui='a'] .live-arena>.rail{max-width:920px}html[data-battle-ui='a'] .live-arena>.player{min-height:48px}html[data-battle-ui='a'] .live-arena .lane-title{display:block}}

@@ -57,6 +57,7 @@ for(const kind of ['chromium','webkit']){
   assert(base>=116);
   await page.locator('[data-role="hand-toggle"]').click();
   assert.equal(await page.locator('[data-role="hand-toggle"]').getAttribute('aria-expanded'),'false');
+  await page.locator('#board').evaluate(e=>e.scrollTop=e.scrollHeight);
   await shot(page,kind+'-a-collapsed');
   await page.locator('[data-role="hand-toggle"]').click();
   await page.locator('#board').evaluate(e=>e.scrollTop=e.scrollHeight);
@@ -96,10 +97,25 @@ for(const kind of ['chromium','webkit']){
    const toggle=await page.locator('[data-role="hand-toggle"]').boundingBox();assert(toggle.y+toggle.height<=rail.y);
    await measure(page,'a');await shot(page,kind+'-a-'+size.width+'x'+size.height);
   }
+  await page.setViewportSize({width:375,height:1200});await launchCpu(page,app.url,'/prototype-a/cpu.html');
+  await shot(page,kind+'-a-overview-375x1200');
   await page.setViewportSize({width:375,height:667});await launchCpu(page,app.url,'/prototype-a/cpu.html');
   await operations(page);
   await page.locator('[data-role="end"]').click();
-  await page.waitForFunction(()=>MushiBattle.ui.state.turnNumber>3);
+  for(let i=0;i<12;i++){
+   await page.waitForFunction(()=>{
+    const s=MushiBattle.ui.state;
+    return s.turnNumber>=5&&s.activePlayerId==='P1'||s.pendingEffect?.playerId==='P1';
+   },null,{timeout:15000});
+   const returned=await page.evaluate(()=>MushiBattle.ui.state.turnNumber>=5&&MushiBattle.ui.state.activePlayerId==='P1');
+   if(returned)break;
+   // The CPU can destroy an insect, requiring the human to draw a territory.
+   const choices=page.locator('#sheet .online-choice-list button[data-ref]');
+   if(await choices.count()){
+    await choices.first().click();await page.locator('#sheet [data-kind="CONFIRM_SELECTION"]').click();
+   }else await page.locator('#sheet [data-kind="TERRITORY_CHOICE"]').last().click();
+  }
+  assert(await page.evaluate(()=>MushiBattle.ui.state.turnNumber>=5&&MushiBattle.ui.state.activePlayerId==='P1'));
   assert.deepEqual(errors,[]);
  });
  test(kind+' A online actions, privacy and reconnect use the existing API',async t=>{
