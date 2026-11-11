@@ -1,8 +1,8 @@
 {
-  "createdAt": "2026-11-11T15:58:00.131Z",
+  "createdAt": "2026-11-11T15:59:34.115Z",
   "assetVersion": "ui-a-v2-1",
-  "sourceHead": "c4ad09688b97f67e023bf130db58ec5ae6c695e8",
-  "mainHead": "ae5d604cbdf2863ea13ed7a12f9cc626e168da03",
+  "sourceHead": "e9d642dd89c1b22dee39ab6d834912545ed3a993",
+  "mainHead": "c916fefcfc00211a1520956481d725c8c32687b8",
   "versions": {
     "protocol": "mushi-online/1",
     "engine": "7381fd45ee9c9a1347fc4e50edb11eaf47e59488d7196717e3796271f0aab8c1",
@@ -140,19 +140,19 @@
       "path": "js/cards/expansion-economy-cards.js",
       "bytes": 12710,
       "sha256": "04675c71febf7e26b0e6382d92fbd77d4caeeb8ad50ff34b002fec52f0a5faa8",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-entry-cards.js",
       "bytes": 13170,
       "sha256": "ec2ed9856c39e56e5db69caa4472150b38fd44aa0ca3dc50ec1fd6c91e0bcec8",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-predicate-cards.js",
       "bytes": 7522,
       "sha256": "8447e62cc327f1cdfec6eea0d37e917ae71beda5aace4113f87c4ad3e7da1cea",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/expansion-repeat-cards.js",
@@ -170,7 +170,7 @@
       "path": "js/cards/full-catalog-data.js",
       "bytes": 713525,
       "sha256": "c553e30f4ea369223259f33c4b6c576fa9c2a0dc2838b06abdee076b808fc5a7",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/set1-cards.js",
@@ -212,7 +212,7 @@
       "path": "js/cards/termite-cards.js",
       "bytes": 2232,
       "sha256": "00f5f05cccdcf0d68d98561d8d8b4628a741bd129a01d0af257db7eb1247bb3c",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/cards/test-cards.js",
@@ -224,13 +224,13 @@
       "path": "js/cards/wave2-enhancement-cards.js",
       "bytes": 5831,
       "sha256": "82f38e303260bfc113bf9279a1f73e7aa54a89c949c0f885194310b6775a6f45",
-      "main": "added"
+      "main": "unchanged"
     },
     {
       "path": "js/engine/battle-engine.js",
       "bytes": 337971,
       "sha256": "6c73b78e10fe79dc76c298e7775701507311655c8dc38597ded097a0854adb04",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/engine/cpu-agent.js",
@@ -266,7 +266,7 @@
       "path": "js/engine/stat-modifier.js",
       "bytes": 13841,
       "sha256": "14cb121671accab31299cd7297faaf425fb41e269be33ba713701abfd6d0632b",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/engine/turn-engine.js",
@@ -278,7 +278,7 @@
       "path": "js/engine/zone-engine.js",
       "bytes": 12691,
       "sha256": "f051ddd6e108f74a0c1b155230626fbeca45ed693873b5635e208f7b2eb7b0aa",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/tutorial/tutorial-controller.js",
@@ -314,7 +314,7 @@
       "path": "js/ui/battle-ui.js",
       "bytes": 90687,
       "sha256": "20166b701e31813f0fea137b267b67bf3f4be86b20b762c173c9ad23f3a5b380",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "js/ui/card-effect-formatter.js",
@@ -368,7 +368,7 @@
       "path": "online/contract.json",
       "bytes": 194,
       "sha256": "b470259d4ae0b42768f894bd5aeabe1b65ed49d0e33af447e65f8d34d120e229",
-      "main": "modified"
+      "main": "unchanged"
     },
     {
       "path": "online/online.css",
