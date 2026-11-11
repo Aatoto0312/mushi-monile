@@ -28,7 +28,7 @@ jobs:
         run: |
           export MUSHI_PLAYWRIGHT_PATH="$RUNNER_TEMP/a-browser-tools/node_modules/playwright"
           export MUSHI_A_EVIDENCE="$RUNNER_TEMP/a-evidence"
-          node --test prototype-a/e2e.cjs
+          node --test prototype-a/v2-e2e.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -3,6 +3,7 @@
  'use strict';
  const create=root.MushiBattleBoard.create;
  root.MushiBattleBoard={create(host){
-  return create(host,{cardHeadings:true,handExpanded:true,arenaLabel:'A案 旧UI進化型 対戦盤面'});
+  const v2=document.documentElement.dataset.aVersion==='v2';
+  return create(host,{cardHeadings:true,handExpanded:!v2,arenaLabel:'A案'+(v2?'v2':'v1')+' 旧UI進化型 対戦盤面'});
  }};
 })(window);

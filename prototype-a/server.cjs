@@ -4,11 +4,15 @@ const {createServer}=require('../server/index.cjs');
 const {ROOT,VERSIONS}=require('../server/lib/runtime.cjs');
 const MIME={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.ico':'image/x-icon','.woff2':'font/woff2'};
 
-function prototypePage(file){
+function prototypePage(file,version='v1'){
  let html=fs.readFileSync(path.join(ROOT,file),'utf8');
  html=html.replace('<html lang="ja">','<html lang="ja" data-battle-ui="a">');
  html=html.replace('<head>','<head><base href="/">');
  html=html.replace('</head>','<link rel="stylesheet" href="prototype-a/a.css"></head>');
+ if(version==='v2'){
+  html=html.replace('data-battle-ui="a"','data-battle-ui="a" data-a-version="v2"');
+  html=html.replace('</head>','<link rel="stylesheet" href="prototype-a/v2.css"></head>');
+ }
  html=html.replace(/(<script src="battle-ui\/board\.js[^"\n]*"><\/script>)/,'$1<script src="prototype-a/view.js"></script>');
  html=html.replace(/<title>[^<]*<\/title>/,'<title>蟲神器 A案・'+(file==='index.html'?'CPU対戦':'オンライン対戦')+'</title>');
  html=html.replace('B案オンライン検証','A案オンライン試作');
@@ -21,15 +25,15 @@ function createPrototypeServer(options={}){
   if(!['GET','HEAD'].includes(req.method))return false;
   let name;try{name=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{return false;}
   let data,type;
-  if(name==='/prototype-a/cpu.html'||name==='/prototype-a/online.html'){
-   data=Buffer.from(prototypePage(name.endsWith('/cpu.html')?'index.html':'online-b.html'));type=MIME['.html'];
+  if(/^\/prototype-a\/(?:cpu|online)(?:-v2)?\.html$/.test(name)){
+   data=Buffer.from(prototypePage(name.includes('/cpu')?'index.html':'online-b.html',name.endsWith('-v2.html')?'v2':'v1'));type=MIME['.html'];
   }else if(name==='/online/config.json'){
    data=Buffer.from(JSON.stringify({productionEnabled:false,localEndpoint:'ws://127.0.0.1:'+app.port+'/ws',allowedProductionHosts:[]}));type=MIME['.json'];
   }else if(name==='/online/contract.json'){
    data=Buffer.from(JSON.stringify(VERSIONS));type=MIME['.json'];
   }else{
    if(name==='/'||name==='/prototype-a/')name='/prototype-a/index.html';
-   if(!/^\/(?:index\.html|online\.html|online-b\.html|toolbox\.html|prototype-a\/(?:index\.html|a\.css|view\.js)|prototype-b\/(?:base\.css|style\.css|forest\.png)|(?:js|css|shared|toolbox|assets|battle-ui|online)\/[a-zA-Z0-9_./-]+)$/.test(name)||name.split('/').some(p=>p.startsWith('.')||p.startsWith('_'))||name.includes('.local.'))return false;
+   if(!/^\/(?:index\.html|online\.html|online-b\.html|toolbox\.html|prototype-a\/(?:index\.html|a\.css|v2\.css|view\.js)|prototype-b\/(?:base\.css|style\.css|forest\.png)|(?:js|css|shared|toolbox|assets|battle-ui|online)\/[a-zA-Z0-9_./-]+)$/.test(name)||name.split('/').some(p=>p.startsWith('.')||p.startsWith('_'))||name.includes('.local.'))return false;
    type=MIME[path.extname(name)];if(!type)return false;
    try{
     const real=fs.realpathSync(path.join(ROOT,name.slice(1)));
