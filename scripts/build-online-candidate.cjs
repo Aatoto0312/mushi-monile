@@ -15,7 +15,7 @@ function build(out){
  const files=[...new Set([...explicit,...['js','css','shared','toolbox','assets'].flatMap(filesIn)])].sort();
  for(const file of files){const stat=fs.lstatSync(path.join(ROOT,file));if(stat.isSymbolicLink()||!stat.isFile())throw Error('MISSING_BROWSER_ASSET');}
  fs.mkdirSync(path.join(out,'site'),{recursive:true});
- const manifest={createdAt:new Date().toISOString(),assetVersion:ASSET_VERSION,sourceHead:git(['rev-parse','HEAD']).toString().trim(),mainHead:git(['rev-parse','main']).toString().trim(),versions:VERSIONS,runtime:createRuntime().meta,files:[],forbiddenRoots:['server/','docs/','tests/','.ai-worker/']};
+ const manifest={createdAt:new Date().toISOString(),assetVersion:ASSET_VERSION,sourceHead:git(['rev-parse','HEAD']).toString().trim(),mainHead:git(['rev-parse','origin/main']).toString().trim(),versions:VERSIONS,runtime:createRuntime().meta,files:[],forbiddenRoots:['server/','docs/','tests/','.ai-worker/']};
  for(const file of files){
   let data=fs.readFileSync(path.join(ROOT,file));
   if(file==='online/config.json')data=Buffer.from(JSON.stringify({...config,productionEnabled:true},null,2)+'\n');
@@ -24,7 +24,7 @@ function build(out){
   if(/\.(?:html|js|css|json)$/.test(file))data=Buffer.from(data.toString('utf8').replace(/\r\n/g,'\n'));
   if(file.endsWith('.html'))data=Buffer.from(data.toString().replace(/((?:src|href)=["'])([^"']+)(["'])/g,(_,a,url,b)=>a+versioned(url)+b));
   if(file.endsWith('.css'))data=Buffer.from(data.toString().replace(/url\((["']?)([^"')]+)\1\)/g,(_,quote,url)=>'url('+quote+versioned(url)+quote+')'));
-  let main='added';try{main=hash(git(['show','main:'+file]))===hash(data)?'unchanged':'modified';}catch{}
+  let main='added';try{main=hash(git(['show','origin/main:'+file]))===hash(data)?'unchanged':'modified';}catch{}
   const dest=path.join(out,'site',file);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,data,{flag:'wx'});manifest.files.push({path:file,bytes:data.length,sha256:hash(data),main});
  }
  // Keep the existing legacy Pages/Jekyll build and exclude non-site repository roots.
