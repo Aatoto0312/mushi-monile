@@ -1,7 +1,7 @@
 {
-  "createdAt": "2026-11-12T06:59:04.055Z",
+  "createdAt": "2026-11-12T07:06:24.687Z",
   "assetVersion": "result-popup-1",
-  "sourceHead": "2995e9c79ff44065ede54c473fcc53199a301e88",
+  "sourceHead": "ba229d89181bf6a02d7449b1d12d7ace90bdfcd8",
   "mainHead": "f135e78a0d060a6337c433eb492ff1892a188e9d",
   "versions": {
     "protocol": "mushi-online/1",
@@ -372,8 +372,8 @@
     },
     {
       "path": "online/client.js",
-      "bytes": 25545,
-      "sha256": "7117fdc54db934af6cba6cdc659f3d607317333108d3f40a08f28bd638e1d554",
+      "bytes": 26553,
+      "sha256": "2a9b57fca198f182e76a12968ebd2a2d13821922db0e1ed897ea084d400d593b",
       "main": "modified"
     },
     {
