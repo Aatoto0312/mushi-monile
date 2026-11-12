@@ -39,3 +39,5 @@
 `MUSHI_CANDIDATE_DIRECTORY` に上記ディレクトリ、`MUSHI_PLAYWRIGHT_PATH` に既存Playwrightを指定し、`node --test --test-concurrency=1 server/browser/result-popup.cjs`。
 
 GitHub ActionsのNew UI release gateは公式Jekyll成果物の正確な配信ファイル/ハッシュと、Chromium/WebKitの全12 E2Eを検証し、`new-ui-screenshots` に画像を保存する。ドラフトPRのチェックと成果物を参照。mainへマージするまで公開されない。
+
+新UIの既存dialogスタイルが結果ポップアップのpaddingを0pxに上書きする問題を、結果dialog専用のCSS詳細度で修正。全モードのE2Eで左右padding=22pxを実測する。

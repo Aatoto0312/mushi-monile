@@ -14,7 +14,7 @@ const popup=page=>page.locator('.battle-result-popup');
 // Capability refs are deliberately regenerated on each server projection.
 const finalState=view=>JSON.stringify({battle:view.battle,result:view.room.result},(key,value)=>key==='ref'?undefined:value);
 async function photo(page,name){await page.waitForFunction(()=>[...document.querySelectorAll('img')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.right>0&&r.left<innerWidth&&r.bottom>0&&r.top<innerHeight;}).every(e=>e.complete&&e.naturalWidth));await page.screenshot({path:path.join(out,name+'.png')});}
-async function fits(page){const r=await popup(page).boundingBox(),v=page.viewportSize();assert(r.x>=0&&r.y>=0&&r.x+r.width<=v.width&&r.y+r.height<=v.height);assert.equal(await page.locator('.battle-result-popup[open]').count(),1);}
+async function fits(page){const r=await popup(page).boundingBox(),v=page.viewportSize();assert(r.x>=0&&r.y>=0&&r.x+r.width<=v.width&&r.y+r.height<=v.height);assert.equal(await page.locator('.battle-result-popup[open]').count(),1);assert.equal(await popup(page).evaluate(e=>getComputedStyle(e).paddingLeft),'22px','result spacing must survive legacy/new dialog themes');}
 async function startCpu(page,base,mode){await page.goto(base+'/index.html?battleUi='+mode);await page.locator('#btn-vs-cpu').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();}
 for(const kind of ['chromium','webkit']){
  test(kind+' CPU both UIs: real engine win/loss/draw, inspect final board, reopen/replay/menu',async t=>{
