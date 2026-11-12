@@ -19,8 +19,11 @@ async function startCpu(page,base,mode){await page.goto(base+'/index.html?battle
 for(const kind of ['chromium','webkit']){
  test(kind+' CPU both UIs: real engine win/loss/draw, inspect final board, reopen/replay/menu',async t=>{
   const app=createCandidateServer(candidate);await app.start();t.after(()=>app.stop());const browser=await launch(kind);t.after(()=>browser.close());
-  const page=await browser.newPage({viewport:{width:375,height:667},isMobile:true,hasTouch:true});page.setDefaultTimeout(15000);await art.install(page,t);const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>Math.random=()=>0);
+  const errors=[];
   for(const mode of ['legacy','new'])for(let i=0;i<3;i++){
+   // Independent scenarios must not inherit a replayed game's timers/navigation.
+   // Reload/reconnect and UI-switch persistence are exercised within each match.
+   const page=await browser.newPage({viewport:{width:375,height:667},isMobile:true,hasTouch:true});page.setDefaultTimeout(15000);await art.install(page,t);page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>Math.random=()=>0);t.diagnostic(JSON.stringify({kind,mode,outcome:titles[i]}));
    await startCpu(page,app.url,mode);
    await page.evaluate(({code,pair})=>{const ui=MushiBattle.ui; (0,eval)('('+code+')')(window,ui.state,10,10,14);useEnhancement(ui.state,'P1',ui.state.player('P1').hand.find(x=>x.cardId==='kamikiri_no_daigaku').instanceId,ui.state.player('P1').field[0].instanceId);ui.state.player('P2').deck=[];ui.state.manualDrawPlayers=['P1'];ui.state.player('P1').territory.length=pair[0];ui.state.player('P2').territory.length=pair[1];ui.render();},{code:setup.toString(),pair:pairs[i]});
    await page.locator(mode==='new'?'#b-battle [data-role="end"]':'#btn-end-turn').click();await popup(page).waitFor({state:'visible'});
@@ -40,6 +43,7 @@ for(const kind of ['chromium','webkit']){
    if(i===2){await page.setViewportSize({width:375,height:560});await fits(page);await photo(page,kind+'-cpu-'+mode+'-short');await page.setViewportSize({width:375,height:667});}
    if(i===0){await popup(page).getByRole('button',{name:'もう一度対戦',exact:true}).click();assert(!await popup(page).isVisible());assert.notEqual(await page.evaluate(()=>MushiBattle.ui.state.phase),'GAME_OVER');}
    else{await popup(page).getByRole('button',{name:'メニューへ',exact:true}).click();await page.locator('#mode-select-overlay').waitFor({state:'visible'});assert(!await popup(page).isVisible());}
+   await page.close();
   }assert.deepEqual(errors,[]);
  });
  test(kind+' online both UIs: authoritative outcomes, spectator, reconnect, readonly inspection and confirmed leave',async t=>{
