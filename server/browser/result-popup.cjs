@@ -27,7 +27,7 @@ for(const kind of ['chromium','webkit']){
    await startCpu(page,app.url,mode);
    await page.evaluate(({code,pair})=>{const ui=MushiBattle.ui; (0,eval)('('+code+')')(window,ui.state,10,10,14);useEnhancement(ui.state,'P1',ui.state.player('P1').hand.find(x=>x.cardId==='kamikiri_no_daigaku').instanceId,ui.state.player('P1').field[0].instanceId);ui.state.player('P2').deck=[];ui.state.manualDrawPlayers=['P1'];ui.state.player('P1').territory.length=pair[0];ui.state.player('P2').territory.length=pair[1];ui.render();},{code:setup.toString(),pair:pairs[i]});
    await page.locator(mode==='new'?'#b-battle [data-role="end"]':'#btn-end-turn').click();await popup(page).waitFor({state:'visible'});
-   assert.equal(await popup(page).locator('h2').innerText(),titles[i]);await fits(page);await photo(page,kind+'-cpu-'+mode+'-'+i);
+   assert.equal(await popup(page).locator('h2').innerText(),titles[i]);assert(await page.locator('#cpu-thinking').isHidden(),'finished matches must not show CPU thinking');await fits(page);await photo(page,kind+'-cpu-'+mode+'-'+i);
    const final=await page.evaluate(()=>JSON.stringify(MushiBattle.ui.state));
    await popup(page).getByRole('button',{name:'盤面を見る',exact:true}).click();await page.evaluate(()=>{MushiBattle.ui.render();MushiBattle.ui.render();});assert(!await popup(page).isVisible());
    assert.equal(await page.evaluate(()=>JSON.stringify(MushiBattle.ui.state)),final);

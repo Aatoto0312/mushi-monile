@@ -9,6 +9,7 @@
   if(!ui.cpuMode||ui.tutorialController){clear();return;}
   const state=ui.state,newUi=root.MushiCpuBattle.active;
   document.getElementById('game-over').style.display='none';
+  if(state.phase===root.Phases.GAME_OVER){document.getElementById('cpu-thinking').style.display='none';if(!newUi)document.getElementById('status-text').textContent='対戦終了。カードをタップして最後の状態を確認できます。';}
   const end=newUi?document.querySelector('#b-battle [data-role="end"]'):null;
   popup.update({key:'cpu:'+matchId,room:{phase:state.phase===root.Phases.GAME_OVER?'ENDED':'PLAYING',result:{winner:state.winner,reason:'GAME_OVER'}},viewerId:'P1',
    anchor:newUi?end.parentElement:document.querySelector('.control-bar .btn-row'),replaceButton:end,
