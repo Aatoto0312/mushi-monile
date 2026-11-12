@@ -1,7 +1,7 @@
 (function(){
   'use strict';
   const $=id=>document.getElementById(id),sessionKey='mushiOnlineSeatV1';
-  let socket,contract,hello,current,seat=null,connected=false,busy=false,retry=0,retryTimer,decisionVersion=null,localDecks=[],lastCommand=null;
+  let socket,contract,hello,current,seat=null,connected=false,busy=false,retry=0,retryTimer,decisionVersion=null,localDecks=[],lastCommand=null,finalViewOnly=false;
   let resultStorage;try{resultStorage=sessionStorage;}catch{}
   const resultPopup=window.MushiBattleResult.create(document,resultStorage);
   function renderResult(){
@@ -9,9 +9,16 @@
     const end=window.MushiOnlineBattle?document.querySelector('#b-battle [data-role="end"]'):null;
     resultPopup.update({key:current.room.matchId,room:current.room,viewerId:seat.role==='SPECTATOR'?'SPECTATOR':seat.playerId,
       names:Object.fromEntries(current.room.players.map(p=>[p.id,p.name+'（'+p.id+'）'])),
-      anchor:end?end.parentElement:$('actions'),replaceButton:end,busy:busy||!connected,
-      note:seat.role==='SPECTATOR'?'観戦した対戦の確定結果です。': '再戦は新しいルームで行います。相手と相談して、退出後にルームを作成・参加してください。',
+      anchor:end?end.parentElement:$('actions'),replaceButton:end,busy:!finalViewOnly&&(busy||!connected),
+      note:finalViewOnly?'ルームは終了しました。受信済みの終了盤面を表示しています。メニューへ戻るまで保持します。':seat.role==='SPECTATOR'?'観戦した対戦の確定結果です。': '再戦は新しいルームで行います。相手と相談して、退出後にルームを作成・参加してください。',
       onBoard:closeOverlay,onReplay:seat.role==='SPECTATOR'?null:()=>requestLeave(),onMenu:()=>requestLeave()});
+  }
+  function retainFinalBoard(message){
+    if(current?.room.phase!=='ENDED'||!current.battle||!seat)return false;
+    finalViewOnly=true;busy=false;lastCommand=null;
+    // Keep only the viewer identity and the already-redacted, in-memory final view.
+    seat={playerId:seat.playerId,role:seat.role};saveSeat();closeOverlay();
+    notice(message+' 終了盤面はメニューへ戻るまで表示します。');render();return true;
   }
   // Presentation adapters only: every displayed effective value comes from the server.
   window.ZONES={FIELD:'FIELD',FOOD:'FOOD',HAND:'HAND',DISCARD:'DISCARD',TERRITORY:'TERRITORY'};
@@ -26,7 +33,7 @@
   function closeOverlay(){if($('overlay').open)$('overlay').close();}
   function openOverlay(title){$('overlay-title').textContent=title;$('overlay-body').replaceChildren();if(!$('overlay').open)$('overlay').showModal();return $('overlay-body');}
   function send(type,fields={}){
-    if(!connected||busy)return;busy=true;
+    if(!connected||busy||finalViewOnly)return;busy=true;
     const packet={type,requestId:crypto.randomUUID().replaceAll('-',''),versions:contract,...fields};
     lastCommand=packet;socket.send(JSON.stringify(packet));render();
   }
@@ -123,7 +130,7 @@
     renderResult();
   }
   function readSeat(){try{return JSON.parse(sessionStorage.getItem(sessionKey));}catch{return null;}}
-  function saveSeat(){try{if(seat)sessionStorage.setItem(sessionKey,JSON.stringify(seat));else sessionStorage.removeItem(sessionKey);}catch{notice('このブラウザでは再接続情報を保存できません。');}}
+  function saveSeat(){try{if(seat&&!finalViewOnly)sessionStorage.setItem(sessionKey,JSON.stringify(seat));else sessionStorage.removeItem(sessionKey);}catch{notice('このブラウザでは再接続情報を保存できません。');}}
   function selectedDeck(){
     const [kind,id]=$('deck-select').value.split(':');
     if(kind==='saved')return localDecks[Number(id)];
@@ -156,6 +163,7 @@
       if(m.type==='HELLO'){
         if(Object.keys(contract).some(key=>contract[key]!==m.versions[key])){notice('ゲームデータが更新されています。ページを再読込してください。');socket.onclose=null;socket.close();return;}
         hello=m;connected=true;busy=false;retry=0;$('connection').textContent='接続済み';populateDecks();
+        if(finalViewOnly){render();return;}
         seat=readSeat();if(seat){notice(seat.bootId!==m.bootId?'サーバーが再起動しました。前の試合の状態を確認します。':'対戦へ再接続しています。');send('RESUME',{code:seat.roomCode,token:seat.token});}else render();
       }else if(m.type==='SESSION'){seat={...seat,...m};saveSeat();}
       else if(m.type==='ACK'){busy=false;if(lastCommand&&m.requestId===lastCommand.requestId&&lastCommand.type==='LEAVE'){seat=null;current=null;saveSeat();$('room').hidden=$('board').hidden=true;closeOverlay();render();}}
@@ -163,9 +171,9 @@
       else if(m.type==='ERROR'){
         busy=false;const errors={STALE_STATE:'状態が更新されました。もう一度選択してください。',SPECTATOR_LIMIT:'観戦枠が満員です（最大3人）。',SPECTATOR_READ_ONLY:'観戦者は対戦操作できません。',DECK_VERSION:'保存デッキの形式・カードデータが一致しません。Toolboxで確認してください。',DECK_INVALID:'このデッキは使用できません。20枚・同名2枚・対戦対応を確認してください。',ROOM_STATE:'このルームは終了済み、または現在その操作ができません。',ROOM_FULL:'ルームは満員、または開始済みです。',ROOM_UNAVAILABLE:'ルームがありません。再起動・期限切れの場合は作り直してください。',AUTH_INVALID:'再接続できません。ルームを作り直してください。',SELECTION_INVALID:'選択条件を確認してください。'};
         notice(errors[m.code]||'操作できませんでした: '+m.code);
-        if(['ROOM_UNAVAILABLE','AUTH_INVALID'].includes(m.code)){seat=null;current=null;saveSeat();$('room').hidden=$('board').hidden=true;closeOverlay();}
+        if(['ROOM_UNAVAILABLE','AUTH_INVALID'].includes(m.code)){if(retainFinalBoard('終了したルームへは再接続できません。'))return;seat=null;current=null;saveSeat();$('room').hidden=$('board').hidden=true;closeOverlay();}
         if(m.code==='STALE_STATE'){decisionVersion=null;closeOverlay();send('SYNC');}render();
-      }else if(m.type==='ROOM_EXPIRED'){seat=null;current=null;saveSeat();$('room').hidden=$('board').hidden=true;closeOverlay();notice('ルームの有効期限が切れました。新しく作成してください。');render();}
+      }else if(m.type==='ROOM_EXPIRED'){if(retainFinalBoard('ルームの有効期限が切れました。'))return;seat=null;current=null;saveSeat();$('room').hidden=$('board').hidden=true;closeOverlay();notice('ルームの有効期限が切れました。新しく作成してください。');render();}
       else if(m.type==='SERVER_STOPPING')notice('サーバー停止のため試合を中断します。復旧後に新しいルームを作成してください。');
     };
     socket.onclose=event=>{connected=false;busy=false;closeOverlay();$('connection').textContent='切断中';render();if(event.code===4001){notice('別の接続で再開されました。この画面の再接続を停止しました。');return;}retryTimer=setTimeout(()=>connect(endpoint),Math.min(15000,1000*2**Math.min(retry++,4)));};
@@ -183,6 +191,7 @@
   $('deck-apply').onclick=()=>{if(deckErrors(selectedDeck()).length){deckNote();return;}const value=$('deck-select').value,[kind,id]=value.split(':');send('DECK',{version:current.room.version,...(kind==='preset'?{preset:id}:{deck:localDecks[Number(id)]})});};
   $('ready').onclick=()=>send('READY',{version:current.room.version,ready:!current.room.players.find(p=>p.id===seat.playerId)?.ready});
   function requestLeave(){
+    if(finalViewOnly){finalViewOnly=false;seat=null;current=null;saveSeat();$('room').hidden=$('board').hidden=true;closeOverlay();render();return;}
     if(!current||!seat||!connected||busy)return;
     const roomCode=current.room.code,body=openOverlay('ルームを退出');
     const explanation=document.createElement('p');

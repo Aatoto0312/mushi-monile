@@ -47,7 +47,7 @@ for(const kind of ['chromium','webkit']){
   }assert.deepEqual(errors,[]);
  });
  test(kind+' online both UIs: authoritative outcomes, spectator, reconnect, readonly inspection and confirmed leave',async t=>{
-  const app=createCandidateServer(candidate,{rng:()=>0});await app.start();t.after(()=>app.stop());const browser=await launch(kind);t.after(()=>browser.close());
+  let clock=Date.now();const app=createCandidateServer(candidate,{rng:()=>0,now:()=>clock});await app.start();t.after(()=>app.stop());const browser=await launch(kind);t.after(()=>browser.close());
   for(const mode of ['legacy','new'])for(let i=0;i<3;i++){
    counts=pairs[i];const pages=await Promise.all([0,1,2].map(()=>browser.newPage({viewport:{width:375,height:667},isMobile:true,hasTouch:true}))),[a,b,w]=pages;const errors=[],packets=[],views=new Map();
    for(const p of pages){await p.addInitScript(()=>{window.__resultTestSockets=[];window.WebSocket=class extends WebSocket{constructor(...args){super(...args);window.__resultTestSockets.push(this);}};});p.setDefaultTimeout(15000);await art.install(p,t);p.on('pageerror',e=>errors.push(e.message));p.on('websocket',s=>{s.on('framesent',f=>packets.push(JSON.parse(f.payload.toString())));s.on('framereceived',f=>{const m=JSON.parse(f.payload.toString());if(m.type==='VIEW')views.set(p,m);});});await p.goto(app.url+(mode==='new'?'/online-b.html':'/online.html'));await p.waitForFunction(()=>!document.querySelector('#create').disabled);}
@@ -67,7 +67,9 @@ for(const kind of ['chromium','webkit']){
    assert.equal(views.get(a).battle.actions.length,0);
    assert(await popup(w).locator('[data-result="replay"]').isDisabled());assert.equal(packets.filter(p=>p.type==='ACTION').length,actions);
    await popup(a).getByRole('button',{name:'もう一度対戦',exact:true}).click();await a.locator('[data-kind="CONFIRM_LEAVE"]').waitFor();assert.equal(packets.filter(p=>p.type==='LEAVE').length,0);await a.locator('[data-kind="CANCEL_LEAVE"]').click();assert(Number(await a.locator('#board').getAttribute('data-version'))>=Number(finalVersion));
-   for(const p of pages){if(!await popup(p).isVisible())await p.locator('.battle-result-open').click();await popup(p).getByRole('button',{name:'メニューへ',exact:true}).click();await p.locator('[data-kind="CONFIRM_LEAVE"]').click();await p.locator('#entrance').waitFor({state:'visible'});}
+   if(i===2){clock+=300001;for(const p of pages){await p.waitForFunction(()=>document.querySelector('#notice').textContent.includes('有効期限'));assert(await p.locator('#board').isVisible(),'room expiry must preserve the final board');assert.equal(await p.evaluate(()=>sessionStorage.getItem('mushiOnlineSeatV1')),null);}assert(!await popup(a).isVisible());await photo(a,kind+'-expired-final-'+mode);}
+   for(const p of pages){if(!await popup(p).isVisible())await p.locator('.battle-result-open').click();await popup(p).getByRole('button',{name:'メニューへ',exact:true}).click();if(i!==2)await p.locator('[data-kind="CONFIRM_LEAVE"]').click();await p.locator('#entrance').waitFor({state:'visible'});}
+   if(i===2){assert.equal(packets.filter(p=>p.type==='LEAVE').length,0);await a.locator('#create').click();await a.locator('#room').waitFor({state:'visible'});await a.locator('#leave').click();await a.locator('[data-kind="CONFIRM_LEAVE"]').click();await a.locator('#entrance').waitFor({state:'visible'});}
    assert.deepEqual(errors,[]);for(const p of pages)await p.close();
   }
  });
