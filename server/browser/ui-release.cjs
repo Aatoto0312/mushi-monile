@@ -30,6 +30,7 @@ for(const kind of ['chromium','webkit']){
   await page.locator('[data-role="menu"]').first().click();await page.getByRole('button',{name:'設定・退出など',exact:true}).click();await page.getByRole('button',{name:'旧UIへ切り替え',exact:true}).click();
   assert.equal(await page.evaluate(()=>JSON.stringify(MushiBattle.ui.state)),before);
   assert.equal(await page.evaluate(()=>localStorage.getItem('mushijingiBattleUiV1')),'legacy');
+  const switchBounds=await page.locator('#cpu-b-return').boundingBox();assert(switchBounds.y>=-1&&switchBounds.y+switchBounds.height<=668,'new UI switch must be visible without page scrolling '+JSON.stringify(switchBounds));
   assert.equal(await page.locator('#self-field-zone .battle-card').first().evaluate(e=>e.getBoundingClientRect().width),76);
   await screen(page,kind+'-legacy-normal');
   await page.reload({waitUntil:'load'});await page.locator('#btn-vs-cpu').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();await page.locator('#cpu-b-return').waitFor();
@@ -37,7 +38,7 @@ for(const kind of ['chromium','webkit']){
   assert.equal(await page.evaluate(()=>localStorage.getItem('mushijingiBattleUiV1')),'new');
   for(const height of [667,560]){
    await page.setViewportSize({width:375,height});await page.evaluate(code=>{(0,eval)('('+code+')')(window,MushiBattle.ui.state,10,10,14);MushiBattle.ui.render();},setup.toString());
-   for(const role of ['other-field','own-field','hand']){const lane=page.locator('[data-role="'+role+'"]');assert(await lane.evaluate(e=>e.scrollWidth>e.clientWidth));await lane.evaluate(e=>e.scrollLeft=e.scrollWidth);assert(await lane.evaluate(e=>e.scrollLeft>0));await lane.evaluate(e=>e.scrollLeft=0);}
+   for(const role of ['other-field','own-field','hand']){const lane=page.locator('[data-role="'+role+'"]');await page.waitForFunction(role=>{const e=document.querySelector('[data-role="'+role+'"]');return e.scrollWidth>e.clientWidth;},role);assert(await lane.evaluate(e=>e.scrollWidth>e.clientWidth));await lane.evaluate(e=>e.scrollLeft=e.scrollWidth);assert(await lane.evaluate(e=>e.scrollLeft>0));await lane.evaluate(e=>e.scrollLeft=0);}
    await layout(page,kind,'many-'+height);await screen(page,kind+'-new-many-'+height);
    if(await page.locator('[data-role="hand-toggle"]').getAttribute('aria-expanded')==='false')await page.locator('[data-role="hand-toggle"]').click();
    await layout(page,kind,'many-expanded-'+height);await screen(page,kind+'-new-many-expanded-'+height);

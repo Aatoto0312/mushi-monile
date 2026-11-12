@@ -7,6 +7,9 @@ on:
       - 'shared/battle-ui-preference.js'
       - '*.html'
       - 'docs/online-beta/release-manifest.json'
+      - 'server/browser/ui-release.cjs'
+      - 'server/browser/toolbox-online-candidate.cjs'
+      - 'server/tools/b-ui-pilot.cjs'
       - '.github/workflows/a-ui-release.yml'
   workflow_dispatch:
 permissions:

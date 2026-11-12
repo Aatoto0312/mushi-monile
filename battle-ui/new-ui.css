@@ -1,9 +1,9 @@
-@import url('./board.css?v=ui-a-v2-1');
+@import url('./board.css?v=ui-a-v2-2');
 /* A: fixed readable card sizes; each lane pans horizontally, the board vertically. */
 html[data-battle-ui='a']{--a-card-width:116px;background:#061b16;color-scheme:dark}
 html[data-battle-ui='a'] body{margin:0}
 html[data-battle-ui='a'] .battle-shell{background:#061b16}
-html[data-battle-ui='a'] #board{overflow-x:hidden;overflow-y:auto;scrollbar-width:thin;container-type:normal;overscroll-behavior-y:contain;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px));scroll-padding-bottom:calc(72px + env(safe-area-inset-bottom,0px));background:linear-gradient(#001b1440,#00171080),url('../prototype-b/forest.png?v=ui-a-v2-1') center top/cover fixed}
+html[data-battle-ui='a'] #board{overflow-x:hidden;overflow-y:auto;scrollbar-width:thin;container-type:normal;overscroll-behavior-y:contain;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px));scroll-padding-bottom:calc(72px + env(safe-area-inset-bottom,0px));background:linear-gradient(#001b1440,#00171080),url('../prototype-b/forest.png?v=ui-a-v2-2') center top/cover fixed}
 html[data-battle-ui='a'] #b-battle{height:auto;min-height:100%}
 html[data-battle-ui='a'] .live-arena,
 html[data-battle-ui='a'] .live-arena.hand-expanded,
