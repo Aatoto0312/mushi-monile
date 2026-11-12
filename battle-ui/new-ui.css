@@ -1,0 +1,143 @@
+@import url('./board.css?v=ui-a-v2-1');
+/* A: fixed readable card sizes; each lane pans horizontally, the board vertically. */
+html[data-battle-ui='a']{--a-card-width:116px;background:#061b16;color-scheme:dark}
+html[data-battle-ui='a'] body{margin:0}
+html[data-battle-ui='a'] .battle-shell{background:#061b16}
+html[data-battle-ui='a'] #board{overflow-x:hidden;overflow-y:auto;scrollbar-width:thin;container-type:normal;overscroll-behavior-y:contain;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px));scroll-padding-bottom:calc(72px + env(safe-area-inset-bottom,0px));background:linear-gradient(#001b1440,#00171080),url('../prototype-b/forest.png?v=ui-a-v2-1') center top/cover fixed}
+html[data-battle-ui='a'] #b-battle{height:auto;min-height:100%}
+html[data-battle-ui='a'] .live-arena,
+html[data-battle-ui='a'] .live-arena.hand-expanded,
+html[data-battle-ui='a'] .live-arena[data-mode='target']{
+ display:flex;flex-direction:column;gap:8px;width:100%;max-width:780px;height:auto;min-height:0;overflow:visible;margin:auto;padding:8px max(8px,env(safe-area-inset-right,0px)) 0 max(8px,env(safe-area-inset-left,0px));background:none;box-shadow:none;
+}
+html[data-battle-ui='a'] .arena:before{display:none}
+html[data-battle-ui='a'] .live-arena>.player{flex:none;min-height:52px;gap:6px;padding:4px 7px;border:1px solid #b8b76d99;border-radius:12px;background:linear-gradient(100deg,#03291cf5,#021911ed);box-shadow:inset 0 1px 6px #a7c87922}
+html[data-battle-ui='a'] .live-arena .player>b{font-size:13px;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html[data-battle-ui='a'] .live-arena .avatar{display:none}
+html[data-battle-ui='a'] .live-arena .stats{display:flex;flex:1;justify-content:space-between;gap:3px;overflow:visible}
+html[data-battle-ui='a'] .live-arena .stats button{background:transparent;border:0;box-shadow:none;border-radius:0}
+html[data-battle-ui='a'] .live-arena .stats button,
+html[data-battle-ui='a'] .live-arena .stats>span{display:flex;flex-direction:column;gap:0;min-width:24px;min-height:40px;justify-content:center;align-items:center;padding:0;font-size:11px;line-height:1.2;color:#dfebdb}
+html[data-battle-ui='a'] .live-arena .stats b{font-size:18px;line-height:1.25}
+html[data-battle-ui='a'] .live-arena .stats>span b{color:#ffda7d}
+html[data-battle-ui='a'] .live-arena .player>button{width:36px;min-width:36px;height:40px;min-height:40px}
+html[data-battle-ui='a'] .live-arena>.field{display:block;flex:none;min-height:0;border:1px solid #92ad7c55;border-radius:12px;padding:7px 0 5px;background:linear-gradient(90deg,#032217e0,#082b1c66,#042216d9);overflow:hidden}
+html[data-battle-ui='a'] .live-arena .lane-title{display:block;margin:0 9px 6px;font-size:13px;line-height:18px;font-weight:700;color:#f1efcf}
+html[data-battle-ui='a'] .live-arena .lane-title small{display:none}
+html[data-battle-ui='a'] .live-arena .cards,
+html[data-battle-ui='a'] .live-arena.hand-expanded .hand>.cards{
+ display:flex;flex-flow:row nowrap;align-items:flex-start;gap:8px;height:auto;min-height:0;padding:3px 9px 7px;overflow-x:auto;overflow-y:hidden;container-type:normal;scroll-snap-type:x proximity;scroll-padding-inline:9px;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#b4a36366 transparent;
+}
+html[data-battle-ui='a'] .live-arena .unit,
+html[data-battle-ui='a'] .live-arena .cards[data-count] .unit,
+html[data-battle-ui='a'] .live-arena.hand-expanded .hand .unit{
+ display:grid;grid-template-rows:max-content 160px 23px auto auto;flex:0 0 var(--a-card-width);width:var(--a-card-width);min-width:var(--a-card-width);max-width:var(--a-card-width);height:auto;min-height:0;max-height:none;padding:0;border:1px solid #d3c080;border-radius:9px;overflow:hidden;background:#03291e;color:#fff;box-shadow:0 3px 7px #0009;transform:none;scroll-snap-align:start;text-align:left;
+}
+html[data-battle-ui='a'] .live-arena .card-heading{display:flex;align-items:center;gap:4px;min-height:34px;padding:2px 4px;background:linear-gradient(#102a22,#001910);min-width:0}
+html[data-battle-ui='a'] .live-arena .printed-cost{display:grid;place-items:center;flex:0 0 25px;height:25px;border:1px solid #c5ad6d;border-radius:50%;font-size:18px;font-weight:800;color:#ffdf8d}
+html[data-battle-ui='a'] .live-arena .card-title{font-size:11px;line-height:1.25;font-weight:700;overflow-wrap:anywhere}
+html[data-battle-ui='a'] .live-arena .unit .art{display:block;width:100%;height:160px;min-height:0;aspect-ratio:auto;border:0;border-radius:0;overflow:hidden;background:#061f17}
+html[data-battle-ui='a'] .live-arena .unit .art .specimen-art{width:100%;height:100%;position:relative}
+html[data-battle-ui='a'] .live-arena .unit .art img{display:block;width:100%;height:100%;object-fit:contain}
+html[data-battle-ui='a'] .live-arena .unit .hp{padding:2px 5px;font-size:14px;line-height:19px;white-space:nowrap;background:#073c26;color:#f7ffe9;font-weight:800}
+html[data-battle-ui='a'] .live-arena .unit .ap{display:block;padding:3px 5px;font-size:12px;line-height:16px;white-space:normal;overflow-wrap:anywhere;background:#dec67c;color:#17271c;font-weight:800}
+html[data-battle-ui='a'] .live-arena .unit .markers{display:block;min-height:18px;height:auto;padding:3px 5px;font-size:11px;line-height:14px;white-space:normal;overflow-wrap:anywhere;background:#05261d;color:#dcefd5}
+html[data-battle-ui='a'] .live-arena .unit .markers:empty{display:none}
+html[data-battle-ui='a'] .live-arena .unit.selected{outline:3px solid #f7dd87;outline-offset:-2px}
+html[data-battle-ui='a'] .live-arena .unit.target{outline:3px solid #ffb079;outline-offset:-3px;box-shadow:0 0 15px #f6ad6255}
+html[data-battle-ui='a'] .live-arena .unit.unavailable{opacity:.55}
+html[data-battle-ui='a'] .live-arena .cards:empty:after{display:block;min-height:28px;margin:0;font-size:12px;padding:2px}
+html[data-battle-ui='a'] .live-arena>.ribbon{display:grid;flex:none;align-self:stretch;min-height:36px;padding:5px 9px;border-block:1px solid #c8b469aa;background:#002518ec;border-radius:4px}
+html[data-battle-ui='a'] .live-arena .ribbon>[data-role='turn']{font-size:15px}
+html[data-battle-ui='a'] .live-arena .ribbon>[data-role='instruction']{font-size:12px}
+html[data-battle-ui='a'] .live-arena>.hand,
+html[data-battle-ui='a'] .live-arena.hand-expanded>.hand{display:block;flex:none;position:static;inset:auto;height:auto;min-height:0;overflow:hidden;padding:0;margin:0;border:1px solid #acb57b66;border-radius:12px;background:#032419d9;box-shadow:none;backdrop-filter:none}
+html[data-battle-ui='a'] .live-arena #hand-toggle{display:block;position:static;width:100%;height:44px;min-height:44px;border:0;border-radius:0;margin:0;background:#082e20;color:#fff2b6;font-size:14px}
+html[data-battle-ui='a'] .live-arena:not(.hand-expanded) .hand>.cards{display:none}
+html[data-battle-ui='a'] .live-arena .hand>.cards:empty{display:none}
+html[data-battle-ui='a'] .live-arena>.rail{
+ position:fixed;z-index:70;bottom:0;left:0;right:0;display:flex;gap:7px;width:100%;max-width:800px;margin:auto;min-height:58px;padding:6px max(8px,env(safe-area-inset-right,0px)) max(6px,env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));border-top:1px solid #b6a36e;background:#042319f7;box-shadow:0 -3px 15px #0006;
+}
+html[data-battle-ui='a'] #b-battle .rail>button{min-height:44px;font-size:12px;padding:6px 9px;min-width:0;background:#092f24;border:1px solid #b5b37b99;color:#f6efd3}
+html[data-battle-ui='a'] #b-battle .rail #end{min-width:118px;max-width:50%;font-size:13px;margin-left:auto;justify-content:center}
+html[data-battle-ui='a'] #b-battle .rail #end{background:linear-gradient(#fae7aa,#cfa94e);color:#142116;border-color:#fff0b3}
+html[data-battle-ui='a'] #sheet{max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));font-size:14px}
+html[data-battle-ui='a'] #sheet:has(.detail-grid){top:0;bottom:0;margin:auto;width:min(480px,calc(100% - 16px));height:auto;border-radius:14px;padding:0}
+html[data-battle-ui='a'] #sheet header{padding:8px 10px;min-height:52px}
+html[data-battle-ui='a'] #sheet header h1{font-size:17px}
+html[data-battle-ui='a'] #sheet-body{padding:12px}
+html[data-battle-ui='a'] #sheet-body>button{min-height:44px;font-size:14px;margin:6px 0}
+html[data-battle-ui='a'] .detail-art{width:min(270px,75vw);height:auto;aspect-ratio:5/7}
+html[data-battle-ui='a'] .skills-text{font-size:14px;line-height:1.65}
+html[data-battle-ui='a'] #sheet-actions button{min-height:44px;font-size:13px}
+@media(min-width:700px){html[data-battle-ui='a']{--a-card-width:144px}html[data-battle-ui='a'] .live-arena .unit,html[data-battle-ui='a'] .live-arena .cards[data-count] .unit,html[data-battle-ui='a'] .live-arena.hand-expanded .hand .unit{grid-template-rows:max-content 200px 25px auto auto}html[data-battle-ui='a'] .live-arena .unit .art{height:200px}html[data-battle-ui='a'] .live-arena .card-heading{min-height:36px}html[data-battle-ui='a'] .live-arena .card-title{font-size:12px}}
+@media(orientation:landscape) and (max-height:500px){html[data-battle-ui='a'] .live-arena{max-width:900px}html[data-battle-ui='a'] .live-arena>.rail{max-width:920px}html[data-battle-ui='a'] .live-arena>.player{min-height:48px}html[data-battle-ui='a'] .live-arena .lane-title{display:block}}
+
+/* A v2 keeps all three lanes in the available viewport. Card count never changes width. */
+html[data-a-version='v2']{--a-card-width:96px}
+html[data-a-version='v2'] #cpu-b-shell .cpu-b-header{height:24px;min-height:24px;padding-block:2px;font-size:10px;box-sizing:border-box}
+html[data-a-version='v2'] #board{overflow:hidden;padding:0;scroll-padding:0;container-type:size;container-name:aViewport}
+html[data-a-version='v2'] #b-battle{height:100%;min-height:0}
+html[data-a-version='v2'] .live-arena,
+html[data-a-version='v2'] .live-arena.hand-expanded,
+html[data-a-version='v2'] .live-arena[data-mode='target']{
+ --a-hand:108px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'opponent' 'enemy' 'hud' 'own' 'self' 'hand' 'actions';grid-template-rows:32px minmax(0,1fr) auto minmax(0,1fr) 32px var(--a-hand) 48px;gap:3px;height:100%;min-height:0;max-width:780px;overflow:hidden;padding:4px max(6px,env(safe-area-inset-right,0px)) max(4px,env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));
+}
+html[data-a-version='v2'] .live-arena.hand-expanded{--a-hand:154px}
+html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:104px}
+html[data-a-version='v2'] .live-arena>.player{min-height:0;height:32px;padding:1px 6px;border-radius:7px;gap:5px}
+html[data-a-version='v2'] .live-arena .player>b{font-size:12px;max-width:48px}
+html[data-a-version='v2'] .live-arena .stats button,
+html[data-a-version='v2'] .live-arena .stats>span{min-height:28px;height:28px;font-size:10px;line-height:11px}
+html[data-a-version='v2'] .live-arena .stats b{font-size:14px;line-height:15px}
+html[data-a-version='v2'] .live-arena .player>button{height:28px;min-height:28px;width:30px;min-width:30px;padding:0}
+html[data-a-version='v2'] .live-arena>.field{display:flex;flex-direction:column;min-height:0;padding:2px 0;border-radius:7px}
+html[data-a-version='v2'] .live-arena .lane-title{flex:none;height:14px;line-height:14px;font-size:11px;margin:0 6px 2px}
+html[data-a-version='v2'] .live-arena .field>.cards{flex:1;min-height:0;height:auto}
+html[data-a-version='v2'] .live-arena .cards,
+html[data-a-version='v2'] .live-arena.hand-expanded .hand>.cards{
+ gap:5px;padding:1px 5px 2px;align-items:stretch;scrollbar-width:none;
+}
+html[data-a-version='v2'] .cards::-webkit-scrollbar{display:none}
+html[data-a-version='v2'] .live-arena .unit,
+html[data-a-version='v2'] .live-arena .cards[data-count] .unit,
+html[data-a-version='v2'] .live-arena.hand-expanded .hand .unit{
+ display:block;position:relative;flex:0 0 var(--a-card-width);width:var(--a-card-width);min-width:var(--a-card-width);max-width:var(--a-card-width);height:100%;min-height:0;max-height:190px;padding:0;border-radius:5px;overflow:hidden;
+}
+html[data-a-version='v2'] .live-arena .unit .art{position:absolute;inset:0;height:100%;width:100%;margin:0}
+html[data-a-version='v2'] .live-arena .unit .art img{object-fit:contain}
+html[data-a-version='v2'] .live-arena .card-heading{position:absolute;inset:0 0 auto;z-index:2;min-height:24px;max-height:36px;gap:3px;padding:1px 3px;background:#02251bf0}
+html[data-a-version='v2'] .live-arena .printed-cost{flex-basis:18px;height:18px;font-size:13px}
+html[data-a-version='v2'] .live-arena .card-title{font-size:10px;line-height:11px}
+html[data-a-version='v2'] .live-arena .unit .hp,
+html[data-a-version='v2'] .live-arena .unit .ap{position:absolute;left:0;right:0;z-index:2;display:block;font-size:12px;line-height:15px;min-height:17px;padding:1px 3px;text-align:left;font-weight:800;white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+html[data-a-version='v2'] .live-arena .unit .hp{bottom:17px;background:#063b27f5}
+html[data-a-version='v2'] .live-arena .unit .ap{bottom:0;background:#dec67cf5}
+html[data-a-version='v2'] .live-arena .unit .markers{position:absolute;top:auto;bottom:34px;left:2px;right:2px;z-index:2;min-height:0;max-height:12px;padding:0 2px;font-size:9px;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#03291de8}
+html[data-a-version='v2'] .live-arena>.ribbon{align-self:stretch;min-height:26px;padding:3px 6px;border-radius:3px}
+html[data-a-version='v2'] .live-arena .ribbon>[data-role='turn']{font-size:13px}
+html[data-a-version='v2'] .live-arena .ribbon>[data-role='instruction']{font-size:11px;line-height:14px}
+html[data-a-version='v2'] .live-arena .ribbon>[data-role='phase']{font-size:11px}
+html[data-a-version='v2'] .live-arena .target-controls button{min-height:30px;padding:2px 8px;font-size:11px}
+html[data-a-version='v2'] .live-arena>.hand,
+html[data-a-version='v2'] .live-arena.hand-expanded>.hand{display:grid;grid-template-rows:24px minmax(0,1fr);height:auto;min-height:0;border-radius:7px}
+html[data-a-version='v2'] .live-arena #hand-toggle{height:24px;min-height:24px;font-size:12px;line-height:18px;padding:2px}
+html[data-a-version='v2'] .live-arena:not(.hand-expanded) .hand>.cards{display:flex}
+html[data-a-version='v2'] .live-arena:not(.hand-expanded) .hand .markers{display:none}
+html[data-a-version='v2'] .live-arena .hand>.cards{min-height:0;height:100%}
+html[data-a-version='v2'] .live-arena .cards:empty:after{min-height:0;font-size:11px}
+html[data-a-version='v2'] .live-arena>.rail{position:static;grid-area:actions;z-index:auto;min-height:0;height:48px;max-width:none;width:auto;align-self:stretch;margin:0;padding:2px;box-shadow:none;gap:5px;border-radius:7px}
+html[data-a-version='v2'] #b-battle .rail>button{min-height:42px;font-size:11px;padding:3px 8px}
+html[data-a-version='v2'] #b-battle .rail #end{font-size:12px;min-width:116px}
+html[data-a-version='v2'] .live-arena:has([data-role='own-field'][data-count='0']){grid-template-rows:32px minmax(0,1fr) auto 38px 32px var(--a-hand) 48px}
+html[data-a-version='v2'] .live-arena:has([data-role='other-field'][data-count='0']){grid-template-rows:32px 38px auto minmax(0,1fr) 32px var(--a-hand) 48px}
+html[data-a-version='v2'] .live-arena:has([data-role='own-field'][data-count='0']):has([data-role='other-field'][data-count='0']){grid-template-rows:32px minmax(38px,1fr) auto minmax(38px,1fr) 32px var(--a-hand) 48px}
+@container aViewport (max-height:580px){
+ html[data-a-version='v2'] .live-arena,html[data-a-version='v2'] .live-arena.hand-expanded{--a-hand:100px;gap:2px;padding-block:2px}
+ html[data-a-version='v2'] .live-arena.hand-expanded{--a-hand:124px}
+ html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:104px}
+}
+@media(orientation:landscape){
+ html[data-a-version='v2'] .live-arena,html[data-a-version='v2'] .live-arena.hand-expanded,html[data-a-version='v2'] .live-arena[data-mode='target']{--a-hand:112px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:'opponent self' 'enemy own' 'hud hud' 'hand hand' 'actions actions';grid-template-rows:32px minmax(0,1fr) auto var(--a-hand) 48px;max-width:1100px}
+ html[data-a-version='v2'] .live-arena.hand-expanded{--a-hand:132px}
+}

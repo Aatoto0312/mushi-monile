@@ -136,7 +136,7 @@
     el.newDeck.onclick=function(){var d=makeDeck();store.decks.push(d);store.activeDeckId=d.deckId;dirty=true;renderDeck();updateCounts();notify('新しいデッキを作成しました。図鑑からカードを選びましょう。');};
     el.deleteDeck.onclick=function(){var d=active();if(!d||!confirm('「'+d.deckName+'」を削除しますか？'))return;store.decks=store.decks.filter(function(x){return x.deckId!==d.deckId;});store.activeDeckId=store.decks[0]?store.decks[0].deckId:null;ensure();persist('デッキを削除しました。');renderDeck();updateCounts();};
     el.battle.onclick=function(){if(!save())return;sessionStorage.setItem(runtime.HANDOFF_KEY,active().deckId);location.href='index.html?deck='+encodeURIComponent(active().deckId);};
-    el.onlineBattle.onclick=function(){if(!save())return;location.href='online-b.html?deck='+encodeURIComponent(active().deckId);};
+    el.onlineBattle.onclick=function(){if(!save())return;location.href=window.MushiBattleUiPreference.onlineUrl(active().deckId);};
     el.selector.onchange=function(){store.activeDeckId=el.selector.value;renderDeck();updateCounts();};el.name.oninput=function(){replace(core.renameDeck(active(),el.name.value));};
     document.querySelectorAll('[data-view]').forEach(function(b){b.onclick=function(){view(b.dataset.view);};});
     window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});

@@ -1,0 +1,72 @@
+name: New UI release gate
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'battle-ui/**'
+      - 'shared/battle-ui-preference.js'
+      - '*.html'
+      - 'docs/online-beta/release-manifest.json'
+      - '.github/workflows/a-ui-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pages:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --prefix server
+      - run: node tests/run-shared.js
+      - run: node --test tests/ui-preference.test.cjs scripts/online-candidate.test.cjs
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Verify exact Pages files, SHA256 and Engine contracts
+        run: |
+          node scripts/verify-pages-output.cjs
+          mkdir -p "$RUNNER_TEMP/pages-candidate/site"
+          cp -a _site/. "$RUNNER_TEMP/pages-candidate/site/"
+          cp docs/online-beta/release-manifest.json "$RUNNER_TEMP/pages-candidate/manifest.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: new-ui-verified-pages
+          path: ${{ runner.temp }}/pages-candidate/
+  browsers:
+    needs: pages
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.61.1-noble
+      options: --ipc=host
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --prefix server
+      - run: npm install --prefix "$RUNNER_TEMP/ui-browser-tools" playwright@1.61.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: new-ui-verified-pages
+          path: ${{ runner.temp }}/pages-candidate
+      - name: CPU, old/new toggle, saved decks, online matches, spectator and reconnect
+        env:
+          MUSHI_CHROMIUM_CHANNEL: bundled
+        run: |
+          export MUSHI_PLAYWRIGHT_PATH="$RUNNER_TEMP/ui-browser-tools/node_modules/playwright"
+          export MUSHI_CANDIDATE_DIRECTORY="$RUNNER_TEMP/pages-candidate"
+          export MUSHI_UI_EVIDENCE="$RUNNER_TEMP/ui-screenshots"
+          node --test --test-concurrency=1 server/browser/ui-release.cjs server/browser/toolbox-online-candidate.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: new-ui-screenshots
+          path: ${{ runner.temp }}/ui-screenshots

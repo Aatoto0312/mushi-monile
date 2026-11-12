@@ -7,11 +7,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="robots" content="noindex,nofollow">
   <title>蟲神器</title>
-  <link rel="stylesheet" href="css/battle.css?v=cards-498-v1">
-  <link rel="stylesheet" href="css/design-system.css?v=cards-498-v1">
-  <link rel="stylesheet" href="css/astra-battle.css?v=cards-498-v1">
-  <link rel="stylesheet" href="css/battle-compact.css?v=cards-498-v1">
-  <link id="cpu-b-style" rel="stylesheet" href="battle-ui/cpu.css?v=cards-498-v1" disabled>
+  <link rel="stylesheet" href="css/battle.css?v=ui-a-v2-1">
+  <link rel="stylesheet" href="css/design-system.css?v=ui-a-v2-1">
+  <link rel="stylesheet" href="css/astra-battle.css?v=ui-a-v2-1">
+  <link rel="stylesheet" href="css/battle-compact.css?v=ui-a-v2-1">
+  <link id="cpu-b-style" rel="stylesheet" href="battle-ui/cpu.css?v=ui-a-v2-1" disabled>
 </head>
 <body class="battle-screen">
   <div class="mobile-frame battle-viewport">
@@ -147,7 +147,7 @@
       <div class="lobby-actions"><button id="btn-vs-cpu" class="action-btn-wide primary-play" type="button"><span><small>ひとりで腕試し</small>CPUと対戦</span><span aria-hidden="true">↗</span></button>
       <button id="btn-vs-human" class="action-btn-wide" type="button"><span><small>この端末を交互に使う</small>ふたりで対戦</span><span aria-hidden="true">↔</span></button>
       <button id="btn-tutorial" class="action-btn-wide tutorial-mode-btn" type="button" aria-label="チュートリアル 蟲神器が初めての方へ">はじめての蟲神器<span>チュートリアルで遊び方を学ぶ →</span></button></div>
-      <p><a href="online-b.html" style="color:var(--brass);font-size:13px">オンライン対戦 β →</a></p>
+      <p><a data-online-entry href="online-b.html" style="color:var(--brass);font-size:13px">オンライン対戦 β →</a></p>
       </div>
       <nav class="app-nav" aria-label="メインナビゲーション"><a href="index.html" class="active" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span>ホーム</a><a href="toolbox.html"><span class="nav-icon" aria-hidden="true">▦</span>蟲の図鑑</a><a href="toolbox.html#decks"><span class="nav-icon" aria-hidden="true">▱</span>デッキ</a></nav>
     </div>
@@ -224,48 +224,49 @@
   </div>
 
   <dialog id="zone-inspector" class="zone-inspector"><header><div><span class="section-kicker">FIELD NOTES</span><h2 id="inspector-title">盤面の記録</h2></div><button id="inspector-close" type="button">閉じる</button></header><div id="inspector-body"></div></dialog>
-  <script src="shared/card-art-manifest.js?v=cards-498-v1"></script>
-  <script src="shared/card-visuals.js?v=cards-498-v1"></script>
-  <script src="js/cards/card-definition.js?v=cards-498-v1"></script>
-  <script src="js/cards/card-instance.js?v=cards-498-v1"></script>
-  <script src="js/cards/card-registry.js?v=cards-498-v1"></script>
-  <script src="js/cards/test-cards.js?v=cards-498-v1"></script>
-  <script src="js/cards/starter-cards.js?v=cards-498-v1"></script>
-  <script src="js/cards/set1-cards.js?v=cards-498-v1"></script>
-  <script src="js/cards/full-catalog-data.js?v=cards-498-v1"></script>
-  <script src="js/cards/set2-cards.js?v=cards-498-v1"></script>
-  <script src="js/cards/set3-cards.js?v=cards-498-v1"></script>
-  <script src="js/cards/set4-cards.js?v=cards-498-v1"></script>
-  <script src="js/cards/set5-cards.js?v=cards-498-v1"></script>
-<script src="js/cards/expansion-reuse-cards.js?v=cards-498-v1"></script><script src="js/cards/expansion-count-cards.js?v=cards-498-v1"></script><script src="js/cards/expansion-predicate-cards.js?v=cards-498-v1"></script><script src="js/cards/expansion-dive-cards.js?v=cards-498-v1"></script><script src="js/cards/expansion-repeat-cards.js?v=cards-498-v1"></script><script src="js/cards/expansion-entry-cards.js?v=cards-498-v1"></script>
-<script src="js/cards/expansion-economy-cards.js?v=cards-498-v1"></script>
-<script src="js/cards/wave2-enhancement-cards.js?v=cards-498-v1"></script>
-<script src="js/cards/termite-cards.js?v=cards-498-v1"></script>
-  <script src="shared/deck-format/runtime.js?v=cards-498-v1"></script>
-  <script src="shared/ui-presenter.js?v=cards-498-v1"></script>
-  <script src="js/engine/game-state.js?v=cards-498-v1"></script>
-  <script src="js/engine/rules.js?v=cards-498-v1"></script>
-  <script src="js/engine/stat-modifier.js?v=cards-498-v1"></script>
-  <script src="js/engine/zone-engine.js?v=cards-498-v1"></script>
-  <script src="js/engine/battle-engine.js?v=cards-498-v1"></script>
-  <script src="js/engine/turn-engine.js?v=cards-498-v1"></script>
-  <script src="js/engine/game-engine.js?v=cards-498-v1"></script>
-  <script src="js/engine/cpu-agent.js?v=cards-498-v1"></script>
-  <script src="js/engine/cpu-runner.js?v=cards-498-v1"></script>
-  <script src="js/ui/battle-log-ui.js?v=cards-498-v1"></script>
-  <script src="js/ui/cpu-toast.js?v=cards-498-v1"></script>
-  <script src="js/ui/card-effect-formatter.js?v=cards-498-v1"></script>
-  <script src="js/ui/card-ui.js?v=cards-498-v1"></script>
-  <script src="js/tutorial/tutorial-scenario.js?v=cards-498-v1"></script>
-  <script src="js/tutorial/tutorial-controller.js?v=cards-498-v1"></script>
-  <script src="js/ui/battle-ui.js?v=cards-498-v1"></script>
-  <script src="js/app.js?v=cards-498-v1"></script>
-  <script src="js/ui/battle-experience.js?v=cards-498-v1"></script>
-  <script src="js/ui/battle-compact.js?v=cards-498-v1"></script>
-  <script src="battle-ui/engine-view.js?v=cards-498-v1"></script>
-  <script src="battle-ui/presentation.js?v=cards-498-v1"></script>
-  <script src="battle-ui/board.js?v=cards-498-v1"></script>
-  <script src="battle-ui/cpu-adapter.js?v=cards-498-v1"></script>
-  <script src="battle-ui/cpu-controller.js?v=cards-498-v1"></script>
+  <script src="shared/card-art-manifest.js?v=ui-a-v2-1"></script>
+  <script src="shared/card-visuals.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/card-definition.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/card-instance.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/card-registry.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/test-cards.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/starter-cards.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/set1-cards.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/full-catalog-data.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/set2-cards.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/set3-cards.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/set4-cards.js?v=ui-a-v2-1"></script>
+  <script src="js/cards/set5-cards.js?v=ui-a-v2-1"></script>
+<script src="js/cards/expansion-reuse-cards.js?v=ui-a-v2-1"></script><script src="js/cards/expansion-count-cards.js?v=ui-a-v2-1"></script><script src="js/cards/expansion-predicate-cards.js?v=ui-a-v2-1"></script><script src="js/cards/expansion-dive-cards.js?v=ui-a-v2-1"></script><script src="js/cards/expansion-repeat-cards.js?v=ui-a-v2-1"></script><script src="js/cards/expansion-entry-cards.js?v=ui-a-v2-1"></script>
+<script src="js/cards/expansion-economy-cards.js?v=ui-a-v2-1"></script>
+<script src="js/cards/wave2-enhancement-cards.js?v=ui-a-v2-1"></script>
+<script src="js/cards/termite-cards.js?v=ui-a-v2-1"></script>
+  <script src="shared/deck-format/runtime.js?v=ui-a-v2-1"></script>
+  <script src="shared/ui-presenter.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/game-state.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/rules.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/stat-modifier.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/zone-engine.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/battle-engine.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/turn-engine.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/game-engine.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/cpu-agent.js?v=ui-a-v2-1"></script>
+  <script src="js/engine/cpu-runner.js?v=ui-a-v2-1"></script>
+  <script src="js/ui/battle-log-ui.js?v=ui-a-v2-1"></script>
+  <script src="js/ui/cpu-toast.js?v=ui-a-v2-1"></script>
+  <script src="js/ui/card-effect-formatter.js?v=ui-a-v2-1"></script>
+  <script src="js/ui/card-ui.js?v=ui-a-v2-1"></script>
+  <script src="js/tutorial/tutorial-scenario.js?v=ui-a-v2-1"></script>
+  <script src="js/tutorial/tutorial-controller.js?v=ui-a-v2-1"></script>
+  <script src="js/ui/battle-ui.js?v=ui-a-v2-1"></script>
+  <script src="js/app.js?v=ui-a-v2-1"></script>
+  <script src="js/ui/battle-experience.js?v=ui-a-v2-1"></script>
+  <script src="js/ui/battle-compact.js?v=ui-a-v2-1"></script>
+  <script src="battle-ui/engine-view.js?v=ui-a-v2-1"></script>
+  <script src="battle-ui/presentation.js?v=ui-a-v2-1"></script>
+  <script src="battle-ui/board.js?v=ui-a-v2-1"></script>
+  <script src="battle-ui/cpu-adapter.js?v=ui-a-v2-1"></script>
+  <script src="shared/battle-ui-preference.js?v=ui-a-v2-1"></script>
+  <script src="battle-ui/cpu-controller.js?v=ui-a-v2-1"></script>
 </body>
 </html>
