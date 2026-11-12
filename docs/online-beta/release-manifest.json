@@ -1,7 +1,7 @@
 {
-  "createdAt": "2026-11-12T06:44:50.998Z",
+  "createdAt": "2026-11-12T06:59:04.055Z",
   "assetVersion": "result-popup-1",
-  "sourceHead": "60d735918cb3b9281c45784076ce08668185424f",
+  "sourceHead": "2995e9c79ff44065ede54c473fcc53199a301e88",
   "mainHead": "f135e78a0d060a6337c433eb492ff1892a188e9d",
   "versions": {
     "protocol": "mushi-online/1",
@@ -42,8 +42,8 @@
     },
     {
       "path": "battle-ui/cpu-result.js",
-      "bytes": 1502,
-      "sha256": "77c43b9e84daa6f56a4cced38541c59af319518b09f6f51757a6741b6fab44e4",
+      "bytes": 1752,
+      "sha256": "813797ce407ffcf6d04e3cc6909e9c43c46a09f0b7b890b66d463e00306c29f9",
       "main": "added"
     },
     {
