@@ -2,6 +2,17 @@
   'use strict';
   const $=id=>document.getElementById(id),sessionKey='mushiOnlineSeatV1';
   let socket,contract,hello,current,seat=null,connected=false,busy=false,retry=0,retryTimer,decisionVersion=null,localDecks=[],lastCommand=null;
+  let resultStorage;try{resultStorage=sessionStorage;}catch{}
+  const resultPopup=window.MushiBattleResult.create(document,resultStorage);
+  function renderResult(){
+    if(!current?.battle||!seat){resultPopup.clear();return;}
+    const end=window.MushiOnlineBattle?document.querySelector('#b-battle [data-role="end"]'):null;
+    resultPopup.update({key:current.room.matchId,room:current.room,viewerId:seat.role==='SPECTATOR'?'SPECTATOR':seat.playerId,
+      names:Object.fromEntries(current.room.players.map(p=>[p.id,p.name+'（'+p.id+'）'])),
+      anchor:end?end.parentElement:$('actions'),replaceButton:end,busy:busy||!connected,
+      note:seat.role==='SPECTATOR'?'観戦した対戦の確定結果です。': '再戦は新しいルームで行います。相手と相談して、退出後にルームを作成・参加してください。',
+      onBoard:closeOverlay,onReplay:seat.role==='SPECTATOR'?null:()=>requestLeave(),onMenu:()=>requestLeave()});
+  }
   // Presentation adapters only: every displayed effective value comes from the server.
   window.ZONES={FIELD:'FIELD',FOOD:'FOOD',HAND:'HAND',DISCARD:'DISCARD',TERRITORY:'TERRITORY'};
   window.calculateMaxHp=instance=>instance.onlineMaxHp;
@@ -41,8 +52,8 @@
   function card(dto,zone){
     let el;if(dto.hidden){el=document.createElement('button');el.type='button';el.className='battle-card online-back';el.textContent='蟲';el.setAttribute('aria-label','裏向きのカード');el.dataset.hidden='true';}
     else{el=CardUI.renderCard(instance(dto),zone,{online:true});el.dataset.cardId=dto.cardId;el.setAttribute('aria-label',dto.name+(dto.currentHp!=null?' HP '+dto.currentHp:''));}
-    el.dataset.ref=dto.ref;el.disabled=busy||!connected;
-    const actions=current&&current.battle?current.battle.actions.filter(a=>a.sourceRef===dto.ref):[];
+    el.dataset.ref=dto.ref;el.disabled=(busy||!connected)&&current?.room.phase!=='ENDED';
+    const actions=current?.room.phase==='PLAYING'&&current.battle?current.battle.actions.filter(a=>a.sourceRef===dto.ref):[];
     if(actions.length)el.classList.add('can-act');el.onclick=()=>inspect(dto,actions);return el;
   }
   function inspect(dto,actions){
@@ -91,16 +102,16 @@
   function render(){
     if(!current||!current.battle||current.room.phase==='LOBBY')window.MushiOnlineBattle?.reset();
     $('create').disabled=$('join').disabled=$('watch').disabled=!connected||busy||!!seat;
-    if(!current){$('entrance').hidden=!!seat;return;}
+    if(!current){resultPopup.clear();$('entrance').hidden=!!seat;return;}
     const room=current.room,battle=current.battle;const inLobby=room.phase==='LOBBY',watching=seat.role==='SPECTATOR';
     $('entrance').hidden=true;$('room').hidden=!inLobby&&!!battle;$('board').hidden=inLobby||!battle;$('board').dataset.roomPhase=room.phase;$('board').dataset.version=room.version;
     $('room-code').textContent=room.code;$('participants').textContent=room.players.map(p=>p.id+' '+p.name+' '+(p.deckSelected?'デッキ選択済み ':'デッキ未選択 ')+(p.connected?'接続中':'切断中')+' '+(p.ready?'準備完了':'準備中')).join(' / ');
     $('membership').textContent=(watching?'観戦者':seat.playerId+'として参加')+' · 観戦 '+(room.spectatorCount||0)+'人';
     for(const id of ['deck-label','deck-preview','deck-apply','ready'])$(id).hidden=watching;
     const me=room.players.find(p=>p.id===seat.playerId);$('ready').disabled=!inLobby||!connected||busy||!me||!me.deckSelected;$('ready').textContent=me&&me.ready?'準備を取り消す':'準備完了';$('deck-apply').disabled=!inLobby||!connected||busy||!!(me&&me.ready)||deckErrors(selectedDeck()).length>0;$('leave').disabled=!connected||busy;
-    if(!battle){if(!inLobby)notice(room.reason==='HOST_LEFT'?'ホストが退出したためルームを終了しました。':'ルームは終了しました。退出して作り直してください。');return;}
+    if(!battle){resultPopup.clear();if(!inLobby)notice(room.reason==='HOST_LEFT'?'ホストが退出したためルームを終了しました。':'ルームは終了しました。退出して作り直してください。');return;}
     const own=battle.players[watching?'P1':battle.viewerId],other=battle.players[watching?'P2':battle.viewerId==='P1'?'P2':'P1'];
-    if(window.MushiOnlineBattle){window.MushiOnlineBattle.render({view:current,connected,busy,act,menu:()=>{$('menu').click();}});return;}
+    if(window.MushiOnlineBattle){window.MushiOnlineBattle.render({view:current,connected,busy,act,menu:()=>{$('menu').click();}});renderResult();return;}
     document.querySelector('.player-field h2').firstChild.textContent=watching?'P1の場 ':'あなたの場 ';document.querySelector('.opponent-field h2').firstChild.textContent=watching?'P2の場 ':'相手の場 ';document.querySelector('.hand h2').firstChild.textContent=watching?'P1の手札（非公開） ':'手札 ';
     $('turn-status').textContent='ターン '+battle.turn+' · '+(phases[battle.phase]||battle.phase)+' · '+(watching?battle.activePlayerId+'の番 · 観戦中':battle.activePlayerId===battle.viewerId?'あなたの番':'相手の番');
     status('opponent-status',other,watching?'P2':'相手');status('player-status',own,watching?'P1':'あなた');lane('opponent-field',other.field,'FIELD');lane('player-field',own.field,'FIELD');lane('player-hand',own.hand,'HAND');lane('opponent-hand',other.hand,'HAND');
@@ -109,6 +120,7 @@
       closeOverlay();const p=document.createElement('p');p.className='online-result';p.textContent=room.phase==='ENDED'?(watching?(room.result&&room.result.winner?room.result.winner+'の勝利':'対戦終了'):room.result&&room.result.winner===seat.playerId?'あなたの勝利':'対戦終了'):'試合中断: '+room.reason;actionBox.append(p);
     }else if(room.paused){const p=document.createElement('p');p.textContent='相手の再接続を待っています（最大5分）';actionBox.append(p);}
     else{for(const action of battle.actions.filter(a=>!a.sourceRef&&(!battle.decision||a.id!==battle.decision.actionId)))actionBox.append(button(action.label,()=>act(action),action.kind));if(!battle.actions.length){const p=document.createElement('p');p.textContent=watching?'観戦中 · 操作できません':'相手の操作を待っています';actionBox.append(p);}showDecision();}
+    renderResult();
   }
   function readSeat(){try{return JSON.parse(sessionStorage.getItem(sessionKey));}catch{return null;}}
   function saveSeat(){try{if(seat)sessionStorage.setItem(sessionKey,JSON.stringify(seat));else sessionStorage.removeItem(sessionKey);}catch{notice('このブラウザでは再接続情報を保存できません。');}}

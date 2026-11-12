@@ -8,6 +8,7 @@ on:
       - '*.html'
       - 'docs/online-beta/release-manifest.json'
       - 'server/browser/ui-release.cjs'
+      - 'server/browser/result-popup.cjs'
       - 'server/browser/toolbox-online-candidate.cjs'
       - 'server/tools/b-ui-pilot.cjs'
       - '.github/workflows/a-ui-release.yml'
@@ -27,7 +28,7 @@ jobs:
           node-version: '24'
       - run: npm ci --prefix server
       - run: node tests/run-shared.js
-      - run: node --test tests/ui-preference.test.cjs scripts/online-candidate.test.cjs
+      - run: node --test tests/ui-preference.test.cjs tests/result-popup.test.cjs scripts/online-candidate.test.cjs
       - uses: actions/jekyll-build-pages@v1
         with:
           source: ./
@@ -67,7 +68,7 @@ jobs:
           export MUSHI_PLAYWRIGHT_PATH="$RUNNER_TEMP/ui-browser-tools/node_modules/playwright"
           export MUSHI_CANDIDATE_DIRECTORY="$RUNNER_TEMP/pages-candidate"
           export MUSHI_UI_EVIDENCE="$RUNNER_TEMP/ui-screenshots"
-          node --test --test-concurrency=1 server/browser/ui-release.cjs server/browser/toolbox-online-candidate.cjs
+          node --test --test-concurrency=1 server/browser/ui-release.cjs server/browser/toolbox-online-candidate.cjs server/browser/result-popup.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

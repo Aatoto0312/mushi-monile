@@ -1153,6 +1153,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   };
 
   BattleUI.prototype.onHandCardTap = function (playerId, instance) {
+    if (this.state.phase === Phases.GAME_OVER) { this.showCardDetail(instance, []); return; }
     if (this.actionState.mode === 'colorPicker') return;
     var pending = getPendingEffect(this.state);
     // 相手ターン中の死亡誘発（転生羽化など）でも、選択権が自分にあるなら手札を操作できる。
@@ -1250,6 +1251,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   };
 
   BattleUI.prototype.onFieldCardTap = function (playerId, instance, el, skipFieldAbilityMenu) {
+    if (this.state.phase === Phases.GAME_OVER) { this.showCardDetail(instance, []); return; }
     var tutorialAction = this.actionState.mode === 'attackTarget' ? 'ATTACK_TARGET' :
       (this.actionState.mode === 'enhanceTarget' ? 'ENHANCEMENT_TARGET' : 'FIELD_CARD');
     if (!this._tutorialAllows(tutorialAction, { instanceId: instance.instanceId })) return;
