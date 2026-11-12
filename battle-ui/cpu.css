@@ -1,4 +1,4 @@
-@import url('./new-ui.css?v=ui-a-v2-1');
+@import url('./new-ui.css?v=ui-a-v2-2');
 body.cpu-b-active{height:100dvh;overflow:hidden;margin:0;background:#071a19}
 .cpu-b-active>.mobile-frame{display:none!important}
 .cpu-b-active>#card-detail-modal,.cpu-b-active>#game-over,.cpu-b-active>#territory-picker,.cpu-b-active>#damage-vector{display:none!important}
@@ -10,5 +10,3 @@ body.cpu-b-active{height:100dvh;overflow:hidden;margin:0;background:#071a19}
 #cpu-b-menu{max-height:85dvh;max-width:min(95vw,580px);overflow:auto;color:#eee;background:#102820;border:1px solid #b89f65;border-radius:16px}
 #cpu-b-menu button{display:block;width:100%;margin:7px 0;min-height:44px}
 #cpu-b-menu>[data-close]{position:sticky;bottom:0}
-#cpu-b-return{position:fixed;z-index:1200;top:5px;right:5px}
-#cpu-b-return[hidden]{display:none}

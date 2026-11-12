@@ -30,6 +30,7 @@ for(const kind of ['chromium','webkit']){
   await page.locator('[data-role="menu"]').first().click();await page.getByRole('button',{name:'設定・退出など',exact:true}).click();await page.getByRole('button',{name:'旧UIへ切り替え',exact:true}).click();
   assert.equal(await page.evaluate(()=>JSON.stringify(MushiBattle.ui.state)),before);
   assert.equal(await page.evaluate(()=>localStorage.getItem('mushijingiBattleUiV1')),'legacy');
+  const switchBounds=await page.locator('#cpu-b-return').boundingBox();assert(switchBounds.y>=-1&&switchBounds.y+switchBounds.height<=668,'new UI switch must be visible without page scrolling '+JSON.stringify(switchBounds));
   assert.equal(await page.locator('#self-field-zone .battle-card').first().evaluate(e=>e.getBoundingClientRect().width),76);
   await screen(page,kind+'-legacy-normal');
   await page.reload({waitUntil:'load'});await page.locator('#btn-vs-cpu').click();await page.locator('#btn-deck-p1-kabuto').click();await page.locator('#btn-deck-p2-okama').click();await page.locator('#cpu-b-return').waitFor();
