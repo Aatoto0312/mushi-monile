@@ -37,7 +37,7 @@ for(const kind of ['chromium','webkit']){
   assert.equal(await page.evaluate(()=>localStorage.getItem('mushijingiBattleUiV1')),'new');
   for(const height of [667,560]){
    await page.setViewportSize({width:375,height});await page.evaluate(code=>{(0,eval)('('+code+')')(window,MushiBattle.ui.state,10,10,14);MushiBattle.ui.render();},setup.toString());
-   for(const role of ['other-field','own-field','hand']){const lane=page.locator('[data-role="'+role+'"]');assert(await lane.evaluate(e=>e.scrollWidth>e.clientWidth));await lane.evaluate(e=>e.scrollLeft=e.scrollWidth);assert(await lane.evaluate(e=>e.scrollLeft>0));await lane.evaluate(e=>e.scrollLeft=0);}
+   for(const role of ['other-field','own-field','hand']){const lane=page.locator('[data-role="'+role+'"]');await page.waitForFunction(role=>{const e=document.querySelector('[data-role="'+role+'"]');return e.scrollWidth>e.clientWidth;},role);assert(await lane.evaluate(e=>e.scrollWidth>e.clientWidth));await lane.evaluate(e=>e.scrollLeft=e.scrollWidth);assert(await lane.evaluate(e=>e.scrollLeft>0));await lane.evaluate(e=>e.scrollLeft=0);}
    await layout(page,kind,'many-'+height);await screen(page,kind+'-new-many-'+height);
    if(await page.locator('[data-role="hand-toggle"]').getAttribute('aria-expanded')==='false')await page.locator('[data-role="hand-toggle"]').click();
    await layout(page,kind,'many-expanded-'+height);await screen(page,kind+'-new-many-expanded-'+height);
