@@ -1,6 +1,6 @@
 # Resume: Next Wave candidate505 /565 — 2026-11-13
 - Base main359fb61, isolated cards/next-wave-20261113. Four cards: SET6-58 / SET7-40 / SET8-37 / SET8-61. Details next-wave-20261113.md; complete baseline remaining64 inventory in adjacent JSON.
-- New unit10 + server4 passed; full2141/0. Browser Chromium new CPU/online and legacy CPU passed (4 actual cards each); WebKit and CI pending. Do not treat old471 heading below as current.
+- New unit13 + server4 passed; full2142/0 before final timing/stack/friendly regressions. Browser Chromium new CPU/online and legacy CPU passed (4 actual cards each); WebKit and CI pending. Do not treat old471 heading below as current.
 - Remaining60: next candidate 7-46 shared discard-deploy lock; area-damage serial batch 8-08/57/58,5-61; attachment conditions and timed host destruction later. No public update authorized in this task.
 
 # Resume: safe471 /565 —2026-11-06

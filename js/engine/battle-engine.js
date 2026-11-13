@@ -3288,6 +3288,18 @@
       sourceName: result.attackerName
     });
 
+    // Default attack effect timing is before damage; neither effect waits for after-attack triggers.
+    (skill.effects||[]).forEach(function(effect){
+      if(effect.type==='TAX_FIRST_OPPONENT_SPELL_NEXT_TURN'){
+        var taxedPlayer=state.player(state.opponentOf(ap));
+        taxedPlayer.nextUseCostModifiers=(taxedPlayer.nextUseCostModifiers||[]).concat([{cardType:CardTypes.SPELL,amount:effect.amount,startTurn:state.turnNumber+1,endTurn:state.turnNumber+1,sourceInstanceId:attacker.instanceId}]);
+      }
+      if(effect.type==='GRANT_SPELL_IMMUNITY_AND_IGNORE_WEAKNESS_NEXT_TURN'&&attacker.zone===ZONES.FIELD){
+        attacker.runtimeFlags=attacker.runtimeFlags||{};
+        attacker.runtimeFlags.spellImmunityTurn=state.turnNumber+1;
+        attacker.runtimeFlags.ignoreWeaknessTurn=state.turnNumber+1;
+      }
+    });
     var committedAttack={type:'RESOLVE_COMMITTED_ATTACK',playerId:ap,opponentId:opponentId,attackerInstanceId:attacker.instanceId,attackerFieldEntrySerial:attackerFieldEntrySerial,targetInstanceId:targetInstanceId,targetType:targetType,targetFieldEntrySerial:attackedTargetFieldSerial,skill:skill,apVal:apVal,result:result,attackOptions:attackOptions};
     var sourceFormEffect=(skill.effects||[]).find(function(effect){return effect.type==='DESTROY_SOURCE_DEPLOY_MATCHING_FORM'||effect.type==='DESTROY_SOURCE_BEFORE_DAMAGE';});
     if(sourceFormEffect){
@@ -3440,15 +3452,6 @@
     // Self modifiers also apply on a direct attack. Resolve after damage so a
     // newly granted bonus cannot retroactively change the triggering attack.
     (skill.effects || []).forEach(function (effect) {
-      if(effect.type==='TAX_FIRST_OPPONENT_SPELL_NEXT_TURN'){
-        var taxedPlayer=state.player(state.opponentOf(ap));
-        taxedPlayer.nextUseCostModifiers=(taxedPlayer.nextUseCostModifiers||[]).concat([{cardType:CardTypes.SPELL,amount:effect.amount,startTurn:state.turnNumber+1,endTurn:state.turnNumber+1,sourceInstanceId:attacker.instanceId}]);
-      }
-      if(effect.type==='GRANT_SPELL_IMMUNITY_AND_IGNORE_WEAKNESS_NEXT_TURN'&&attacker.zone===ZONES.FIELD){
-        attacker.runtimeFlags=attacker.runtimeFlags||{};
-        attacker.runtimeFlags.spellImmunityTurn=state.turnNumber+1;
-        attacker.runtimeFlags.ignoreWeaknessTurn=state.turnNumber+1;
-      }
       if (effect.type === 'GRANT_DAMAGE_SHIELD' && attacker.zone === ZONES.FIELD) {
         attacker.runtimeFlags = attacker.runtimeFlags || {};
         var shields = attacker.runtimeFlags.damageShields || [];

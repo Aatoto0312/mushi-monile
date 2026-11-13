@@ -1,16 +1,16 @@
 {
-  "createdAt": "2026-11-13T11:41:51.808Z",
+  "createdAt": "2026-11-13T11:52:40.852Z",
   "assetVersion": "result-popup-1",
-  "sourceHead": "359fb61dc086c9aae108c5512f45c8a6b4ec2242",
+  "sourceHead": "9e74c554d27f29f1cf41ec372f5a04be516405f4",
   "mainHead": "359fb61dc086c9aae108c5512f45c8a6b4ec2242",
   "versions": {
     "protocol": "mushi-online/1",
-    "engine": "dfb587a5fbccaced195cd8c571edfa9c2624eb63fcebecc17baaa0d0dfb28d5c",
+    "engine": "81c15241acb62ccea5f94a2932dae1efa95d9b11d1d473690ca9582c8124fd7f",
     "cards": "b897253ca7d93196dd3254ce2d38caf2bb81e412ca07138e4ff467f57a8e7455"
   },
   "runtime": {
     "protocol": "mushi-online/1",
-    "engine": "dfb587a5fbccaced195cd8c571edfa9c2624eb63fcebecc17baaa0d0dfb28d5c",
+    "engine": "81c15241acb62ccea5f94a2932dae1efa95d9b11d1d473690ca9582c8124fd7f",
     "cards": "b897253ca7d93196dd3254ce2d38caf2bb81e412ca07138e4ff467f57a8e7455",
     "catalogCount": 565,
     "playableCount": 505
@@ -246,8 +246,8 @@
     },
     {
       "path": "js/engine/battle-engine.js",
-      "bytes": 339367,
-      "sha256": "e282b83d0cd073ed8b62941cafd14cc700245f7b2d53752d2e4dc5d6821a6e01",
+      "bytes": 339527,
+      "sha256": "23675d91dad67f0d6f45b183f53db8e8fe04dbfc1bbae7f8245fbae58f8498c9",
       "main": "modified"
     },
     {
@@ -385,7 +385,7 @@
     {
       "path": "online/contract.json",
       "bytes": 194,
-      "sha256": "ca2779bf69f448be90aee83e4135343e22fb58e642ed8f5dc531518e28964ea7",
+      "sha256": "4b38c4d5228d0e1e9762c09d2c1c394e15547a05f34bfb77489195ba6a008a1f",
       "main": "modified"
     },
     {
