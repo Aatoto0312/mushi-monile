@@ -1,3 +1,9 @@
+# Resume: verified505 /565 — 2026-11-13
+- Product checkpoint10963b4, branch cards/next-wave-20261113; draft PR16. Added SET6-58怒濤の黒山 / SET7-40シャチホコガ（幼虫） / SET8-37クロカタゾウムシ / SET8-61断界の虫送り. SET5/6/7/8=48/50/55/43; remaining60 (PARTIAL3 + unregistered57).
+- Unit13/full2145/shared80/server214: all0 failures. CI Chromium/WebKit18/18 (24 new card flows across new CPU, legacy CPU, new online), Toolbox/spectator/reconnect/result regressions passed. Exact95 public assets SHA256/contract/Jekyll gate passed at10963b4. Details and run URLs next-wave-20261113.md.
+- Next: 7-46 shared discard-deploy prohibition; simultaneous area-damage batch8-08/57/58,5-61; then attachment eligibility/continuous HP and timed host destruction. Keep5-57/6-44/8-47 questions and old held5/attacker-loss work isolated.
+- main359fb61 and public API/ngrok/auth untouched. This task authorizes draft PR only. Future release needs cache-key bump and coordinated API/client contract update. Old471 heading below is historical, not current.
+
 # Resume: safe471 /565 —2026-11-06
 - Isolated cards/hawk-queen-20261106 at C:/Users/aatot/mushi-hawk-queen, base775f665/469. AddedSET7-01オオスズメバチ（女王） andSET7-02タランチュラホーク; sets5/6/7/8=48/40/42/32, remaining94. Printed438/439 +officialQA7 rows101–107 checked; details hawk-queen-evidence.md.
 - Generic SELECT_AFTER_ATTACK + existing current-candidate SELECT_ON_ENTRY, opt-in next-original-player-turn reveal marker/field-leave cleanup. Hawk current keyword target condition, host-only destruction-keyword blocking before damage; attachment retaliation/replacement unchanged. No card-id Engine switch.
