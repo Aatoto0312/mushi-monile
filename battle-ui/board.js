@@ -34,7 +34,7 @@
    if(card.ref===selected)b.classList.add('selected');if(card.attacked)b.classList.add('used');
    if(!card.hidden&&enabled()&&vm.actions.some(a=>a.sourceRef===card.ref))b.classList.add('can-act');
    if(targetGroup){const allowed=P.targetActions(targetGroup,card.ref).length>0;b.classList.add(allowed?'target':'unavailable');b.setAttribute('aria-disabled',String(!allowed));}
-   if(!ctx.connected||ctx.busy)b.disabled=true;
+   if((!ctx.connected||ctx.busy)&&view.room.phase!=='ENDED')b.disabled=true;
    if(options.cardHeadings&&!card.hidden){
     const heading=document.createElement('span');heading.className='card-heading';
     const cost=document.createElement('span');cost.className='printed-cost';cost.textContent=card.cost;cost.setAttribute('aria-label','印刷コスト '+card.cost);

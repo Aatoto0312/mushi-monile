@@ -5,7 +5,7 @@ function createCandidateServer(directory,options={}){
  const site=path.resolve(directory,'site'),manifest=JSON.parse(fs.readFileSync(path.join(directory,'manifest.json'))),allowed=new Set(manifest.files.map(f=>f.path));
  const prefix='/mushi-monile/';let api;
  const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.css':'text/css; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2'};
- api=createServer({port:options.port??0,rng:options.rng,isAllowedOrigin:origin=>origin==='http://127.0.0.1:'+api.port,httpHandler(req,res){
+ api=createServer({port:options.port??0,rng:options.rng,now:options.now,isAllowedOrigin:origin=>origin==='http://127.0.0.1:'+api.port,httpHandler(req,res){
   let name;try{name=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{return false;}
   if(name===prefix.slice(0,-1)&&['GET','HEAD'].includes(req.method)){res.writeHead(308,{Location:prefix});res.end();return true;}
   if(!name.startsWith(prefix))return false;if(!['GET','HEAD'].includes(req.method))return false;

@@ -57,7 +57,7 @@ for(const kind of ['chromium','webkit']){
    const version=await page.locator('#board').getAttribute('data-version');
    if(await pilot.step(page)){actions++;await page.waitForFunction(v=>Number(document.querySelector('#board').dataset.version)>Number(v),version);}else await page.waitForTimeout(20);
   }
-  assert.equal(await page.locator('#board').getAttribute('data-room-phase'),'ENDED');await screen(page,kind+'-cpu-result');await page.locator('[data-role="end"]').click();await page.waitForFunction(()=>document.querySelector('#board').dataset.roomPhase==='PLAYING');
+  assert.equal(await page.locator('#board').getAttribute('data-room-phase'),'ENDED');await screen(page,kind+'-cpu-result');await page.locator('.battle-result-popup [data-result="replay"]').click();await page.waitForFunction(()=>document.querySelector('#board').dataset.roomPhase==='PLAYING');
   assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('mushijingiToolboxDecksV1')).decks[0].cards),deck.cards);assert.deepEqual(errors,[]);t.diagnostic(JSON.stringify({completedCpuMatches:1,actions}));
  });
  test(kind+' online old/new switch preserves seat, spectator, private cards and reconnect',async t=>{
@@ -74,6 +74,8 @@ for(const kind of ['chromium','webkit']){
   await w.reload();await w.locator('.live-arena').waitFor();assert(await w.locator('[data-role="all-actions"]').isDisabled());assert.equal(await w.locator('[data-role="hand"] [data-card-id]').count(),0);
   await screen(a,kind+'-online-new');await screen(w,kind+'-spectator-new');
   a.on('dialog',dialog=>dialog.accept());await a.locator('#menu').click();await a.getByRole('button',{name:'投了',exact:true}).click();await b.waitForFunction(()=>document.querySelector('#board').dataset.roomPhase==='ENDED');
+  assert.equal(await a.locator('.battle-result-popup h2').innerText(),'敗北…');assert.equal(await b.locator('.battle-result-popup h2').innerText(),'勝利！');
+  for(const p of pages)await p.locator('.battle-result-popup [data-result="board"]').click();
   for(const p of [w,b,a]){
    if(await p.locator('#entrance').isVisible())continue;
    await p.locator('#menu').click();await p.getByRole('button',{name:p===w?'観戦を終了して戻る':'ルームを終了して戻る',exact:true}).click();await p.locator('[data-kind="CONFIRM_LEAVE"]').click();await p.locator('#entrance').waitFor();
