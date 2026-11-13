@@ -1,0 +1,706 @@
+{
+  "checkedAt": "2026-11-13",
+  "base": "359fb61dc086c9aae108c5512f45c8a6b4ec2242",
+  "total": 565,
+  "playable": 501,
+  "sets": {
+    "BOOSTER_SET_2": {
+      "total": 55,
+      "playable": 55,
+      "partial": 0,
+      "unregistered": 0
+    },
+    "BOOSTER_SET_3": {
+      "total": 60,
+      "playable": 60,
+      "partial": 0,
+      "unregistered": 0
+    },
+    "BOOSTER_SET_4": {
+      "total": 64,
+      "playable": 64,
+      "partial": 0,
+      "unregistered": 0
+    },
+    "BOOSTER_SET_5": {
+      "total": 64,
+      "playable": 48,
+      "partial": 3,
+      "unregistered": 13
+    },
+    "BOOSTER_SET_6": {
+      "total": 64,
+      "playable": 49,
+      "partial": 0,
+      "unregistered": 15
+    },
+    "BOOSTER_SET_7": {
+      "total": 64,
+      "playable": 54,
+      "partial": 0,
+      "unregistered": 10
+    },
+    "BOOSTER_SET_8": {
+      "total": 64,
+      "playable": 41,
+      "partial": 0,
+      "unregistered": 23
+    },
+    "STARTER": {
+      "total": 24,
+      "playable": 24,
+      "partial": 0,
+      "unregistered": 0
+    },
+    "BOOSTER_SET_1": {
+      "total": 106,
+      "playable": 106,
+      "partial": 0,
+      "unregistered": 0
+    }
+  },
+  "remaining": [
+    {
+      "id": "set5_007",
+      "name": "アシナガグモ",
+      "set": "BOOSTER_SET_5",
+      "type": "INSECT",
+      "status": "PARTIAL",
+      "text": [
+        "これが場にいるとき、自分の場のこれ以外の虫が虫の攻撃により破壊されたなら、相手は縄張りを１枚引く。"
+      ]
+    },
+    {
+      "id": "set5_008",
+      "name": "セスジアカムカデ",
+      "set": "BOOSTER_SET_5",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "このダメージは回復しない。",
+        "これが手札から、相手のカードの効果により捨て札に置かれるなら、かわりに場に出してもよい。"
+      ]
+    },
+    {
+      "id": "set5_021",
+      "name": "オオテナガカナブン",
+      "set": "BOOSTER_SET_5",
+      "type": "INSECT",
+      "status": "PARTIAL",
+      "text": [
+        "相手の虫を２つ選び、それぞれに攻撃する。※１つの虫や、相手に直接攻撃はできない"
+      ]
+    },
+    {
+      "id": "set5_034",
+      "name": "サソリカミキリ",
+      "set": "BOOSTER_SET_5",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "このカードが相手のカードの効果により、手札から捨て札に置かれたとき、相手は手札を１つ選び捨て札に置く。"
+      ]
+    },
+    {
+      "id": "set5_042",
+      "name": "ノミバッタ",
+      "set": "BOOSTER_SET_5",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この虫が虫の攻撃により破壊されたとき、引いた縄張りが〜バッタ科、〜イナゴ科ならそれを場に出してもよい。※＜とびだす＞を持つ虫が場にいるとき、＜とびだす＞を持つ虫を引いても場に出せる。"
+      ]
+    },
+    {
+      "id": "set5_048",
+      "name": "蛮虫の一本槍",
+      "set": "BOOSTER_SET_5",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これは技の効果を持たない虫にしかつけられない。この虫の体力と攻撃力を400増やす。これがついた虫が虫の攻撃により破壊されたとき、これを手札に戻してもよい。"
+      ]
+    },
+    {
+      "id": "set5_049",
+      "name": "蟲神の一本槍",
+      "set": "BOOSTER_SET_5",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これは技の効果を持たない虫にしかつけられない。この虫の体力と攻撃力を800増やす。これがついた虫が虫の攻撃により破壊されたとき、これを手札に戻してもよい。"
+      ]
+    },
+    {
+      "id": "set5_050",
+      "name": "草薙の紅剣",
+      "set": "BOOSTER_SET_5",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これは赤の虫にしかつけられない。この虫は攻撃したとき、もう１度だけ攻撃できる。この虫の攻撃により、相手は縄張りを引かない。"
+      ]
+    },
+    {
+      "id": "set5_051",
+      "name": "肉祓いの蒼玉",
+      "set": "BOOSTER_SET_5",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これは青の虫にしかつけられない。毎ターン、この虫が１度目に受けたダメージを０にする。※術によるダメージを含み、技の効果は無効にしない。"
+      ]
+    },
+    {
+      "id": "set5_052",
+      "name": "蜜絶の翠鏡",
+      "set": "BOOSTER_SET_5",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これは緑の虫にしかつけられない。自分のエサが５つ以下のとき、この虫の攻撃力と体力を400増やす。自分のエサが６つ以上あるとき、この虫の攻撃力と体力を800増やす。"
+      ]
+    },
+    {
+      "id": "set5_054",
+      "name": "黒銀蜘蛛の糸",
+      "set": "BOOSTER_SET_5",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の捨て札にある虫を１つ選び、これをつけて場に出す。この効果により場に出た虫は＜＞の技を失う。＜特殊装着＞これを縄張りから引いたとき、これを使用してもよい。そうしたなら、これがついた虫をターン終了時に破壊する。"
+      ]
+    },
+    {
+      "id": "set5_055",
+      "name": "幼虫の胡坐鍋",
+      "set": "BOOSTER_SET_5",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これは（幼虫）と書かれた虫にしかつけられない。この虫の攻撃力と体力を400増やす。これがついた虫が虫の攻撃により破壊されたとき、これを手札に戻してもよい。"
+      ]
+    },
+    {
+      "id": "set5_057",
+      "name": "腐葉の沃土",
+      "set": "BOOSTER_SET_5",
+      "type": "SPELL",
+      "status": "PARTIAL",
+      "text": [
+        "捨て札からカードを２つ選び、裏向きでエサ場に置く。※このエサのコストはこのターン発生しない。"
+      ]
+    },
+    {
+      "id": "set5_058",
+      "name": "燻煙の迎撃",
+      "set": "BOOSTER_SET_5",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "相手の虫を１つ選び、400のダメージを与える。＜迎撃＞これを縄張りから引いたとき、この縄張りを引かせた虫に、この効果を使用してもよい。そうしたなら、これを捨て札に置く。"
+      ]
+    },
+    {
+      "id": "set5_059",
+      "name": "稲妻の迎撃",
+      "set": "BOOSTER_SET_5",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "相手の虫を１つ選び、800のダメージを与える。＜迎撃＞これを縄張りから引いたとき、この縄張りを引かせた虫に、この効果を使用してもよい。そうしたなら、これを捨て札に置く。"
+      ]
+    },
+    {
+      "id": "set5_061",
+      "name": "蠱毒の祟り",
+      "set": "BOOSTER_SET_5",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "回復しないダメージを受けている相手の虫を１つ選ぶ。その虫の回復しないダメージと同数のダメージを、自分と相手のすべての虫に与え、このターンを終了する。"
+      ]
+    },
+    {
+      "id": "set6_001",
+      "name": "オオカレエダカマキリ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この技は1度だけ使用できる。攻撃後、手札から強化カードか術カードを1つ選び、これに使用してもよい。"
+      ]
+    },
+    {
+      "id": "set6_005",
+      "name": "アカウシアブ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これが場に出たとき、相手は縄張りを2枚引いてもよい。そうしたなら、この虫を破壊する。"
+      ]
+    },
+    {
+      "id": "set6_010",
+      "name": "ボウレイカマキリ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これが虫の攻撃により破壊されたとき、手札から虫を1つ選び捨て札に置いてもよい。そうしたなら、これを手札に戻す。"
+      ]
+    },
+    {
+      "id": "set6_014",
+      "name": "セミヤドリガ（幼虫）",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の場にセミ科の虫がいるとき、この虫の体力と攻撃力を100増やし、相手はこれ以外の虫を攻撃できない。 ※この技を持つ虫が複数いるとき、相手はどれかを選んで攻撃する。"
+      ]
+    },
+    {
+      "id": "set6_019",
+      "name": "エラフスホソアカクワガタ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この技はこれに強化カードがついていないと使用できない。この技により相手が縄張りを引いたとき、相手はもう1枚縄張りを引く。"
+      ]
+    },
+    {
+      "id": "set6_027",
+      "name": "ジュウシチネンゼミ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この虫が虫の攻撃により破壊されたとき、引いた縄張りがセミ科ならそれを場に出してもよい。 ※＜とびだす＞を持つ虫が場にいるとき、＜とびだす＞を持つ虫を引いても場に出せる。"
+      ]
+    },
+    {
+      "id": "set6_031",
+      "name": "ユウレイヒレアシナナフシ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この虫が虫の攻撃により破壊されるとき、かわりに、縄張りを2枚引いてもよい。そうしたなら、この虫の体力を元の値まで回復する。"
+      ]
+    },
+    {
+      "id": "set6_043",
+      "name": "オオゴマダラ（幼虫）",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "攻撃後、手札から口寄せの時蛹を1つ選び、使用してもよい。"
+      ]
+    },
+    {
+      "id": "set6_044",
+      "name": "ホソヘリカメムシ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これは自分か相手の捨て札にある術と同じ術のこれは自分が相手のダメージを受けない。"
+      ]
+    },
+    {
+      "id": "set6_046",
+      "name": "オオミズアオ",
+      "set": "BOOSTER_SET_6",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これを縄張りから引いたとき、この虫を捨て札に置いてもよい。そうしたなら、ターン終了時まで自分は縄張りを引かなくてもよい。"
+      ]
+    },
+    {
+      "id": "set6_055",
+      "name": "命燃の鬼火",
+      "set": "BOOSTER_SET_6",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この虫の体力と攻撃力を700増やす。この虫は相手の術カードにより、ダメージを受けず破壊されない。次の相手のターン終了時にこの虫を破壊する。"
+      ]
+    },
+    {
+      "id": "set6_057",
+      "name": "砂鉄の砂嵐",
+      "set": "BOOSTER_SET_6",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "次の相手のターン、相手は虫で攻撃するとき、1回の攻撃につき1コスト支払わなければ攻撃できない。"
+      ]
+    },
+    {
+      "id": "set6_058",
+      "name": "怒濤の黒山",
+      "set": "BOOSTER_SET_6",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "ターン終了時まで、自分のすべての虫の攻撃力を、自分の場の虫と強化カードの数×100増やす。"
+      ]
+    },
+    {
+      "id": "set6_063",
+      "name": "贄虫の転生",
+      "set": "BOOSTER_SET_6",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の虫を1つ選び、山札の1番下に置く。山札の上からカードを1枚公開し、それが虫なら場に出す。虫でないなら山札の1番下に置き、虫が出るまで繰り返す。"
+      ]
+    },
+    {
+      "id": "set6_064",
+      "name": "蠱毒の輪廻",
+      "set": "BOOSTER_SET_6",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これを山札の1番下に置く。山札からカードを1枚引き、それが虫なら場に出す。それが蠱毒の輪廻以外の術か強化なら、使用するか、エサ場に置くか、手札に加える。それが蠱毒の輪廻ならエサ場に置く。"
+      ]
+    },
+    {
+      "id": "set7_004",
+      "name": "トビズムカデ",
+      "set": "BOOSTER_SET_7",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この技を受けた虫は、次にダメージを受けたとき破壊される。"
+      ]
+    },
+    {
+      "id": "set7_026",
+      "name": "オオルリアゲハ",
+      "set": "BOOSTER_SET_7",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この技は1度だけ使用できる。攻撃後、自分は縄張りを1枚引く。その後、このターンを終了する。"
+      ]
+    },
+    {
+      "id": "set7_032",
+      "name": "テナガカミキリ",
+      "set": "BOOSTER_SET_7",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "同じ色の相手の虫を2つ選び、それぞれに攻撃する。それらが同名なら、この技の攻撃力を500増やす。※1つの虫や、相手に直接攻撃はできない。"
+      ]
+    },
+    {
+      "id": "set7_040",
+      "name": "シャチホコガ（幼虫）",
+      "set": "BOOSTER_SET_7",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この技は1度だけ使用できる。次の相手のターン、相手が最初に使用する術カードのコストを2増やす。"
+      ]
+    },
+    {
+      "id": "set7_045",
+      "name": "キスジコヤガ（幼虫）",
+      "set": "BOOSTER_SET_7",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "攻撃後、この虫の体力とこの技の攻撃力を2倍にする。※この技以外の修正値を除く。"
+      ]
+    },
+    {
+      "id": "set7_046",
+      "name": "エンマコオロギ",
+      "set": "BOOSTER_SET_7",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これが場にいるとき、自分と相手は捨て札から虫を場に出せない。"
+      ]
+    },
+    {
+      "id": "set7_048",
+      "name": "オオセンチコガネ",
+      "set": "BOOSTER_SET_7",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これを手札からエサ場に置いたとき、自分の捨て札から虫を1つ選び、これと交換してもよい。"
+      ]
+    },
+    {
+      "id": "set7_059",
+      "name": "蟲装の演舞",
+      "set": "BOOSTER_SET_7",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "次の相手のターン、相手が最初に使用した強化カードを打ち消す。※使用したカードのコストは支払われるが、効果は発揮されず虫に付ける前に捨て札に置かれる。"
+      ]
+    },
+    {
+      "id": "set7_062",
+      "name": "宝石虫の置き土産",
+      "set": "BOOSTER_SET_7",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "次の相手のターン、虫の攻撃により破壊された自分の虫をエサ場に置いてもよい。"
+      ]
+    },
+    {
+      "id": "set7_064",
+      "name": "拝虫の豪新剣",
+      "set": "BOOSTER_SET_7",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の攻撃済みの虫を1つ選び、その虫に捨て札からコスト3以下の強化カードを1つ選んでつける。その虫はもう1度攻撃できる。ターン終了時にその強化カードを破壊する。"
+      ]
+    },
+    {
+      "id": "set8_001",
+      "name": "ペルビアンジャイアントオオムカデ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "このダメージは回復しない。",
+        "これが捨て札にあるとき、コストを6支払い、場に出してもよい。＜奈落復活＞で場に出たこれが破壊されたとき、この虫を裏向きで捨て札に置く。※裏向きの捨て札は、ないものとして扱う。"
+      ]
+    },
+    {
+      "id": "set8_003",
+      "name": "トゲアクマツユムシ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これを場に出すとき、コストを支払う代わりに自分の場の強化カードがついた虫を1つ選び、破壊してもよい。"
+      ]
+    },
+    {
+      "id": "set8_008",
+      "name": "ミイデラゴミムシ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これが場に出たとき、相手のすべての虫に200のダメージを与えてもよい。※このダメージは色による影響を受けない。※この効果により虫が破壊されたとき、相手は縄張りを引かない。"
+      ]
+    },
+    {
+      "id": "set8_013",
+      "name": "アリヅカコオロギ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この虫は自分の場にいるコスト2以下の～アリ科が持つ、＜＞の技でない技を使用できる。"
+      ]
+    },
+    {
+      "id": "set8_017",
+      "name": "インペラトールホソアカクワガタ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これが表向きでエサ場にあるとき、自分の虫は＜王様＞の効果を失い、これ1つにつき自分の＜王様＞を持つ虫のコストを1減らす。"
+      ]
+    },
+    {
+      "id": "set8_026",
+      "name": "ジュウサンネンゼミ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この虫が虫の攻撃により破壊されたとき、引いた縄張りがゼミ科ならそれを場に出してもよい。※＜とびだす＞を持つ虫が場にいるとき、＜とびだす＞を持つ虫を引いても場に出せる。"
+      ]
+    },
+    {
+      "id": "set8_027",
+      "name": "ミドリシジミ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "虫の攻撃により、これを縄張りから引いたとき、これを相手に見せてから手札に加えてもよい。そうしたなら、自分はもう1枚縄張りを引く。"
+      ]
+    },
+    {
+      "id": "set8_031",
+      "name": "サルオガセツユムシ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この技は1度だけ使用できる。攻撃後、自分の虫を1つ選び裏向きにする。これが場を離れたとき、その虫を表向きにする。その虫が裏向きのままなら、次の相手のターン終了時に表向きにする。"
+      ]
+    },
+    {
+      "id": "set8_032",
+      "name": "ヨナグニサン（幼虫）",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この虫の攻撃により、相手が縄張りを引いたとき、自分のエサが6つ以上あるなら、相手は手札、エサ、縄張りのなかから1枚選び、捨て札に置く。"
+      ]
+    },
+    {
+      "id": "set8_033",
+      "name": "トノサマバッタ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の緑のエサ2つにつき、これのコストを1減らす。これが場にいるかぎり、自分と相手のすべてのエサの色は無色になる。"
+      ]
+    },
+    {
+      "id": "set8_034",
+      "name": "カツオゾウムシ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これが初めて受ける術カードの修正値を2倍にする。"
+      ]
+    },
+    {
+      "id": "set8_037",
+      "name": "クロカタゾウムシ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "次の相手のターン、これは術カードの対象にならず、色による2倍のダメージを受けない。"
+      ]
+    },
+    {
+      "id": "set8_039",
+      "name": "コウテイブローチハムシ",
+      "set": "BOOSTER_SET_8",
+      "type": "INSECT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これが表向きでエサ場にあるとき、自分の虫は＜王様＞の効果を失い、これ1つにつき自分の＜王様＞を持つ虫のコストを1減らす。"
+      ]
+    },
+    {
+      "id": "set8_047",
+      "name": "鬼蜻蜓の簪",
+      "set": "BOOSTER_SET_8",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "これがコストを支払い場に出たとき、相手の虫を1つ選び裏向きにする。これが場を離れたとき、その虫を表向きにする。"
+      ]
+    },
+    {
+      "id": "set8_051",
+      "name": "影武者の魔鏡",
+      "set": "BOOSTER_SET_8",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の虫を2つ選び、どちらかにこれをつける。相手はこれがついた虫以外攻撃できない。これがついた虫は、つけなかった虫の元の色と体力と技、名前と解説文になる。つけなかった虫が場を離れたとき、これを破壊する。"
+      ]
+    },
+    {
+      "id": "set8_053",
+      "name": "傀儡の冬虫夏草",
+      "set": "BOOSTER_SET_8",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の捨て札にあるコスト3以下の虫を1つ選び、これをつけて場に出す。この効果により場に出た虫は体力と攻撃力が100減り、技の効果を失う。これが破壊されたとき、その虫を破壊する。"
+      ]
+    },
+    {
+      "id": "set8_054",
+      "name": "玉虫の色真似巻",
+      "set": "BOOSTER_SET_8",
+      "type": "ENHANCEMENT",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の虫を2つ選び、どちらかにこれをつける。これがついた虫は、これをつけなかった虫の色になる。"
+      ]
+    },
+    {
+      "id": "set8_056",
+      "name": "半死の道連れ",
+      "set": "BOOSTER_SET_8",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "この効果は術カードの対象にならない虫を選ぶことができる。自分と相手は、自身の場にいる虫の数が半分（端数切捨て）になるように破壊する。※3つのとき、2つ選び破壊する。"
+      ]
+    },
+    {
+      "id": "set8_057",
+      "name": "水月の激流",
+      "set": "BOOSTER_SET_8",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分と相手のすべての虫に300のダメージを与え、このターンを終了する。"
+      ]
+    },
+    {
+      "id": "set8_058",
+      "name": "神楽の烈風",
+      "set": "BOOSTER_SET_8",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分と相手のすべての虫に1200のダメージを与え、このターンを終了する。"
+      ]
+    },
+    {
+      "id": "set8_061",
+      "name": "断界の虫送り",
+      "set": "BOOSTER_SET_8",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "相手の虫を1つ選び、裏向きで相手のエサ場に置く。"
+      ]
+    },
+    {
+      "id": "set8_062",
+      "name": "冥府の導き",
+      "set": "BOOSTER_SET_8",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "自分の捨て札から虫を1つ選び場に出す。ターン終了時にそれを裏向きで捨て札に置く。※裏向きの捨て札は、ないものとして扱う。"
+      ]
+    },
+    {
+      "id": "set8_063",
+      "name": "蚕の口封じ",
+      "set": "BOOSTER_SET_8",
+      "type": "SPELL",
+      "status": "NOT_REGISTERED",
+      "text": [
+        "次の相手のターン終了時まで、相手の虫は＜＞の技を失う。"
+      ]
+    }
+  ]
+}

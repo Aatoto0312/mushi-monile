@@ -993,6 +993,7 @@
   }
 
   function matchesNextUseCostModifier(state,playerId,definition,modifier){
+    if(modifier.startTurn!=null&&state.turnNumber<modifier.startTurn)return false;
     if(state.turnNumber>modifier.endTurn||definition.type!==modifier.cardType)return false;
     if(modifier.nameSuffix){
       if(definition.name.endsWith(modifier.nameSuffix))return false;
@@ -1795,6 +1796,7 @@
   function isSpellSelectionTargetLegal(state, playerId, card) {
     var holder = findAnywhere(state, card.instanceId);
     if (!holder || holder.zone !== ZONES.FIELD) { return true; }
+    if(card.runtimeFlags&&card.runtimeFlags.spellImmunityTurn===state.turnNumber)return false;
     if (hasPassiveEffect(state, card, 'SPELL_TARGET_IMMUNITY')) { return false; }
     return holder.playerId === playerId ||
       (!hasPassiveEffect(state, card, 'OPPONENT_SPELL_TARGET_IMMUNITY') &&
@@ -2071,12 +2073,13 @@
       // APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD: 使用時点で自分FIELDにいる全虫へ一時的AP修飾
       if (effect.type === 'APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD') {
         var ownField = state.player(playerId).field;
-        ownField.forEach(function (insect) {
+        var snapshotAmount=effect.amountPerOwnFieldCard==null?effect.amount:effect.amountPerOwnFieldCard*insectCards(ownField).reduce(function(n,host){return n+1+(host.attachments||[]).length;},0);
+        insectCards(ownField).forEach(function (insect) {
           var mod = {
             id: effect.id,
             sourceInstanceId: instance.instanceId,
             stat: effect.stat,
-            amount: effect.amount,
+            amount: snapshotAmount,
             startTurn: state.turnNumber,
             endTurn: state.turnNumber
           };
@@ -2084,6 +2087,10 @@
         });
       }
       // DEAL_DAMAGE_TO_TARGET: 対象虫へ固定ダメージ(爆熱弾等)
+      if(effect.type==='MOVE_TARGET_TO_ZONE'){
+        var movingTarget=findInZone(state,state.opponentOf(playerId),ZONES.FIELD,chosenTargetInstanceId);
+        if(movingTarget&&!movingTarget.faceDown)moveCard(state,movingTarget.instanceId,ZONES.FIELD,effect.to,{playerId:state.opponentOf(playerId),faceDown:effect.faceDown});
+      }
       if (effect.type === 'DESTROY_TARGET') {
         var destructionTarget = findInZone(state, state.opponentOf(playerId), ZONES.FIELD, chosenTargetInstanceId);
         if (!destructionTarget || destructionTarget.faceDown) { throw new Error('選択した虫は術の対象にできません'); }
@@ -3433,6 +3440,15 @@
     // Self modifiers also apply on a direct attack. Resolve after damage so a
     // newly granted bonus cannot retroactively change the triggering attack.
     (skill.effects || []).forEach(function (effect) {
+      if(effect.type==='TAX_FIRST_OPPONENT_SPELL_NEXT_TURN'){
+        var taxedPlayer=state.player(state.opponentOf(ap));
+        taxedPlayer.nextUseCostModifiers=(taxedPlayer.nextUseCostModifiers||[]).concat([{cardType:CardTypes.SPELL,amount:effect.amount,startTurn:state.turnNumber+1,endTurn:state.turnNumber+1,sourceInstanceId:attacker.instanceId}]);
+      }
+      if(effect.type==='GRANT_SPELL_IMMUNITY_AND_IGNORE_WEAKNESS_NEXT_TURN'&&attacker.zone===ZONES.FIELD){
+        attacker.runtimeFlags=attacker.runtimeFlags||{};
+        attacker.runtimeFlags.spellImmunityTurn=state.turnNumber+1;
+        attacker.runtimeFlags.ignoreWeaknessTurn=state.turnNumber+1;
+      }
       if (effect.type === 'GRANT_DAMAGE_SHIELD' && attacker.zone === ZONES.FIELD) {
         attacker.runtimeFlags = attacker.runtimeFlags || {};
         var shields = attacker.runtimeFlags.damageShields || [];

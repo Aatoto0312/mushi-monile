@@ -1,3 +1,8 @@
+# Resume: Next Wave candidate505 /565 — 2026-11-13
+- Base main359fb61, isolated cards/next-wave-20261113. Four cards: SET6-58 / SET7-40 / SET8-37 / SET8-61. Details next-wave-20261113.md; complete baseline remaining64 inventory in adjacent JSON.
+- New unit10 + server4 passed; full2141/0. Browser Chromium new CPU/online and legacy CPU passed (4 actual cards each); WebKit and CI pending. Do not treat old471 heading below as current.
+- Remaining60: next candidate 7-46 shared discard-deploy lock; area-damage serial batch 8-08/57/58,5-61; attachment conditions and timed host destruction later. No public update authorized in this task.
+
 # Resume: safe471 /565 —2026-11-06
 - Isolated cards/hawk-queen-20261106 at C:/Users/aatot/mushi-hawk-queen, base775f665/469. AddedSET7-01オオスズメバチ（女王） andSET7-02タランチュラホーク; sets5/6/7/8=48/40/42/32, remaining94. Printed438/439 +officialQA7 rows101–107 checked; details hawk-queen-evidence.md.
 - Generic SELECT_AFTER_ATTACK + existing current-candidate SELECT_ON_ENTRY, opt-in next-original-player-turn reveal marker/field-leave cleanup. Hawk current keyword target condition, host-only destruction-keyword blocking before damage; attachment retaliation/replacement unchanged. No card-id Engine switch.

@@ -235,6 +235,7 @@ function requireAll() {
     ,require('./set4-alpha-cpu-runtime.test.js')
     ,require('./adversarial-set2-set4-audit.test.js')
     ,require('./set4-independent-audit-fixes.test.js')
+    ,require('./next-wave-zone-spells.test.js')
   ];
 }
 
