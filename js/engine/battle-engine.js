@@ -2592,7 +2592,7 @@
   }
 
   // ---- 強化カード使用 ----
-  function matchesAttachmentHostDefinition(attachmentDef,host){var hostDef=getCardDefinition(host.cardId);if(!attachmentDef||!hostDef)return false;if(attachmentDef.requiresEffectlessHostSkills&&(hostDef.skills||[]).some(function(skill){return !!String(skill.effectText||'').trim();}))return false;var suffixes=attachmentDef.attachmentHostFamilySuffixes||(attachmentDef.attachmentHostFamilySuffix?[attachmentDef.attachmentHostFamilySuffix]:null);return !suffixes||(hostDef.tags||[]).some(function(tag){return suffixes.some(function(suffix){return tag.endsWith(suffix);});});}
+  function matchesAttachmentHostDefinition(attachmentDef,host){var hostDef=getCardDefinition(host.cardId);if(!attachmentDef||!hostDef)return false;if(attachmentDef.attachmentHostColor&&String(hostDef.color||'').toUpperCase()!==String(attachmentDef.attachmentHostColor).toUpperCase())return false;if(attachmentDef.requiresLarvaHost&&!/[（(]幼虫[）)]/.test(String(hostDef.name||'')))return false;if(attachmentDef.requiresEffectlessHostSkills&&(hostDef.skills||[]).some(function(skill){return !!String(skill.effectText||'').trim();}))return false;var suffixes=attachmentDef.attachmentHostFamilySuffixes||(attachmentDef.attachmentHostFamilySuffix?[attachmentDef.attachmentHostFamilySuffix]:null);return !suffixes||(hostDef.tags||[]).some(function(tag){return suffixes.some(function(suffix){return tag.endsWith(suffix);});});}
   function activeAttachmentLimit(state,host){var def=getCardDefinition(host.cardId);if(def.attachmentLimitRequiresTrait&&(areInsectKeywordSkillsSuppressed(state,host)||(host.runtimeFlags&&host.runtimeFlags.suppressKeywordSkills)))return null;return def.attachmentLimit;}
 
   function getEnhancementTargetCandidates(state, playerId, sourceId) {
