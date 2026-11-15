@@ -71,7 +71,7 @@
         return { damage: 200, sides: 'OPPONENT', ignoreWeakness: true,
           preventTerritoryDrawOnKill: true, optional: true, endTurn: false };
       case 'set8_057':
-        return { damage: 300, sides: 'BOTH', ignoreWeakness: true,
+        return { damage: 300, sides: 'BOTH', ignoreWeakness: false,
           preventTerritoryDrawOnKill: false, optional: false, endTurn: true };
       case 'set8_058':
         return { damage: 1200, sides: 'BOTH', ignoreWeakness: true,
