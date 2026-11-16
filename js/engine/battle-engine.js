@@ -321,6 +321,7 @@
       while(limit-- > 0 && deck.length){
         var top=deck[0],topDef=getCardDefinition(top.cardId);
         emitBattleEvent(state,'DECK_CARD_REVEALED',{playerId:continuation.playerId,cardId:top.cardId,sourceInstanceId:continuation.sourceInstanceId});
+        log(state,state.turnNumber,continuation.playerId+' は山札から '+topDef.name+' を公開した');
         if(topDef.type===CardTypes.INSECT){
           top.currentHp=topDef.baseHp;top.baseHp=topDef.baseHp;top.attackedThisTurn=false;
           moveCard(state,top.instanceId,ZONES.DECK,ZONES.FIELD,{playerId:continuation.playerId,faceDown:false,runtimeFlags:continuation.entryFlags});return;
@@ -2191,6 +2192,7 @@
         moveCard(state,instance.instanceId,ZONES.RESOLVING,ZONES.DECK,{playerId:playerId,faceDown:true});finalZone=ZONES.DECK;
         var drawn=state.player(playerId).deck[0],drawnDef=getCardDefinition(drawn.cardId);
         emitBattleEvent(state,'DECK_CARD_REVEALED',{playerId:playerId,cardId:drawn.cardId,sourceInstanceId:instance.instanceId});
+        log(state,state.turnNumber,playerId+' は山札から '+drawnDef.name+' を公開した');
         if(drawnDef.type===CardTypes.INSECT){drawn.currentHp=drawnDef.baseHp;drawn.baseHp=drawnDef.baseHp;drawn.attackedThisTurn=false;moveCard(state,drawn.instanceId,ZONES.DECK,ZONES.FIELD,{playerId:playerId,faceDown:false,runtimeFlags:spellEntryFlags(state,playerId,instance)});}
         else if(drawnDef.name===def.name){moveCard(state,drawn.instanceId,ZONES.DECK,ZONES.FOOD,{playerId:playerId,faceDown:false});if(drawn===instance)finalZone=ZONES.FOOD;}
         else{
@@ -2985,6 +2987,7 @@
       if(trackedIds.length!==2||trackedIds.indexOf(targetInstanceId)===-1||trackedIds.some(function(id){var card=findInZone(state,playerId,ZONES.DISCARD,id),cardDef=card&&getCardDefinition(card.cardId);return !cardDef||cardDef.type!==CardTypes.INSECT;}))throw new Error('捨て札の虫2つと装着先を選んでください');
       player.availableCost-=enhancementCost;
       moveCard(state,held.instanceId,ZONES.HAND,ZONES.RESOLVING,{playerId:playerId});
+      if(state.freeCardUse&&state.freeCardUse.sourceInstanceId===handInstanceId)state.freeCardUse=null;
       held.runtimeFlags=held.runtimeFlags||{};held.runtimeFlags.trackedInsectInstanceIds=trackedIds.slice();
       resumeAfterSelection(state,{type:'TRACKED_REVIVAL_SEQUENCE',playerId:playerId,moves:trackedIds.map(function(id){return {instanceId:id};}),attachmentInstanceId:held.instanceId,hostInstanceId:targetInstanceId});
       return held;
