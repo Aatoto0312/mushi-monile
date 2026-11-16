@@ -219,6 +219,8 @@
         delete card.runtimeFlags.colorOverride;
         delete card.runtimeFlags.colorOverrideUntil;
         delete card.runtimeFlags.attackRestrictions;
+        delete card.runtimeFlags.spellImmunityTurn;
+        delete card.runtimeFlags.ignoreWeaknessTurn;
         delete card.runtimeFlags.destroyAtEndTurn;
         delete card.runtimeFlags.suppressKeywordSkills;
         delete card.runtimeFlags.suppressDestructionKeywordUntilTurn;

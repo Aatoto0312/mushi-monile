@@ -1,4 +1,5 @@
 exclude:
+  - js/cards/chatgpt-batch-rule-helpers.js
   - server
   - docs
   - tests

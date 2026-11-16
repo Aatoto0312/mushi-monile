@@ -20,6 +20,12 @@
       return null;
     }
 
+    var batchEnhancementStatus=global.getPendingBatchEnhancementStatus&&global.getPendingBatchEnhancementStatus(state);
+    if(batchEnhancementStatus){
+      if(!batchEnhancementStatus.canContinue)return {type:'CANCEL_CARD_USE'};
+      var batchCombination=(batchEnhancementStatus.allowedCombinations||[])[0];
+      return {type:'RESOLVE_CARD_SELECTION',instanceIds:batchCombination?batchCombination.slice():batchEnhancementStatus.candidateIds.slice(0,pending.exactSelections||pending.maxSelections||1)};
+    }
     var paymentStatus=global.getPendingEnhancementPaymentStatus&&global.getPendingEnhancementPaymentStatus(state);
     if(paymentStatus&&!paymentStatus.canContinue)return {type:'CANCEL_CARD_PAYMENT'};
     if(paymentStatus&&pending.type==='CARD_SELECTION')return {type:'RESOLVE_CARD_SELECTION',instanceIds:paymentStatus.candidateIds.slice(0,pending.exactSelections)};
@@ -103,14 +109,15 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.INSECT) return false;
       if (!def.isPlayable()) return false;
-      return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, def);
+      return global.getAvailableSummonMethods(state,self.playerId,inst.instanceId).length > 0;
     });
 
     if (playableInsects.length > 0) {
       var chosenInsect = playableInsects[Math.floor(this.rng() * playableInsects.length)];
       return {
         type: 'SUMMON',
-        instanceId: chosenInsect.instanceId
+        instanceId: chosenInsect.instanceId,
+        alternative: !global.getAvailableSummonMethods(state,self.playerId,chosenInsect.instanceId).some(function(method){return method.type==='NORMAL';})
       };
     }
 
@@ -307,6 +314,10 @@
         global.resolveCardSelection(state,this.playerId,action.instanceIds,true);
         return true;
       }
+      if (action.type === 'CANCEL_CARD_USE') {
+        global.cancelPendingCardUse(state,this.playerId);
+        return true;
+      }
       if (action.type === 'CANCEL_PENDING_ATTACK_COST') {
         global.cancelPendingAttackCost(state,this.playerId);
         return true;
@@ -325,7 +336,7 @@
       }
       if(action.type==='CANCEL_CARD_PAYMENT'){global.cancelPendingEnhancementPayment(state,this.playerId);return true;}
       if (action.type === 'SUMMON') {
-        global.summonInsect(state, this.playerId, action.instanceId);
+        global.summonInsect(state, this.playerId, action.instanceId, {alternative:!!action.alternative});
         return true;
       }
       if (action.type === 'ACTIVATE_FIELD_ABILITY') {

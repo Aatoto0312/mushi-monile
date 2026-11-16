@@ -19,6 +19,7 @@ function run(r,s,op,ids=[]){const c=r.context,p=op.playerId;
     case 'TERRITORY':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveTerritoryDrawSelection(s,p,ids[0]);
     case 'SPELL_TARGET':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveSpellTargetSelection(s,p,ids[0]);
     case 'DISCARD':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveDiscardInsectSelection(s,p,ids[0]);
+    case 'CANCEL_CARD_USE':return c.cancelPendingCardUse(s,p);
     case 'CANCEL_CARD_PAYMENT':return c.cancelPendingEnhancementPayment(s,p);
     case 'CANCEL_ATTACK_COST':return c.cancelPendingAttackCost(s,p);
     default:throw Error('ACTION_INVALID');
@@ -54,8 +55,8 @@ function prepareView(r,s,viewer){
   }
   function locate(id,forceHidden=false,inspectOwnHidden=false){const attachment=c.findAttachment(s,id),holder=attachment||c.findAnywhere(s,id);return holder?card(holder.instance,attachment?'ATTACHMENT':holder.zone,holder.playerId,forceHidden||!!(attachment&&attachment.host.faceDown),inspectOwnHidden):{ref:ref(id),hidden:true,label:'カード',zone:'UNKNOWN'};}
   function publicName(id){const h=c.findAttachment(s,id)||c.findAnywhere(s,id);if(!h||h.instance.faceDown||h.host&&h.host.faceDown||!h.host&&!['FIELD','DISCARD','RESOLVING','ATTACHMENT'].includes(h.zone))return 'カード';const d=c.getCardDefinition(h.instance.cardId);return d?d.name:'カード';}
-  const labels={SPELL_COUNTERED:'術打ち消し',SPELL_TARGET_REVEALED:'使用対象を公開',ATTACK_RESET:'再攻撃可能',COST_GAIN:'コスト獲得',SUMMON:'登場',SPELL_USED:'術使用',ENHANCEMENT_USED:'強化装着',ATTACK:'技使用',DAMAGE:'ダメージ',DESTROY:'破壊',DESTROY_REPLACED:'破壊置換・回復',STAT_CHANGE:'能力修正',GAME_OVER:'対戦終了'};
-  const publicLog=(s.battleEvents||[]).filter(e=>Object.hasOwn(labels,e.type)&&Number.isInteger(e.id)&&Number.isInteger(e.turnNumber)).slice(-100).map(e=>{if(e.type==='SPELL_TARGET_REVEALED'){const declared=c.getCardDefinition(e.cardId);return {id:e.id,turn:e.turnNumber,text:'使用対象を公開 '+(declared&&declared.type==='INSECT'?declared.name:'カード')};}let actor=e.playerId||(e.type==='ATTACK'?e.activePlayerId:null),text=(['P1','P2'].includes(actor)?(viewer==='SPECTATOR'?actor:actor===viewer?'あなた':'相手')+'：':'')+labels[e.type];if(e.sourceInstanceId)text+=' '+publicName(e.sourceInstanceId);if(e.type==='ATTACK'){const h=c.findAnywhere(s,e.sourceInstanceId),d=h&&!h.instance.faceDown&&h.zone==='FIELD'&&c.getCardDefinition(h.instance.cardId),skill=d&&d.skills.find(x=>x.id===e.skillId);if(skill)text+='「'+skill.name+'」';}if(e.targetInstanceId)text+=' → '+publicName(e.targetInstanceId);if(e.type==='COST_GAIN'&&Number.isFinite(e.amount))text+=' +'+e.amount;if(e.type==='DAMAGE'&&Number.isFinite(e.damage))text+=' '+e.damage;if(e.type==='STAT_CHANGE'&&['HP','AP'].includes(e.stat)&&Number.isFinite(e.amount))text+=' '+e.stat+(e.amount>=0?'+':'')+e.amount;return {id:e.id,turn:e.turnNumber,text};});
+  const labels={DECK_CARD_REVEALED:'山札のカードを公開',SPELL_COUNTERED:'術打ち消し',SPELL_TARGET_REVEALED:'使用対象を公開',ATTACK_RESET:'再攻撃可能',COST_GAIN:'コスト獲得',SUMMON:'登場',SPELL_USED:'術使用',ENHANCEMENT_USED:'強化装着',ATTACK:'技使用',DAMAGE:'ダメージ',DESTROY:'破壊',DESTROY_REPLACED:'破壊置換・回復',STAT_CHANGE:'能力修正',GAME_OVER:'対戦終了'};
+  const publicLog=(s.battleEvents||[]).filter(e=>Object.hasOwn(labels,e.type)&&Number.isInteger(e.id)&&Number.isInteger(e.turnNumber)).slice(-100).map(e=>{if(e.type==='DECK_CARD_REVEALED'){const revealed=c.getCardDefinition(e.cardId);return {id:e.id,turn:e.turnNumber,text:'山札のカードを公開 '+(revealed?revealed.name:'カード')};}if(e.type==='SPELL_TARGET_REVEALED'){const declared=c.getCardDefinition(e.cardId);return {id:e.id,turn:e.turnNumber,text:'使用対象を公開 '+(declared&&declared.type==='INSECT'?declared.name:'カード')};}let actor=e.playerId||(e.type==='ATTACK'?e.activePlayerId:null),text=(['P1','P2'].includes(actor)?(viewer==='SPECTATOR'?actor:actor===viewer?'あなた':'相手')+'：':'')+labels[e.type];if(e.sourceInstanceId)text+=' '+publicName(e.sourceInstanceId);if(e.type==='ATTACK'){const h=c.findAnywhere(s,e.sourceInstanceId),d=h&&!h.instance.faceDown&&h.zone==='FIELD'&&c.getCardDefinition(h.instance.cardId),skill=d&&d.skills.find(x=>x.id===e.skillId);if(skill)text+='「'+skill.name+'」';}if(e.targetInstanceId)text+=' → '+publicName(e.targetInstanceId);if(e.type==='COST_GAIN'&&Number.isFinite(e.amount))text+=' +'+e.amount;if(e.type==='DAMAGE'&&Number.isFinite(e.damage))text+=' '+e.damage;if(e.type==='STAT_CHANGE'&&['HP','AP'].includes(e.stat)&&Number.isFinite(e.amount))text+=' '+e.stat+(e.amount>=0?'+':'')+e.amount;return {id:e.id,turn:e.turnNumber,text};});
   const view={viewerId:viewer,turn:s.turnNumber,phase:s.phase,activePlayerId:s.activePlayerId,firstPlayerId:s.firstPlayerId,winner:s.winner||null,players:{},actions:[],decision:null,unsupportedDecision:false,blockedReason:null,publicLog};
   for(const pid of s.playerOrder){const p=s.player(pid),out={id:pid,availableCost:p.availableCost,counts:{}};
     for(const zone of ['hand','deck','territory','food','field','discard','resolving']){out.counts[zone]=p[zone].length;if(zone!=='deck')out[zone]=p[zone].map(inst=>card(inst,zone.toUpperCase(),pid));}
@@ -93,15 +94,17 @@ function prepareView(r,s,viewer){
       if(!kind){view.unsupportedDecision=true;view.blockedReason='UNSUPPORTED_DECISION';return {view,capabilities};}
       const costStatus=c.getPendingAttackCostStatus(s);
       if(costStatus&&!costStatus.canContinue){add({kind:'CANCEL_ATTACK_COST'},'続行できない攻撃を取り消す',null,null,[],false);return {view,capabilities};}
+      const batchStatus=c.getPendingBatchEnhancementStatus&&c.getPendingBatchEnhancementStatus(s);
       const fieldCandidates=c.getPendingFieldAbilityCandidates(s,pending);
       const entryConstraints=c.getPendingEntrySelectionConstraints(s,pending);
       const bounds=entryConstraints?.selectionBounds||pending;
       const max=pending.type==='CARD_SELECTION'?bounds.maxSelections:1,min=pending.type==='CARD_SELECTION'?bounds.minSelections:1;
-      const options=paymentStatus?paymentStatus.candidateIds:costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
-      if(options.length<min){view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
+      const options=batchStatus?batchStatus.candidateIds:paymentStatus?paymentStatus.candidateIds:costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
+      if(options.length<min){if(c.canCancelPendingCardUse&&c.canCancelPendingCardUse(s,viewer))add({kind:'CANCEL_CARD_USE'},'カードの使用を取り消す');else view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
       const id=add({kind},'選択を決定',null,null,options,false);
       view.decision={actionId:id,min,max,exact:bounds.exactSelections??(kind==='CARDS'?null:1),ordered:true,firstOptions:pending.firstSelectionOptions?.filter(id=>options.includes(id)).map(ref)||null,
-        options:options.map(id=>locate(id,!!pending.hiddenSelection,!!pending.continuation?.effect?.inspectOwnHidden)),atMostOneGroups:(entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups||[]).map(group=>group.map(ref)),groups:(pending.selectionGroups||[]).map(group=>group.map(ref)),partitions:(pending.selectionPartitions||[]).map(group=>group.map(ref)),combinations:(pending.allowedCombinations||[]).map(group=>group.map(ref))};
+        options:options.map(id=>locate(id,!!pending.hiddenSelection,!!pending.continuation?.effect?.inspectOwnHidden)),atMostOneGroups:(entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups||[]).map(group=>group.map(ref)),groups:(pending.selectionGroups||[]).map(group=>group.map(ref)),partitions:(pending.selectionPartitions||[]).map(group=>group.map(ref)),combinations:((batchStatus&&batchStatus.allowedCombinations)||pending.allowedCombinations||[]).map(group=>group.map(ref))};
+      if(c.canCancelPendingCardUse&&c.canCancelPendingCardUse(s,viewer))view.decision.cancelActionId=add({kind:'CANCEL_CARD_USE'},'カードの使用を取り消す');
       if(pending.hiddenSelection)view.decision.options.sort((a,b)=>a.ref.localeCompare(b.ref));
     }
     if(!view.actions.length)view.blockedReason='ENGINE_NO_LEGAL_COMMAND';
@@ -119,7 +122,7 @@ function prepareView(r,s,viewer){
       if(d.type==='INSECT')for(const method of c.getAvailableSummonMethods(s,viewer,held.instanceId))add({kind:method.type==='NORMAL'?'SUMMON':'ALTERNATIVE',source:held.instanceId},method.type==='NORMAL'?'場に出す：'+d.name+'（'+method.cost+'）':'代替コストで場に出す：'+d.name,held.instanceId);
       if(d.type==='SPELL')add({kind:'SPELL',source:held.instanceId},'術を使う：'+d.name,held.instanceId);
       if(d.type==='ENHANCEMENT'){
-        const special=d.enhancementEffects.some(e=>e.type==='REVIVE_TWO_TRACKED_INSECTS'||e.type==='SUMMON_ATTACHED_FROM_HAND');
+        const special=d.enhancementEffects.some(e=>e.type==='REVIVE_TWO_TRACKED_INSECTS'||e.type==='SUMMON_ATTACHED_FROM_HAND'||e.type==='SUMMON_ATTACHED_FROM_DISCARD');
         if(special)add({kind:'ENHANCE',source:held.instanceId},'強化を使う：'+d.name,held.instanceId);
         else{const colors=[...new Set(d.enhancementEffects.flatMap(e=>e.type==='COLOR_OVERRIDE'&&e.colors?Array.from(e.colors):[]))];
           for(const target of c.getEnhancementTargetCandidates(s,viewer,held.instanceId))for(const color of colors.length?colors:[null])add({kind:'ENHANCE',source:held.instanceId,target:target.instanceId,color},d.name+' → '+title(target.instanceId)+(color?' / '+color:''),held.instanceId,target.instanceId);

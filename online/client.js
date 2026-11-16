@@ -104,7 +104,7 @@
       const details=document.createElement('details'),heading=document.createElement('summary'),list=document.createElement('div');heading.textContent='選択候補の詳細を確認';list.className='online-candidate-details';
       d.options.forEach((dto,index)=>{if(dto.hidden)return;const entry=document.createElement('details'),title=document.createElement('summary');title.textContent=describe(dto,index);entry.append(title);appendCardDetails(dto,entry);list.append(entry);});details.append(heading,list);body.append(details);
     }
-    body.append(confirm);refresh();
+    body.append(confirm);if(d.cancelActionId)body.append(button('使用を取り消す',()=>act({id:d.cancelActionId}),'CANCEL_CARD_USE'));refresh();
   }
   function render(){
     if(!current||!current.battle||current.room.phase==='LOBBY')window.MushiOnlineBattle?.reset();

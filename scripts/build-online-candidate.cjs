@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {ROOT,VERSIONS,createRuntime}=require('../server/lib/runtime.cjs');
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 // Release cache tag: bump for the next public release, together with Toolbox's tag.
-const ASSET_VERSION='result-popup-1';
+const ASSET_VERSION='requested-batch-513-v1';
 function versioned(url){if(/^(?:[a-z]+:|\/\/|#)/i.test(url))return url;const [base,fragment]=url.split('#'),[name,query]=base.split('?');if(!/\.(?:js|css|png|jpe?g|svg|webp|ico|woff2)$/.test(name))return url;const params=new URLSearchParams(query);params.set('v',ASSET_VERSION);return name+'?'+params+(fragment?'#'+fragment:'');}
 const explicit=['index.html','toolbox.html','online.html','online-b.html','online/client.js','online/online.css','online/battle-b-adapter.js','online/config.json','online/contract.json','battle-ui/result-popup.js','battle-ui/result-popup.css','battle-ui/cpu-result.js','battle-ui/board.js','battle-ui/presentation.js','battle-ui/board.css','battle-ui/new-ui.css','battle-ui/engine-view.js','battle-ui/cpu-adapter.js','battle-ui/cpu-controller.js','battle-ui/cpu.css','prototype-b/style.css','prototype-b/base.css','prototype-b/forest.png'];
 function filesIn(dir){const base=path.join(ROOT,dir);if(!fs.existsSync(base))return [];return fs.readdirSync(base,{withFileTypes:true}).flatMap(e=>{const relative=dir+'/'+e.name;if(e.isSymbolicLink())throw Error('SYMLINK_REFUSED');if(e.name.startsWith('.'))return [];if(e.isDirectory())return filesIn(relative);return /\.(js|css|json|png|jpe?g|webp|svg|ico|woff2)$/.test(e.name)&&!/(?:\.local\.|\.test\.|credential|authtoken)/i.test(e.name)?[relative]:[];});}
@@ -12,7 +12,7 @@ function build(out){
  out=path.resolve(out);if(out===ROOT||out.startsWith(ROOT+path.sep))throw Error('OUTPUT_MUST_BE_OUTSIDE_REPOSITORY');if(fs.existsSync(out))throw Error('OUTPUT_EXISTS');
  const config=JSON.parse(fs.readFileSync(path.join(ROOT,'online/config.json'))),plan=JSON.parse(fs.readFileSync(path.join(ROOT,'server/ngrok-plan.json')));
  if(config.productionEndpoint!=='wss://'+plan.hostname+'/ws'||!config.allowedProductionHosts.includes(plan.hostname))throw Error('ENDPOINT_PLAN_MISMATCH');
- const files=[...new Set([...explicit,...['js','css','shared','toolbox','assets'].flatMap(filesIn)])].sort();
+ const files=[...new Set([...explicit,...['js','css','shared','toolbox','assets'].flatMap(filesIn)])].filter(file=>file!=='js/cards/chatgpt-batch-rule-helpers.js').sort();
  for(const file of files){const stat=fs.lstatSync(path.join(ROOT,file));if(stat.isSymbolicLink()||!stat.isFile())throw Error('MISSING_BROWSER_ASSET');}
  fs.mkdirSync(path.join(out,'site'),{recursive:true});
  const manifest={createdAt:new Date().toISOString(),assetVersion:ASSET_VERSION,sourceHead:git(['rev-parse','HEAD']).toString().trim(),mainHead:git(['rev-parse','origin/main']).toString().trim(),versions:VERSIONS,runtime:createRuntime().meta,files:[],forbiddenRoots:['server/','docs/','tests/','.ai-worker/']};

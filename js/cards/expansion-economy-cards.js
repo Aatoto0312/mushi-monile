@@ -1,5 +1,9 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
+set8_037:{"texts":[null,"次の相手のターン、これは術カードの対象にならず、色による2倍のダメージを受けない。"],"index":1,"effect":{"type":"GRANT_SPELL_IMMUNITY_AND_IGNORE_WEAKNESS_NEXT_TURN"}},
+set7_040:{"texts":[null,"この技は1度だけ使用できる。次の相手のターン、相手が最初に使用する術カードのコストを2増やす。"],"index":1,"effect":{"type":"TAX_FIRST_OPPONENT_SPELL_NEXT_TURN","amount":2},"once":true},
+set6_058:{"text":"ターン終了時まで、自分のすべての虫の攻撃力を、自分の場の虫と強化カードの数×100増やす。","effect":{"type":"APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD","stat":"AP","amountPerOwnFieldCard":100}},
+set8_061:{"text":"相手の虫を1つ選び、裏向きで相手のエサ場に置く。","effect":{"type":"MOVE_TARGET_TO_ZONE","requiresTarget":true,"target":"OPPONENT_FIELD_INSECT","to":"FOOD","faceDown":true}},
 set7_020:{texts:[null,'この技は1度だけ使用できる。この技はすべての虫に色による2倍のダメージを与える。'],index:1,once:true,forceWeakness:true},
 set7_008:{texts:[null,'相手の捨て札から虫を１つ選び、山札の１番下に置いてもよい。'],index:1,effect:{type:'SELECT_AFTER_ATTACK',selection:{type:'SELECT_ON_ENTRY',from:'DISCARD',controller:'OPPONENT',faceDown:false,cardType:'INSECT',operation:'MOVE',to:'DECK',targetFaceDown:true,deckPosition:'BOTTOM'}}},
 set7_001:{texts:['攻撃後、自分のエサ場からコスト5以下の～バチ科の虫を1つ選び、裏向きで場に出してもよい。次の自分のターン開始時にそれを表向きにする。'],index:0,effect:{type:'SELECT_AFTER_ATTACK',selection:{type:'SELECT_ON_ENTRY',from:'FOOD',controller:'SELF',faceDown:false,cardType:'INSECT',familySuffixes:['バチ科'],printedCostMax:5,operation:'MOVE',to:'FIELD',targetFaceDown:true,revealNextOwnTurn:true}}},
