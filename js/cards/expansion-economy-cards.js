@@ -1,5 +1,6 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
+set5_057:{text:'捨て札からカードを２つ選び、裏向きでエサ場に置く。※このエサのコストはこのターン発生しない。',effect:{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'FOOD',exactSelections:2,faceDown:true,suppressFoodCostThisTurn:true}},
 set8_037:{"texts":[null,"次の相手のターン、これは術カードの対象にならず、色による2倍のダメージを受けない。"],"index":1,"effect":{"type":"GRANT_SPELL_IMMUNITY_AND_IGNORE_WEAKNESS_NEXT_TURN"}},
 set7_040:{"texts":[null,"この技は1度だけ使用できる。次の相手のターン、相手が最初に使用する術カードのコストを2増やす。"],"index":1,"effect":{"type":"TAX_FIRST_OPPONENT_SPELL_NEXT_TURN","amount":2},"once":true},
 set6_058:{"text":"ターン終了時まで、自分のすべての虫の攻撃力を、自分の場の虫と強化カードの数×100増やす。","effect":{"type":"APPLY_STAT_MODIFIER_TO_ALL_OWN_FIELD","stat":"AP","amountPerOwnFieldCard":100}},
