@@ -37,4 +37,5 @@ r.test('腐葉の沃土: two discard cards become hidden food with turn cost sup
     r.assertEqual(card.runtimeFlags.foodCostSuppressedTurn, s.turnNumber);
   }
 });
-r.run();
+module.exports=r;
+if(require.main===module)r.runAll().then(result=>{if(result.failed)process.exitCode=1;});
