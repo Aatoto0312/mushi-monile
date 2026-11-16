@@ -103,14 +103,15 @@
       var def = global.getCardDefinition(inst.cardId);
       if (!def || def.type !== global.CardTypes.INSECT) return false;
       if (!def.isPlayable()) return false;
-      return player.availableCost >= global.getEffectiveCardCost(state, self.playerId, def);
+      return global.getAvailableSummonMethods(state,self.playerId,inst.instanceId).length > 0;
     });
 
     if (playableInsects.length > 0) {
       var chosenInsect = playableInsects[Math.floor(this.rng() * playableInsects.length)];
       return {
         type: 'SUMMON',
-        instanceId: chosenInsect.instanceId
+        instanceId: chosenInsect.instanceId,
+        alternative: !global.getAvailableSummonMethods(state,self.playerId,chosenInsect.instanceId).some(function(method){return method.type==='NORMAL';})
       };
     }
 
@@ -325,7 +326,7 @@
       }
       if(action.type==='CANCEL_CARD_PAYMENT'){global.cancelPendingEnhancementPayment(state,this.playerId);return true;}
       if (action.type === 'SUMMON') {
-        global.summonInsect(state, this.playerId, action.instanceId);
+        global.summonInsect(state, this.playerId, action.instanceId, {alternative:!!action.alternative});
         return true;
       }
       if (action.type === 'ACTIVATE_FIELD_ABILITY') {

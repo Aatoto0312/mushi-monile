@@ -563,6 +563,13 @@
       if(targetAttachments.length)createCardSelection(state,{playerId:continuation.playerId,options:targetAttachments.map(function(card){return card.instanceId;}),minSelections:0,maxSelections:1,candidateZones:['ATTACHMENT'],selectionPurpose:'TARGET_ATTACHMENT_OPERATION',continuation:{type:'TARGET_ATTACHMENT_OPERATION',targetPlayerId:continuation.targetPlayerId,targetInstanceId:continuation.targetInstanceId,fieldEntrySerial:continuation.fieldEntrySerial,operation:continuation.operation}});
       return;
     }
+    if(continuation.type==='FREE_CARD_AFTER_ATTACK'){
+      var freeHost=findInZone(state,continuation.playerId,ZONES.FIELD,continuation.sourceInstanceId);
+      if(state.phase===Phases.GAME_OVER||!freeHost||(freeHost.runtimeFlags.fieldEntrySerial||0)!==continuation.fieldEntrySerial)return;
+      var freeCards=state.player(continuation.playerId).hand.filter(function(card){var d=getCardDefinition(card.cardId);return d&&(d.type===CardTypes.SPELL||d.type===CardTypes.ENHANCEMENT)&&global.getFreeCardUseOptions&&global.getFreeCardUseOptions(state,continuation.playerId,card.instanceId,freeHost.instanceId).legal;});
+      if(freeCards.length)createCardSelection(state,{playerId:continuation.playerId,options:freeCards.map(function(card){return card.instanceId;}),minSelections:0,maxSelections:1,candidateZones:[ZONES.HAND],selectionPurpose:'FREE_CARD_AFTER_ATTACK',continuation:{type:'USE_FREE_CARD_AFTER_ATTACK',requiredTargetInstanceId:freeHost.instanceId,requiredTargetEntrySerial:continuation.fieldEntrySerial}});
+      return;
+    }
     if(continuation.type==='ATTACH_AFTER_ATTACK'){
       var attachmentAttacker=findInZone(state,continuation.playerId,ZONES.FIELD,continuation.sourceInstanceId);
       if(state.phase===Phases.GAME_OVER||!attachmentAttacker||(attachmentAttacker.runtimeFlags.fieldEntrySerial||0)!==continuation.fieldEntrySerial)return;
@@ -1060,7 +1067,7 @@
       if (alternative.type !== 'SACRIFICE_OWN_FIELD') { return; }
       var candidates = player.field.filter(function (card) {
         var candidateDef=!card.faceDown&&getCardDefinition(card.cardId);
-        return candidateDef && (!alternative.requiredNameSuffix || candidateDef.name.slice(-alternative.requiredNameSuffix.length)===alternative.requiredNameSuffix);
+        return candidateDef && (!alternative.requiresAttachment || (card.attachments || []).length > 0) && (!alternative.requiredNameSuffix || candidateDef.name.slice(-alternative.requiredNameSuffix.length)===alternative.requiredNameSuffix);
       });
       if (candidates.length >= alternative.count) {
         methods.push({ type: 'ALTERNATIVE', alternativeType: alternative.type, count: alternative.count });
@@ -1095,7 +1102,7 @@
     if (summonOptions.alternative && alternative && !summonOptions.selectedIds) {
       var summonCandidates = player.field.filter(function (card) {
         var candidateDef=!card.faceDown&&getCardDefinition(card.cardId);
-        return candidateDef && (!alternative.requiredNameSuffix || candidateDef.name.slice(-alternative.requiredNameSuffix.length)===alternative.requiredNameSuffix);
+        return candidateDef && (!alternative.requiresAttachment || (card.attachments || []).length > 0) && (!alternative.requiredNameSuffix || candidateDef.name.slice(-alternative.requiredNameSuffix.length)===alternative.requiredNameSuffix);
       });
       createCardSelection(state, { playerId: playerId, options: summonCandidates.map(function(c){return c.instanceId;}), exactSelections: alternative.count, candidateZones:[ZONES.FIELD], selectionPurpose:'ALTERNATIVE_SUMMON_COST', continuation:{type:'SUMMON_ALTERNATIVE',sourceInstanceId:handInstanceId} });
       return { pending:true };
@@ -1106,7 +1113,7 @@
     }
     if (summonOptions.alternative) {
       if (!alternative || !summonOptions.selectedIds || summonOptions.selectedIds.length !== alternative.count) { throw new Error('代替召喚コストが不正です'); }
-      summonOptions.selectedIds.forEach(function(id){ var target=findInZone(state,playerId,ZONES.FIELD,id),targetDef=target&&getCardDefinition(target.cardId); if(!target||target.faceDown||(alternative.requiredNameSuffix&&targetDef.name.slice(-alternative.requiredNameSuffix.length)!==alternative.requiredNameSuffix)) throw new Error('代替コスト対象が不正です'); });
+      summonOptions.selectedIds.forEach(function(id){ var target=findInZone(state,playerId,ZONES.FIELD,id),targetDef=target&&getCardDefinition(target.cardId); if(!target||target.faceDown||(alternative.requiresAttachment&&!(target.attachments||[]).length)||(alternative.requiredNameSuffix&&targetDef.name.slice(-alternative.requiredNameSuffix.length)!==alternative.requiredNameSuffix)) throw new Error('代替コスト対象が不正です'); });
       summonOptions.selectedIds.forEach(function(id){ destroyInsect(state,id,'SACRIFICE',handInstanceId,null,{skipTerritoryDraw:true}); });
     } else {
       player.availableCost -= summonCost;
@@ -1794,6 +1801,13 @@
       if(!ids.length)return finalizeTerritoryDraw(state,pending.playerId,drawnAttachment,ZONES.HAND);
       var drawnHost=findInZone(state,pending.playerId,ZONES.FIELD,ids[0]);if(!drawnHost||drawnHost.faceDown)throw new Error('表向きの自分の虫を選んでください');
       return attachExistingEnhancement(state,pending.playerId,drawnAttachment,drawnHost);
+    }
+    if(c.type==='USE_FREE_CARD_AFTER_ATTACK'){
+      if(!ids.length)return;
+      var freeRequired=findInZone(state,pending.playerId,ZONES.FIELD,c.requiredTargetInstanceId);
+      if(!freeRequired||(freeRequired.runtimeFlags.fieldEntrySerial||0)!==c.requiredTargetEntrySerial)throw new Error('攻撃した虫が場を離れています');
+      if(!global.getFreeCardUseOptions(state,pending.playerId,ids[0],c.requiredTargetInstanceId).legal)throw new Error('このカードを攻撃した虫に使用できません');
+      return global.beginFreeCardUse(state,{type:'FREE_CARD_USE',playerId:pending.playerId,sourceInstanceId:ids[0],requiredTargetInstanceId:c.requiredTargetInstanceId,requiredTargetEntrySerial:c.requiredTargetEntrySerial});
     }
     if (c.type === 'SUMMON_ALTERNATIVE') { return summonInsect(state, pending.playerId, c.sourceInstanceId, { alternative: true, selectedIds: ids }); }
     if (c.type === 'DIRECT_ATTACK_FOOD') {
@@ -3109,7 +3123,7 @@
     })) { return []; }
     if (attacker.zone !== ZONES.FIELD) { return []; }
     if (skillId) {
-      var requestedSkill = getCardDefinition(attacker.cardId).skills.find(function(skill) { return skill.id === skillId; });
+      var requestedSkill = getEffectiveAttackSkills(state,attacker).find(function(skill) { return skill.id === skillId; });
       if (requestedSkill && (requestedSkill.effects || []).some(function(effect) { return effect.type === 'COPY_ALLY_COLOR_BEFORE_ATTACK'; }) &&
           !state.player(holder.playerId).field.some(function(card) { return card !== attacker && !card.faceDown; })) { return []; }
     }
@@ -3161,7 +3175,7 @@
 
     var legalPool = forcing.length > 0 ? forcing : targetable;
 
-    var selectedRequirementSkill = skillId && (attackerDef.skills || []).filter(function (skill) { return skill.id === skillId; })[0];
+    var selectedRequirementSkill = skillId && getEffectiveAttackSkills(state,attacker).filter(function (skill) { return skill.id === skillId; })[0];
     var skillRequirements = selectedRequirementSkill && selectedRequirementSkill.requirements || [];
     if(skillRequirements.some(function(requirement){return requirement.type==='OPPONENT_VISIBLE_FIELD_COUNT'&&state.player(state.opponentOf(holder.playerId)).field.filter(function(card){return !card.faceDown;}).length<requirement.minimum;}))return [];
     if(skillRequirements.some(function(requirement){return requirement.type==='OWN_VISIBLE_DISCARD_COUNT'&&countVisibleDiscardCards(state,holder.playerId,{cardType:requirement.cardType})<requirement.minimum;}))return [];
@@ -3194,7 +3208,7 @@
     });
 
     // 段階4: legal insect が0体なら LEADER 直接攻撃
-    var selectedSkill = skillId && (getCardDefinition(attacker.cardId).skills || []).filter(function(skill) { return skill.id === skillId; })[0];
+    var selectedSkill = skillId && getEffectiveAttackSkills(state,attacker).filter(function(skill) { return skill.id === skillId; })[0];
     if (selectedSkill && selectedSkill.usageLimit === 'ONCE_PER_FIELD_STAY' && (attacker.usedSkills || []).indexOf(skillId) !== -1) { return []; }
     var multiTargetEffect = selectedSkill && (selectedSkill.effects || []).filter(function(effect) { return effect.type === 'ATTACK_MULTIPLE_TARGETS'; })[0];
     if (multiTargetEffect && targets.length < (multiTargetEffect.exactSelections || 2)) { return []; }
@@ -3268,6 +3282,8 @@
     var def=getCardDefinition(instance&&instance.cardId),own=(def&&def.skills||[]).filter(function(skill){return skill.timing==='ATTACK';});
     if(!instance||instance.faceDown||instance.runtimeFlags&&instance.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,instance)){return own;}
     var shares=(def.passiveAbilities||[]).some(function(ability){return (ability.effects||[]).some(function(effect){return effect.type==='SHARE_LINKED_ALLY_ATTACK_SKILLS';});});
+    var borrowing=(def.passiveAbilities||[]).map(function(ability){return ability.effects||[];}).reduce(function(a,b){return a.concat(b);},[]).filter(function(effect){return effect.type==='BORROW_ALLY_ATTACK_SKILLS';});
+    if(borrowing.length){var owner=findAnywhere(state,instance.instanceId),borrowed=own.slice(),borrowedIds={};if(!owner)return own;state.player(owner.playerId).field.forEach(function(ally){var donor=!ally.faceDown&&getCardDefinition(ally.cardId);if(!donor||ally===instance||!borrowing.some(function(grant){return donor.cost<=grant.maxPrintedCost&&(donor.tags||[]).some(function(tag){return tag.endsWith(grant.familySuffix);});}))return;(donor.skills||[]).filter(function(skill){return skill.timing==='ATTACK';}).forEach(function(skill){var id='borrow_'+donor.id+'_'+skill.id;if(borrowedIds[id])return;borrowedIds[id]=true;var copy=JSON.parse(JSON.stringify(skill));copy.id=id;copy.borrowedFromCardId=donor.id;copy.borrowedSkillId=skill.id;borrowed.push(copy);});});return borrowed;}
     if(!shares){return own;}
     var holder=findAnywhere(state,instance.instanceId),result=own.slice(),seen={};result.forEach(function(skill){seen[skill.name]=true;});
     if(!holder){return result;}
@@ -3546,6 +3562,7 @@
       if (skill.effects && skill.effects.length > 0) {
         skill.effects.forEach(function (effect) {
           if (!effect) { return; }
+          if(effect.type==='MARK_ATTACK_TARGET_DESTROY_ON_NEXT_DAMAGE'&&defender.zone===ZONES.FIELD){defender.runtimeFlags=defender.runtimeFlags||{};defender.runtimeFlags.destroyOnNextDamage=true;}
           if (effect.type === 'APPLY_STAT_MODIFIER' && effect.target !== 'SELF' && effect.target !== 'SOURCE' && targetType === 'INSECT') {
             var mod = {
               id: effect.id,
@@ -3713,6 +3730,7 @@
       if(effect.type==='TARGET_ATTACHMENT_AFTER_ATTACK'&&targetType==='INSECT'){
         resumeAfterSelection(state,{type:'TARGET_ATTACHMENT_AFTER_ATTACK',playerId:ap,targetPlayerId:opponentId,targetInstanceId:targetInstanceId,fieldEntrySerial:attackedTargetFieldSerial,operation:effect.operation});
       }
+      if(effect.type==='FREE_CARD_USE_AFTER_ATTACK'){resumeAfterSelection(state,{type:'FREE_CARD_AFTER_ATTACK',playerId:ap,sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial});}
       if(effect.type==='ATTACH_AFTER_ATTACK'){
         resumeAfterSelection(state,{type:'ATTACH_AFTER_ATTACK',playerId:ap,sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial,effect:effect.attachment});
       }
