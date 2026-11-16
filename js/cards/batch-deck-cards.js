@@ -1,0 +1,5 @@
+(function(root,factory){'use strict';var records=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,records);if(typeof module==='object'&&module.exports)module.exports=api;root.MushijingiBatchDeckCards=api;if(root.cardRegistry)api.register(root.cardRegistry);}(typeof globalThis!=='undefined'?globalThis:this,function(root,records){'use strict';
+var ids=['set6_063','set6_064'];
+function definitionFromRecord(record){var d=new root.CardDefinition(JSON.parse(JSON.stringify(record)));d.cardEffects=record.id==='set6_063'?[{type:'BOTTOM_TARGET_REVEAL_UNTIL_INSECT',requiresTarget:true,target:'OWN_FIELD_INSECT',requireDestinationOwner:true}]:[{type:'BOTTOM_SELF_DRAW_AND_USE',sameNameToFood:true}];d.implementationStatus=root.CardStatus.PLAYABLE;return d;}
+return {wiredIds:ids,playableIds:ids,definitionFromRecord:definitionFromRecord,register:function(registry){ids.forEach(function(id){registry.register(definitionFromRecord(records.find(function(r){return r.id===id;})));});}};
+}));
