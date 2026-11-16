@@ -1328,6 +1328,7 @@
       else if(value==='FOOD')moveCard(state,revealed.instanceId,ZONES.HAND,ZONES.FOOD,{playerId:playerId,faceDown:false});
       resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='FREE_ENHANCEMENT_COLOR'){
+      if(value==='CANCEL')return cancelPendingCardUse(state,playerId);
       state.pendingEffect=null;useEnhancement(state,playerId,continuation.sourceInstanceId,continuation.targetInstanceId,value);resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='ORDER_TRIGGER_CONTINUATIONS'){
       var orderedSteps=continuation.steps.slice(),chosenTrigger=orderedSteps.splice(Number(value),1)[0];
@@ -1555,7 +1556,7 @@
     if(c.type==='FREE_ENHANCEMENT_TARGET'){
       var freeDefinition=getCardDefinition(findInZone(state,pending.playerId,ZONES.HAND,c.sourceInstanceId).cardId),colors=[];
       (freeDefinition.enhancementEffects||[]).forEach(function(effect){if(effect.type==='COLOR_OVERRIDE'&&effect.colors)colors=effect.colors;});
-      if(colors.length){state.pendingEffect={type:'CHOICE_SELECTION',playerId:pending.playerId,controller:pending.playerId,selectionPurpose:'FREE_ENHANCEMENT_COLOR',options:colors.map(function(color){return {value:color,label:color};}),continuation:{type:'FREE_ENHANCEMENT_COLOR',sourceInstanceId:c.sourceInstanceId,targetInstanceId:ids[0]}};return;}
+      if(colors.length){state.pendingEffect={type:'CHOICE_SELECTION',playerId:pending.playerId,controller:pending.playerId,selectionPurpose:'FREE_ENHANCEMENT_COLOR',options:colors.map(function(color){return {value:color,label:color};}).concat([{value:'CANCEL',label:'使用を取り消す'}]),continuation:{type:'FREE_ENHANCEMENT_COLOR',sourceInstanceId:c.sourceInstanceId,targetInstanceId:ids[0]}};return;}
       return useEnhancement(state,pending.playerId,c.sourceInstanceId,ids[0]);
     }
     if(c.type==='REVIVE_TERRITORY_ENHANCEMENT'){
@@ -2780,6 +2781,12 @@
   function isDiscardRevivalBlocked(state){return state.playerOrder.some(function(pid){return state.player(pid).field.some(function(host){return !host.faceDown&&(host.attachments||[]).some(function(att){return (getCardDefinition(att.cardId).enhancementEffects||[]).some(function(e){return e.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS'&&e.scope==='BOTH_PLAYERS';});});});});}
   function getPendingBatchEnhancementStatus(state){
     var p=state.pendingEffect,c=p&&p.continuation;if(!p||!c)return null;
+    if(c.type==='FREE_ENHANCEMENT_TARGET'){
+      var grant=activeFreeCardUse(state,p.playerId,c.sourceInstanceId);
+      var freeOptions=grant&&getFreeCardUseOptions(state,p.playerId,c.sourceInstanceId,grant.requiredTargetInstanceId);
+      var freeTargets=freeOptions?freeOptions.targetIds.filter(function(id){return p.options.indexOf(id)!==-1;}):[];
+      return {cancelKind:'CARD_USE',candidateIds:freeTargets,canContinue:!!(grant&&freeOptions.legal&&freeTargets.length)};
+    }
     var source=findInZone(state,p.playerId,c.type==='REVIVE_TERRITORY_ENHANCEMENT'?ZONES.RESOLVING:ZONES.HAND,c.sourceInstanceId),def=source&&getCardDefinition(source.cardId);
     if(p.selectionPurpose==='ATTACH_DISCARD_TO_ATTACKED_HOST'&&c.type==='USE_SPELL'){
       var effect=def&&(def.cardEffects||[]).find(function(e){return e.type==='ATTACH_DISCARD_TO_ATTACKED_HOST';});
@@ -2943,7 +2950,7 @@
     var c=pending.continuation,source=findInZone(state,pending.playerId,ZONES.HAND,c.sourceInstanceId),definition=source&&getCardDefinition(source.cardId),ids=state.player(pending.playerId).food.filter(function(card){return !card.faceDown&&(!pending.exactSelections||pending.options.indexOf(card.instanceId)!==-1);}).map(function(card){return card.instanceId;}),cost=definition&&getEffectiveCardCost(state,pending.playerId,definition,{targetInstanceId:c.targetInstanceId,foodPaymentCount:pending.type==='CARD_SELECTION'?pending.exactSelections:undefined});
     return {candidateIds:ids,canContinue:!!(source&&definition&&getEnhancementTargetCandidates(state,pending.playerId,source.instanceId).some(function(card){return card.instanceId===c.targetInstanceId;})&&ids.length>=(pending.exactSelections||0)&&cost<=state.player(pending.playerId).availableCost)};
   }
-  function cancelPendingEnhancementPayment(state,playerId){var pending=state.pendingEffect;if(!pending||pending.playerId!==playerId||pending.selectionPurpose!=='ENHANCEMENT_FOOD_PAYMENT')throw new Error('取り消せる支払いではありません');state.pendingEffect=null;resumeAfterSelection(state,pending.afterResolution);return true;}
+  function cancelPendingEnhancementPayment(state,playerId){var pending=state.pendingEffect;if(!pending||pending.playerId!==playerId||pending.selectionPurpose!=='ENHANCEMENT_FOOD_PAYMENT')throw new Error('取り消せる支払いではありません');state.pendingEffect=null;if(state.freeCardUse&&state.freeCardUse.sourceInstanceId===pending.continuation.sourceInstanceId)state.freeCardUse=null;resumeAfterSelection(state,pending.afterResolution);return true;}
   global.getPendingEnhancementPaymentStatus=getPendingEnhancementPaymentStatus;
   global.cancelPendingEnhancementPayment=cancelPendingEnhancementPayment;
   function useEnhancement(state, playerId, handInstanceId, targetInstanceId, chosenColor, enhancementOptions) {
@@ -4579,13 +4586,19 @@ function endTurn(state) {
   // Paid/resolving effects and mandatory triggered selections are not rolled back.
   function canCancelPendingCardUse(state,playerId){
     var pending=state.pendingEffect;
+    var batch=getPendingBatchEnhancementStatus(state);
+    if(pending&&pending.playerId===playerId&&batch&&batch.cancelKind==='TERRITORY_ENHANCEMENT')return true;
     return !!(pending&&pending.playerId===playerId&&
-      (pending.type==='CARD_SELECTION'&&pending.continuation&&['USE_SPELL','USE_ENHANCEMENT'].indexOf(pending.continuation.type)!==-1||pending.type==='SPELL_TARGET_SELECTION')&&
+      (pending.type==='CARD_SELECTION'&&pending.continuation&&['USE_SPELL','USE_ENHANCEMENT','FREE_ENHANCEMENT_TARGET','SUMMON_ALTERNATIVE'].indexOf(pending.continuation.type)!==-1||pending.type==='SPELL_TARGET_SELECTION'||pending.type==='CHOICE_SELECTION'&&pending.continuation&&pending.continuation.type==='FREE_ENHANCEMENT_COLOR')&&
       findInZone(state,playerId,ZONES.HAND,pending.sourceInstanceId||(pending.continuation&&pending.continuation.sourceInstanceId)));
   }
   function cancelPendingCardUse(state,playerId){
     if(!canCancelPendingCardUse(state,playerId))throw new Error('取り消せるカード選択ではありません');
-    var pending=state.pendingEffect;state.pendingEffect=null;
+    var pending=state.pendingEffect,batch=getPendingBatchEnhancementStatus(state);
+    if(batch&&batch.cancelKind==='TERRITORY_ENHANCEMENT')return cancelPendingBatchTerritoryEnhancement(state,playerId);
+    var sourceId=pending.sourceInstanceId||(pending.continuation&&pending.continuation.sourceInstanceId);
+    state.pendingEffect=null;
+    if(state.freeCardUse&&state.freeCardUse.sourceInstanceId===sourceId)state.freeCardUse=null;
     resumeAfterSelection(state,pending.afterResolution);return true;
   }
   global.canCancelPendingCardUse=canCancelPendingCardUse;

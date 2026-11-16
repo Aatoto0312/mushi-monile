@@ -15570,7 +15570,7 @@
   {
     "id": "set7_064",
     "officialNumber": "64/64",
-    "name": "拝虫の豪新剣",
+    "name": "拝虫の豪斬剣",
     "set": "BOOSTER_SET_7",
     "rarity": "LR",
     "type": "SPELL",

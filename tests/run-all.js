@@ -236,6 +236,11 @@ function requireAll() {
     ,require('./adversarial-set2-set4-audit.test.js')
     ,require('./set4-independent-audit-fixes.test.js')
     ,require('./next-wave-zone-spells.test.js')
+    ,require('./batch-deck.test.js')
+    ,require('./batch-enhancements.test.js')
+    ,require('./batch-insects.test.js')
+    ,require('./batch-host-eligibility.test.js')
+    ,require('./batch-soil-boundaries.test.js')
   ];
 }
 

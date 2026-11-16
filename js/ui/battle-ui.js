@@ -1023,7 +1023,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   BattleUI.prototype._syncAttachmentPicker = function (pending) {
     var picker=document.getElementById('attachment-picker');
     var attackCostStatus=global.getPendingAttackCostStatus&&global.getPendingAttackCostStatus(this.state);
-    var active=pending&&pending.type==='CARD_SELECTION'&&(pending.candidateZones||[]).indexOf('ATTACHMENT')!==-1&&(!this.cpuMode||pending.playerId==='P1')&&(!attackCostStatus||attackCostStatus.canContinue);
+    var active=pending&&pending.type==='CARD_SELECTION'&&((pending.candidateZones||[]).indexOf('ATTACHMENT')!==-1||['ATTACH_DISCARD_TO_ATTACKED_HOST','FREE_CARD_AFTER_ATTACK','FREE_ENHANCEMENT_TARGET','ALTERNATIVE_SUMMON_COST','SUMMON_ATTACHED_FROM_HAND','REVIVE_ATTACHED_FROM_TERRITORY'].indexOf(pending.selectionPurpose)!==-1)&&(!this.cpuMode||pending.playerId==='P1')&&(!attackCostStatus||attackCostStatus.canContinue);
     if(!active){if(picker){if(picker.open)picker.close();picker.innerHTML='';}return;}
     if(!picker){
       picker=document.createElement('dialog');picker.id='attachment-picker';picker.className='compact-dialog';
@@ -1502,7 +1502,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     var st = this.actionState;
     var def = CardUI.getDef(enhancement);
     if (!def) return;
-    if ((def.enhancementEffects || []).some(function(effect) { return effect.type === 'SUMMON_ATTACHED_FROM_HAND'; })) {
+    if ((def.enhancementEffects || []).some(function(effect) { return effect.type === 'SUMMON_ATTACHED_FROM_HAND'||effect.type==='SUMMON_ATTACHED_FROM_DISCARD'; })) {
       try { global.useEnhancement(this.state, playerId, enhancement.instanceId); this.render(); }
       catch (error) { showUserError(error); }
       return;
@@ -1636,7 +1636,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
 
   BattleUI.prototype.beginAttackTargetSelection = function (playerId, attacker) {
     var def = getCardDefinition(attacker.cardId);
-    var selectedSkill = (def.skills || []).filter(function (skill) { return skill.id === this.actionState.skillId; }, this)[0];
+    var selectedSkill = (global.getEffectiveAttackSkills?global.getEffectiveAttackSkills(this.state,attacker):def.skills||[]).filter(function (skill) { return skill.id === this.actionState.skillId; }, this)[0];
     if (selectedSkill && (selectedSkill.effects || []).some(function (effect) { return effect.type === 'ATTACK_MULTIPLE_TARGETS'; })) {
       try {
         global.beginMultiTargetAttackSelection(this.state, attacker.instanceId, selectedSkill.id);
@@ -1688,7 +1688,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     var skillId = st.skillId;
     var holder = attackerId ? findAnywhere(this.state, attackerId) : null;
     var def = holder ? CardUI.getDef(holder.instance) : null;
-    var skill = (def && def.skills || []).filter(function (candidate) {
+    var skill = (holder&&global.getEffectiveAttackSkills?global.getEffectiveAttackSkills(this.state,holder.instance):def&&def.skills||[]).filter(function (candidate) {
       return candidate.id === skillId && candidate.timing === 'ATTACK';
     })[0];
     if (skill && global.skillRequiresSacrifice(skill)) {
