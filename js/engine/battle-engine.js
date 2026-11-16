@@ -717,7 +717,7 @@
       var source = findAnywhere(state, attackContext.attackSourceInstanceId);
       if (!source || source.zone !== ZONES.FIELD) { return; }
       var sourceDefinition = getCardDefinition(source.instance.cardId);
-      var attackSkill = (sourceDefinition.skills || []).filter(function(skill) { return skill.id === attackContext.skillId; })[0];
+      var attackSkill = getEffectiveAttackSkills(state,source.instance).filter(function(skill) { return skill.id === attackContext.skillId; })[0];
       (attackSkill && attackSkill.effects || []).forEach(function(effect) {
         if (effect.type === 'GROW_ON_TERRITORY') {
           ['HP', 'AP'].forEach(function(stat) {
@@ -1156,6 +1156,16 @@
   function getPendingEntrySelectionConstraints(state,pending){
     var c=pending&&pending.continuation;
     if(!c)return null;
+    if(c.type==='USE_FREE_CARD_AFTER_ATTACK'){
+      var currentFreeHost=findInZone(state,pending.playerId,ZONES.FIELD,c.requiredTargetInstanceId);
+      var currentFreeIds=currentFreeHost&&(currentFreeHost.runtimeFlags.fieldEntrySerial||0)===c.requiredTargetEntrySerial?pending.options.filter(function(id){return global.getFreeCardUseOptions(state,pending.playerId,id,c.requiredTargetInstanceId).legal;}):[];
+      return {options:currentFreeIds,atMostOneGroups:[]};
+    }
+    if(c.type==='SUMMON_ALTERNATIVE'){
+      var summonHeld=findInZone(state,pending.playerId,ZONES.HAND,c.sourceInstanceId),summonDef=summonHeld&&getCardDefinition(summonHeld.cardId),alt=summonDef&&(summonDef.summonAlternatives||[])[0];
+      var currentSacrifices=alt?state.player(pending.playerId).field.filter(function(card){var d=!card.faceDown&&getCardDefinition(card.cardId);return d&&pending.options.indexOf(card.instanceId)!==-1&&(!alt.requiresAttachment||(card.attachments||[]).length)&&(!alt.requiredNameSuffix||d.name.endsWith(alt.requiredNameSuffix));}).map(function(card){return card.instanceId;}):[];
+      return {options:currentSacrifices,atMostOneGroups:[],selectionBounds:alt&&currentSacrifices.length>=alt.count?null:{minSelections:0,maxSelections:0,exactSelections:0}};
+    }
     if(c.type==='DEPLOY_ATTACK_MATCHING_FORM_SELECTED'){
       var formIds=state.player(c.playerId).discard.filter(function(card){var def=!card.faceDown&&getCardDefinition(card.cardId);return pending.options.indexOf(card.instanceId)!==-1&&def&&def.type===CardTypes.INSECT&&String(def.name).normalize('NFKC')===c.adultName;}).map(function(card){return card.instanceId;});
       return {options:formIds,atMostOneGroups:[],selectionBounds:formIds.length?null:{minSelections:0,maxSelections:0,exactSelections:0}};
@@ -1809,7 +1819,7 @@
       if(!global.getFreeCardUseOptions(state,pending.playerId,ids[0],c.requiredTargetInstanceId).legal)throw new Error('このカードを攻撃した虫に使用できません');
       return global.beginFreeCardUse(state,{type:'FREE_CARD_USE',playerId:pending.playerId,sourceInstanceId:ids[0],requiredTargetInstanceId:c.requiredTargetInstanceId,requiredTargetEntrySerial:c.requiredTargetEntrySerial});
     }
-    if (c.type === 'SUMMON_ALTERNATIVE') { return summonInsect(state, pending.playerId, c.sourceInstanceId, { alternative: true, selectedIds: ids }); }
+    if (c.type === 'SUMMON_ALTERNATIVE') { if(!ids.length)return; return summonInsect(state, pending.playerId, c.sourceInstanceId, { alternative: true, selectedIds: ids }); }
     if (c.type === 'DIRECT_ATTACK_FOOD') {
       moveCard(state, ids[0], ZONES.FOOD, ZONES.HAND, { playerId: pending.playerId });
       if (c.territoryPlayerId && state.player(c.territoryPlayerId).territory.length) { triggerTerritoryDrawSelection(state, c.territoryPlayerId, c.territoryContext); }
