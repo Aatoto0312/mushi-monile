@@ -241,6 +241,8 @@ function requireAll() {
     ,require('./batch-insects.test.js')
     ,require('./batch-host-eligibility.test.js')
     ,require('./batch-soil-boundaries.test.js')
+    ,require('./batch-free-use-integration.test.js')
+    ,require('./batch-mapping-integrity.test.js')
   ];
 }
 

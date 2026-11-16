@@ -116,13 +116,15 @@ runner.test('Human pending UI explains alternative summon selection progress', f
   global.summonInsect(f.state, f.playerId, f.riock.instanceId, { alternative: true });
   var status = { textContent: '' };
   var oldDocument = global.document;
-  global.document = { getElementById: function (id) { return id === 'status-text' ? status : null; } };
+  var elements = {};
+  function element() { return { children: [], dataset: {}, classList: { add: function () {} }, setAttribute: function () {}, addEventListener: function () {}, appendChild: function (child) { this.children.push(child); if (child.id) elements[child.id] = child; }, showModal: function () { this.open = true; } }; }
+  global.document = { getElementById: function (id) { return id === 'status-text' ? status : elements[id] || null; }, createElement: element, body: element() };
   var ui = Object.create(global.BattleUI.prototype);
   ui.state = f.state;
   ui.cpuMode = false;
-  ui.renderPendingEffect(f.state);
-  global.document = oldDocument;
+  try { ui.renderPendingEffect(f.state); } finally { global.document = oldDocument; }
   runner.assertEqual(status.textContent, '代替召喚のため、自分の虫を2体選んでください（0/2）', 'selection guidance');
+  runner.assert(elements['attachment-picker'].open, 'selection dialog is available');
 });
 
 runner.test('Summon method query enforces phase, hand, owner and normal-card rules', function () {

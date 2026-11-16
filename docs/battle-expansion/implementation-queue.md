@@ -1,3 +1,8 @@
+# Resume: requested batch513 /565 — 2026-11-17
+- Branch cards/chatgpt-batch-20261113; integrated8 of requested9. SET5/6/7/8=49/53/57/45; PARTIAL3 + unregistered49=52 remaining. Full2202/shared80/server226 allgreen; Chromium24 actual card flows green. Linux Chromium/WebKit/Pages CI pending. See chatgpt-batch-20261113.md final section.
+- Soil5-57 remains PARTIAL; original test retained1 failure, discard-owner scope NEEDS_RULING. Helper prototype is unwired and excluded from Pages. Do not count its passing provisional tests as certification.
+- No next-card work until user reviews requested9. No main merge/publication/API/ngrok/auth changes. Prior protected failures/cards/worktrees remain isolated. Draft PR and CI completion are the next steps.
+
 # Resume: verified505 /565 — 2026-11-13
 - Product checkpoint10963b4, branch cards/next-wave-20261113; draft PR16. Added SET6-58怒濤の黒山 / SET7-40シャチホコガ（幼虫） / SET8-37クロカタゾウムシ / SET8-61断界の虫送り. SET5/6/7/8=48/50/55/43; remaining60 (PARTIAL3 + unregistered57).
 - Unit13/full2145/shared80/server214: all0 failures. CI Chromium/WebKit18/18 (24 new card flows across new CPU, legacy CPU, new online), Toolbox/spectator/reconnect/result regressions passed. Exact95 public assets SHA256/contract/Jekyll gate passed at10963b4. Details and run URLs next-wave-20261113.md.

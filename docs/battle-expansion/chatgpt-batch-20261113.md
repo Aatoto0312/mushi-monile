@@ -46,3 +46,19 @@ Plan: (1) isolated deck reveal/free-use continuations for6-63/64; (2) borrowed s
 Root regression: host color constraint must use current getEffectiveColor, not printed color; larva/hidden/unrestricted cases tested. Add safe uncommitted-card cancellation through owner-only Engine capabilities and both UI renderers; paid mandatory effects cannot be undone. The helper prototype remains unwired and is not certification evidence.
 
 Soil5-57: requested real-card test still fails because canonical card is PARTIAL. Current official SET5 QA has no match resolving source-owner ambiguity; test-only copy exercises provisional own-discard movement, exact2, hidden/opponent rejection, payment, cancellation, JSON, duplicate prevention without promoting the actual card. Keep original real-card assertion intact until a source confirms the scope.
+
+## Requested nine-card verification checkpoint — 2026-11-17
+
+Candidate: 513/565 PLAYABLE (+8 against inherited505); PARTIAL3, not registered49. SET5/6/7/8=49/53/57/45. Existing public main remains359fb61 (501); no release, API or tunnel operations.
+
+Completed: set6_064蠱毒の輪廻 (public reveal, mandatory insect entry, legal free-use/food/hand); set7_004トビズムカデUR (ordinary900 and next-damage destruction); set8_003トゲアクマツユムシ (attached-insect alternative sacrifice); set6_001オオカレエダカマキリ (optional after-attack free use on source); set6_063贄虫の転生 (own-owned insect to bottom and reveal-until-insect); set5_054黒銀蜘蛛の糸 (discard revival with entry-time suppression and territory option); set7_064拝虫の豪斬剣 (legal discard attachment, reattack, end-turn destruction); set8_013アリヅカコオロギ (borrow ordinary printed skills from eligible visible own ants).
+
+Held: set5_057腐葉の沃土 remains PARTIAL. Printed text does not explicitly settle whose discard can be selected. Official SET5 Q&A reviewed without finding a card-specific answer. Original Engine test is retained unchanged in expectation and fails1 with "このカードはまだ使用可能になっていません". Prototype helper tests do not establish product support. No speculative certification.
+
+Shared changes: serialized free-use continuations and owner-only precommit cancellation; current effective-color attachment eligibility; public reveal-only log; shared entry/leave/expiry attachment hooks; borrowed-skill UI lookup; CPU/current-candidate revalidation. No card-ID switch added to Engine. Unwired proposed helper excluded from Pages assets.
+
+Local verification: full2202/0, shared80/0, server226/0. Requested card units deck20 + insects14 + enhancements11; integration/free-use2, host3, mapping3 included in full. Chromium actual clicks passed3 groups (newCPU, legacyCPU, online), each8 cards=24 flows; server requested tests8/8 include observer privacy, pending disconnect/resume, duplicate rejection and authoritative effects. Soil provisional mechanics4/4 are not certification. Standalone proposed helper passes, but remains unwired. Original soil test separately1 failure. iPhone physical device untested. Final Linux WebKit/Chromium/Pages CI result pending at this checkpoint.
+
+Candidate builder emitted99 manifest entries (98 public assets plus_config.yml), new contract regenerated from trusted branch sources. Historical protected Engine golden retained through an exact reversible reviewed delta; no behavioral test removed/skipped. New cache key requested-batch-513-v1. Actual Pages artifact validation is CI-gated, not inferred from configuration.
+
+Official Q&A: https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/ and https://mushijingi.jimdofree.com/q-a-よくある質問-1/第７弾のカードについて/ . Printed catalog/scans and individual tests supply the remaining evidence. Main merge/publication requires user approval and paired API/client contract rollout.
