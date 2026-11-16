@@ -20,6 +20,12 @@
       return null;
     }
 
+    var batchEnhancementStatus=global.getPendingBatchEnhancementStatus&&global.getPendingBatchEnhancementStatus(state);
+    if(batchEnhancementStatus){
+      if(!batchEnhancementStatus.canContinue)return {type:'CANCEL_CARD_USE'};
+      var batchCombination=(batchEnhancementStatus.allowedCombinations||[])[0];
+      return {type:'RESOLVE_CARD_SELECTION',instanceIds:batchCombination?batchCombination.slice():batchEnhancementStatus.candidateIds.slice(0,pending.exactSelections||pending.maxSelections||1)};
+    }
     var paymentStatus=global.getPendingEnhancementPaymentStatus&&global.getPendingEnhancementPaymentStatus(state);
     if(paymentStatus&&!paymentStatus.canContinue)return {type:'CANCEL_CARD_PAYMENT'};
     if(paymentStatus&&pending.type==='CARD_SELECTION')return {type:'RESOLVE_CARD_SELECTION',instanceIds:paymentStatus.candidateIds.slice(0,pending.exactSelections)};
@@ -306,6 +312,10 @@
       }
       if (action.type === 'RESOLVE_CARD_SELECTION') {
         global.resolveCardSelection(state,this.playerId,action.instanceIds,true);
+        return true;
+      }
+      if (action.type === 'CANCEL_CARD_USE') {
+        global.cancelPendingCardUse(state,this.playerId);
         return true;
       }
       if (action.type === 'CANCEL_PENDING_ATTACK_COST') {

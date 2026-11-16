@@ -12,9 +12,10 @@ function definitionFromRecord(record){
  if(d.id==='set8_003')d.summonAlternatives=[{type:'SACRIFICE_OWN_FIELD',count:1,requiresAttachment:true}];
  if(d.id==='set8_013')d.passiveAbilities[0].effects=[{type:'BORROW_ALLY_ATTACK_SKILLS',familySuffix:'アリ科',maxPrintedCost:2}];
  if(d.id==='set6_001'){d.skills[1].usageLimit='ONCE_PER_FIELD_STAY';d.skills[1].effects=[{type:'FREE_CARD_USE_AFTER_ATTACK',from:'HAND',cardTypes:['SPELL','ENHANCEMENT']}];}
- d.implementationStatus=d.id==='set6_001'?root.CardStatus.PARTIAL:root.CardStatus.PLAYABLE;
+ d.implementationStatus=root.CardStatus.PLAYABLE;
+ d.implementationNotes=['Printed text mapped to generic Engine effects; focused batch-insects tests verify combat, payment, borrowing and serialized postattack choices.'];
  return d;
 }
-var api={wiredIds:ids,playableIds:ids.filter(function(id){return id!=='set6_001';}),definitionFromRecord:definitionFromRecord,register:function(registry){ids.forEach(function(id){registry.register(definitionFromRecord(records.find(function(r){return r.id===id;})));});}};
+var api={wiredIds:ids,playableIds:ids.slice(),definitionFromRecord:definitionFromRecord,register:function(registry){ids.forEach(function(id){registry.register(definitionFromRecord(records.find(function(r){return r.id===id;})));});}};
 root.MushijingiBatchInsectCards=api;if(root.cardRegistry)api.register(root.cardRegistry);if(typeof module==='object'&&module.exports)module.exports=api;
 })(globalThis);
