@@ -2927,7 +2927,7 @@
     if (target.faceDown) {
       throw new Error('裏向きの虫には強化カードを装着できません');
     }
-    if(def.foodPaymentDiscount&&!activeFreeCardUse(state,playerId,handInstanceId)&&!Array.isArray(paymentIds)){
+    if(def.foodPaymentDiscount&&!Array.isArray(paymentIds)){
       var paymentOptions=[],countLimit=player.food.filter(function(card){return !card.faceDown;}).length;
       for(var count=0;count<=countLimit;count++)if(getEffectiveCardCost(state,playerId,def,{targetInstanceId:targetInstanceId,foodPaymentCount:count})<=player.availableCost)paymentOptions.push({value:String(count),label:'エサ'+count+'枚を裏返して支払う'});
       paymentOptions.push({value:'CANCEL',label:'支払いを取り消す'});
