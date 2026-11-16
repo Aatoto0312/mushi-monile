@@ -2592,7 +2592,7 @@
   }
 
   // ---- 強化カード使用 ----
-  function matchesAttachmentHostDefinition(attachmentDef,host){var hostDef=getCardDefinition(host.cardId);if(!attachmentDef||!hostDef)return false;if(attachmentDef.attachmentHostColor&&String(hostDef.color||'').toUpperCase()!==String(attachmentDef.attachmentHostColor).toUpperCase())return false;if(attachmentDef.requiresLarvaHost&&!/[（(]幼虫[）)]/.test(String(hostDef.name||'')))return false;if(attachmentDef.requiresEffectlessHostSkills&&(hostDef.skills||[]).some(function(skill){return !!String(skill.effectText||'').trim();}))return false;var suffixes=attachmentDef.attachmentHostFamilySuffixes||(attachmentDef.attachmentHostFamilySuffix?[attachmentDef.attachmentHostFamilySuffix]:null);return !suffixes||(hostDef.tags||[]).some(function(tag){return suffixes.some(function(suffix){return tag.endsWith(suffix);});});}
+  function matchesAttachmentHostDefinition(attachmentDef,host){var hostDef=getCardDefinition(host.cardId);if(!attachmentDef||!hostDef||hostDef.type!==CardTypes.INSECT)return false;if(attachmentDef.attachmentHostColor&&String(getEffectiveColor(host)||'').toUpperCase()!==String(attachmentDef.attachmentHostColor).toUpperCase())return false;if(attachmentDef.requiresLarvaHost&&!/[（(]幼虫[）)]/.test(String(hostDef.name||'')))return false;if(attachmentDef.requiresEffectlessHostSkills&&(hostDef.skills||[]).some(function(skill){return !!String(skill.effectText||'').trim();}))return false;var suffixes=attachmentDef.attachmentHostFamilySuffixes||(attachmentDef.attachmentHostFamilySuffix?[attachmentDef.attachmentHostFamilySuffix]:null);return !suffixes||(hostDef.tags||[]).some(function(tag){return suffixes.some(function(suffix){return tag.endsWith(suffix);});});}
   function activeAttachmentLimit(state,host){var def=getCardDefinition(host.cardId);if(def.attachmentLimitRequiresTrait&&(areInsectKeywordSkillsSuppressed(state,host)||(host.runtimeFlags&&host.runtimeFlags.suppressKeywordSkills)))return null;return def.attachmentLimit;}
 
   function getEnhancementTargetCandidates(state, playerId, sourceId) {
@@ -4360,6 +4360,21 @@ function endTurn(state) {
   global.drawTerritoryCard = drawTerritoryCard;
   global.checkTerritoryDrawTrigger = checkTerritoryDrawTrigger;
   global.finalizeTerritoryDraw = finalizeTerritoryDraw;
+  // Only a hand card's not-yet-committed target selection can be cancelled.
+  // Paid/resolving effects and mandatory triggered selections are not rolled back.
+  function canCancelPendingCardUse(state,playerId){
+    var pending=state.pendingEffect;
+    return !!(pending&&pending.playerId===playerId&&
+      (pending.type==='CARD_SELECTION'&&pending.continuation&&['USE_SPELL','USE_ENHANCEMENT'].indexOf(pending.continuation.type)!==-1||pending.type==='SPELL_TARGET_SELECTION')&&
+      findInZone(state,playerId,ZONES.HAND,pending.sourceInstanceId||(pending.continuation&&pending.continuation.sourceInstanceId)));
+  }
+  function cancelPendingCardUse(state,playerId){
+    if(!canCancelPendingCardUse(state,playerId))throw new Error('取り消せるカード選択ではありません');
+    var pending=state.pendingEffect;state.pendingEffect=null;
+    resumeAfterSelection(state,pending.afterResolution);return true;
+  }
+  global.canCancelPendingCardUse=canCancelPendingCardUse;
+  global.cancelPendingCardUse=cancelPendingCardUse;
   global.resolvePendingTerritoryChoice = resolvePendingTerritoryChoice;
   global.getPendingEffect = getPendingEffect;
   global.hasEffectiveSkill = hasEffectiveSkill;

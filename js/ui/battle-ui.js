@@ -94,6 +94,8 @@
     });
     // 攻撃キャンセルボタン
     document.getElementById('btn-cancel-attack').addEventListener('click', function () {
+      var pending=self.state&&self.state.pendingEffect;
+      if(pending&&global.canCancelPendingCardUse&&global.canCancelPendingCardUse(self.state,pending.playerId)&&(!self.cpuMode||pending.playerId==='P1')){try{global.cancelPendingCardUse(self.state,pending.playerId);self._resetActionState();self.render();}catch(error){showUserError(error);}return;}
       self.cancelAttack();
     });
 
@@ -925,7 +927,8 @@
       hasLeader = st.legalTargets.some(function (t) { return t.targetType === 'LEADER'; });
     }
     btnDirect.style.display = hasLeader ? 'block' : 'none';
-    btnCancel.style.display = isAttackMode ? 'block' : 'none';
+    var pending=getPendingEffect(this.state);var cancellable=pending&&global.canCancelPendingCardUse&&global.canCancelPendingCardUse(this.state,pending.playerId)&&(!this.cpuMode||pending.playerId==='P1');
+    btnCancel.style.display = isAttackMode||cancellable ? 'block' : 'none';
   };
 
 BattleUI.prototype.renderPendingEffect = function (state) {
@@ -1040,7 +1043,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
       button.addEventListener('click',function(){if(self.state.pendingEffect!==pending)return;try{global.selectPendingCard(self.state,pending.playerId,id);self.render();var refreshed=document.querySelector('#attachment-picker [data-instance-id="'+id+'"]');if(refreshed)refreshed.focus();}catch(error){showUserError(error);}});grid.appendChild(button);
     });
     picker.appendChild(grid);var confirm=document.createElement('button');confirm.type='button';confirm.className='action-btn';confirm.textContent='選択を決定';confirm.disabled=(pending.selectedIds||[]).length<pending.minSelections;
-    confirm.addEventListener('click',function(){if(self.state.pendingEffect!==pending)return;try{global.resolveCardSelection(self.state,pending.playerId,pending.selectedIds||[],true);self.render();}catch(error){showUserError(error);}});picker.appendChild(confirm);
+    confirm.addEventListener('click',function(){if(self.state.pendingEffect!==pending)return;try{global.resolveCardSelection(self.state,pending.playerId,pending.selectedIds||[],true);self.render();}catch(error){showUserError(error);}});picker.appendChild(confirm);if(global.canCancelPendingCardUse&&global.canCancelPendingCardUse(this.state,pending.playerId)){var cancel=document.createElement('button');cancel.type='button';cancel.textContent='使用を取り消す';cancel.onclick=function(){try{global.cancelPendingCardUse(self.state,pending.playerId);self.render();}catch(error){showUserError(error);}};picker.appendChild(cancel);}
     if(!picker.open&&typeof picker.showModal==='function')picker.showModal();
   };
 

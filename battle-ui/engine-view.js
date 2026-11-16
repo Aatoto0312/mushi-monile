@@ -19,6 +19,7 @@ function run(r,s,op,ids=[]){const c=r.context,p=op.playerId;
     case 'TERRITORY':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveTerritoryDrawSelection(s,p,ids[0]);
     case 'SPELL_TARGET':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveSpellTargetSelection(s,p,ids[0]);
     case 'DISCARD':if(ids.length!==1)throw Error('SELECTION_INVALID');return c.resolveDiscardInsectSelection(s,p,ids[0]);
+    case 'CANCEL_CARD_USE':return c.cancelPendingCardUse(s,p);
     case 'CANCEL_CARD_PAYMENT':return c.cancelPendingEnhancementPayment(s,p);
     case 'CANCEL_ATTACK_COST':return c.cancelPendingAttackCost(s,p);
     default:throw Error('ACTION_INVALID');
@@ -98,10 +99,11 @@ function prepareView(r,s,viewer){
       const bounds=entryConstraints?.selectionBounds||pending;
       const max=pending.type==='CARD_SELECTION'?bounds.maxSelections:1,min=pending.type==='CARD_SELECTION'?bounds.minSelections:1;
       const options=paymentStatus?paymentStatus.candidateIds:costStatus?costStatus.candidateIds:entryConstraints?entryConstraints.options:fieldCandidates||pending.options||[];
-      if(options.length<min){view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
+      if(options.length<min){if(c.canCancelPendingCardUse&&c.canCancelPendingCardUse(s,viewer))add({kind:'CANCEL_CARD_USE'},'カードの使用を取り消す');else view.blockedReason='SELECTION_UNAVAILABLE';return {view,capabilities};}
       const id=add({kind},'選択を決定',null,null,options,false);
       view.decision={actionId:id,min,max,exact:bounds.exactSelections??(kind==='CARDS'?null:1),ordered:true,firstOptions:pending.firstSelectionOptions?.filter(id=>options.includes(id)).map(ref)||null,
         options:options.map(id=>locate(id,!!pending.hiddenSelection,!!pending.continuation?.effect?.inspectOwnHidden)),atMostOneGroups:(entryConstraints?entryConstraints.atMostOneGroups:pending.selectionAtMostOneGroups||[]).map(group=>group.map(ref)),groups:(pending.selectionGroups||[]).map(group=>group.map(ref)),partitions:(pending.selectionPartitions||[]).map(group=>group.map(ref)),combinations:(pending.allowedCombinations||[]).map(group=>group.map(ref))};
+      if(c.canCancelPendingCardUse&&c.canCancelPendingCardUse(s,viewer))view.decision.cancelActionId=add({kind:'CANCEL_CARD_USE'},'カードの使用を取り消す');
       if(pending.hiddenSelection)view.decision.options.sort((a,b)=>a.ref.localeCompare(b.ref));
     }
     if(!view.actions.length)view.blockedReason='ENGINE_NO_LEGAL_COMMAND';

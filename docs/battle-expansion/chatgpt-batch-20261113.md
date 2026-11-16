@@ -36,3 +36,13 @@ Prepare a **single integration and regression pass** rather than repeating full 
 
 ## Division of labor
 ChatGPT prepares effect specifications and proposed code changes. Codex integrates, runs actual environment tests, fixes defects and creates draft PR. This file is the initial handoff and **does not yet contain implemented product code**.
+
+## Requested nine-card integration — 2026-11-16
+
+Base5acc064 preserves ChatGPT changes; initial load reproduced duplicate set5_057 registration and invalid test runner r.run(). Repaired in7d5b710, keeping one canonical PARTIAL definition.
+
+Plan: (1) isolated deck reveal/free-use continuations for6-63/64; (2) borrowed skills, attached sacrifice and next-damage marker for7-04/8-03/6-01/8-13; (3) revival/suppression/territory attachment and discard-attachment reattack for5-54/7-64; (4) integrate once, current-candidate/cancel/CPU/WSS/JSON tests, full/shared/server and Chromium/WebKit old/new UI, exact Pages output. No main/public operations.
+
+Root regression: host color constraint must use current getEffectiveColor, not printed color; larva/hidden/unrestricted cases tested. Add safe uncommitted-card cancellation through owner-only Engine capabilities and both UI renderers; paid mandatory effects cannot be undone. The helper prototype remains unwired and is not certification evidence.
+
+Soil5-57: requested real-card test still fails because canonical card is PARTIAL. Current official SET5 QA has no match resolving source-owner ambiguity; test-only copy exercises provisional own-discard movement, exact2, hidden/opponent rejection, payment, cancellation, JSON, duplicate prevention without promoting the actual card. Keep original real-card assertion intact until a source confirms the scope.
