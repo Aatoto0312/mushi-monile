@@ -1865,9 +1865,12 @@
 
   function constrainFoodAttachmentSelection(state,playerId,selection,requiredId){
     var host=findInZone(state,playerId,ZONES.FIELD,requiredId),ids=selection.options.map(function(card){return card.instanceId;}),combinations=[];
+    if(host&&!isSpellSelectionTargetLegal(state,playerId,host))host=null;
     function accepts(group){return host&&group.some(function(id){return isForcedAttachmentHostLegal(state,playerId,findInZone(state,playerId,ZONES.FOOD,id),host);});}
     ids.forEach(function(id,i){if(accepts([id]))combinations.push([id]);ids.slice(i+1).forEach(function(other){if(accepts([id,other]))combinations.push([id,other]);});});
-    selection.allowedCombinations=combinations;return selection;
+    selection.allowedCombinations=combinations;
+    selection.options=selection.options.filter(function(card){return combinations.some(function(group){return group.indexOf(card.instanceId)!==-1;});});
+    return selection;
   }
 
   function validateFreeCardUse(state,playerId,sourceId,targetIds){
@@ -2929,6 +2932,10 @@
   }
 
   function continueFoodEnhancementSequence(state,continuation){
+    if(!continuation.selectedHosts&&continuation.requiredTargetInstanceId){
+      var requiredHost=findInZone(state,continuation.playerId,ZONES.FIELD,continuation.requiredTargetInstanceId);
+      if(!requiredHost||requiredHost.faceDown||!isSpellSelectionTargetLegal(state,continuation.playerId,requiredHost))return;
+    }
     var ids=(continuation.attachmentIds||[]).slice();if(!ids.length)return;
     var id=ids.shift(),attachment=findInZone(state,continuation.playerId,ZONES.FOOD,id);
     var next={type:'ATTACH_FOOD_ENHANCEMENTS_SEQUENCE',playerId:continuation.playerId,attachmentIds:ids,selectedHosts:continuation.selectedHosts};
@@ -2939,6 +2946,7 @@
     if(!currentHosts.length){resumeAfterSelection(state,next);return;}
     var hosts=currentHosts.slice();
     if(!continuation.selectedHosts)insectCards(state.player(continuation.playerId).field).forEach(function(host){if(hosts.indexOf(host)!==-1||!isSpellSelectionTargetLegal(state,continuation.playerId,host))return;if(ids.some(function(otherId){var other=findInZone(state,continuation.playerId,ZONES.FOOD,otherId);return other&&isForcedAttachmentHostLegal(state,continuation.playerId,other,host);}))hosts.push(host);});
+    if(!continuation.selectedHosts&&continuation.requiredTargetInstanceId&&!hosts.some(function(host){return host.instanceId===continuation.requiredTargetInstanceId;}))return;
     createCardSelection(state,{playerId:continuation.playerId,options:hosts.map(function(host){return host.instanceId;}),selectionGroups:!continuation.selectedHosts&&continuation.requiredTargetInstanceId?[[continuation.requiredTargetInstanceId]]:undefined,firstSelectionOptions:currentHosts.map(function(host){return host.instanceId;}),minSelections:1,maxSelections:continuation.selectedHosts?1:Math.min(2,hosts.length),candidateZones:[ZONES.FIELD],selectionPurpose:'ATTACH_FOOD_ENHANCEMENT_HOST',continuation:{type:'ATTACH_FOOD_ENHANCEMENT_TO_HOST',attachmentInstanceId:id,remainingAttachmentIds:ids,selectedHosts:continuation.selectedHosts}});
   }
   // 自分の虫に強化カードを装着する。
