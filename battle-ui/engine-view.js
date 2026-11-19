@@ -1,4 +1,16 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(()=>require('node:crypto').randomBytes(12).toString('hex'));else root.MushiEngineView=factory(()=>Array.from(root.crypto.getRandomValues(new Uint8Array(12)),b=>b.toString(16).padStart(2,'0')).join(''));})(globalThis,function(opaque){'use strict';
+// Owner-only explanation derived from the committed attack and existing Engine legality.
+// Never include hand identities or publish this notice in the public battle log.
+function getPostAttackNotice(r,s,viewer){
+  if(!['P1','P2'].includes(viewer)||s.activePlayerId!==viewer||s.phase!=='MAIN_PHASE'||s.pendingEffect)return null;
+  const event=(s.battleEvents||[]).at(-1),c=r.context;if(!event||event.type!=='ATTACK_COMPLETED')return null;
+  const source=c.findInZone(s,viewer,'FIELD',event.sourceInstanceId);
+  if(!source||source.faceDown||(source.controllerId||source.ownerId)!==viewer)return null;
+  const skill=c.getCardDefinition(source.cardId)?.skills.find(x=>x.id===event.skillId);
+  if(!skill?.effects?.some(x=>x.type==='FREE_CARD_USE_AFTER_ATTACK'))return null;
+  if(s.player(viewer).hand.some(card=>c.getFreeCardUseOptions(s,viewer,card.instanceId,source.instanceId).legal))return null;
+  return {id:'attack:'+event.id,code:'NO_LEGAL_SELF_CARD',text:'攻撃した虫に使用できる術・強化カードが手札にありません。この効果では、攻撃した虫を対象に選べるカードだけ使用できます。'};
+}
 function run(r,s,op,ids=[]){const c=r.context,p=op.playerId;
   switch(op.kind){
     case 'SET_FOOD':return c.setFood(s,p,op.source);
@@ -57,7 +69,7 @@ function prepareView(r,s,viewer){
   function publicName(id){const h=c.findAttachment(s,id)||c.findAnywhere(s,id);if(!h||h.instance.faceDown||h.host&&h.host.faceDown||!h.host&&!['FIELD','DISCARD','RESOLVING','ATTACHMENT'].includes(h.zone))return 'カード';const d=c.getCardDefinition(h.instance.cardId);return d?d.name:'カード';}
   const labels={DECK_CARD_REVEALED:'山札のカードを公開',SPELL_COUNTERED:'術打ち消し',SPELL_TARGET_REVEALED:'使用対象を公開',ATTACK_RESET:'再攻撃可能',COST_GAIN:'コスト獲得',SUMMON:'登場',SPELL_USED:'術使用',ENHANCEMENT_USED:'強化装着',ATTACK:'技使用',DAMAGE:'ダメージ',DESTROY:'破壊',DESTROY_REPLACED:'破壊置換・回復',STAT_CHANGE:'能力修正',GAME_OVER:'対戦終了'};
   const publicLog=(s.battleEvents||[]).filter(e=>Object.hasOwn(labels,e.type)&&Number.isInteger(e.id)&&Number.isInteger(e.turnNumber)).slice(-100).map(e=>{if(e.type==='DECK_CARD_REVEALED'){const revealed=c.getCardDefinition(e.cardId);return {id:e.id,turn:e.turnNumber,text:'山札のカードを公開 '+(revealed?revealed.name:'カード')};}if(e.type==='SPELL_TARGET_REVEALED'){const declared=c.getCardDefinition(e.cardId);return {id:e.id,turn:e.turnNumber,text:'使用対象を公開 '+(declared&&declared.type==='INSECT'?declared.name:'カード')};}let actor=e.playerId||(e.type==='ATTACK'?e.activePlayerId:null),text=(['P1','P2'].includes(actor)?(viewer==='SPECTATOR'?actor:actor===viewer?'あなた':'相手')+'：':'')+labels[e.type];if(e.sourceInstanceId)text+=' '+publicName(e.sourceInstanceId);if(e.type==='ATTACK'){const h=c.findAnywhere(s,e.sourceInstanceId),d=h&&!h.instance.faceDown&&h.zone==='FIELD'&&c.getCardDefinition(h.instance.cardId),skill=d&&d.skills.find(x=>x.id===e.skillId);if(skill)text+='「'+skill.name+'」';}if(e.targetInstanceId)text+=' → '+publicName(e.targetInstanceId);if(e.type==='COST_GAIN'&&Number.isFinite(e.amount))text+=' +'+e.amount;if(e.type==='DAMAGE'&&Number.isFinite(e.damage))text+=' '+e.damage;if(e.type==='STAT_CHANGE'&&['HP','AP'].includes(e.stat)&&Number.isFinite(e.amount))text+=' '+e.stat+(e.amount>=0?'+':'')+e.amount;return {id:e.id,turn:e.turnNumber,text};});
-  const view={viewerId:viewer,turn:s.turnNumber,phase:s.phase,activePlayerId:s.activePlayerId,firstPlayerId:s.firstPlayerId,winner:s.winner||null,players:{},actions:[],decision:null,unsupportedDecision:false,blockedReason:null,publicLog};
+  const view={viewerId:viewer,turn:s.turnNumber,phase:s.phase,activePlayerId:s.activePlayerId,firstPlayerId:s.firstPlayerId,winner:s.winner||null,players:{},actions:[],decision:null,unsupportedDecision:false,blockedReason:null,publicLog,actionNotice:getPostAttackNotice(r,s,viewer)};
   for(const pid of s.playerOrder){const p=s.player(pid),out={id:pid,availableCost:p.availableCost,counts:{}};
     for(const zone of ['hand','deck','territory','food','field','discard','resolving']){out.counts[zone]=p[zone].length;if(zone!=='deck')out[zone]=p[zone].map(inst=>card(inst,zone.toUpperCase(),pid));}
     // Hidden hand slots must not disclose stable Engine ordering/draw identity.
@@ -143,5 +155,5 @@ function prepareView(r,s,viewer){
   if(!view.actions.length)view.blockedReason='ENGINE_NO_LEGAL_COMMAND';
   return {view,capabilities};
 }
-return {prepareView,applyCapability};
+return {prepareView,applyCapability,getPostAttackNotice};
 });

@@ -121,6 +121,7 @@
     if(window.MushiOnlineBattle){window.MushiOnlineBattle.render({view:current,connected,busy,act,menu:()=>{$('menu').click();}});renderResult();return;}
     document.querySelector('.player-field h2').firstChild.textContent=watching?'P1の場 ':'あなたの場 ';document.querySelector('.opponent-field h2').firstChild.textContent=watching?'P2の場 ':'相手の場 ';document.querySelector('.hand h2').firstChild.textContent=watching?'P1の手札（非公開） ':'手札 ';
     $('turn-status').textContent='ターン '+battle.turn+' · '+(phases[battle.phase]||battle.phase)+' · '+(watching?battle.activePlayerId+'の番 · 観戦中':battle.activePlayerId===battle.viewerId?'あなたの番':'相手の番');
+    if(battle.actionNotice&&room.phase==='PLAYING'&&!room.paused)$('turn-status').textContent+=' · '+battle.actionNotice.text;
     status('opponent-status',other,watching?'P2':'相手');status('player-status',own,watching?'P1':'あなた');lane('opponent-field',other.field,'FIELD');lane('player-field',own.field,'FIELD');lane('player-hand',own.hand,'HAND');lane('opponent-hand',other.hand,'HAND');
     const actionBox=$('actions');actionBox.replaceChildren();
     if(room.phase==='ENDED'||room.phase==='ABORTED'||room.phase==='EXPIRED'){

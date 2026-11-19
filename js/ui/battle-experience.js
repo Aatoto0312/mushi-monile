@@ -107,7 +107,8 @@
         else if(s.phase===window.Phases.SET_PHASE)hint=player.foodSetThisTurn?'エサをセットしました。メインフェイズへ進めます。':'手札を1枚エサにするか、そのままメインフェイズへ。';
         else if(s.phase===window.Phases.MAIN_PHASE)hint='手札から虫を出す・術を使う ／ 場の虫で攻撃';
         else if(s.phase===window.Phases.DRAW_PHASE)hint='山札からカードを引いて、ターンを始めましょう。';
-        document.getElementById('status-text').textContent=hint;
+        var notice=window.MushiEngineView&&window.MushiEngineView.getPostAttackNotice({context:window},s,own);
+        document.getElementById('status-text').textContent=notice?notice.text:hint;
       }
       player.hand.forEach(function(inst){
         var node=document.querySelector('#self-hand-zone [data-instance-id="'+inst.instanceId+'"]');if(!node)return;
