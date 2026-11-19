@@ -120,7 +120,13 @@
    if(targetGroup)instruction=targetGroup.name+'：光る対象を選択';
    if(view.room.phase!=='PLAYING')instruction=view.room.phase==='ENDED'?P.resultLabel(view.room,b.viewerId,vm.spectator):'試合中断：'+(view.room.reason||view.room.phase);
    else if(!ctx.connected)instruction='通信が切断されました。再接続中…';else if(view.room.paused)instruction='相手の再接続を待っています（最大5分）';else if(ctx.busy)instruction='操作を送信中…';else if(b.blockedReason)instruction='処理を継続できません：'+b.blockedReason;else if(vm.decision)instruction='効果の選択を行ってください';else if(vm.actions.some(a=>['CHOICE','TERRITORY_CHOICE'].includes(a.kind)))instruction='操作一覧から効果を選択してください';
-   $('instruction').textContent=instruction;$('instruction').title=instruction;$('target-controls').hidden=!targetGroup;
+   const notice=b.actionNotice&&!vm.decision&&!targetGroup&&enabled()?b.actionNotice:null;
+   if(notice)instruction='追加使用なし（詳細）';
+   $('instruction').textContent=instruction;$('instruction').title=notice?notice.text:instruction;
+   $('instruction').onclick=notice?()=>{open('攻撃後の効果').textContent=notice.text;}:null;
+   $('instruction').onkeydown=notice?event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();$('instruction').click();}}:null;
+   if(notice){$('instruction').setAttribute('role','button');$('instruction').tabIndex=0;$('instruction').setAttribute('aria-label','追加使用なし：理由を見る');}else{$('instruction').removeAttribute('role');$('instruction').removeAttribute('tabindex');$('instruction').removeAttribute('aria-label');}
+   $('target-controls').hidden=!targetGroup;
    $('hand-toggle').textContent=(expanded?'⌄ 収納':'⌃ 展開')+' · 手札 '+vm.own.counts.hand+'枚';$('hand-toggle').setAttribute('aria-expanded',String(expanded));$('hand-toggle').disabled=!!targetGroup||!vm.own.hand.length;
    $('back').hidden=$('cancel').hidden=!targetGroup;
    $('direct').hidden=!targetGroup||!targetGroup.actions.some(a=>!a.targetRef);$('direct').disabled=!enabled();$('direct').onclick=()=>targetGroup&&resolveVariant(targetGroup.actions.filter(a=>!a.targetRef));

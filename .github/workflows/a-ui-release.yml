@@ -11,6 +11,7 @@ on:
       - 'server/browser/result-popup.cjs'
       - 'server/browser/next-wave-paths.cjs'
       - 'server/browser/requested-batch.cjs'
+      - 'server/browser/dragonmantis-notice.cjs'
       - 'server/browser/toolbox-online-candidate.cjs'
       - 'server/tools/b-ui-pilot.cjs'
       - '.github/workflows/a-ui-release.yml'
@@ -70,7 +71,7 @@ jobs:
           export MUSHI_PLAYWRIGHT_PATH="$RUNNER_TEMP/ui-browser-tools/node_modules/playwright"
           export MUSHI_CANDIDATE_DIRECTORY="$RUNNER_TEMP/pages-candidate"
           export MUSHI_UI_EVIDENCE="$RUNNER_TEMP/ui-screenshots"
-          node --test --test-concurrency=1 server/browser/ui-release.cjs server/browser/toolbox-online-candidate.cjs server/browser/result-popup.cjs server/browser/next-wave-paths.cjs server/browser/requested-batch.cjs
+          node --test --test-concurrency=1 server/browser/ui-release.cjs server/browser/toolbox-online-candidate.cjs server/browser/result-popup.cjs server/browser/next-wave-paths.cjs server/browser/requested-batch.cjs server/browser/dragonmantis-notice.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
