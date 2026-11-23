@@ -1,8 +1,13 @@
 {
   "baseCommit": "adcb587e2d190837b436427e46d72ed7067e1da1",
   "baseSha256": "23675d91dad67f0d6f45b183f53db8e8fe04dbfc1bbae7f8245fbae58f8498c9",
-  "candidateSha256": "47f3b1656cbdcfde27dedf796dc8c4917b5831c1e8a265c81fad86a626b1f27a",
+  "candidateSha256": "20ff81e49b3ca1c277604d96a0745eacbecb14d4ae2db326d43d251e99397347",
   "hunks": [
+    {
+      "label": "Restore the former battle-local predicate",
+      "before": "  function isDiscardRevivalBlocked(state){return state.playerOrder.some(function(pid){return state.player(pid).field.some(function(host){return !host.faceDown&&(host.attachments||[]).some(function(att){return (getCardDefinition(att.cardId).enhancementEffects||[]).some(function(e){return e.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS'&&e.scope==='BOTH_PLAYERS';});});});});}\n",
+      "after": "  function isDiscardRevivalBlocked(state) { return global.isDiscardRevivalBlocked(state); }\n"
+    },
     {
       "label": "@@ -315,6 +315,22 @@",
       "before": "      state.pendingEffect.afterResolution = previous ? { type: 'SEQUENCE', steps: [previous, continuation] } : continuation;\n      return;\n    }\n    if (continuation.type === 'SEQUENCE') {\n      continuation.steps.forEach(function(step) { resumeAfterSelection(state, step); });\n      return;\n",

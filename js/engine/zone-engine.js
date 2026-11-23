@@ -139,6 +139,20 @@
     return true;
   }
 
+  // Shared by target discovery and the authoritative zone transition.
+  function discardRevivalBlocked(state) {
+    return state.playerOrder.some(function (playerId) {
+      return state.player(playerId).field.some(function (host) {
+        return !host.faceDown && (host.attachments || []).some(function (attachment) {
+          var definition = global.getCardDefinition && global.getCardDefinition(attachment.cardId);
+          return definition && (definition.enhancementEffects || []).some(function (effect) {
+            return effect.type === 'BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS' && effect.scope === 'BOTH_PLAYERS';
+          });
+        });
+      });
+    });
+  }
+
   function moveCard(state, instanceId, fromZone, toZone, opts) {
     opts = opts || {};
     var holder = findAnywhere(state, instanceId);
@@ -146,19 +160,10 @@
       throw new Error('moveCard: instance not found ' + instanceId);
     }
 
-    // 幻惑の蛍袋: while attached to a face-up insect on either field,
-    // neither player may summon an insect directly from the discard pile.
-    if(fromZone===ZONES.DISCARD&&toZone===ZONES.FIELD){
-      var movingDef=global.getCardDefinition&&global.getCardDefinition(holder.instance.cardId);
-      if(movingDef&&movingDef.type==='INSECT'){
-        var summonLocked=['P1','P2'].some(function(pid){
-          return state.player(pid).field.some(function(host){
-            return !host.faceDown&&(host.attachments||[]).some(function(att){
-              var def=global.getCardDefinition&&global.getCardDefinition(att.cardId);return !!(def&&(def.enhancementEffects||[]).some(function(effect){return effect.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS'&&effect.scope==='BOTH_PLAYERS';}));
-            });
-          });
-        });
-        if(summonLocked)throw new Error('幻惑の蛍袋: 捨て札から虫を場に出せません');
+    if (fromZone === ZONES.DISCARD && toZone === ZONES.FIELD) {
+      var definition = global.getCardDefinition && global.getCardDefinition(holder.instance.cardId);
+      if (definition && definition.type === 'INSECT' && discardRevivalBlocked(state)) {
+        throw new Error('幻惑の蛍袋: 捨て札から虫を場に出せません');
       }
     }
     var sourcePlayerId = holder.playerId;
@@ -272,5 +277,6 @@
   global.findAttachment = findAttachment;
   global.batchMoveCards = batchMoveCards;
   global.isAttackTargetable = isAttackTargetable;
+  global.isDiscardRevivalBlocked = discardRevivalBlocked;
   global.moveCard = moveCard;
 })(typeof window !== 'undefined' ? window : globalThis);
