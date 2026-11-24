@@ -10,7 +10,7 @@
   // Only connect definitions whose full text has been mapped. Registration is
   // deliberately separate from completion evidence and release status.
   var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 55, 56, 57, 60, 62, 63, 64];
-  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 55, 56, 60, 62, 63, 64];
+  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 55, 56, 57, 60, 62, 63, 64];
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {
@@ -106,6 +106,10 @@
     if (number === 18) { def.skills[0].effects=[{type:'OPTIONAL_FLIP_FOOD_ON_TERRITORY',cardType:'INSECT',maxSelections:1,followUpIfColor:'BLUE',followUpColor:'BLUE'}];def.skills[1].requirements=[{type:'OWN_FIELD_TAG_COUNT',tag:'セミ科',minimum:2}]; }
     def.implementationStatus = playableNumbers.indexOf(number)!==-1 ? root.CardStatus.PLAYABLE : root.CardStatus.PARTIAL;
     def.implementationNotes = playableNumbers.indexOf(number)!==-1 ? 'SET5 card-level basic playability: printed data, Engine legality, CPU and Human paths recorded in scripts/set5-battle-evidence.js. Final cross-set audit pending.' : 'SET5 definition wired; Human/CPU and card-specific completion audit pending.';
+    if (number === 57) {
+      def.rulingStatus = 'PROVISIONAL';
+      def.implementationNotes = '暫定裁定：自分の表向きの捨て札から2枚を選ぶ。相手の捨て札を含めるかは公式回答未確認。';
+    }
     if(number===7)def.implementationNotes='PARTIAL: serialized destruction watcher is wired. NEEDS_RULING: condition timing with SET3-15 threshold-dependent destruction effect; see scripts/set5-ruling-questions.json. No PLAYABLE certification.';
     return def;
   }

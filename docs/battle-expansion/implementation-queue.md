@@ -211,3 +211,7 @@ Resume queue and local diff, not full catalog. Pages/build/deploy deferred. main
 443 completed:SET6-59/SET8-60; prior441 checkpoint11d4970. Engine6/server3; shared73/server141; CPU/online Chromium/WebKit allpassed including pending page reconnect and real-art checks; Toolbox16each. Full1936 before extra0candidate test, final full rerun underway.
 Next:SET8-30パンダアリバチ:compose TARGET_COLOR(COLORLESS) + existing DESTROY_WOUNDED_TARGET_BEFORE_DAMAGE; test territory, fullHP0damage, CPU/Human/WSS before certification. SET8-11 alreadyPLAYABLE:extra paid-hunter.test.js is regression-only, NOT newcard. Keep source-loss ruling/fivepending in mushi-recovery untouched.
 443 final full1937/0 confirmed. No unfinished443 gates.
+
+### Issue 20 — 528/565
+腐葉の沃土（set5_057）は暫定裁定付き。捨て札の所有者指定がないため、各プレイヤーのゾーンを分けるルールと既存の捨て札選択処理に合わせ、使用者の表向きの捨て札2枚を選ぶ。相手側から選べるかは公式個別回答待ち。裁定変更時は set5-cards.js の対象定義、選択候補、公開ビュー、専用テストを再確認する。
+残り37種（第5弾10、第6弾8、第7弾4、第8弾15）。次の共通処理候補は燻煙の迎撃・稲妻の迎撃。通常使用と縄張りから引いた場合を区別し、引かせた虫の識別、発動辞退、再接続を検証する。

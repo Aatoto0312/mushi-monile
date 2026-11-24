@@ -20,7 +20,7 @@ runtime.createRuntime=function() {
 };
 const {createRoomService}=require('../lib/rooms.cjs');
 
-for(const id of ['set8_062','set8_063']) test(id+' room cast and turn-end projection',t=>{
+for(const id of ['set8_062','set8_063','set5_057']) test(id+' room cast and turn-end projection',t=>{
   scenario=id;
   const service=createRoomService({rng:()=>0});
   t.after(()=>service.close());
@@ -52,7 +52,21 @@ for(const id of ['set8_062','set8_063']) test(id+' room cast and turn-end projec
     assert(a.last('ACK').duplicate);
   }
   act(a.view().battle.actions.find(x=>x.kind==='SPELL').id);
-  if(id==='set8_062') {
+  if (id==='set5_057') {
+    assert.equal(b.view().battle.decision,null);
+    assert.equal(w.view().battle.decision,null);
+    service.disconnect(a.session);
+    a=client();
+    a.send('RESUME',{code:auth.roomCode,token:auth.token});
+    const choice=a.view().battle.decision;
+    act(choice.actionId,choice.options.slice(0,2).map(x=>x.ref));
+    assert.equal(a.view().battle.players.P1.availableCost,6);
+    for (const viewer of [b,w]) {
+      const food=viewer.view().battle.players.P1.food;
+      assert.equal(food.length,2);
+      assert(food.every(card=>card.hidden && !card.cardId));
+    }
+  } else if(id==='set8_062') {
     assert(a.view().battle.decision);
     assert.equal(b.view().battle.decision,null);
     assert.equal(w.view().battle.decision,null);

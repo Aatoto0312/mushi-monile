@@ -67,3 +67,12 @@ module.exports.set5_021 = {
   human:['server/browser/issue20-board.cjs'],online:['server/browser/issue20-board.cjs'],
   serialization:['tests/issue20-ordered-attacks.test.js']
 };
+module.exports.set5_057 = {
+  name:'腐葉の沃土', status:'PLAYABLE', rulingStatus:'PROVISIONAL', audited:false,
+  image:'https://mushijingi.com/images/card/366.jpg',
+  sourceProvenance:'The printed text does not identify a discard owner. The official play guide describes separate player zones. Apply the existing own-discard selector pending a specific ruling.',
+  officialRulings:['https://mushijingi.jimdofree.com/遊び方/','https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],
+  engine:['tests/batch-soil-boundaries.test.js'],cpu:['tests/batch-soil-boundaries.test.js'],
+  human:['tests/issue20-spell-human-paths.cjs'],online:['server/test/issue20-spells.test.cjs'],
+  serialization:['tests/batch-soil-boundaries.test.js']
+};

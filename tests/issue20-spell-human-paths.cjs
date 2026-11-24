@@ -15,7 +15,7 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   await page.locator('#btn-deck-p1-kabuto').click();
   await page.locator('#btn-deck-p2-okama').click();
   if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
-  for(const id of ['set8_062','set8_063']) {
+  for(const id of ['set8_062','set8_063','set5_057']) {
     await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,p=s.player(pid);
       s.phase=Phases.MAIN_PHASE;s.turnNumber=3;s.pendingEffect=null;
@@ -28,7 +28,16 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
     },id);
     await page.locator('#self-hand-zone .battle-card').click();
     await page.locator('.detail-action-btn').filter({hasText:'術を使う'}).click();
-    if(id==='set8_062') {
+    if(id==='set5_057') {
+      for (const ref of ['visible','second']) {
+        await page.locator('#self-discard-zone [data-instance-id="'+ref+'"]').evaluate(el=>el.click());
+      }
+      if (await page.evaluate(()=>Boolean(MushiBattle.ui.state.pendingEffect))) await page.locator('#btn-end-turn').click();
+      assert.deepEqual(await page.evaluate(()=>{
+        const s=MushiBattle.ui.state;
+        return s.player(s.activePlayerId).food.filter(c=>['visible','second'].includes(c.instanceId) && c.faceDown).map(c=>c.instanceId).sort();
+      }),['second','visible']);
+    } else if(id==='set8_062') {
       await page.locator('#self-discard-zone [data-instance-id="visible"]').evaluate(el=>el.click());
       assert.equal(await page.evaluate(()=>MushiBattle.ui.state.player(MushiBattle.ui.state.activePlayerId).field[0]?.instanceId),'visible');
       assert.equal(await page.locator('#self-discard-zone [data-instance-id="hidden"]').getAttribute('data-card-id'),null);
