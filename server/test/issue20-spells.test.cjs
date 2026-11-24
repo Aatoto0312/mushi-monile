@@ -14,13 +14,21 @@ runtime.createRuntime=function() {
     for(const card of p.food.slice()) {
       r.context.moveCard(state,card.instanceId,'FOOD','DISCARD',{playerId:'P1',faceDown:false});
     }
+    if (scenario==='set5_058' || scenario==='set5_059') {
+      const spell=p.hand[0];
+      r.context.moveCard(state,spell.instanceId,'HAND','TERRITORY',{playerId:'P1'});
+      const attacker=state.player('P2').field[0];
+      attacker.currentHp=attacker.baseHp=3000;
+      r.context.triggerTerritoryDrawSelection(state,'P1',{attackSourceInstanceId:attacker.instanceId});
+      r.context.resolveTerritoryDrawSelection(state,'P1',spell.instanceId);
+    }
     return state;
   };
   return r;
 };
 const {createRoomService}=require('../lib/rooms.cjs');
 
-for(const id of ['set8_062','set8_063','set5_057']) test(id+' room cast and turn-end projection',t=>{
+for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059']) test(id+' room cast and turn-end projection',t=>{
   scenario=id;
   const service=createRoomService({rng:()=>0});
   t.after(()=>service.close());
@@ -50,6 +58,17 @@ for(const id of ['set8_062','set8_063','set5_057']) test(id+' room cast and turn
     service.receive(a.session,message);
     assert.equal(a.view().room.version,previous);
     assert(a.last('ACK').duplicate);
+  }
+  if (id==='set5_058' || id==='set5_059') {
+    assert.equal(w.view().battle.decision,null);
+    assert.equal(b.view().battle.decision,null);
+    service.disconnect(a.session);
+    a=client();
+    a.send('RESUME',{code:auth.roomCode,token:auth.token});
+    act(a.view().battle.actions.find(x=>x.kind==='CHOICE' && x.label.includes('迎撃')).id);
+    assert(a.view().battle.players.P1.discard.some(x=>x.cardId===id));
+    assert.equal(a.view().battle.players.P1.availableCost,10);
+    return;
   }
   act(a.view().battle.actions.find(x=>x.kind==='SPELL').id);
   if (id==='set5_057') {

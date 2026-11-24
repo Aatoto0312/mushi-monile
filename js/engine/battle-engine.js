@@ -826,9 +826,13 @@
     var def = getCardDefinition(card.cardId);
     var keywordSuppressed=card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,card);
     var retaliation=!keywordSuppressed&&def&&(def.passiveAbilities||[]).filter(function(ability){return ability.timing==='TERRITORY_DRAW';}).reduce(function(all,ability){return all.concat(ability.effects||[]);},[]).find(function(effect){return effect.type==='OPTIONAL_RETALIATE_TERRITORY_ATTACKER';});
+    if (def && def.territorySpellTrigger === 'INTERCEPT') {
+      retaliation = {label:'迎撃'};
+    }
     var retaliationSource=context&&context.attackSourceInstanceId&&findAnywhere(state,context.attackSourceInstanceId);
     if(retaliation&&retaliationSource&&retaliationSource.zone===ZONES.FIELD&&retaliationSource.playerId!==playerId){
-      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,selectionPurpose:'TERRITORY_RETALIATION',prompt:def.name+'の毒汁噴出を使いますか？',options:[{value:'USE',label:'毒汁噴出を使う'},{value:'DECLINE',label:'手札に加える'}],continuation:{type:'RESOLVE_TERRITORY_RETALIATION',playerId:playerId,cardInstanceId:card.instanceId,attackerInstanceId:retaliationSource.instance.instanceId,attackerFieldEntrySerial:retaliationSource.instance.runtimeFlags.fieldEntrySerial||0,damage:retaliation.damage}};
+      var retaliationLabel=retaliation.label || '毒汁噴出';
+      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,selectionPurpose:'TERRITORY_RETALIATION',prompt:def.name+'の'+retaliationLabel+'を使いますか？',options:[{value:'USE',label:retaliationLabel+'を使う'},{value:'DECLINE',label:'手札に加える'}],continuation:{type:'RESOLVE_TERRITORY_RETALIATION',playerId:playerId,cardInstanceId:card.instanceId,attackerInstanceId:retaliationSource.instance.instanceId,attackerFieldEntrySerial:retaliationSource.instance.runtimeFlags.fieldEntrySerial||0,damage:retaliation.damage}};
       return card;
     }
     var route=!keywordSuppressed&&def&&(def.passiveAbilities||[]).filter(function(ability){return ability.timing==='TERRITORY_DRAW';}).reduce(function(all,ability){return all.concat(ability.effects||[]);},[]).find(function(effect){return effect.type==='OPTIONAL_SELF_DRAW_DESTINATION';});
@@ -1476,11 +1480,23 @@
       if(!retaliationCard)throw new Error('毒汁噴出の縄張りカードが解決領域にありません');
       if(value==='USE'){
         var retaliationTarget=findAnywhere(state,continuation.attackerInstanceId);
+        var drawnDef=getCardDefinition(retaliationCard.cardId);
+        if (drawnDef.territorySpellTrigger==='INTERCEPT') {
+          if (retaliationTarget && retaliationTarget.zone===ZONES.FIELD &&
+              retaliationTarget.playerId!==playerId && !retaliationTarget.instance.faceDown &&
+              (retaliationTarget.instance.runtimeFlags.fieldEntrySerial||0)===continuation.attackerFieldEntrySerial &&
+              getSpellTargetsForDefinition(state,playerId,drawnDef,retaliationCard.instanceId).some(function(c){return c.instanceId===continuation.attackerInstanceId;})) {
+            resolveSpellUseTriggers(state,playerId,retaliationCard,drawnDef,continuation.attackerInstanceId,{},false);
+          } else {
+            finalizeTerritoryDraw(state,playerId,retaliationCard,ZONES.HAND);
+          }
+        } else {
         // Damage is directed at the original attacker, not a new target.
         if(retaliationTarget&&retaliationTarget.zone===ZONES.FIELD&&(retaliationTarget.instance.runtimeFlags.fieldEntrySerial||0)===continuation.attackerFieldEntrySerial){
           applyDamage(state,retaliationCard,retaliationTarget.instance,continuation.damage,'ABILITY',retaliationCard.instanceId,retaliationTarget.instance.instanceId,{skill:null});
         }
         finalizeTerritoryDraw(state,continuation.playerId,retaliationCard,ZONES.DISCARD);
+        }
       }else{
         finalizeTerritoryDraw(state,continuation.playerId,retaliationCard,ZONES.HAND);
       }
@@ -2762,13 +2778,6 @@
       }
 
       player.nextUseCostModifiers=(player.nextUseCostModifiers||[]).filter(function(modifier){return state.turnNumber<=modifier.endTurn&&!matchesNextUseCostModifier(state,playerId,def,modifier);});
-      var result = {
-        spellInstance: held,
-        def: def,
-        finalZone: null,
-        foodDelta: 0
-      };
-
       // ---- RESOLVE_EFFECT: HAND → RESOLVING(一時領域) ----
       if(activeFreeCardUse(state,playerId,handInstanceId))spellOptions.effectUseContext=JSON.parse(JSON.stringify(state.freeCardUse));
       moveCard(state, handInstanceId, ZONES.HAND, ZONES.RESOLVING, { playerId: playerId });
@@ -2779,40 +2788,51 @@
       if((def.cardEffects||[]).some(function(effect){return effect.from===ZONES.HAND&&effect.to===ZONES.FIELD;})){
         [].concat(chosenTargetInstanceId||[]).forEach(function(id){var declared=findInZone(state,playerId,ZONES.HAND,id);if(declared&&getCardDefinition(declared.cardId).type===CardTypes.INSECT)emitBattleEvent(state,'SPELL_TARGET_REVEALED',{sourceInstanceId:held.instanceId,playerId:playerId,cardId:declared.cardId});});
       }
-      emitBattleEvent(state,'SPELL_USED',{sourceInstanceId:held.instanceId,playerId:playerId});
-      var spellUseTriggers=[];
-      var scheduledCounters=getActiveUseCounters(state,playerId,CardTypes.SPELL);
-      // All matching copies observe the same first use. Consume together, so
-      // stacking copies cannot cancel later spells in this turn instead.
-      state.pendingUseCounters=(state.pendingUseCounters||[]).filter(function(counter){return scheduledCounters.indexOf(counter)===-1&&counter.turnNumber>=state.turnNumber;});
-      scheduledCounters.forEach(function(counter){spellUseTriggers.push({playerId:counter.controllerId,label:getCardDefinition(counter.sourceCardId).name,continuation:{type:'COUNTER_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId}});});
-      state.player(state.opponentOf(playerId)).field.forEach(function(watcher){
-        if(watcher.faceDown||areInsectKeywordSkillsSuppressed(state,watcher))return;
-        var watcherDef=getCardDefinition(watcher.cardId);
-        (watcherDef&&watcherDef.passiveAbilities||[]).filter(function(ability){return ability.timing==='ON_OPPONENT_SPELL_USED';}).forEach(function(ability){
-          (ability.effects||[]).filter(function(effect){return effect.type==='DESTROY_SELF';}).forEach(function(){spellUseTriggers.push({playerId:watcher.controllerId||watcher.ownerId,label:watcherDef.name+'／'+ability.name,continuation:{type:'DESTROY_ENTRY_WATCHER',sourceInstanceId:watcher.instanceId,fieldEntrySerial:watcher.runtimeFlags.fieldEntrySerial||0}});});
-          (ability.effects||[]).filter(function(effect){return effect.type==='DESTROY_SELF_AND_COUNTER_SPELL'&&(effect.maxPrintedCost==null||def.cost<=effect.maxPrintedCost);}).forEach(function(){
-            spellUseTriggers.push({playerId:watcher.controllerId||watcher.ownerId,label:watcherDef.name+'／'+ability.name,continuation:{type:'SEQUENCE',steps:[
-              {type:'DESTROY_ENTRY_WATCHER',sourceInstanceId:watcher.instanceId,fieldEntrySerial:watcher.runtimeFlags.fieldEntrySerial||0},
-              {type:'COUNTER_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId}
-            ]}});
-          });
-        });
-      });
-      if(spellUseTriggers.length){
-        var committedOptions=Object.assign({},spellOptions);
-        if(chosenTargetInstanceId){
-          committedOptions.committedTargetSnapshots=[].concat(chosenTargetInstanceId).map(function(id){return snapshotCommittedSpellTarget(state,id);}).filter(Boolean);
-        }
-        resumeAfterSelection(state,{type:'SEQUENCE',steps:[{type:'ORDER_TRIGGER_CONTINUATIONS',steps:spellUseTriggers},{type:'RESOLVE_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId,targetInstanceId:chosenTargetInstanceId,spellOptions:committedOptions,deferredVariablePayment:deferredVariablePayment}]});
-        result.pending=!!state.pendingEffect;result.finalZone=held.zone===ZONES.RESOLVING?null:held.zone;result.foodDelta=result.finalZone===ZONES.FOOD?1:0;return result;
-      }
-      return completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions,deferredVariablePayment);
+      return resolveSpellUseTriggers(state,playerId,held,def,chosenTargetInstanceId,spellOptions,deferredVariablePayment);
     } catch (err) {
       // 効果解決中・最終移動中の内部エラー → 使用直前の状態へ復旧して再送出。
       rollbackSpellToHand(state, playerId, held.instanceId, snapshot);
       throw err;
     }
+  }
+
+  function resolveSpellUseTriggers(state,playerId,held,def,chosenTargetInstanceId,spellOptions,deferredVariablePayment) {
+    var result = {
+      spellInstance: held,
+      def: def,
+      finalZone: null,
+      foodDelta: 0
+    };
+
+    emitBattleEvent(state,'SPELL_USED',{sourceInstanceId:held.instanceId,playerId:playerId});
+    var spellUseTriggers=[];
+    var scheduledCounters=getActiveUseCounters(state,playerId,CardTypes.SPELL);
+    // All matching copies observe the same first use. Consume together, so
+    // stacking copies cannot cancel later spells in this turn instead.
+    state.pendingUseCounters=(state.pendingUseCounters||[]).filter(function(counter){return scheduledCounters.indexOf(counter)===-1&&counter.turnNumber>=state.turnNumber;});
+    scheduledCounters.forEach(function(counter){spellUseTriggers.push({playerId:counter.controllerId,label:getCardDefinition(counter.sourceCardId).name,continuation:{type:'COUNTER_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId}});});
+    state.player(state.opponentOf(playerId)).field.forEach(function(watcher){
+      if(watcher.faceDown||areInsectKeywordSkillsSuppressed(state,watcher))return;
+      var watcherDef=getCardDefinition(watcher.cardId);
+      (watcherDef&&watcherDef.passiveAbilities||[]).filter(function(ability){return ability.timing==='ON_OPPONENT_SPELL_USED';}).forEach(function(ability){
+        (ability.effects||[]).filter(function(effect){return effect.type==='DESTROY_SELF';}).forEach(function(){spellUseTriggers.push({playerId:watcher.controllerId||watcher.ownerId,label:watcherDef.name+'／'+ability.name,continuation:{type:'DESTROY_ENTRY_WATCHER',sourceInstanceId:watcher.instanceId,fieldEntrySerial:watcher.runtimeFlags.fieldEntrySerial||0}});});
+        (ability.effects||[]).filter(function(effect){return effect.type==='DESTROY_SELF_AND_COUNTER_SPELL'&&(effect.maxPrintedCost==null||def.cost<=effect.maxPrintedCost);}).forEach(function(){
+          spellUseTriggers.push({playerId:watcher.controllerId||watcher.ownerId,label:watcherDef.name+'／'+ability.name,continuation:{type:'SEQUENCE',steps:[
+            {type:'DESTROY_ENTRY_WATCHER',sourceInstanceId:watcher.instanceId,fieldEntrySerial:watcher.runtimeFlags.fieldEntrySerial||0},
+            {type:'COUNTER_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId}
+          ]}});
+        });
+      });
+    });
+    if(spellUseTriggers.length){
+      var committedOptions=Object.assign({},spellOptions);
+      if(chosenTargetInstanceId){
+        committedOptions.committedTargetSnapshots=[].concat(chosenTargetInstanceId).map(function(id){return snapshotCommittedSpellTarget(state,id);}).filter(Boolean);
+      }
+      resumeAfterSelection(state,{type:'SEQUENCE',steps:[{type:'ORDER_TRIGGER_CONTINUATIONS',steps:spellUseTriggers},{type:'RESOLVE_COMMITTED_SPELL',playerId:playerId,sourceInstanceId:held.instanceId,targetInstanceId:chosenTargetInstanceId,spellOptions:committedOptions,deferredVariablePayment:deferredVariablePayment}]});
+      result.pending=!!state.pendingEffect;result.finalZone=held.zone===ZONES.RESOLVING?null:held.zone;result.foodDelta=result.finalZone===ZONES.FOOD?1:0;return result;
+    }
+    return completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions,deferredVariablePayment);
   }
 
   function completeCommittedSpell(state,playerId,held,def,chosenTargetInstanceId,spellOptions,deferredVariablePayment){

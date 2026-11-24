@@ -242,6 +242,7 @@ function requireAll() {
     ,require('./issue20-continuous.test.js')
     ,require('./issue20-ordered-attacks.test.js')
     ,require('./issue20-spells.test.js')
+    ,require('./set8-territory-retaliation.test.js')
     ,require('./set5-pot-canonical.test.js')
     ,require('./set5-spears-canonical.test.js')
     ,require('./batch-host-eligibility.test.js')

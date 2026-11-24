@@ -76,3 +76,11 @@ module.exports.set5_057 = {
   human:['tests/issue20-spell-human-paths.cjs'],online:['server/test/issue20-spells.test.cjs'],
   serialization:['tests/batch-soil-boundaries.test.js']
 };
+for (const [id,name,number] of [['set5_058','燻煙の迎撃',367],['set5_059','稲妻の迎撃',368]]) {
+  module.exports[id]={name,status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/'+number+'.jpg',
+    sourceProvenance:'SET5 catalog and official fifth-set Q&A on interception, spell use and immature larvae.',
+    officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],
+    engine:['tests/set8-territory-retaliation.test.js'],cpu:['tests/set8-territory-retaliation.test.js'],
+    human:['server/test/issue20-spells.test.cjs'],online:['server/test/issue20-spells.test.cjs'],
+    serialization:['tests/set8-territory-retaliation.test.js']};
+}

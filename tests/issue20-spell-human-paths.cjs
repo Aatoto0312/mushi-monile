@@ -46,4 +46,20 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
       assert.equal(await page.evaluate(()=>{const s=MushiBattle.ui.state;return s.player(s.opponentOf(s.activePlayerId)).keywordSuppressionUntilTurn}),4);
     }
   }
+  for(const [id,damage] of [['set5_058',400],['set5_059',800]]) {
+    await page.evaluate(id=>{
+      const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,enemy=s.opponentOf(pid);
+      const make=(cardId,zone,ownerId)=>new CardInstance({cardId,zone,instanceId:s.nextInstanceId(),ownerId,controllerId:ownerId});
+      const attacker=make('kabutomushi','FIELD',enemy), spell=make(id,'TERRITORY',pid);
+      attacker.baseHp=attacker.currentHp=2000;
+      s.player(enemy).field=[attacker];s.player(pid).territory.push(spell);
+      triggerTerritoryDrawSelection(s,pid,{attackSourceInstanceId:attacker.instanceId});
+      resolveTerritoryDrawSelection(s,pid,spell.instanceId);
+      ui.render();
+    },id);
+    await page.getByRole('button',{name:'迎撃を使う',exact:true}).click();
+    assert.equal(await page.evaluate(()=>{
+      const s=MushiBattle.ui.state;return s.player(s.opponentOf(s.activePlayerId)).field[0].currentHp;
+    }),2000-damage);
+  }
 });
