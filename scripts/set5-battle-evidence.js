@@ -49,3 +49,21 @@ cards.set5_056={status:'PLAYABLE',audited:false,name:'花蝶の幻舞',cost:0,ty
 cards.set5_060={status:'PLAYABLE',audited:false,name:'毒の追い打ち',cost:2,type:'SPELL',image:'https://mushijingi.com/images/card/369.jpg',sourceProvenance:'Printedscan secondaryhost checked2026-11-05: target is not restricted to own controller. OfficialQA5 includes keywordskills containing毒. Generic opt-inANY_ATTACKED_FIELD_INSECT with shared current-target legality, own-only reset unchanged.',officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],engine:['tests/poison-followup.test.js'],cpu:['tests/poison-followup.test.js'],human:['server/browser/poison-followup-paths.cjs'],online:['server/test/poison-followup.test.cjs','server/browser/poison-followup-paths.cjs'],serialization:['tests/poison-followup.test.js','server/test/poison-followup.test.cjs'],unresolvedRulings:[],userRulings:[]};
 
 module.exports.set5_054={status:'PLAYABLE',audited:false,name:'黒銀蜘蛛の糸',cost:5,image:'https://mushijingi.com/images/card/363.jpg',sourceProvenance:'Printed catalog text plus official SET5/7 lifecycle QA; integrated requested batch2026-11-17.',engine:['tests/batch-enhancements.test.js'],human:['server/browser/requested-batch.cjs'],cpu:['tests/batch-enhancements.test.js'],online:['server/test/requested-batch.test.cjs'],serialization:['tests/batch-enhancements.test.js','server/test/requested-batch.test.cjs'],regression:['tests/run-all.js','tests/run-shared.js']};
+
+for (const [number,name,cost] of [[48,'蛮虫の一本槍',1],[49,'蟲神の一本槍',2],[55,'幼虫の胡坐鍋',0]]) {
+  const engine = number===55?'tests/set5-pot-canonical.test.js':'tests/set5-spears-canonical.test.js';
+  module.exports['set5_'+String(number).padStart(3,'0')]={
+    name,cost,status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/'+(309+number)+'.jpg',
+    sourceProvenance:'Existing SET5 catalog and official host requirement and recovery rulings.',
+    officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/','https://mushijingi.jimdofree.com/q-a-よくある質問-1/'],
+    engine:[engine],cpu:[engine],human:['server/browser/set5-optional-equipment.cjs'],
+    online:['server/test/set5-optional-equipment.test.cjs'],serialization:[engine,'server/test/set5-optional-equipment.test.cjs']
+  };
+}
+module.exports.set5_021 = {
+  name:'オオテナガカナブン',status:'PLAYABLE',audited:false,
+  image:'https://mushijingi.com/images/card/330.jpg',sourceProvenance:'SET5 catalog and ordered attack tests',
+  engine:['tests/issue20-ordered-attacks.test.js'],cpu:['server/browser/issue20-board.cjs'],
+  human:['server/browser/issue20-board.cjs'],online:['server/browser/issue20-board.cjs'],
+  serialization:['tests/issue20-ordered-attacks.test.js']
+};

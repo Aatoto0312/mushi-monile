@@ -1,0 +1,40 @@
+(function (root) {
+  'use strict';
+  var catalog = typeof module === 'object' && module.exports
+    ? require('./full-catalog-data.js') : root.MushijingiFullCatalogData;
+  var emperor = {type: 'FOOD_TRAIT_AURA', traitName: '王様', costDelta: -1};
+  var traits = {
+    set8_017: emperor,
+    set8_039: emperor,
+    set6_044: {type: 'PREVENT_MATCHING_DISCARD_SPELL_DAMAGE'}
+  };
+  Object.keys(traits).forEach(function (id) {
+    var record = catalog.find(function (row) { return row.id === id; });
+    var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
+    if (def.type !== 'INSECT' || def.skills.length !== 1 || def.skills[0].effectText ||
+        def.passiveAbilities.length !== 1 || def.cardEffects.length || def.enhancementEffects.length) {
+      throw new Error('UNMAPPED_ZONE_TRAIT ' + id);
+    }
+    Object.assign(def.skills[0], {id: id + '_skill_1', timing: 'ATTACK', effects: [], additionalCost: []});
+    def.passiveAbilities[0].effects = [Object.assign({}, traits[id])];
+    if (id === 'set6_044') {
+      // Replace the malformed catalog transcription with an original rules summary.
+      def.passiveAbilities[0].effectText = 'どちらかの捨て札に同名の術があれば、その術によるダメージは0。';
+    }
+    def.implementationStatus = root.CardStatus.PLAYABLE;
+    root.cardRegistry.register(def);
+  });
+
+  var longhorn = new root.CardDefinition(JSON.parse(JSON.stringify(catalog.find(function (row) {
+    return row.id === 'set7_032';
+  }))));
+  longhorn.skills.forEach(function (skill, i) {
+    Object.assign(skill, {id: longhorn.id + '_skill_' + (i + 1), timing: 'ATTACK', effects: [], additionalCost: []});
+  });
+  longhorn.skills[1].effects.push({
+    type: 'ATTACK_MULTIPLE_TARGETS', exactSelections: 2, ordered: true,
+    sameColor: true, sameNameBonus: 500
+  });
+  longhorn.implementationStatus = root.CardStatus.PLAYABLE;
+  root.cardRegistry.register(longhorn);
+}(globalThis));

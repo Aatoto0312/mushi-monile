@@ -761,7 +761,7 @@
     discardInstances.forEach(function (inst) {
       var el = CardUI.renderCard(inst, ZONES.DISCARD, self.state);
       var pending = getPendingEffect(self.state);
-      if (pending && (pending.type === 'DISCARD_INSECT_SELECTION' || pending.type === 'CARD_SELECTION') && pending.playerId === playerId && pending.options.indexOf(inst.instanceId) !== -1) {
+      if (pending && (pending.type === 'DISCARD_INSECT_SELECTION' || pending.type === 'SPELL_TARGET_SELECTION' || pending.type === 'CARD_SELECTION') && pending.playerId === playerId && pending.options.indexOf(inst.instanceId) !== -1) {
         el.classList.add('legal-target');
       }
       el.addEventListener('click', function () { self.onDiscardCardTap(playerId, inst); });
@@ -823,6 +823,14 @@
 
   BattleUI.prototype.onDiscardCardTap = function (playerId, instance) {
     var pending = getPendingEffect(this.state);
+    if (instance.faceDown) return;
+    if (pending && pending.type === 'SPELL_TARGET_SELECTION') {
+      if (this.cpuMode && pending.playerId !== 'P1') return;
+      if (pending.playerId !== playerId || pending.options.indexOf(instance.instanceId) === -1) return;
+      try { global.resolveSpellTargetSelection(this.state,playerId,instance.instanceId); this.render(); }
+      catch (error) { showUserError(error); }
+      return;
+    }
     if (pending && pending.type === 'CARD_SELECTION') {
       if (this.cpuMode && pending.playerId !== 'P1') return;
       if (pending.playerId !== playerId || pending.options.indexOf(instance.instanceId) === -1) return;

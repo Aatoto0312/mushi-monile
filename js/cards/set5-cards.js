@@ -9,8 +9,8 @@
   'use strict';
   // Only connect definitions whose full text has been mapped. Registration is
   // deliberately separate from completion evidence and release status.
-  var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 56, 57, 60, 62, 63, 64];
-  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 56, 60, 62, 63, 64];
+  var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 55, 56, 57, 60, 62, 63, 64];
+  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 55, 56, 60, 62, 63, 64];
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {
@@ -86,6 +86,16 @@
     if (number === 37 || number === 39) { def.passiveAbilities[0].timing='ON_OPPONENT_SPELL_USED';def.passiveAbilities[0].effects=[{type:'DESTROY_SELF'}]; }
     if (number === 43) { def.passiveAbilities[0].effects=[{type:'PREVENT_OPPONENT_SPELL_DAMAGE_AND_DESTRUCTION',turnAfterEntry:1}]; }
     if (number === 44) { def.passiveAbilities[0].timing='ON_ENTER_FIELD';def.passiveAbilities[0].effects=[{type:'GROW_SELF_IF_ENTRY_CARD_NAME',nameSubstring:'羽化',amount:500,stats:['HP','AP']}]; }
+    if ([48, 49, 55].includes(number)) {
+      var amount = number === 49 ? 800 : 400;
+      def.requiresLarvaHost = number === 55;
+      def.requiresEffectlessHostSkills = number !== 55;
+      def.enhancementEffects = [
+        {type:'STAT_MODIFIER',stat:'HP',amount:amount},
+        {type:'STAT_MODIFIER',stat:'AP',amount:amount},
+        {type:'OPTIONAL_RETURN_ATTACHMENT_ON_HOST_ATTACK_DESTRUCTION'}
+      ];
+    }
     if (number === 46) { def.enhancementEffects=[{type:'STAT_MODIFIER',stat:'HP',amount:100},{type:'STAT_MODIFIER',stat:'AP',amount:100},{type:'PROHIBIT_OPPONENT_SPELL_ENTRY_ATTACK_THIS_TURN'}]; }
     if (number === 47) { def.enhancementEffects=[{type:'STAT_MODIFIER',stat:'HP',amount:300},{type:'STAT_MODIFIER',stat:'AP',amount:300},{type:'SUPPRESS_HOST_KEYWORD_SKILLS'},{type:'OPTIONAL_ATTACH_FROM_TERRITORY'}]; }
     if (number === 6) { def.passiveAbilities[0].timing='ON_DESTROYED';def.passiveAbilities[0].condition={type:'HAD_ATTACHMENT_WHEN_DESTROYED'};def.passiveAbilities[0].effects=[{type:'MOVE_CARD',target:'SOURCE',from:'DISCARD',to:'HAND'}]; }

@@ -102,7 +102,7 @@
       card.usedSkills = [];
     }
     if (!def || !def.skills) { return; }
-    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills){return;}
+    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills || global.areInsectKeywordSkillsSuppressed && global.areInsectKeywordSkillsSuppressed(state,card)){return;}
     var gitai = def.skills.find(function (s) { return s.gitai === true; });
     if (!gitai) { return; }
     // 保護が予約される「次の相手ターン」のターン番号を計算。
@@ -143,7 +143,13 @@
   function discardRevivalBlocked(state) {
     return state.playerOrder.some(function (playerId) {
       return state.player(playerId).field.some(function (host) {
-        return !host.faceDown && (host.attachments || []).some(function (attachment) {
+        if(host.faceDown)return false;
+        var hostDefinition=global.getCardDefinition(host.cardId);
+        var blocksRevival=hostDefinition && (hostDefinition.passiveAbilities||[]).some(function(ability){
+          return (ability.effects||[]).some(function(effect){return effect.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS';});
+        });
+        if(blocksRevival && !global.areInsectKeywordSkillsSuppressed(state,host))return true;
+        return (host.attachments || []).some(function (attachment) {
           var definition = global.getCardDefinition && global.getCardDefinition(attachment.cardId);
           return definition && (definition.enhancementEffects || []).some(function (effect) {
             return effect.type === 'BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS' && effect.scope === 'BOTH_PLAYERS';
@@ -160,10 +166,10 @@
       throw new Error('moveCard: instance not found ' + instanceId);
     }
 
-    if (fromZone === ZONES.DISCARD && toZone === ZONES.FIELD) {
+    if (fromZone === ZONES.DISCARD && toZone === ZONES.FIELD && !opts.captureFromBattle) {
       var definition = global.getCardDefinition && global.getCardDefinition(holder.instance.cardId);
       if (definition && definition.type === 'INSECT' && discardRevivalBlocked(state)) {
-        throw new Error('幻惑の蛍袋: 捨て札から虫を場に出せません');
+        throw new Error('捨て札から虫を場に出せません');
       }
     }
     var sourcePlayerId = holder.playerId;
@@ -227,6 +233,7 @@
         delete card.runtimeFlags.spellImmunityTurn;
         delete card.runtimeFlags.ignoreWeaknessTurn;
         delete card.runtimeFlags.destroyAtEndTurn;
+        delete card.runtimeFlags.discardFaceDownAtEndTurn;
         delete card.runtimeFlags.suppressKeywordSkills;
         delete card.runtimeFlags.suppressDestructionKeywordUntilTurn;
         if(card.runtimeFlags.revealOnPlayerTurn){card.faceDown=false;delete card.runtimeFlags.revealOnPlayerTurn;}
@@ -265,6 +272,10 @@
     }
 
     toArr.push(card);
+    if (global.requestSpearHostRevalidation && (fromZone === ZONES.FIELD ||
+        (fromZone === ZONES.FOOD && global.suppliesFoodTraitAura(card)))) {
+      global.requestSpearHostRevalidation(state);
+    }
     if (fromZone !== ZONES.FIELD && toZone === ZONES.FIELD && !opts.deferEntryEffects && global.resolveFieldEntryEffects) {
       global.resolveFieldEntryEffects(state, card.instanceId);
     }

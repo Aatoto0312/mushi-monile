@@ -1,0 +1,75 @@
+'use strict';
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const runtime=require('../lib/runtime.cjs');
+const createRuntime=runtime.createRuntime;
+const {setup}=require('../../tests/fixtures/food-wave-scenarios.cjs');
+let scenario;
+runtime.createRuntime=function() {
+  const r=createRuntime(),start=r.start;
+  r.start=(...args)=>{
+    const state=start(...args);
+    setup(r.context,state,scenario,'damage');
+    const p=state.player('P1');
+    for(const card of p.food.slice()) {
+      r.context.moveCard(state,card.instanceId,'FOOD','DISCARD',{playerId:'P1',faceDown:false});
+    }
+    return state;
+  };
+  return r;
+};
+const {createRoomService}=require('../lib/rooms.cjs');
+
+for(const id of ['set8_062','set8_063']) test(id+' room cast and turn-end projection',t=>{
+  scenario=id;
+  const service=createRoomService({rng:()=>0});
+  t.after(()=>service.close());
+  let sequence=0;
+  function client() {
+    const messages=[], session=service.connect(m=>messages.push(m));
+    const last=type=>messages.filter(m=>m.type===type).at(-1);
+    function send(type,fields={}) {
+      const message={type,requestId:'issue20_spell_'+String(++sequence).padStart(8,'0'),versions:runtime.VERSIONS,...fields};
+      service.receive(session,message);
+      assert.equal(last('ERROR'),undefined);
+      return message;
+    }
+    return {session,last,send,view:()=>last('VIEW')};
+  }
+  let a=client();
+  const b=client(),w=client();
+  a.send('CREATE');
+  const auth=a.last('SESSION');
+  b.send('JOIN',{code:auth.roomCode});
+  w.send('WATCH',{code:auth.roomCode});
+  for(const seat of [a,b]) seat.send('DECK',{version:seat.view().room.version,preset:'KABUTOMUSHI'});
+  for(const seat of [a,b]) seat.send('READY',{version:seat.view().room.version,ready:true});
+  function act(actionId,selectedRefs=[]) {
+    const message=a.send('ACTION',{version:a.view().room.version,actionId,selectedRefs});
+    const previous=a.view().room.version;
+    service.receive(a.session,message);
+    assert.equal(a.view().room.version,previous);
+    assert(a.last('ACK').duplicate);
+  }
+  act(a.view().battle.actions.find(x=>x.kind==='SPELL').id);
+  if(id==='set8_062') {
+    assert(a.view().battle.decision);
+    assert.equal(b.view().battle.decision,null);
+    assert.equal(w.view().battle.decision,null);
+    service.disconnect(a.session);
+    a=client();
+    a.send('RESUME',{code:auth.roomCode,token:auth.token});
+    const choice=a.view().battle.decision;
+    act(choice.actionId,[choice.options.find(x=>x.cardId==='kabutomushi').ref]);
+    assert(a.view().battle.players.P1.field.some(x=>x.cardId==='kabutomushi'));
+    act(a.view().battle.actions.find(x=>x.kind==='END').id);
+    for(const seat of [a,b,w]) {
+      const hidden=seat.view().battle.players.P1.discard.filter(x=>x.hidden);
+      assert.equal(hidden.length,1);
+      assert.deepEqual(Object.keys(hidden[0]).sort(),['hidden','label','ref','zone']);
+    }
+  } else {
+    assert.equal(a.view().battle.players.P1.availableCost,8);
+    assert(a.view().battle.players.P1.discard.some(x=>x.cardId===id));
+  }
+});

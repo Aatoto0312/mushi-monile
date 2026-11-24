@@ -19,4 +19,88 @@ r.test('Dragonmantis bounced during attack cannot use postattack card',()=>{cons
 r.test('CPU resolves stale optional free-use and invalidated sacrifice without a loop after JSON',()=>{for(const kind of ['dragon','devil']){let s=state();const a=put(s,kind==='dragon'?'set6_001':'set8_003',kind==='dragon'?'FIELD':'HAND'),b=put(s,'set6_016',kind==='dragon'?'FIELD':'FIELD',kind==='dragon'?'P2':'P1');if(kind==='dragon'){put(s,'set2_054','HAND');b.currentHp=3000;performAttack(s,a.instanceId,b.instanceId,'INSECT',getCardDefinition(a.cardId).skills[1].id);moveCard(s,a.instanceId,'FIELD','HAND',{playerId:'P1'});}else{b.attachments=[{instanceId:'fake',cardId:'set7_054'}];summonInsect(s,'P1',a.instanceId,{alternative:true});b.attachments=[];}s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));const cpu=new CpuAgent('P1',{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));r.assertEqual(s.pendingEffect,null);}});
 r.test('Dragonmantis official multi-target attachment spell requires source as later host',()=>{const s=state(),a=put(s,'set6_001'),other=put(s,'set6_016'),target=put(s,'set6_016','FIELD','P2'),spell=put(s,'set4_062','HAND'),e=put(s,'minomushi_no_kakuremino','FOOD');target.currentHp=3000;performAttack(s,a.instanceId,target.instanceId,'INSECT',getCardDefinition(a.cardId).skills[1].id);r.assert(s.pendingEffect.options.includes(spell.instanceId));resolveCardSelection(s,'P1',[spell.instanceId],true);resolveCardSelection(s,'P1',[e.instanceId],true);let failed=false;try{resolveCardSelection(s,'P1',[other.instanceId],true);}catch(e){failed=true;}r.assert(failed);resolveCardSelection(s,'P1',[a.instanceId],true);r.assertEqual(a.attachments[0].instanceId,e.instanceId);r.assertEqual(s.pendingEffect,null);});
 r.test('CPU uses revalidated batch enhancement candidates and generic cancellation receipt',()=>{const s=state(),cpu=new CpuAgent('P1'),oldStatus=global.getPendingBatchEnhancementStatus,oldCancel=global.cancelPendingCardUse;s.pendingEffect={type:'CARD_SELECTION',playerId:'P1',options:['stale','legal'],minSelections:2,maxSelections:2,exactSelections:2};try{global.getPendingBatchEnhancementStatus=()=>({canContinue:true,candidateIds:['legal','second'],allowedCombinations:[['legal','second']]});r.assertEqual(cpu.getPendingAction(s).instanceIds.join(','),'legal,second');global.getPendingBatchEnhancementStatus=()=>({canContinue:false});const action=cpu.getPendingAction(s);r.assertEqual(action.type,'CANCEL_CARD_USE');global.cancelPendingCardUse=(x,p)=>{r.assertEqual(p,'P1');x.pendingEffect=null;};r.assert(cpu.executeAction(s,action));r.assertEqual(s.pendingEffect,null);}finally{global.getPendingBatchEnhancementStatus=oldStatus;global.cancelPendingCardUse=oldCancel;}});
+r.test('Golden pupa survives source removal, filters held cards and summons without cost after reconnect',()=>{
+ let s=state();const larva=put(s,'set6_043'),enemy=put(s,'set1_010','FIELD','P2');
+ const held=put(s,'set2_050','HAND'),adult=put(s,'set6_017','HAND');put(s,'set7_054','HAND');
+ enemy.currentHp=1;s.player('P1').availableCost=0;
+ performAttack(s,larva.instanceId,enemy.instanceId,'INSECT',getCardDefinition(larva.cardId).skills[1].id);
+ r.assertEqual(larva.zone,'HAND');r.assertEqual(s.pendingEffect.options.join(','),held.instanceId);
+ s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+ resolveCardSelection(s,'P1',[held.instanceId],true);resolveCardSelection(s,'P1',[adult.instanceId],true);
+ r.assert(s.player('P1').field.some(c=>c.instanceId===adult.instanceId));r.assertEqual(s.player('P1').availableCost,0);
+});
+r.test('Cricket blocks both players before paying for revival or sacrificing a larva',()=>{
+ const s=state(),cricket=put(s,'set7_046','FIELD','P2'),larva=put(s,'set6_041'),adult=put(s,'set6_016','DISCARD');
+ const silk=put(s,'set3_048','HAND');put(s,'set6_016','DISCARD');
+ const skill=getCardDefinition(larva.cardId).skills[1];
+ r.assert(isDiscardRevivalBlocked(s));r.assertEqual(getLegalAttackTargets(s,larva.instanceId,skill.id).length,0);
+ r.assertEqual(getEnhancementTargetCandidates(s,'P1',silk.instanceId).length,0);
+ let denied=false;try{useEnhancement(s,'P1',silk.instanceId,adult.instanceId);}catch(e){denied=true;}r.assert(denied);
+ r.assertEqual(s.player('P1').availableCost,20);r.assertEqual(silk.zone,'HAND');r.assertEqual(s.pendingEffect,null);
+ cricket.faceDown=true;r.assert(!isDiscardRevivalBlocked(s));cricket.faceDown=false;
+ cricket.runtimeFlags.suppressKeywordSkills=true;r.assert(!isDiscardRevivalBlocked(s));
+});
+r.test('Ulysses draws its own territory before ending turn; CPU resumes after restore',()=>{
+ for(const territory of [true,false]){
+  let s=state();const source=put(s,'set7_026'),target=put(s,'set6_016','FIELD','P2');
+  const card=territory&&put(s,'set6_016','TERRITORY');const skill=getCardDefinition(source.cardId).skills[1];
+  performAttack(s,source.instanceId,target.instanceId,'INSECT',skill.id);r.assert(source.usedSkills.includes(skill.id));
+  if(territory){
+   r.assertEqual(s.activePlayerId,'P1');r.assertEqual(s.pendingEffect.type,'TERRITORY_DRAW_SELECTION');
+   s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));const cpu=new CpuAgent('P1',{rng:()=>0});
+   r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));r.assert(s.player('P1').hand.some(x=>x.instanceId===card.instanceId));
+  }
+  r.assertEqual(s.activePlayerId,'P2');r.assertEqual(s.pendingEffect,null);
+ }
+});
+r.test('Golden pupa and cricket choices are revalidated for CPU',()=>{
+ let s=state();const larva=put(s,'set6_043'),target=put(s,'set6_016','FIELD','P2');
+ const pupa=put(s,'set2_050','HAND'),adult=put(s,'set6_017','HAND');
+ performAttack(s,larva.instanceId,target.instanceId,'INSECT',getCardDefinition(larva.cardId).skills[1].id);
+ s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));const cpu=new CpuAgent('P1',{rng:()=>0});
+ r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));
+ if(s.pendingEffect)r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));
+ r.assertEqual(s.pendingEffect,null);
+ const blocked=put(s,'set6_041'),cricket=put(s,'set7_046','FIELD','P2');
+ const formSkill=getCardDefinition(blocked.cardId).skills[1];
+ r.assertEqual(getLegalAttackTargets(s,blocked.instanceId,formSkill.id).length,0);
+ moveCard(s,cricket.instanceId,'FIELD','HAND',{playerId:'P2'});
+ r.assert(getLegalAttackTargets(s,blocked.instanceId,formSkill.id).length>0);
+});
+r.test('Cricket suppresses optional entry and prevents paid exchanges before a zone move',()=>{
+ const s=state(),cricket=put(s,'set7_046','FIELD','P2'),adult=put(s,'set6_016','DISCARD');
+ const host=put(s,'set6_016','HAND');summonInsect(s,'P1',host.instanceId);
+ r.assertEqual(s.pendingEffect,null);r.assertEqual(adult.zone,'DISCARD');
+ const exchange=put(s,'set4_057','HAND');put(s,'set6_041');
+ const cost=s.player('P1').availableCost;
+ try{useSpell(s,'P1',exchange.instanceId);}catch(e){}
+ r.assertEqual(exchange.zone,'HAND');r.assertEqual(s.pendingEffect,null);r.assertEqual(s.player('P1').availableCost,cost);
+});
+r.test('Two mandibles requires a current attachment and draws one extra territory by effect after an attack draw',()=>{
+ for(const direct of [true,false]){
+  let s=state();const source=put(s,'set6_019'),skill=getCardDefinition(source.cardId).skills[1];
+  const target=direct?null:put(s,'set6_016','FIELD','P2');
+  const three=[0,1,2].map(()=>put(s,'set6_016','TERRITORY','P2'));
+  r.assertEqual(getLegalAttackTargets(s,source.instanceId,skill.id).length,0);
+  source.attachments=[{cardId:'set7_054',instanceId:'dual-blade',runtimeFlags:{}}];
+  if(target)target.currentHp=1;
+  r.assert(getLegalAttackTargets(s,source.instanceId,skill.id).length>0);
+  performAttack(s,source.instanceId,target&&target.instanceId,direct?'LEADER':'INSECT',skill.id);
+  r.assertEqual(s.pendingEffect.type,'TERRITORY_DRAW_SELECTION');r.assert(s.pendingEffect.context.attackSourceInstanceId);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  resolveTerritoryDrawSelection(s,'P2',three[0].instanceId);
+  r.assertEqual(s.pendingEffect.type,'TERRITORY_DRAW_SELECTION');r.assert(!s.pendingEffect.context?.attackSourceInstanceId);
+  const cpu=new CpuAgent('P2',{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));
+  r.assertEqual(s.player('P2').territory.length,1);r.assertEqual(s.pendingEffect,null);
+ }
+});
+r.test('Two mandibles cannot trigger on a replaced draw or after its last enhancement is removed',()=>{
+ const s=state(),source=put(s,'set6_019'),victim=put(s,'set3_043','FIELD','P2');
+ const skill=getCardDefinition(source.cardId).skills[1],enh={instanceId:'mandible-enh',cardId:'set7_054',runtimeFlags:{}};
+ source.attachments=[enh];r.assert(getLegalAttackTargets(s,source.instanceId,skill.id).length>0);
+ source.attachments=[];r.assertEqual(getLegalAttackTargets(s,source.instanceId,skill.id).length,0);
+ source.attachments=[enh];victim.currentHp=1;put(s,'set6_016','TERRITORY','P2');
+ performAttack(s,source.instanceId,victim.instanceId,'INSECT',skill.id);
+ resolveChoiceSelection(s,'P2','SUPPRESS');r.assertEqual(s.pendingEffect,null);r.assertEqual(s.player('P2').territory.length,1);
+});
 module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1});
