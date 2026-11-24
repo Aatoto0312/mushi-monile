@@ -2159,6 +2159,10 @@
         candidates = state.player(state.opponentOf(playerId)).field.filter(function (card) {
           return !card.faceDown;
         });
+      } else if(effect.target==='OPPONENT_WITH_UNHEALABLE_DAMAGE'){
+        candidates=state.player(state.opponentOf(playerId)).field.filter(function(card){
+          return !card.faceDown && card.runtimeFlags.unhealableDamage>0;
+        });
       } else if(effect.target==='ANY_ATTACKED_ATTACHED_FIELD_INSECT'){
         candidates=[];state.playerOrder.forEach(function(pid){candidates=candidates.concat(state.player(pid).field.filter(function(card){return !card.faceDown&&card.attackedThisTurn&&(card.attachments||[]).length>0;}));});
       } else if(effect.target==='ANY_ATTACKED_FIELD_INSECT'){
@@ -2562,11 +2566,17 @@
         batchMoveCards(state,[{instanceId:fieldCard.instanceId,from:ZONES.FIELD,to:ZONES.FOOD,playerId:exchangeOpponentId},{instanceId:foodCard.instanceId,from:ZONES.FOOD,to:ZONES.FIELD,playerId:exchangeOpponentId,runtimeFlags:spellEntryFlags(state,playerId,instance)}]);
       }
       if (effect.type==='DAMAGE_ALL_VISIBLE_END_TURN') {
+        var areaAmount=effect.amount;
+        if(effect.amountFromTarget==='UNHEALABLE_DAMAGE'){
+          var reference=findInZone(state,state.opponentOf(playerId),ZONES.FIELD,chosenTargetInstanceId);
+          if(!reference || reference.faceDown || !(reference.runtimeFlags.unhealableDamage>0))return;
+          areaAmount=reference.runtimeFlags.unhealableDamage;
+        }
         var lethal=[];
         state.playerOrder.forEach(function(pid){
           state.player(pid).field.filter(function(card){return !card.faceDown;}).forEach(function(card){
-            var hit={effectId:effect.type,apVal:effect.amount,multiplier:1};
-            applyDamage(state,instance,card,effect.amount,'SPELL',instance.instanceId,card.instanceId,hit,{deferDestruction:true});
+            var hit={effectId:effect.type,apVal:areaAmount,multiplier:1};
+            applyDamage(state,instance,card,areaAmount,'SPELL',instance.instanceId,card.instanceId,hit,{deferDestruction:true});
             if (card.currentHp<=0 || hit.destroyAfterDamage) lethal.push({
               playerId:pid,label:getCardDefinition(card.cardId).name,
               continuation:{type:'FINISH_AREA_DAMAGE',target:snapshotCommittedSpellTarget(state,card.instanceId),sourceInstanceId:instance.instanceId}

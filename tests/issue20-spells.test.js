@@ -80,7 +80,7 @@ runner.test('Ordinary discard retrieval ignores a face-down insect without revea
   runner.assertEqual(hidden.faceDown,true);
   runner.assertEqual(state.pendingEffect,null);
 });
-for(const [id,damage] of [['set8_057',300],['set8_058',1200]]) runner.test(id+' simultaneous damage, choice restoration, then turn end',()=>{
+for(const [id,damage] of [['set8_057',300],['set8_058',1200],['set5_061',1000]]) runner.test(id+' simultaneous damage, choice restoration, then turn end',()=>{
   const h=require('./helpers');require('../js/engine/cpu-agent');
   let s=h.newGame({rng:()=>0});h.toMainPhase(s);
   const pid=s.activePlayerId,op=s.opponentOf(pid);
@@ -88,6 +88,14 @@ for(const [id,damage] of [['set8_057',300],['set8_058',1200]]) runner.test(id+' 
   const spell=h.addToHandRaw(s,pid,getCardDefinition(id));
   const insects=[pid,pid,op].map(p=>h.putInsectOnField(s,p,'namitentou',{hp:damage}));
   const hidden=h.putInsectOnField(s,op,'kabutomushi');hidden.faceDown=true;
+  if(id==='set5_061'){
+    const snapshot=JSON.stringify(s);let rejected=false;
+    try{useSpell(s,pid,spell.instanceId);}catch{rejected=true;}
+    runner.assert(rejected);runner.assertEqual(JSON.stringify(s),snapshot);
+    insects[2].runtimeFlags.unhealableDamage=1000;
+    hidden.runtimeFlags.unhealableDamage=100;
+    runner.assertEqual(getSpellTargetCandidates(s,pid,spell.instanceId).map(c=>c.instanceId).join(','),insects[2].instanceId);
+  }
   useSpell(s,pid,spell.instanceId);
   runner.assertEqual(s.pendingEffect.selectionPurpose,'SIMULTANEOUS_TRIGGER_ORDER');
   runner.assertEqual(s.pendingEffect.playerId,pid);

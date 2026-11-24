@@ -15,7 +15,7 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   await page.locator('#btn-deck-p1-kabuto').click();
   await page.locator('#btn-deck-p2-okama').click();
   if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
-  for(const id of ['set8_062','set8_063','set5_057','set8_057','set8_058']) {
+  for(const id of ['set8_062','set8_063','set5_057','set8_057','set8_058','set5_061']) {
     await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,p=s.player(pid);
       s.phase=Phases.MAIN_PHASE;s.turnNumber=3;s.pendingEffect=null;
@@ -24,11 +24,16 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
       }
       p.hand=[make(id,'HAND',id+'_held')];p.field=[];s.player(s.opponentOf(pid)).field=[];
       p.discard=[make('kabutomushi','DISCARD','visible'),make('namitentou','DISCARD','second'),make('tonosamabatta','DISCARD','hidden',true)];
+      if(id==='set5_061'){
+        const enemy=s.opponentOf(pid);
+        const bug=new CardInstance({cardId:'namitentou',zone:'FIELD',instanceId:s.nextInstanceId(),ownerId:enemy,controllerId:enemy,baseHp:300,currentHp:100});
+        bug.runtimeFlags.unhealableDamage=200;s.player(enemy).field.push(bug);
+      }
       p.availableCost=10;ui.actionState={mode:'idle'};ui.render();
     },id);
     await page.locator('#self-hand-zone .battle-card').click();
     await page.locator('.detail-action-btn').filter({hasText:'術を使う'}).click();
-    if (['set8_057','set8_058'].includes(id)) {
+    if (['set8_057','set8_058','set5_061'].includes(id)) {
       assert.equal(await page.evaluate(id=>MushiBattle.ui.state.playerOrder.some(pid=>MushiBattle.ui.state.player(pid).discard.some(c=>c.instanceId===id+'_held')),id),true);
       if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
       continue;

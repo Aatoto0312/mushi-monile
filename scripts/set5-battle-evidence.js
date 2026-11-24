@@ -84,3 +84,9 @@ for (const [id,name,number] of [['set5_058','燻煙の迎撃',367],['set5_059','
     human:['server/test/issue20-spells.test.cjs'],online:['server/test/issue20-spells.test.cjs'],
     serialization:['tests/set8-territory-retaliation.test.js']};
 }
+module.exports.set5_061={
+  name:'蠱毒の祟り',status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/370.jpg',
+  sourceProvenance:'Official fifth-set Q&A confirms accumulated unhealable damage; shared simultaneous spell resolution.',
+  officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],
+  engine:['tests/issue20-spells.test.js'],cpu:['tests/issue20-spells.test.js'],human:['tests/issue20-spell-human-paths.cjs'],
+  online:['server/test/issue20-spells.test.cjs'],serialization:['tests/issue20-spells.test.js']};

@@ -22,8 +22,9 @@ runtime.createRuntime=function() {
       r.context.triggerTerritoryDrawSelection(state,'P1',{attackSourceInstanceId:attacker.instanceId});
       r.context.resolveTerritoryDrawSelection(state,'P1',spell.instanceId);
     }
-    if (['set8_057','set8_058'].includes(scenario)) {
+    if (['set8_057','set8_058','set5_061'].includes(scenario)) {
       for (const card of state.player('P2').field) card.currentHp=100;
+      if(scenario==='set5_061')state.player('P2').field[0].runtimeFlags.unhealableDamage=200;
     }
     return state;
   };
@@ -31,7 +32,7 @@ runtime.createRuntime=function() {
 };
 const {createRoomService}=require('../lib/rooms.cjs');
 
-for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058']) test(id+' room cast and turn-end projection',t=>{
+for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058','set5_061']) test(id+' room cast and turn-end projection',t=>{
   scenario=id;
   const service=createRoomService({rng:()=>0});
   t.after(()=>service.close());
@@ -48,7 +49,7 @@ for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_05
     return {session,last,send,view:()=>last('VIEW')};
   }
   let a=client();
-  const b=client(),w=client();
+  let b=client();const w=client();
   a.send('CREATE');
   const auth=a.last('SESSION');
   b.send('JOIN',{code:auth.roomCode});
@@ -74,7 +75,9 @@ for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_05
     return;
   }
   act(a.view().battle.actions.find(x=>x.kind==='SPELL').id);
-  if (['set8_057','set8_058'].includes(id)) {
+  if (['set8_057','set8_058','set5_061'].includes(id)) {
+    const seat=b.last('SESSION');service.disconnect(b.session);b=client();b.send('RESUME',{code:auth.roomCode,token:seat.token});
+    assert.equal(w.view().battle.actions.length,0);
     const choices=b.view().battle.actions.filter(x=>x.kind==='CHOICE');
     assert.equal(choices.length,2);
     b.send('ACTION',{version:b.view().room.version,actionId:choices[0].id,selectedRefs:[]});
