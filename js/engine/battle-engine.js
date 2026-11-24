@@ -809,6 +809,12 @@
       resumeAfterSelection(state,{type:'DESTROY_VISIBLE_SEQUENCE',instanceIds:destroyIds,sourceInstanceId:continuation.sourceInstanceId,afterResolution:continuation.afterResolution});return;
     }
     if(continuation.type==='DRAW_OWN_TERRITORY_AFTER_ATTACK'){if(state.phase===Phases.GAME_OVER)return;triggerTerritoryDrawSelection(state,continuation.playerId);return;}
+    if (continuation.type==='FINISH_AREA_DAMAGE') {
+      if (isCommittedSpellTargetCurrent(state,continuation.target)) {
+        destroyInsect(state,continuation.target.instanceId,'SPELL',continuation.sourceInstanceId);
+      }
+      return;
+    }
     if(continuation.type==='END_ACTIVE_TURN'){
       if(state.player(state.activePlayerId).resolving.length){state._postSpellContinuation=continuation;return;}
       endTurn(state);return;
@@ -2554,6 +2560,20 @@
         var exchangeOpponentId=state.opponentOf(playerId),fieldCard=findInZone(state,exchangeOpponentId,ZONES.FIELD,chosenIds[0])||findInZone(state,exchangeOpponentId,ZONES.FIELD,chosenIds[1]),foodCard=findInZone(state,exchangeOpponentId,ZONES.FOOD,chosenIds[0])||findInZone(state,exchangeOpponentId,ZONES.FOOD,chosenIds[1]);
         if(!fieldCard||fieldCard.faceDown||!foodCard||foodCard.faceDown)throw new Error('相手の場とエサ場から虫を1つずつ選んでください');
         batchMoveCards(state,[{instanceId:fieldCard.instanceId,from:ZONES.FIELD,to:ZONES.FOOD,playerId:exchangeOpponentId},{instanceId:foodCard.instanceId,from:ZONES.FOOD,to:ZONES.FIELD,playerId:exchangeOpponentId,runtimeFlags:spellEntryFlags(state,playerId,instance)}]);
+      }
+      if (effect.type==='DAMAGE_ALL_VISIBLE_END_TURN') {
+        var lethal=[];
+        state.playerOrder.forEach(function(pid){
+          state.player(pid).field.filter(function(card){return !card.faceDown;}).forEach(function(card){
+            var hit={effectId:effect.type,apVal:effect.amount,multiplier:1};
+            applyDamage(state,instance,card,effect.amount,'SPELL',instance.instanceId,card.instanceId,hit,{deferDestruction:true});
+            if (card.currentHp<=0 || hit.destroyAfterDamage) lethal.push({
+              playerId:pid,label:getCardDefinition(card.cardId).name,
+              continuation:{type:'FINISH_AREA_DAMAGE',target:snapshotCommittedSpellTarget(state,card.instanceId),sourceInstanceId:instance.instanceId}
+            });
+          });
+        });
+        resumeAfterSelection(state,{type:'SEQUENCE',steps:[{type:'ORDER_TRIGGER_CONTINUATIONS',steps:lethal},{type:'END_ACTIVE_TURN'}]});
       }
       if(effect.type==='DESTROY_ALL_VISIBLE_INSECTS_END_TURN'){
         var allVisible=[];state.playerOrder.forEach(function(pid){state.player(pid).field.forEach(function(card){if(!card.faceDown)allVisible.push(card.instanceId);});});

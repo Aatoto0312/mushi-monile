@@ -80,5 +80,25 @@ runner.test('Ordinary discard retrieval ignores a face-down insect without revea
   runner.assertEqual(hidden.faceDown,true);
   runner.assertEqual(state.pendingEffect,null);
 });
+for(const [id,damage] of [['set8_057',300],['set8_058',1200]]) runner.test(id+' simultaneous damage, choice restoration, then turn end',()=>{
+  const h=require('./helpers');require('../js/engine/cpu-agent');
+  let s=h.newGame({rng:()=>0});h.toMainPhase(s);
+  const pid=s.activePlayerId,op=s.opponentOf(pid);
+  s.player(pid).availableCost=20;
+  const spell=h.addToHandRaw(s,pid,getCardDefinition(id));
+  const insects=[pid,pid,op].map(p=>h.putInsectOnField(s,p,'namitentou',{hp:damage}));
+  const hidden=h.putInsectOnField(s,op,'kabutomushi');hidden.faceDown=true;
+  useSpell(s,pid,spell.instanceId);
+  runner.assertEqual(s.pendingEffect.selectionPurpose,'SIMULTANEOUS_TRIGGER_ORDER');
+  runner.assertEqual(s.pendingEffect.playerId,pid);
+  for(const bug of insects) runner.assert(bug.currentHp<=0);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  const cpu=new CpuAgent(pid,{rng:()=>0});
+  runner.assert(cpu.executeAction(s,cpu.getPendingAction(s)));
+  runner.assertEqual(s.activePlayerId,op);
+  runner.assert(s.player(op).field.some(c=>c.instanceId===hidden.instanceId));
+  for(const bug of insects)runner.assert(s.player(bug.ownerId).discard.some(c=>c.instanceId===bug.instanceId));
+  runner.assert(s.player(pid).discard.some(c=>c.instanceId===spell.instanceId));
+});
 module.exports = runner;
 if (require.main === module) runner.runAll();

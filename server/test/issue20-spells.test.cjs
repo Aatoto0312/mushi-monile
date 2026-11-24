@@ -22,13 +22,16 @@ runtime.createRuntime=function() {
       r.context.triggerTerritoryDrawSelection(state,'P1',{attackSourceInstanceId:attacker.instanceId});
       r.context.resolveTerritoryDrawSelection(state,'P1',spell.instanceId);
     }
+    if (['set8_057','set8_058'].includes(scenario)) {
+      for (const card of state.player('P2').field) card.currentHp=100;
+    }
     return state;
   };
   return r;
 };
 const {createRoomService}=require('../lib/rooms.cjs');
 
-for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059']) test(id+' room cast and turn-end projection',t=>{
+for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058']) test(id+' room cast and turn-end projection',t=>{
   scenario=id;
   const service=createRoomService({rng:()=>0});
   t.after(()=>service.close());
@@ -71,6 +74,14 @@ for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059']) test(i
     return;
   }
   act(a.view().battle.actions.find(x=>x.kind==='SPELL').id);
+  if (['set8_057','set8_058'].includes(id)) {
+    const choices=b.view().battle.actions.filter(x=>x.kind==='CHOICE');
+    assert.equal(choices.length,2);
+    b.send('ACTION',{version:b.view().room.version,actionId:choices[0].id,selectedRefs:[]});
+    assert.equal(b.view().battle.players.P2.field.length,0);
+    assert(a.view().battle.players.P1.discard.some(x=>x.cardId===id));
+    return;
+  }
   if (id==='set5_057') {
     assert.equal(b.view().battle.decision,null);
     assert.equal(w.view().battle.decision,null);

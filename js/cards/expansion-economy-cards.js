@@ -1,6 +1,8 @@
 (function(root,factory){'use strict';var data=typeof module==='object'&&module.exports?require('./full-catalog-data'):root.MushijingiFullCatalogData,api=factory(root,data);if(typeof module==='object'&&module.exports)module.exports=api;if(root.cardRegistry)api.register(root.cardRegistry);})(globalThis,function(root,data){'use strict';
 var specs={
 set8_062:{text:data.find(function(card){return card.id==='set8_062';}).cardEffects[0].effectText,effect:{type:'REVIVE_UNTIL_END_TURN',requiresTarget:true,target:'OWN_DISCARD_INSECT',deferFinalization:true}},
+set8_057:{text:'自分と相手のすべての虫に300のダメージを与え、このターンを終了する。',effect:{type:'DAMAGE_ALL_VISIBLE_END_TURN',deferFinalization:true,amount:300}},
+set8_058:{text:'自分と相手のすべての虫に1200のダメージを与え、このターンを終了する。',effect:{type:'DAMAGE_ALL_VISIBLE_END_TURN',deferFinalization:true,amount:1200}},
 set8_063:{text:data.find(function(card){return card.id==='set8_063';}).cardEffects[0].effectText,effect:{type:'SUPPRESS_OPPONENT_INSECT_KEYWORDS',deferFinalization:true}},
 set8_037:{"texts":[null,"次の相手のターン、これは術カードの対象にならず、色による2倍のダメージを受けない。"],"index":1,"effect":{"type":"GRANT_SPELL_IMMUNITY_AND_IGNORE_WEAKNESS_NEXT_TURN"}},
 set7_040:{"texts":[null,"この技は1度だけ使用できる。次の相手のターン、相手が最初に使用する術カードのコストを2増やす。"],"index":1,"effect":{"type":"TAX_FIRST_OPPONENT_SPELL_NEXT_TURN","amount":2},"once":true},
