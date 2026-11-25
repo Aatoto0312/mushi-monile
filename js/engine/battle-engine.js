@@ -236,6 +236,14 @@
   // TERRITORY -> RESOLVING -> HAND (または <とびだす> 判定へ)
   function triggerTerritoryDrawSelection(state, playerId, territoryContext) {
     var player = state.player(playerId);
+    if(player.territory.length && player.optionalTerritoryDrawTurn===state.turnNumber &&
+       !(territoryContext && territoryContext.drawAccepted)){
+      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,
+        selectionPurpose:'OPTIONAL_TERRITORY_DRAW',prompt:'月光：縄張りを引きますか？',
+        options:[{value:'SKIP',label:'引かない'},{value:'DRAW',label:'縄張りを引く'}],
+        continuation:{type:'MOONLIGHT_DRAW',context:territoryContext||{}}};
+      return;
+    }
     // This is an already-resolved replacement, not a new keyword trigger.
     // It consumes the draw before any card is chosen/revealed or draw effects fire.
     var replacement = player.territory.find(function(card) {
@@ -844,6 +852,14 @@
       return card;
     }
     var keywordSuppressed=card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,card);
+    var drawnEffect=!keywordSuppressed && (def && def.passiveAbilities||[]).flatMap(function(ability){return ability.effects||[];}).find(function(effect){return effect.type==='OPTIONAL_DRAWN_TERRITORY_EFFECT';});
+    if(drawnEffect && (!drawnEffect.attackOnly || (context && context.attackSourceInstanceId))){
+      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,
+        selectionPurpose:'DRAWN_TERRITORY_EFFECT',prompt:def.name+'の特性を使いますか？',
+        options:[{value:'USE',label:def.passiveAbilities[0].name+'を使う'},{value:'DECLINE',label:'手札に加える'}],
+        continuation:{type:'DRAWN_TERRITORY_EFFECT',action:drawnEffect.action,cardInstanceId:card.instanceId}};
+      return card;
+    }
     var retaliation=!keywordSuppressed&&def&&(def.passiveAbilities||[]).filter(function(ability){return ability.timing==='TERRITORY_DRAW';}).reduce(function(all,ability){return all.concat(ability.effects||[]);},[]).find(function(effect){return effect.type==='OPTIONAL_RETALIATE_TERRITORY_ATTACKER';});
     if (def && def.territorySpellTrigger === 'INTERCEPT') {
       retaliation = {label:'迎撃'};
@@ -1494,12 +1510,33 @@
         if(crown)moveCard(state,crown.instanceId,ZONES.DISCARD,ZONES.FOOD,{playerId:continuation.ownerId,faceDown:false});
       }
       resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
+    } else if(continuation.type==='MOONLIGHT_DRAW'){
+      state.pendingEffect=null;
+      if(value==='DRAW')triggerTerritoryDrawSelection(state,playerId,Object.assign({},continuation.context,{drawAccepted:true}));
+      resumeAfterSelection(state,pending.afterResolution);return;
+    } else if(continuation.type==='DRAWN_TERRITORY_EFFECT'){
+      state.pendingEffect=null;
+      var chosen=findInZone(state,playerId,ZONES.RESOLVING,continuation.cardInstanceId);
+      if(!chosen)throw new Error('選んだ縄張りカードがありません');
+      if(value==='DECLINE'){
+        finalizeTerritoryDraw(state,playerId,chosen,ZONES.HAND);
+      } else if(continuation.action==='REVEAL_AND_DRAW'){
+        emitBattleEvent(state,'TERRITORY_CARD_REVEALED',{playerId:playerId,cardId:chosen.cardId});
+        finalizeTerritoryDraw(state,playerId,chosen,ZONES.HAND);
+        triggerTerritoryDrawSelection(state,playerId);
+      } else if(continuation.action==='DISCARD_FOR_OPTIONAL_DRAWS'){
+        finalizeTerritoryDraw(state,playerId,chosen,ZONES.DISCARD);
+        state.player(playerId).optionalTerritoryDrawTurn=state.turnNumber;
+      }
+      resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='RESOLVE_DESTRUCTION_DRAW_FAMILY'){
+      state.pendingEffect=null;
       var drawn=findInZone(state,playerId,ZONES.RESOLVING,continuation.cardInstanceId);
       if(drawn){
         if(value==='USE')finalizeTerritoryDraw(state,playerId,drawn,ZONES.FIELD);
         else checkTerritoryDrawTrigger(state,playerId,drawn,continuation.context);
       }
+      resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='RESOLVE_TERRITORY_RETALIATION'){
       var retaliationCard=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.cardInstanceId);
       if(!retaliationCard)throw new Error('毒汁噴出の縄張りカードが解決領域にありません');
@@ -2584,6 +2621,12 @@
         if(!fieldCard||fieldCard.faceDown||!foodCard||foodCard.faceDown)throw new Error('相手の場とエサ場から虫を1つずつ選んでください');
         batchMoveCards(state,[{instanceId:fieldCard.instanceId,from:ZONES.FIELD,to:ZONES.FOOD,playerId:exchangeOpponentId},{instanceId:foodCard.instanceId,from:ZONES.FOOD,to:ZONES.FIELD,playerId:exchangeOpponentId,runtimeFlags:spellEntryFlags(state,playerId,instance)}]);
       }
+      if(effect.type==='NEXT_OPPONENT_ATTACK_COST'){
+        var nextOpponent=state.player(state.opponentOf(playerId));
+        var taxedTurn=state.turnNumber+(state.activePlayerId===playerId?1:2);
+        nextOpponent.attackPayment={turn:taxedTurn,amount:effect.amount+
+          (nextOpponent.attackPayment && nextOpponent.attackPayment.turn===taxedTurn?nextOpponent.attackPayment.amount:0)};
+      }
       if (effect.type==='DAMAGE_ALL_VISIBLE_END_TURN') {
         var areaAmount=effect.amount;
         if(effect.amountFromTarget==='UNHEALABLE_DAMAGE'){
@@ -3341,11 +3384,17 @@
   //      1体以上あれば(＜りんぷん＞等)、legal targets をその虫群だけに絞る
   //   3. そのような虫がなければ、通常のtargetable insects 全体をlegalにする
   //   4. 最終的にlegal insectが0体なら LEADER 直接攻撃を許可
+  function currentAttackPayment(state,playerId){
+    var payment=state.player(playerId).attackPayment;
+    return payment && payment.turn===state.turnNumber ? payment.amount : 0;
+  }
+
   function getLegalAttackTargets(state, attackerInstanceId, skillId) {
     var holder = findAnywhere(state, attackerInstanceId);
     if (!holder) { return []; }
     if (state.activePlayerId !== holder.playerId) { return []; }
     if (state.phase !== Phases.MAIN_PHASE) { return []; }
+    if(state.player(holder.playerId).availableCost<currentAttackPayment(state,holder.playerId))return [];
     var attacker = holder.instance;
     if(attacker.faceDown){return [];}
     var attackerDef = getCardDefinition(attacker.cardId);
@@ -3703,6 +3752,8 @@
       }
       payAdditionalCosts(state, attacker, skill.additionalCost, chosenSacrificeInstanceId, attackOptions.additionalCostFoodIds);
     }
+
+    state.player(ap).availableCost-=currentAttackPayment(state,ap);
 
     // AP modifier (一時的な攻撃力補正) を適用
     var apVal = getEffectiveAP(state, attacker, skill.baseAp || 0, skill);
@@ -4259,10 +4310,12 @@
         prevented = true;
       });
     });
+    var firstHostDamage=damage>0 && target.runtimeFlags.lastDamageAttemptTurn!==state.turnNumber;
+    if(damage>0)target.runtimeFlags.lastDamageAttemptTurn=state.turnNumber;
     (target.attachments || []).slice().forEach(function (attachment) {
       var attachmentDef = getCardDefinition(attachment.cardId);
       var shields = (attachmentDef && attachmentDef.enhancementEffects || []).filter(function (effect) {
-        return effect.type === 'PREVENT_DAMAGE' && (!effect.sourceType || effect.sourceType === sourceType);
+        return effect.type === 'PREVENT_DAMAGE' && (effect.limit!=='FIRST_HOST_DAMAGE_PER_TURN'||firstHostDamage) && (!effect.sourceType || effect.sourceType === sourceType);
       });
       if (!shields.length) { return; }
       prevented = true;

@@ -28,4 +28,16 @@ r.test('Dance counters only the first paid enhancement after restore; invalid ho
   useEnhancement(s,'P2',second.instanceId,host.instanceId);
   r.assertEqual(host.attachments[0].instanceId,second.instanceId);r.assertEqual(s.player('P2').availableCost,18);
 });
+r.test('Stacked sandstorms charge each committed attack on the next opponent turn only',()=>{
+  let s=fixture();cast(s,'set6_057');cast(s,'set6_057');next(s);
+  const target=put(s,'kabutomushi','FIELD','P1'), unit=put(s,'namitentou','FIELD','P2');
+  target.currentHp=10000;unit.attackedThisTurn=false;s.player('P2').hand=[];
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));s.player('P2').availableCost=1;
+  r.assertEqual(getLegalAttackTargets(s,unit.instanceId).length,0);
+  s.player('P2').availableCost=2;
+  const cpu=new CpuAgent('P2',{rng:()=>0}),action=cpu.decideMainPhaseAction(s);
+  r.assertEqual(action.type,'ATTACK');r.assert(cpu.executeAction(s,action));r.assertEqual(s.player('P2').availableCost,0);
+  s.turnNumber+=2;s.player('P2').field[0].attackedThisTurn=false;
+  r.assert(getLegalAttackTargets(s,unit.instanceId).length>0);
+});
 module.exports=r;if(require.main===module)r.runAll();

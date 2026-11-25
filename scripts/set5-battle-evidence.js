@@ -96,3 +96,6 @@ module.exports.set5_042={
   officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/'],
   engine:['tests/set8-territory-retaliation.test.js'],cpu:['tests/set8-territory-retaliation.test.js'],
   human:['tests/issue20-spell-human-paths.cjs'],online:['server/test/issue20-spells.test.cjs'],serialization:['tests/set8-territory-retaliation.test.js']};
+module.exports.set5_051={name:'肉祓いの蒼玉',status:'PLAYABLE',rulingStatus:'PROVISIONAL',audited:false,
+ image:'https://mushijingi.com/images/card/360.jpg',sourceProvenance:'SET5 catalog and fifth-set Q&A on current host color. Track first positive incoming damage per host and turn; equipping a second copy does not refresh the prevention.',
+ engine:['tests/set8-territory-retaliation.test.js'],cpu:['tests/set8-territory-retaliation.test.js'],human:['server/test/issue20-spells.test.cjs'],online:['server/test/issue20-spells.test.cjs'],serialization:['server/test/issue20-spells.test.cjs']};

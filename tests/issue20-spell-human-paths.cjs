@@ -9,13 +9,14 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   const browser=await pw[kind].launch(kind==='chromium'?{channel:'msedge'}:{});
   t.after(()=>browser.close());
   const page=await browser.newPage({viewport:{width:390,height:670}});
+  await page.addInitScript(()=>{let seed=37;Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};});
   page.setDefaultTimeout(7000);
   await page.goto(process.env.MUSHI_URL||pathToFileURL(path.resolve(__dirname,'../index.html')).href,{waitUntil:'domcontentloaded'});
   await page.locator('#btn-vs-human').click();
   await page.locator('#btn-deck-p1-kabuto').click();
   await page.locator('#btn-deck-p2-okama').click();
   if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
-  for(const id of ['set8_062','set8_063','set5_057','set7_059','set8_057','set8_058','set5_061']) {
+  for(const id of ['set8_062','set8_063','set5_057','set6_057','set7_059','set8_057','set8_058','set5_061']) {
     await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,p=s.player(pid);
       s.phase=Phases.MAIN_PHASE;s.turnNumber=3;s.pendingEffect=null;
@@ -33,6 +34,7 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
     },id);
     await page.locator('#self-hand-zone .battle-card').click();
     await page.locator('.detail-action-btn').filter({hasText:'術を使う'}).click();
+    if(id==='set6_057'){assert(await page.evaluate(()=>{const s=MushiBattle.ui.state;return s.player(s.opponentOf(s.activePlayerId)).attackPayment.amount===1;}));continue;}
     if(id==='set7_059'){
       assert(await page.evaluate(()=>MushiBattle.ui.state.pendingUseCounters.some(c=>c.cardType==='ENHANCEMENT')));
       continue;
@@ -79,6 +81,7 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   for(const id of ['set5_042','set6_027','set8_026']){
     const drawnId=await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId,op=s.opponentOf(p);
+      s.phase=Phases.MAIN_PHASE;ui.actionState={mode:'idle'};
       for(const side of s.playerOrder){s.player(side).field=[];delete s.player(side).keywordSuppressionUntilTurn;}
       function put(cardId,zone,ownerId){
         const d=getCardDefinition(cardId),c=new CardInstance({cardId,zone,ownerId,controllerId:ownerId,instanceId:s.nextInstanceId(),baseHp:d.baseHp,currentHp:d.baseHp});
@@ -91,5 +94,20 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
     },id);
     await page.getByRole('button',{name:'場に出す',exact:true}).click();
     assert(await page.evaluate(ref=>{const s=MushiBattle.ui.state;return s.player(s.activePlayerId).field.some(c=>c.instanceId===ref);},drawnId));
+  }
+  for(const id of ['set8_027','set6_046']){
+    const label=await page.evaluate(id=>{
+      const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId,op=s.opponentOf(p);
+      const card=new CardInstance({cardId:id,instanceId:s.nextInstanceId(),zone:'TERRITORY',ownerId:p,controllerId:p});
+      s.player(p).territory=[card];
+      triggerTerritoryDrawSelection(s,p,{attackSourceInstanceId:s.player(op).field[0].instanceId});
+      resolveTerritoryDrawSelection(s,p,card.instanceId);ui.render();return getCardDefinition(id).passiveAbilities[0].name+'を使う';
+    },id);
+    await page.getByRole('button',{name:label,exact:true}).click();
+    const outcome=await page.evaluate(id=>{
+      const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId;
+      if(id==='set6_046')return s.player(p).discard.some(c=>c.cardId===id);
+      return s.player(p).hand.some(c=>c.cardId===id);
+    },id);assert(outcome);
   }
 });

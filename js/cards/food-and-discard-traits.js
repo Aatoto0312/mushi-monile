@@ -7,6 +7,8 @@
     set5_042: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',suffixes:['バッタ科','イナゴ科']},
     set6_027: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
     set8_026: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
+    set8_027:{type:'OPTIONAL_DRAWN_TERRITORY_EFFECT',action:'REVEAL_AND_DRAW',attackOnly:true},
+    set6_046:{type:'OPTIONAL_DRAWN_TERRITORY_EFFECT',action:'DISCARD_FOR_OPTIONAL_DRAWS'},
     set8_017: emperor,
     set8_039: emperor,
     set6_044: {type: 'PREVENT_MATCHING_DISCARD_SPELL_DAMAGE'}

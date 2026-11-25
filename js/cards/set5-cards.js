@@ -9,8 +9,8 @@
   'use strict';
   // Only connect definitions whose full text has been mapped. Registration is
   // deliberately separate from completion evidence and release status.
-  var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64];
-  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64];
+  var wiredNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 51, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64];
+  var playableNumbers = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 51, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64];
   function definitionFromRecord(record) {
     var def = new root.CardDefinition(JSON.parse(JSON.stringify(record)));
     def.skills.forEach(function (skill, index) {
@@ -86,6 +86,11 @@
       def.cardEffects=[{type:'DAMAGE_ALL_VISIBLE_END_TURN',requiresTarget:true,
         target:'OPPONENT_WITH_UNHEALABLE_DAMAGE',amountFromTarget:'UNHEALABLE_DAMAGE',deferFinalization:true}];
     }
+    if(number===51){
+      def.attachmentHostColor='BLUE';
+      def.enhancementEffects=[{type:'PREVENT_DAMAGE',limit:'FIRST_HOST_DAMAGE_PER_TURN'}];
+      def.rulingStatus='PROVISIONAL';
+    }
     if (number === 57) { def.cardEffects=[{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'FOOD',exactSelections:2,faceDown:true,suppressFoodCostThisTurn:true}]; }
     if (number === 62) { if(def.skills.length||def.passiveAbilities.length||def.enhancementEffects.length||def.cardEffects.length!==1||String(def.cardEffects[0].effectText).normalize('NFKC').replace(/\s/g,'')!=='自分の捨て札にある甲冑または贋作と書かれた強化カードを最大2つ選び手札に戻す。')throw new Error('SET5_62_TEXT_MISMATCH');def.cardEffects=[{type:'MOVE_SELECTED_ZONE_CARDS',from:'DISCARD',to:'HAND',cardType:'ENHANCEMENT',nameSubstrings:['甲冑','贋作'],minSelections:0,maxSelections:2}]; }
     if(number===56){var expectedDance='自分のエサ場に（幼虫）と書かれた虫がいるなら、次に使うそれと同名の（幼虫）と書かれていない虫のコストをターン終了時まで３下げる。';if(def.skills.length||def.passiveAbilities.length||def.enhancementEffects.length||def.cardEffects.length!==1||String(def.cardEffects[0].effectText).normalize('NFKC').replace(/\s/g,'')!==expectedDance.normalize('NFKC').replace(/\s/g,''))throw new Error('Unmapped SET5-56 text');}
@@ -119,6 +124,7 @@
       def.rulingStatus = 'PROVISIONAL';
       def.implementationNotes = '暫定裁定：自分の表向きの捨て札から2枚を選ぶ。相手の捨て札を含めるかは公式回答未確認。';
     }
+    if(number===51)def.implementationNotes='暫定裁定：初回は装着先の虫ごとに数え、同一ターンにダメージを受けた後の装着・重ね付けで回数を戻さない。';
     if(number===7)def.implementationNotes='PARTIAL: serialized destruction watcher is wired. NEEDS_RULING: condition timing with SET3-15 threshold-dependent destruction effect; see scripts/set5-ruling-questions.json. No PLAYABLE certification.';
     return def;
   }

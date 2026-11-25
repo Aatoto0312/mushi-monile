@@ -46,4 +46,47 @@ for(const [source,eligible,ineligible] of [['set5_042','tonosamabatta','kabutomu
     r.assert(s.player('P2').field.some(c=>c.instanceId===drawn.instanceId));
   });
 }
+for(const id of ['set6_046','set8_027'])for(const use of [true,false])r.test(id+' optional territory effect '+use,()=>{
+  let s=h.newGame({rng:()=>0});h.toMainPhase(s);
+  const p='P2',attacker=h.putInsectOnField(s,'P1','kabutomushi');
+  s.player(p).territory=[];
+  const first=h.addToTerritoryRaw(s,p,getCardDefinition(id)),second=h.addToTerritoryRaw(s,p,getCardDefinition(id));
+  triggerTerritoryDrawSelection(s,p,{attackSourceInstanceId:attacker.instanceId});
+  resolveTerritoryDrawSelection(s,p,first.instanceId);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  if(use){const cpu=new CpuAgent(p,{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));}
+  else resolveChoiceSelection(s,p,'DECLINE');
+  const reveals=()=>s.battleEvents.filter(e=>e.type==='TERRITORY_CARD_REVEALED');
+  if(!use){r.assertEqual(reveals().length,0);r.assertEqual(s.player(p).territory.length,1);r.assert(!s.pendingEffect);return;}
+  if(id==='set8_027'){
+    r.assertEqual(reveals().length,1);
+    resolveTerritoryDrawSelection(s,p,second.instanceId);
+    r.assertEqual(reveals().length,1);r.assert(!s.pendingEffect);
+    r.assert(s.player(p).hand.some(c=>c.instanceId===second.instanceId));
+  }else{
+    r.assert(s.player(p).discard.some(c=>c.instanceId===first.instanceId));
+    for(const choice of ['SKIP','DRAW']){
+      triggerTerritoryDrawSelection(s,p);
+      r.assertEqual(s.pendingEffect.selectionPurpose,'OPTIONAL_TERRITORY_DRAW');
+      resolveChoiceSelection(s,p,choice);
+      r.assertEqual(s.player(p).territory.length,1);
+    }
+    resolveTerritoryDrawSelection(s,p,second.instanceId);resolveChoiceSelection(s,p,'DECLINE');
+    s.turnNumber++;h.addToTerritoryRaw(s,p,getCardDefinition(id));triggerTerritoryDrawSelection(s,p);
+    r.assertEqual(s.pendingEffect.type,'TERRITORY_DRAW_SELECTION');
+  }
+});
+r.test('Sapphire follows current host color and shares one prevention across attachments and damage sources',()=>{
+  const s=h.newGame({rng:()=>0});h.toMainPhase(s);s.player('P1').availableCost=40;
+  const host=h.putInsectOnField(s,'P1','kabutomushi',{hp:3000}),wrong=h.putInsectOnField(s,'P1','namitentou');
+  const gem=()=>h.addToHandRaw(s,'P1',getCardDefinition('set5_051'));
+  const first=gem();let rejected=false;try{useEnhancement(s,'P1',first.instanceId,wrong.instanceId);}catch{rejected=true;}
+  r.assert(rejected);s.player('P1').hand=[first];
+  const cpu=new CpuAgent('P1',{rng:()=>0}),action=cpu.decideMainPhaseAction(s);
+  r.assertEqual(action.type,'USE_ENHANCEMENT');r.assertEqual(action.targetInstanceId,host.instanceId);r.assert(cpu.executeAction(s,action));
+  const hit=(type)=>applyDamage(s,null,host,100,type,null,host.instanceId,{});
+  const hp=host.currentHp;hit('SPELL');r.assertEqual(host.currentHp,hp);
+  useEnhancement(s,'P1',gem().instanceId,host.instanceId);hit('ATTACK');r.assertEqual(host.currentHp,hp-100);
+  s.turnNumber++;hit('ABILITY');r.assertEqual(host.currentHp,hp-100);hit('SPELL');r.assertEqual(host.currentHp,hp-200);
+});
 module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});
