@@ -830,6 +830,19 @@
   // 縄張りドロー後の誘発処理を確認
   function checkTerritoryDrawTrigger(state, playerId, card, context) {
     var def = getCardDefinition(card.cardId);
+    var familyRule=context && context.destructionDrawFamily;
+    if (familyRule && def && def.type===CardTypes.INSECT && (def.tags||[]).some(function(tag){
+      return (familyRule.families||[]).indexOf(tag)!==-1 ||
+        (familyRule.suffixes||[]).some(function(suffix){return tag.endsWith(suffix);});
+    })) {
+      var remainingContext=Object.assign({},context);
+      delete remainingContext.destructionDrawFamily;
+      state.pendingEffect={type:'CHOICE_SELECTION',playerId:playerId,controller:playerId,
+        selectionPurpose:'DESTRUCTION_DRAW_FAMILY',prompt:'とびでるでこの虫を場に出しますか？',
+        options:[{value:'USE',label:'場に出す'},{value:'DECLINE',label:'とびでるを使わない'}],
+        continuation:{type:'RESOLVE_DESTRUCTION_DRAW_FAMILY',cardInstanceId:card.instanceId,context:remainingContext}};
+      return card;
+    }
     var keywordSuppressed=card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills||areInsectKeywordSkillsSuppressed(state,card);
     var retaliation=!keywordSuppressed&&def&&(def.passiveAbilities||[]).filter(function(ability){return ability.timing==='TERRITORY_DRAW';}).reduce(function(all,ability){return all.concat(ability.effects||[]);},[]).find(function(effect){return effect.type==='OPTIONAL_RETALIATE_TERRITORY_ATTACKER';});
     if (def && def.territorySpellTrigger === 'INTERCEPT') {
@@ -1481,6 +1494,12 @@
         if(crown)moveCard(state,crown.instanceId,ZONES.DISCARD,ZONES.FOOD,{playerId:continuation.ownerId,faceDown:false});
       }
       resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
+    } else if(continuation.type==='RESOLVE_DESTRUCTION_DRAW_FAMILY'){
+      var drawn=findInZone(state,playerId,ZONES.RESOLVING,continuation.cardInstanceId);
+      if(drawn){
+        if(value==='USE')finalizeTerritoryDraw(state,playerId,drawn,ZONES.FIELD);
+        else checkTerritoryDrawTrigger(state,playerId,drawn,continuation.context);
+      }
     } else if(continuation.type==='RESOLVE_TERRITORY_RETALIATION'){
       var retaliationCard=findInZone(state,continuation.playerId,ZONES.RESOLVING,continuation.cardInstanceId);
       if(!retaliationCard)throw new Error('毒汁噴出の縄張りカードが解決領域にありません');
@@ -3135,6 +3154,17 @@
   function cancelPendingEnhancementPayment(state,playerId){var pending=state.pendingEffect;if(!pending||pending.playerId!==playerId||pending.selectionPurpose!=='ENHANCEMENT_FOOD_PAYMENT')throw new Error('取り消せる支払いではありません');state.pendingEffect=null;if(state.freeCardUse&&state.freeCardUse.sourceInstanceId===pending.continuation.sourceInstanceId)state.freeCardUse=null;resumeAfterSelection(state,pending.afterResolution);return true;}
   global.getPendingEnhancementPaymentStatus=getPendingEnhancementPaymentStatus;
   global.cancelPendingEnhancementPayment=cancelPendingEnhancementPayment;
+  function counterPaidEnhancement(state,playerId,held,targetId) {
+    var counters=getActiveUseCounters(state,playerId,CardTypes.ENHANCEMENT);
+    if(!counters.length)return false;
+    state.pendingUseCounters=state.pendingUseCounters.filter(function(counter){return counters.indexOf(counter)===-1;});
+    if(state.freeCardUse && state.freeCardUse.sourceInstanceId===held.instanceId)state.freeCardUse=null;
+    emitBattleEvent(state,'ENHANCEMENT_USED',{playerId:playerId,sourceInstanceId:held.instanceId,targetInstanceId:targetId});
+    moveCard(state,held.instanceId,ZONES.HAND,ZONES.DISCARD,{playerId:playerId,faceDown:false});
+    log(state,state.turnNumber,getCardDefinition(held.cardId).name+'は打ち消された');
+    return true;
+  }
+
   function useEnhancement(state, playerId, handInstanceId, targetInstanceId, chosenColor, enhancementOptions) {
     enhancementOptions=enhancementOptions||{};
     // ---- VALIDATE ----
@@ -3176,6 +3206,7 @@
       var trackedIds=enhancementOptions.trackedIds||[];
       if(trackedIds.length!==2||trackedIds.indexOf(targetInstanceId)===-1||trackedIds.some(function(id){var card=findInZone(state,playerId,ZONES.DISCARD,id),cardDef=card&&getCardDefinition(card.cardId);return !cardDef||cardDef.type!==CardTypes.INSECT;}))throw new Error('捨て札の虫2つと装着先を選んでください');
       player.availableCost-=enhancementCost;
+      if(counterPaidEnhancement(state,playerId,held,targetInstanceId))return held;
       moveCard(state,held.instanceId,ZONES.HAND,ZONES.RESOLVING,{playerId:playerId});
       if(state.freeCardUse&&state.freeCardUse.sourceInstanceId===handInstanceId)state.freeCardUse=null;
       held.runtimeFlags=held.runtimeFlags||{};held.runtimeFlags.trackedInsectInstanceIds=trackedIds.slice();
@@ -3237,6 +3268,7 @@
     player.availableCost -= enhancementCost;
     if(player.nextEnhancementDiscount&&state.turnNumber<=player.nextEnhancementDiscount.endTurn){player.nextEnhancementDiscount=null;}
 
+    if(counterPaidEnhancement(state,playerId,held,targetInstanceId))return held;
     if (summons||discardSummons) {
       moveCard(state, target.instanceId, discardSummons?ZONES.DISCARD:ZONES.HAND, ZONES.FIELD, { playerId: playerId, deferEntryEffects: true, runtimeFlags:{fieldEntryCause:{kind:'ENHANCEMENT',cardId:held.cardId,instanceId:held.instanceId,playerId:playerId}} });
     }
@@ -4550,7 +4582,9 @@
         var sourceHolder=findAnywhere(state,sourceInstanceId), suppressTrigger=false;
         if(sourceHolder&&sourceHolder.zone===ZONES.FIELD){suppressTrigger=(sourceHolder.instance.attachments||[]).some(function(att){var d=getCardDefinition(att.cardId);return d&&(d.enhancementEffects||[]).some(function(e){return e.type==='SUPPRESS_TERRITORY_TRIGGER_FOR_ATTACK';});});}
         suppressTrigger = suppressTrigger || !!(context.skill && (context.skill.effects || []).some(function(effect) { return effect.type === 'SUPPRESS_TERRITORY_TRIGGER_FOR_ATTACK'; }));
-        drawTerritoryCard(state, defenderPlayerId, {suppressTerritoryTrigger:suppressTrigger, attackSourceInstanceId:sourceInstanceId, skillId:context.skill && context.skill.id});
+        var destroyedDefinition=getCardDefinition(destroyedCard.cardId);
+        var familyRule=!context.suppressHostKeywords && (destroyedDefinition.passiveAbilities||[]).flatMap(function(ability){return ability.effects||[];}).find(function(effect){return effect.type==='SUMMON_FAMILY_FROM_DESTRUCTION_DRAW';});
+        drawTerritoryCard(state, defenderPlayerId, {destructionDrawFamily:familyRule||null,suppressTerritoryTrigger:suppressTrigger, attackSourceInstanceId:sourceInstanceId, skillId:context.skill && context.skill.id});
       }
     }
     return destroyedCard;

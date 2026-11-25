@@ -15,7 +15,7 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   await page.locator('#btn-deck-p1-kabuto').click();
   await page.locator('#btn-deck-p2-okama').click();
   if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
-  for(const id of ['set8_062','set8_063','set5_057','set8_057','set8_058','set5_061']) {
+  for(const id of ['set8_062','set8_063','set5_057','set7_059','set8_057','set8_058','set5_061']) {
     await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,p=s.player(pid);
       s.phase=Phases.MAIN_PHASE;s.turnNumber=3;s.pendingEffect=null;
@@ -33,6 +33,10 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
     },id);
     await page.locator('#self-hand-zone .battle-card').click();
     await page.locator('.detail-action-btn').filter({hasText:'術を使う'}).click();
+    if(id==='set7_059'){
+      assert(await page.evaluate(()=>MushiBattle.ui.state.pendingUseCounters.some(c=>c.cardType==='ENHANCEMENT')));
+      continue;
+    }
     if (['set8_057','set8_058','set5_061'].includes(id)) {
       assert.equal(await page.evaluate(id=>MushiBattle.ui.state.playerOrder.some(pid=>MushiBattle.ui.state.player(pid).discard.some(c=>c.instanceId===id+'_held')),id),true);
       if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
@@ -71,5 +75,21 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
     assert.equal(await page.evaluate(()=>{
       const s=MushiBattle.ui.state;return s.player(s.opponentOf(s.activePlayerId)).field[0].currentHp;
     }),2000-damage);
+  }
+  for(const id of ['set5_042','set6_027','set8_026']){
+    const drawnId=await page.evaluate(id=>{
+      const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId,op=s.opponentOf(p);
+      for(const side of s.playerOrder){s.player(side).field=[];delete s.player(side).keywordSuppressionUntilTurn;}
+      function put(cardId,zone,ownerId){
+        const d=getCardDefinition(cardId),c=new CardInstance({cardId,zone,ownerId,controllerId:ownerId,instanceId:s.nextInstanceId(),baseHp:d.baseHp,currentHp:d.baseHp});
+        s.player(ownerId)[zone.toLowerCase()].push(c);return c;
+      }
+      const host=put(id,'FIELD',p),attacker=put('kabutomushi','FIELD',op);
+      const drawn=put(id==='set5_042'?'tonosamabatta':'minminzemi','TERRITORY',p);
+      destroyInsect(s,host.instanceId,'ATTACK',attacker.instanceId,{});
+      resolveTerritoryDrawSelection(s,p,drawn.instanceId);if(s.pendingEffect?.selectionPurpose!=='DESTRUCTION_DRAW_FAMILY')throw Error(id+' '+JSON.stringify(s.pendingEffect));ui.render();return drawn.instanceId;
+    },id);
+    await page.getByRole('button',{name:'場に出す',exact:true}).click();
+    assert(await page.evaluate(ref=>{const s=MushiBattle.ui.state;return s.player(s.activePlayerId).field.some(c=>c.instanceId===ref);},drawnId));
   }
 });

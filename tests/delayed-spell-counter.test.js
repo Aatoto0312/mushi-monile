@@ -12,4 +12,20 @@ r.test('Multiple delayed copies all trigger on the same first spell and survive 
 r.test('Natural CPU uses the delayed spell and its pending order through common Engine',()=>{const s=fixture(),x=put(s,'set7_060'),cpu=new CpuAgent('P1',{rng:()=>0}),action=cpu.decideMainPhaseAction(s);r.assertEqual(action.type,'USE_SPELL');r.assert(cpu.executeAction(s,action));r.assertEqual(x.zone,'DISCARD');r.assertEqual((s.pendingUseCounters||[]).length,1);cast(s);next(s);cast(s,'mushi_no_ibuki','P2');r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));r.assertEqual(s.pendingEffect,null);});
 r.test('A countered setup spell creates no delayed effect',()=>{const s=fixture();put(s,'set7_023','FIELD','P2');const spell=cast(s);r.assertEqual(spell.zone,'DISCARD');r.assertEqual(s.player('P1').availableCost,18);r.assertEqual(s.pendingUseCounters.length,0);});
 r.test('Delayed effect and insect counter share one ordered, restorable trigger batch',()=>{let s=fixture();put(s,'set7_023','FIELD');cast(s);next(s);const spell=cast(s,'mushi_no_ibuki','P2');r.assertEqual(s.pendingEffect.selectionPurpose,'SIMULTANEOUS_TRIGGER_ORDER');r.assertEqual(s.pendingEffect.playerId,'P1');s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));resolveChoiceSelection(s,'P1','0');r.assertEqual(s.pendingEffect,null);r.assertEqual(s.player('P1').field.length,0);r.assertEqual(s.player('P2').discard.filter(c=>c.instanceId===spell.instanceId).length,1);});
+r.test('Dance counters only the first paid enhancement after restore; invalid host cannot spend it',()=>{
+  let s=fixture();
+  const cpu=new CpuAgent('P1',{rng:()=>0}),dance=put(s,'set7_059');
+  const action=cpu.decideMainPhaseAction(s);r.assertEqual(action.instanceId,dance.instanceId);r.assert(cpu.executeAction(s,action));
+  cast(s,'set7_059');next(s);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  const host=put(s,'kabutomushi','FIELD','P2');
+  const first=put(s,'set1_100','HAND','P2'),second=put(s,'set1_100','HAND','P2');
+  const before=JSON.stringify(s);let rejected=false;
+  try{useEnhancement(s,'P2',first.instanceId,'missing');}catch{rejected=true;}
+  r.assert(rejected);r.assertEqual(JSON.stringify(s),before);
+  useEnhancement(s,'P2',first.instanceId,host.instanceId);
+  r.assertEqual(s.player('P2').availableCost,19);r.assertEqual(first.zone,'DISCARD');r.assertEqual(host.attachments.length,0);
+  useEnhancement(s,'P2',second.instanceId,host.instanceId);
+  r.assertEqual(host.attachments[0].instanceId,second.instanceId);r.assertEqual(s.player('P2').availableCost,18);
+});
 module.exports=r;if(require.main===module)r.runAll();

@@ -90,3 +90,9 @@ module.exports.set5_061={
   officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],
   engine:['tests/issue20-spells.test.js'],cpu:['tests/issue20-spells.test.js'],human:['tests/issue20-spell-human-paths.cjs'],
   online:['server/test/issue20-spells.test.cjs'],serialization:['tests/issue20-spells.test.js']};
+module.exports.set5_042={
+  name:'ノミバッタ',status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/351.jpg',
+  sourceProvenance:'SET5 catalog, SET6 official Q&A on the distinction between destruction and additional draw.',
+  officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/'],
+  engine:['tests/set8-territory-retaliation.test.js'],cpu:['tests/set8-territory-retaliation.test.js'],
+  human:['tests/issue20-spell-human-paths.cjs'],online:['server/test/issue20-spells.test.cjs'],serialization:['tests/set8-territory-retaliation.test.js']};

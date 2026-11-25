@@ -30,4 +30,20 @@ for(const [id,amount] of [['set5_058',400],['set5_059',800]]) r.test(id+' from h
   r.assertEqual(s.player('P1').availableCost,10-getCardDefinition(id).cost);
   r.assertEqual(spell.zone,'DISCARD');
 });
+for(const [source,eligible,ineligible] of [['set5_042','tonosamabatta','kabutomushi'],['set6_027','minminzemi','set5_028'],['set8_026','minminzemi','set5_028']]){
+  for(const match of [true,false]) r.test(source+' family draw '+(match?'matches':'rejects unrelated family'),()=>{
+    let s=h.newGame({rng:()=>0});h.toMainPhase(s);
+    const attacker=h.putInsectOnField(s,'P1','kabutomushi');
+    const host=h.putInsectOnField(s,'P2',source);
+    h.putInsectOnField(s,'P2','minminzemi');
+    const drawn=h.addToTerritoryRaw(s,'P2',getCardDefinition(match?eligible:ineligible));
+    destroyInsect(s,host.instanceId,'ATTACK',attacker.instanceId,{});
+    resolveTerritoryDrawSelection(s,'P2',drawn.instanceId);
+    if(!match){r.assertEqual(drawn.zone,'HAND');return;}
+    r.assertEqual(s.pendingEffect.selectionPurpose,'DESTRUCTION_DRAW_FAMILY');
+    s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+    const cpu=new CpuAgent('P2',{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));
+    r.assert(s.player('P2').field.some(c=>c.instanceId===drawn.instanceId));
+  });
+}
 module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});

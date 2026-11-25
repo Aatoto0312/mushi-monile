@@ -4,6 +4,9 @@
     ? require('./full-catalog-data.js') : root.MushijingiFullCatalogData;
   var emperor = {type: 'FOOD_TRAIT_AURA', traitName: '王様', costDelta: -1};
   var traits = {
+    set5_042: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',suffixes:['バッタ科','イナゴ科']},
+    set6_027: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
+    set8_026: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
     set8_017: emperor,
     set8_039: emperor,
     set6_044: {type: 'PREVENT_MATCHING_DISCARD_SPELL_DAMAGE'}
@@ -17,6 +20,10 @@
     }
     Object.assign(def.skills[0], {id: id + '_skill_1', timing: 'ATTACK', effects: [], additionalCost: []});
     def.passiveAbilities[0].effects = [Object.assign({}, traits[id])];
+    if(id==='set8_026'){
+      def.rulingStatus='PROVISIONAL';
+      def.implementationNotes='暫定裁定：収録データの「ゼミ科」は同名技を持つ第6弾の個別Q&Aに準じセミ科の完全一致として扱う。ツノゼミ科は含まない。';
+    }
     if (id === 'set6_044') {
       // Replace the malformed catalog transcription with an original rules summary.
       def.passiveAbilities[0].effectText = 'どちらかの捨て札に同名の術があれば、その術によるダメージは0。';
