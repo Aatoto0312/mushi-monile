@@ -19,6 +19,19 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
   }
   await startMatch();
+  const enemyRef=await page.evaluate(()=>{
+    const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId,op=s.opponentOf(p);
+    s.phase=Phases.MAIN_PHASE;s.turnNumber=3;s.pendingEffect=null;
+    function make(id,pid,zone){
+      const d=getCardDefinition(id);
+      return new CardInstance({cardId:id,instanceId:s.nextInstanceId(),ownerId:pid,controllerId:pid,zone:zone,baseHp:d.baseHp,currentHp:d.baseHp});
+    }
+    const enemy=make('kabutomushi',op,'FIELD');s.player(op).field=[enemy];
+    const bug=make('set8_008',p,'HAND');s.player(p).hand=[bug];s.player(p).availableCost=9;
+    summonInsect(s,p,bug.instanceId);ui.render();return {id:enemy.instanceId,hp:enemy.currentHp};
+  });
+  await page.getByRole('button',{name:'ダメージを与える',exact:true}).click();
+  assert.equal(await page.evaluate(ref=>findAnywhere(MushiBattle.ui.state,ref).instance.currentHp,enemyRef.id),enemyRef.hp-200);
   for(const id of ['set8_062','set8_063','set5_057','set6_057','set7_059','set8_057','set8_058','set5_061']) {
     await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,p=s.player(pid);

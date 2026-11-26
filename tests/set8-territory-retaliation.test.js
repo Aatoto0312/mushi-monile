@@ -111,4 +111,41 @@ for(const outcome of ['paid','decline','moonlight','short'])r.test('Blood bargai
   }
   r.assert(!s.pendingEffect);
 });
+for (const mode of ['use','decline','empty']) r.test('SET8-08 optional entry damage '+mode,()=>{
+  let s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const p=s.activePlayerId,op=s.opponentOf(p);
+  s.player(op).field=[];s.player(p).availableCost=10;
+  const hidden=h.putInsectOnField(s,op,'kabutomushi',{hp:400});hidden.faceDown=true;
+  const enemy=mode==='empty'?null:h.putInsectOnField(s,op,'namitentou',{hp:100});
+  const survivor=mode==='empty'?null:h.putInsectOnField(s,op,'kabutomushi',{hp:600});
+  const territory=s.player(op).territory.length;
+  const bug=h.addToHandRaw(s,p,getCardDefinition('set8_008'));summonInsect(s,p,bug.instanceId);
+  if(mode==='empty'){r.assert(!s.pendingEffect);return;}
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  if(mode==='use'){
+    const cpu=new CpuAgent(p,{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));
+  }else resolveChoiceSelection(s,p,'DECLINE');
+  const field=s.player(op).field;
+  r.assertEqual(field.some(x=>x.instanceId===enemy.instanceId),mode==='decline');
+  r.assertEqual(field.find(x=>x.instanceId===survivor.instanceId).currentHp,mode==='use'?400:600);
+  r.assertEqual(field.find(x=>x.instanceId===hidden.instanceId).currentHp,400);
+  r.assertEqual(s.player(p).field.find(x=>x.instanceId===bug.instanceId).currentHp,getCardDefinition('set8_008').baseHp);
+  r.assertEqual(s.player(op).territory.length,territory);r.assert(!s.pendingEffect);
+});
+r.test('SET7-45 repeated intrinsic growth excludes external bonuses and clears on leaving play',()=>{
+  let s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);s.turnNumber=3;
+  let host=h.putInsectOnField(s,'P1','set7_045'),enemy=h.putInsectOnField(s,'P2','kabutomushi',{hp:8000});
+  const skill=getCardDefinition('set7_045').skills[0],ref=host.instanceId;
+  for(const stat of ['HP','AP'])addStatModifier(s,host,{stat,amount:50,duration:'FIELD_STAY'});
+  for(const expected of [200,400,800]){
+    host.attackedThisTurn=false;
+    s.player('P1').hand=[];
+    const cpu=new CpuAgent('P1',{rng:()=>0}),action=cpu.decideMainPhaseAction(s);
+    r.assertEqual(action.skillId,skill.id);r.assert(cpu.executeAction(s,action));
+    s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));host=s.player('P1').field.find(c=>c.instanceId===ref);
+    r.assertEqual(host.currentHp,expected+50);r.assertEqual(getEffectiveAP(s,host,100,skill),expected+50);
+    r.assertEqual(getEffectiveAP(s,host,100,{id:'other'}),150);
+  }
+  moveCard(s,ref,'FIELD','HAND',{playerId:'P1'});r.assertEqual(getEffectiveAP(s,host,100,skill),100);
+});
 module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});

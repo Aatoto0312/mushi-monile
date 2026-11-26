@@ -7,6 +7,7 @@
     set5_042: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',suffixes:['バッタ科','イナゴ科']},
     set6_027: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
     set8_026: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
+    set8_008: {type: 'OPTIONAL_ENEMY_AREA_DAMAGE', amount: 200},
     set6_005:{type:'OPPONENT_DRAW_TO_DESTROY_SOURCE',count:2},
     set8_027:{type:'OPTIONAL_DRAWN_TERRITORY_EFFECT',action:'REVEAL_AND_DRAW',attackOnly:true},
     set6_046:{type:'OPTIONAL_DRAWN_TERRITORY_EFFECT',action:'DISCARD_FOR_OPTIONAL_DRAWS'},
@@ -23,6 +24,7 @@
     }
     Object.assign(def.skills[0], {id: id + '_skill_1', timing: 'ATTACK', effects: [], additionalCost: []});
     def.passiveAbilities[0].effects = [Object.assign({}, traits[id])];
+    if (id === 'set8_008') { def.passiveAbilities[0].timing = 'ON_ENTER_FIELD'; def.passiveAbilities[0].optional = true; }
     if(id==='set6_005'){def.passiveAbilities[0].timing='ON_ENTER_FIELD';def.passiveAbilities[0].optional=false;}
     if(id==='set8_026'){
       def.rulingStatus='PROVISIONAL';
@@ -35,6 +37,14 @@
     def.implementationStatus = root.CardStatus.PLAYABLE;
     root.cardRegistry.register(def);
   });
+
+  var larva = new root.CardDefinition(JSON.parse(JSON.stringify(catalog.find(function (row) {
+    return row.id === 'set7_045';
+  }))));
+  Object.assign(larva.skills[0], {id: larva.id + '_skill_1', timing: 'ATTACK', additionalCost: [],
+    effects: [{type: 'DOUBLE_INTRINSIC_STATS_AFTER_ATTACK'}]});
+  larva.implementationStatus = root.CardStatus.PLAYABLE;
+  root.cardRegistry.register(larva);
 
   var longhorn = new root.CardDefinition(JSON.parse(JSON.stringify(catalog.find(function (row) {
     return row.id === 'set7_032';

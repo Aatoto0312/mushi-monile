@@ -55,6 +55,10 @@ runtime.createRuntime=function() {
     if(scenario==='set6_057'){
       for(let i=0;i<2;i++)state.player('P2').food.push(new r.context.CardInstance({cardId:'namitentou',zone:'FOOD',instanceId:state.nextInstanceId(),ownerId:'P2',controllerId:'P2'}));
     }
+    if (scenario==='set7_045') {
+      const card=p.hand[0];r.context.moveCard(state,card.instanceId,'HAND','FIELD',{playerId:'P1'});
+      card.enteredFieldTurn=1;
+    }
     if(scenario==='set6_005'){
       const other=state.player('P2');other.territory=[];
       for(const id of ['namitentou','kabutomushi'])other.territory.push(new r.context.CardInstance({cardId:id,instanceId:state.nextInstanceId(),ownerId:'P2',controllerId:'P2',zone:'TERRITORY',faceDown:true}));
@@ -65,7 +69,7 @@ runtime.createRuntime=function() {
 };
 const {createRoomService}=require('../lib/rooms.cjs');
 
-for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058','set5_061','set7_059','set5_042','set6_027','set8_026','set6_046','set8_027','set5_051','set6_057','set6_005']) test(id+' room cast and turn-end projection',t=>{
+for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058','set5_061','set7_059','set5_042','set6_027','set8_026','set6_046','set8_027','set5_051','set6_057','set6_005','set8_008','set7_045']) test(id+' room cast and turn-end projection',t=>{
   scenario=id;
   const service=createRoomService({rng:()=>0});
   t.after(()=>service.close());
@@ -95,6 +99,22 @@ for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_05
     service.receive(a.session,message);
     assert.equal(a.view().room.version,previous);
     assert(a.last('ACK').duplicate);
+  }
+  if (id==='set7_045') {
+    const attack=a.view().battle.actions.find(x=>x.kind==='ATTACK');assert(attack);act(attack.id);
+    service.disconnect(a.session);a=client();a.send('RESUME',{code:auth.roomCode,token:auth.token});
+    for (const client of [a,b,w]) assert.equal(client.view().battle.players.P1.field[0].currentHp,200);
+    return;
+  }
+  if(id==='set8_008'){
+    const initial=a.view().battle.players.P2.field.map(c=>c.currentHp);
+    act(a.view().battle.actions.find(x=>x.kind==='SUMMON').id);
+    assert.equal(w.view().battle.actions.length,0);assert.equal(b.view().battle.actions.length,0);
+    service.disconnect(a.session);a=client();a.send('RESUME',{code:auth.roomCode,token:auth.token});
+    act(a.view().battle.actions.find(x=>x.kind==='CHOICE' && x.label.includes('ダメージ')).id);
+    assert.deepEqual(a.view().battle.players.P2.field.map(c=>c.currentHp),initial.map(hp=>hp-200).filter(hp=>hp>0));
+    assert.equal(w.view().battle.players.P2.hand.some(c=>c.cardId),false);
+    return;
   }
   if(id==='set6_005'){
     act(a.view().battle.actions.find(x=>x.kind==='SUMMON').id);

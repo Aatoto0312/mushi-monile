@@ -415,6 +415,23 @@
       createCardSelection(state,{playerId:continuation.playerId,options:repeatTargets.map(function(card){return card.instanceId;}),exactSelections:1,candidateZones:[ZONES.FIELD],selectionPurpose:'SERIAL_SPELL_DAMAGE',continuation:{type:'RESOLVE_SERIAL_SPELL_DAMAGE',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,amount:continuation.amount},});
       state.pendingEffect.afterResolution={type:'SERIAL_SPELL_DAMAGE',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,amount:continuation.amount,remaining:remaining-1};return;
     }
+    if (continuation.type === 'DOUBLE_INTRINSIC_STATS') {
+      var growing = findAnywhere(state, continuation.sourceInstanceId);
+      if (!growing || growing.zone !== ZONES.FIELD ||
+          (growing.instance.runtimeFlags.fieldEntrySerial || 0) !== continuation.fieldEntrySerial) return;
+      var host = growing.instance;
+      var definition = getCardDefinition(host.cardId);
+      ['HP','AP'].forEach(function (stat) {
+        var previous = (host.statModifiers || []).reduce(function (sum, modifier) {
+          return sum + (modifier.stat === stat && modifier.growthSkill === continuation.skillId ? modifier.amount : 0);
+        }, 0);
+        var increase = (stat === 'HP' ? definition.baseHp : continuation.printedAp) + previous;
+        var modifier = addStatModifier(state, host, {sourceInstanceId: host.instanceId, stat: stat,
+          amount: increase, duration: 'FIELD_STAY'});
+        modifier.growthSkill = continuation.skillId;
+      });
+      return;
+    }
     if(continuation.type==='GROW_ATTACK_SOURCE'){
       var growingSource=findAnywhere(state,continuation.sourceInstanceId);
       if(growingSource&&growingSource.zone===ZONES.FIELD&&(growingSource.instance.runtimeFlags.fieldEntrySerial||0)===(continuation.fieldEntrySerial||0)){
@@ -617,6 +634,16 @@
     }
     if (continuation.type === 'FIELD_ENTRY_EFFECT') {
       var entryEffect = continuation.effect;
+      if (entryEffect.type === 'OPTIONAL_ENEMY_AREA_DAMAGE') {
+        var enemy = state.opponentOf(continuation.playerId);
+        if (state.player(enemy).field.some(function (card) { return !card.faceDown; })) {
+          state.pendingEffect = {type: 'CHOICE_SELECTION', playerId: continuation.playerId,
+            controller: continuation.playerId, selectionPurpose: entryEffect.type, prompt: '相手の虫すべてにダメージを与えますか？',
+            options: [{value: 'USE', label: 'ダメージを与える'}, {value: 'DECLINE', label: '使わない'}],
+            continuation: {type: entryEffect.type, sourceInstanceId: continuation.sourceInstanceId, amount: entryEffect.amount}};
+        }
+        return;
+      }
       if(entryEffect.type==='OPPONENT_DRAW_TO_DESTROY_SOURCE'){
         var drawPlayer=state.opponentOf(continuation.playerId);
         var source=snapshotCommittedSpellTarget(state,continuation.sourceInstanceId);
@@ -840,7 +867,7 @@
     if(continuation.type==='DRAW_OWN_TERRITORY_AFTER_ATTACK'){if(state.phase===Phases.GAME_OVER)return;triggerTerritoryDrawSelection(state,continuation.playerId);return;}
     if (continuation.type==='FINISH_AREA_DAMAGE') {
       if (isCommittedSpellTargetCurrent(state,continuation.target)) {
-        destroyInsect(state,continuation.target.instanceId,'SPELL',continuation.sourceInstanceId);
+        destroyInsect(state,continuation.target.instanceId,continuation.sourceType || 'SPELL',continuation.sourceInstanceId);
       }
       return;
     }
@@ -1531,6 +1558,15 @@
         if(crown)moveCard(state,crown.instanceId,ZONES.DISCARD,ZONES.FOOD,{playerId:continuation.ownerId,faceDown:false});
       }
       resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
+    } else if (continuation.type === 'OPTIONAL_ENEMY_AREA_DAMAGE') {
+      state.pendingEffect = null;
+      if (value === 'USE') {
+        var source = findAnywhere(state, continuation.sourceInstanceId);
+        dealVisibleAreaDamage(state, source && source.instance, continuation.sourceInstanceId,
+          [state.opponentOf(playerId)], continuation.amount, 'EFFECT', continuation.type);
+      }
+      resumeAfterSelection(state, pending.afterResolution);
+      return;
     } else if(continuation.type==='OFFER_DRAW_FOR_FIELD_EFFECT'){
       state.pendingEffect=null;
       if(value==='USE')resumeAfterSelection(state,Object.assign({},continuation,{type:'DRAW_FOR_FIELD_EFFECT'}));
@@ -2659,18 +2695,8 @@
           if(!reference || reference.faceDown || !(reference.runtimeFlags.unhealableDamage>0))return;
           areaAmount=reference.runtimeFlags.unhealableDamage;
         }
-        var lethal=[];
-        state.playerOrder.forEach(function(pid){
-          state.player(pid).field.filter(function(card){return !card.faceDown;}).forEach(function(card){
-            var hit={effectId:effect.type,apVal:areaAmount,multiplier:1};
-            applyDamage(state,instance,card,areaAmount,'SPELL',instance.instanceId,card.instanceId,hit,{deferDestruction:true});
-            if (card.currentHp<=0 || hit.destroyAfterDamage) lethal.push({
-              playerId:pid,label:getCardDefinition(card.cardId).name,
-              continuation:{type:'FINISH_AREA_DAMAGE',target:snapshotCommittedSpellTarget(state,card.instanceId),sourceInstanceId:instance.instanceId}
-            });
-          });
-        });
-        resumeAfterSelection(state,{type:'SEQUENCE',steps:[{type:'ORDER_TRIGGER_CONTINUATIONS',steps:lethal},{type:'END_ACTIVE_TURN'}]});
+        dealVisibleAreaDamage(state, instance, instance.instanceId, state.playerOrder, areaAmount, 'SPELL', effect.type);
+        resumeAfterSelection(state, {type: 'END_ACTIVE_TURN'});
       }
       if(effect.type==='DESTROY_ALL_VISIBLE_INSECTS_END_TURN'){
         var allVisible=[];state.playerOrder.forEach(function(pid){state.player(pid).field.forEach(function(card){if(!card.faceDown)allVisible.push(card.instanceId);});});
@@ -4059,6 +4085,10 @@
       if(effect.type==='ATTACH_AFTER_ATTACK'){
         resumeAfterSelection(state,{type:'ATTACH_AFTER_ATTACK',playerId:ap,sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial,effect:effect.attachment});
       }
+      if (effect.type === 'DOUBLE_INTRINSIC_STATS_AFTER_ATTACK') {
+        resumeAfterSelection(state, {type: 'DOUBLE_INTRINSIC_STATS', sourceInstanceId: attacker.instanceId,
+          fieldEntrySerial: attackerFieldEntrySerial, skillId: skill.id, printedAp: skill.baseAp});
+      }
       if(effect.type==='GROW_AFTER_ATTACK'){
         resumeAfterSelection(state,{type:'GROW_ATTACK_SOURCE',sourceInstanceId:attacker.instanceId,fieldEntrySerial:attackerFieldEntrySerial,amount:effect.amount,stats:effect.stats});
       }
@@ -4351,6 +4381,23 @@
       }
     });
     return prevented ? 0 : damage;
+  }
+
+  function dealVisibleAreaDamage(state, source, sourceId, playerIds, amount, sourceType, effectId) {
+    var lethal = [];
+    playerIds.forEach(function (pid) {
+      state.player(pid).field.filter(function (card) { return !card.faceDown; }).forEach(function (card) {
+        var hit = {effectId: effectId, apVal: amount, multiplier: 1};
+        applyDamage(state, source, card, amount, sourceType, sourceId, card.instanceId, hit, {deferDestruction: true});
+        if (card.currentHp <= 0 || hit.destroyAfterDamage) {
+          lethal.push({playerId: pid, label: getCardDefinition(card.cardId).name, continuation: {
+            type: 'FINISH_AREA_DAMAGE', target: snapshotCommittedSpellTarget(state, card.instanceId),
+            sourceInstanceId: sourceId, sourceType: sourceType
+          }});
+        }
+      });
+    });
+    resumeAfterSelection(state, {type: 'ORDER_TRIGGER_CONTINUATIONS', steps: lethal});
   }
 
   // ダメージ適用 (target はダメージを受ける虫)
