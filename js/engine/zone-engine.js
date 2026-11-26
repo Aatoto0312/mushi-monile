@@ -140,23 +140,30 @@
   }
 
   // Shared by target discovery and the authoritative zone transition.
-  function discardRevivalBlocked(state) {
-    return state.playerOrder.some(function (playerId) {
-      return state.player(playerId).field.some(function (host) {
-        if(host.faceDown)return false;
-        var hostDefinition=global.getCardDefinition(host.cardId);
-        var blocksRevival=hostDefinition && (hostDefinition.passiveAbilities||[]).some(function(ability){
-          return (ability.effects||[]).some(function(effect){return effect.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS';});
-        });
-        if(blocksRevival && !global.areInsectKeywordSkillsSuppressed(state,host))return true;
-        return (host.attachments || []).some(function (attachment) {
-          var definition = global.getCardDefinition && global.getCardDefinition(attachment.cardId);
-          return definition && (definition.enhancementEffects || []).some(function (effect) {
-            return effect.type === 'BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS' && effect.scope === 'BOTH_PLAYERS';
+  function findDiscardRevivalBlocker(state) {
+    for (var playerId of state.playerOrder) {
+      for (var host of state.player(playerId).field) {
+        if (host.faceDown) continue;
+        var hostDefinition = global.getCardDefinition(host.cardId);
+        var blocksRevival = hostDefinition && (hostDefinition.passiveAbilities || []).some(function (ability) {
+          return (ability.effects || []).some(function (effect) {
+            return effect.type === 'BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS';
           });
         });
-      });
-    });
+        if (blocksRevival && !global.areInsectKeywordSkillsSuppressed(state, host)) return hostDefinition;
+        for (var attachment of host.attachments || []) {
+          var definition = global.getCardDefinition(attachment.cardId);
+          if (definition && (definition.enhancementEffects || []).some(function (effect) {
+            return effect.type === 'BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS' && effect.scope === 'BOTH_PLAYERS';
+          })) return definition;
+        }
+      }
+    }
+    return null;
+  }
+
+  function discardRevivalBlocked(state) {
+    return !!findDiscardRevivalBlocker(state);
   }
 
   function moveCard(state, instanceId, fromZone, toZone, opts) {
@@ -168,8 +175,9 @@
 
     if (fromZone === ZONES.DISCARD && toZone === ZONES.FIELD && !opts.captureFromBattle) {
       var definition = global.getCardDefinition && global.getCardDefinition(holder.instance.cardId);
-      if (definition && definition.type === 'INSECT' && discardRevivalBlocked(state)) {
-        throw new Error('捨て札から虫を場に出せません');
+      var blocker = definition && definition.type === 'INSECT' && findDiscardRevivalBlocker(state);
+      if (blocker) {
+        throw new Error(blocker.name + 'の効果で捨て札から虫を場に出せません');
       }
     }
     var sourcePlayerId = holder.playerId;
