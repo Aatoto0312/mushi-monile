@@ -89,4 +89,26 @@ r.test('Sapphire follows current host color and shares one prevention across att
   useEnhancement(s,'P1',gem().instanceId,host.instanceId);hit('ATTACK');r.assertEqual(host.currentHp,hp-100);
   s.turnNumber++;hit('ABILITY');r.assertEqual(host.currentHp,hp-100);hit('SPELL');r.assertEqual(host.currentHp,hp-200);
 });
+for(const outcome of ['paid','decline','moonlight','short'])r.test('Blood bargain '+outcome,()=>{
+  let s=h.newGame({rng:()=>0});h.toMainPhase(s);const pid=s.activePlayerId,op=s.opponentOf(pid);
+  s.player(pid).field=[];s.player(op).field=[];s.player(pid).availableCost=20;s.player(op).territory=[];
+  const first=h.addToTerritoryRaw(s,op,getCardDefinition(outcome==='moonlight'?'set6_046':'kabutomushi'));
+  const second=outcome==='short'?null:h.addToTerritoryRaw(s,op,getCardDefinition('namitentou'));
+  const bug=h.addToHandRaw(s,pid,getCardDefinition('set6_005'));
+  summonInsect(s,pid,bug.instanceId);
+  if(outcome==='short'){r.assert(!s.pendingEffect);r.assertEqual(bug.zone,'FIELD');return;}
+  r.assertEqual(s.pendingEffect.playerId,op);
+  if(outcome==='decline'){resolveChoiceSelection(s,op,'DECLINE');r.assertEqual(bug.zone,'FIELD');return;}
+  const cpu=new CpuAgent(op,{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));
+  resolveTerritoryDrawSelection(s,op,first.instanceId);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  if(outcome==='moonlight'){
+    resolveChoiceSelection(s,op,'USE');resolveChoiceSelection(s,op,'SKIP');
+    r.assertEqual(s.player(op).territory.length,1);r.assert(s.player(pid).field.some(c=>c.instanceId===bug.instanceId));
+  }else{
+    resolveTerritoryDrawSelection(s,op,second.instanceId);
+    r.assert(s.player(pid).discard.some(c=>c.instanceId===bug.instanceId));
+  }
+  r.assert(!s.pendingEffect);
+});
 module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});

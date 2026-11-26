@@ -310,6 +310,7 @@
     if (pending.context && pending.context.attackSourceInstanceId) {
       resumeAfterSelection(state, { type: 'TERRITORY_ATTACK_EFFECTS', context: pending.context, territoryPlayerId: playerId });
     }
+    if(pending.context)resumeAfterSelection(state,pending.context.afterActualDraw);
     resumeAfterSelection(state, pending.afterResolution);
     return drawn;
   }
@@ -605,8 +606,28 @@
       if(state.phase===Phases.GAME_OVER||!attachmentAttacker||(attachmentAttacker.runtimeFlags.fieldEntrySerial||0)!==continuation.fieldEntrySerial)return;
       resumeAfterSelection(state,{type:'FIELD_ENTRY_EFFECT',playerId:continuation.playerId,sourceInstanceId:continuation.sourceInstanceId,optional:true,effect:continuation.effect});return;
     }
+    if(continuation.type==='DRAW_FOR_FIELD_EFFECT'){
+      if(continuation.remaining>0){
+        var afterDraw=Object.assign({},continuation,{remaining:continuation.remaining-1});
+        triggerTerritoryDrawSelection(state,continuation.drawPlayer,{afterActualDraw:afterDraw});
+      }else if(isCommittedSpellTargetCurrent(state,continuation.source)){
+        destroyInsect(state,continuation.source.instanceId,'ABILITY',continuation.source.instanceId);
+      }
+      return;
+    }
     if (continuation.type === 'FIELD_ENTRY_EFFECT') {
       var entryEffect = continuation.effect;
+      if(entryEffect.type==='OPPONENT_DRAW_TO_DESTROY_SOURCE'){
+        var drawPlayer=state.opponentOf(continuation.playerId);
+        var source=snapshotCommittedSpellTarget(state,continuation.sourceInstanceId);
+        if(source && source.zone===ZONES.FIELD && state.player(drawPlayer).territory.length>=entryEffect.count){
+          state.pendingEffect={type:'CHOICE_SELECTION',playerId:drawPlayer,controller:drawPlayer,
+            selectionPurpose:'OPPONENT_DRAW_TO_DESTROY_SOURCE',prompt:'縄張りを2枚引いて、この虫を破壊しますか？',
+            options:[{value:'USE',label:'縄張りを2枚引く'},{value:'DECLINE',label:'引かない'}],
+            continuation:{type:'OFFER_DRAW_FOR_FIELD_EFFECT',drawPlayer:drawPlayer,source:source,remaining:entryEffect.count}};
+        }
+        return;
+      }
       if(entryEffect.type==='ATTACH_SAME_NAME_FROM_DISCARD'){
         var chainSource=findAttachment(state,continuation.sourceInstanceId);if(!chainSource)return;
         var chainHost=chainSource.host,chainCandidates=state.player(continuation.playerId).discard.filter(function(card){return !card.faceDown&&getCardDefinition(card.cardId).name===entryEffect.name&&isForcedAttachmentHostLegal(state,continuation.playerId,card,chainHost);});
@@ -1510,6 +1531,10 @@
         if(crown)moveCard(state,crown.instanceId,ZONES.DISCARD,ZONES.FOOD,{playerId:continuation.ownerId,faceDown:false});
       }
       resumeAfterSelection(state,Object.assign({type:'DESTROYED_CARD_FOLLOWUP'},continuation.context));
+    } else if(continuation.type==='OFFER_DRAW_FOR_FIELD_EFFECT'){
+      state.pendingEffect=null;
+      if(value==='USE')resumeAfterSelection(state,Object.assign({},continuation,{type:'DRAW_FOR_FIELD_EFFECT'}));
+      resumeAfterSelection(state,pending.afterResolution);return;
     } else if(continuation.type==='MOONLIGHT_DRAW'){
       state.pendingEffect=null;
       if(value==='DRAW')triggerTerritoryDrawSelection(state,playerId,Object.assign({},continuation.context,{drawAccepted:true}));

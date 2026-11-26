@@ -11,11 +11,14 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   const page=await browser.newPage({viewport:{width:390,height:670}});
   await page.addInitScript(()=>{let seed=37;Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};});
   page.setDefaultTimeout(7000);
+  async function startMatch(){
   await page.goto(process.env.MUSHI_URL||pathToFileURL(path.resolve(__dirname,'../index.html')).href,{waitUntil:'domcontentloaded'});
   await page.locator('#btn-vs-human').click();
   await page.locator('#btn-deck-p1-kabuto').click();
   await page.locator('#btn-deck-p2-okama').click();
   if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
+  }
+  await startMatch();
   for(const id of ['set8_062','set8_063','set5_057','set6_057','set7_059','set8_057','set8_058','set5_061']) {
     await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,p=s.player(pid);
@@ -62,6 +65,7 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
       assert.equal(await page.evaluate(()=>{const s=MushiBattle.ui.state;return s.player(s.opponentOf(s.activePlayerId)).keywordSuppressionUntilTurn}),4);
     }
   }
+  await startMatch();
   for(const [id,damage] of [['set5_058',400],['set5_059',800]]) {
     await page.evaluate(id=>{
       const ui=MushiBattle.ui,s=ui.state,pid=s.activePlayerId,enemy=s.opponentOf(pid);
@@ -110,4 +114,14 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
       return s.player(p).hand.some(c=>c.cardId===id);
     },id);assert(outcome);
   }
+  await page.evaluate(()=>{
+    const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId,op=s.opponentOf(p);
+    for(const side of s.playerOrder){s.player(side).field=[];delete s.player(side).optionalTerritoryDrawTurn;}
+    const put=(pid,id,z)=>{const c=new CardInstance({cardId:id,instanceId:s.nextInstanceId(),ownerId:pid,controllerId:pid,zone:z});s.player(pid)[z.toLowerCase()].push(c);return c;};
+    put(op,'namitentou','TERRITORY');put(op,'kabutomushi','TERRITORY');s.player(p).availableCost=10;
+    summonInsect(s,p,put(p,'set6_005','HAND').instanceId);ui.render();
+  });
+  await page.getByRole('button',{name:'縄張りを2枚引く',exact:true}).click();
+  assert.equal(await page.evaluate(()=>MushiBattle.ui.state.pendingEffect.type),'TERRITORY_DRAW_SELECTION');
+
 });

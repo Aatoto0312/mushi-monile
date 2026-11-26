@@ -55,13 +55,17 @@ runtime.createRuntime=function() {
     if(scenario==='set6_057'){
       for(let i=0;i<2;i++)state.player('P2').food.push(new r.context.CardInstance({cardId:'namitentou',zone:'FOOD',instanceId:state.nextInstanceId(),ownerId:'P2',controllerId:'P2'}));
     }
+    if(scenario==='set6_005'){
+      const other=state.player('P2');other.territory=[];
+      for(const id of ['namitentou','kabutomushi'])other.territory.push(new r.context.CardInstance({cardId:id,instanceId:state.nextInstanceId(),ownerId:'P2',controllerId:'P2',zone:'TERRITORY',faceDown:true}));
+    }
     return state;
   };
   return r;
 };
 const {createRoomService}=require('../lib/rooms.cjs');
 
-for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058','set5_061','set7_059','set5_042','set6_027','set8_026','set6_046','set8_027','set5_051','set6_057']) test(id+' room cast and turn-end projection',t=>{
+for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058','set5_061','set7_059','set5_042','set6_027','set8_026','set6_046','set8_027','set5_051','set6_057','set6_005']) test(id+' room cast and turn-end projection',t=>{
   scenario=id;
   const service=createRoomService({rng:()=>0});
   t.after(()=>service.close());
@@ -91,6 +95,14 @@ for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_05
     service.receive(a.session,message);
     assert.equal(a.view().room.version,previous);
     assert(a.last('ACK').duplicate);
+  }
+  if(id==='set6_005'){
+    act(a.view().battle.actions.find(x=>x.kind==='SUMMON').id);
+    assert.equal(a.view().battle.actions.length,0);assert.equal(w.view().battle.actions.length,0);
+    function choose(){const v=b.view(),d=v.battle.decision;const actionId=d?d.actionId:v.battle.actions[0].id;b.send('ACTION',{version:v.room.version,actionId,selectedRefs:d?[d.options[0].ref]:[]});}
+    choose();choose();const seat=b.last('SESSION');service.disconnect(b.session);b=client();b.send('RESUME',{code:auth.roomCode,token:seat.token});choose();
+    assert(a.view().battle.players.P1.discard.some(c=>c.cardId===id));
+    assert(w.view().battle.players.P2.hand.every(c=>!c.cardId));return;
   }
   if(id==='set5_051'){
     act(a.view().battle.actions.find(x=>x.kind==='ENHANCE').id);
