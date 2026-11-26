@@ -34,7 +34,13 @@
   function syncEnd(){endPlaceholder.hidden=end.style.display!=='none'&&end.textContent==='ターン終了';}
   new MutationObserver(syncEnd).observe(end,{attributes:true,attributeFilter:['style'],childList:true,characterData:true,subtree:true});syncEnd();
   new MutationObserver(function(){if(window.MushiCpuBattle&&window.MushiCpuBattle.active){if(actions.open)actions.close();return;}var shown=skill.style.display!=='none'&&skill.children.length>0;if(shown&&!actions.open)actions.showModal();if(!shown&&actions.open)actions.close();}).observe(skill,{childList:true,attributes:true,attributeFilter:['style']});
-  actions.addEventListener('close',function(){if(window.MushiCpuBattle&&window.MushiCpuBattle.active)return;if(skill.style.display!=='none'&&skill.children.length)document.getElementById('btn-cancel-attack').click();});
+  actions.addEventListener('close',function(){
+    if (actions.open || window.MushiCpuBattle && window.MushiCpuBattle.active) return;
+    if (skill.style.display === 'none' || !skill.children.length) return;
+    // A close event may arrive after the next Engine decision has rendered.
+    if (skill.dataset.pendingChoice === 'true') { actions.showModal(); return; }
+    document.getElementById('btn-cancel-attack').click();
+  });
   var lanes=[];
   ['opp-field-zone','self-field-zone','self-hand-zone'].forEach(function(id){
    var lane=document.getElementById(id),group=lane.parentElement;

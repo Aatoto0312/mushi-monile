@@ -211,3 +211,20 @@ Resume queue and local diff, not full catalog. Pages/build/deploy deferred. main
 443 completed:SET6-59/SET8-60; prior441 checkpoint11d4970. Engine6/server3; shared73/server141; CPU/online Chromium/WebKit allpassed including pending page reconnect and real-art checks; Toolbox16each. Full1936 before extra0candidate test, final full rerun underway.
 Next:SET8-30パンダアリバチ:compose TARGET_COLOR(COLORLESS) + existing DESTROY_WOUNDED_TARGET_BEFORE_DAMAGE; test territory, fullHP0damage, CPU/Human/WSS before certification. SET8-11 alreadyPLAYABLE:extra paid-hunter.test.js is regression-only, NOT newcard. Keep source-loss ruling/fivepending in mushi-recovery untouched.
 443 final full1937/0 confirmed. No unfinished443 gates.
+
+### Issue 20 — 528/565
+腐葉の沃土（set5_057）は暫定裁定付き。捨て札の所有者指定がないため、各プレイヤーのゾーンを分けるルールと既存の捨て札選択処理に合わせ、使用者の表向きの捨て札2枚を選ぶ。相手側から選べるかは公式個別回答待ち。裁定変更時は set5-cards.js の対象定義、選択候補、公開ビュー、専用テストを再確認する。
+残り37種（第5弾10、第6弾8、第7弾4、第8弾15）。次の共通処理候補は燻煙の迎撃・稲妻の迎撃。通常使用と縄張りから引いた場合を区別し、引かせた虫の識別、発動辞退、再接続を検証する。
+
+530/565 — SET5-58・59の迎撃。第5弾Q&Aに従い通常の術使用誘発に接続。未熟、発動辞退、攻撃以外、CPU選択、再接続、ブラウザ両系統を検証。残り35種。次はSET8-57・58の同時ダメージとターン終了。
+
+532/565 — SET8-57 水月の激流・SET8-58 神楽の烈風。両軍の表向きの虫に先にダメージを適用し、致死対象の処理、術の解決、ターン終了へ進む。残り33種（第5弾8、第6弾8、第7弾4、第8弾13）。次候補はSET5-61 蠱毒の祟り。同時ダメージを再利用できるが、回復しないダメージを持つ相手だけを術の対象にできることと、解決時に参照する値の検証が必要。
+
+533/565 — SET5-61 蠱毒の祟り。第5弾Q&Aに基づき回復しないダメージの累計を参照。対象不在、裏向き除外、同時破壊選択、復元・再接続を検証。残り32種（7/8/4/13）。
+
+537/565 — SET5-42、SET6-27、SET8-26の〈とびでる〉は戦闘破壊そのものによる縄張りドローにのみ科条件を渡す。SET8-26の「ゼミ科」はSET6の同名技の個別裁定を参照し「セミ科」の完全一致とするPROVISIONAL。SET7-59は次の相手ターンの強化使用時、支払い後・装着前に初回のみ打ち消す。残り28種（第5弾6、第6弾7、第7弾3、第8弾12）。次候補はSET8-27とSET6-46の縄張り任意発動。前者の追加ドローは公式Q&Aどおり技由来と区別し、公開するカードと非公開の手札を分けて検証する。
+
+541/565 — SET8-27（追加ドローは技由来）、SET6-46（各ドローの任意辞退）、SET6-57（次の相手ターンの攻撃コスト累積）、SET5-51（PROVISIONAL。初回防止を宿主・ターン単位で管理）。残り24種（第5弾5、第6弾5、第7弾3、第8弾11）。既存のSET5-57とSET8-26の暫定裁定を維持。次は実際に2枚引いたことを支払い条件とするSET6-05とSET6-31。
+542/565 — SET6-05 アカウシアブ。登場時に相手が任意で実際に縄張りを2枚引いた場合だけ破壊。月光による辞退、復元、席の再接続を検証。残り23種（5/4/3/11）。次はSET8-08の登場時全体ダメージとSET6-31の破壊置換。
+544/565 — SET8-08 ミイデラゴミムシは既存の同時ダメージ処理を相手の場に限定して使用する。SET7-45 キスジコヤガ（幼虫）は第7弾公式Q&Aの3回で800の例に従い、同じ技の成長だけを倍化。別の技と外部修正を除外。残り21種（第5弾5、第6弾4、第7弾2、第8弾10）。次はSET6-31の破壊置換とSET7-48の捨て札・エサ交換。
+547/565 — SET7-48 オオセンチコガネ、SET6-10 ボウレイカマキリ、SET8-32 ヨナグニサン（幼虫）。エサと捨て札の交換、縄張りドロー前の回収、相手による複数領域からの選択を検証。旧UIの選択画面の競合を修正。full 2307、shared 80、server 259、Chromium・WebKitでCPU戦とオンライン戦を完走。残り18種（5/3/1/9）。次はSET6-31の破壊置換とSET6-55の強化装着後の遅延効果。

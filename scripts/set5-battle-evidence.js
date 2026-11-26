@@ -49,3 +49,53 @@ cards.set5_056={status:'PLAYABLE',audited:false,name:'花蝶の幻舞',cost:0,ty
 cards.set5_060={status:'PLAYABLE',audited:false,name:'毒の追い打ち',cost:2,type:'SPELL',image:'https://mushijingi.com/images/card/369.jpg',sourceProvenance:'Printedscan secondaryhost checked2026-11-05: target is not restricted to own controller. OfficialQA5 includes keywordskills containing毒. Generic opt-inANY_ATTACKED_FIELD_INSECT with shared current-target legality, own-only reset unchanged.',officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],engine:['tests/poison-followup.test.js'],cpu:['tests/poison-followup.test.js'],human:['server/browser/poison-followup-paths.cjs'],online:['server/test/poison-followup.test.cjs','server/browser/poison-followup-paths.cjs'],serialization:['tests/poison-followup.test.js','server/test/poison-followup.test.cjs'],unresolvedRulings:[],userRulings:[]};
 
 module.exports.set5_054={status:'PLAYABLE',audited:false,name:'黒銀蜘蛛の糸',cost:5,image:'https://mushijingi.com/images/card/363.jpg',sourceProvenance:'Printed catalog text plus official SET5/7 lifecycle QA; integrated requested batch2026-11-17.',engine:['tests/batch-enhancements.test.js'],human:['server/browser/requested-batch.cjs'],cpu:['tests/batch-enhancements.test.js'],online:['server/test/requested-batch.test.cjs'],serialization:['tests/batch-enhancements.test.js','server/test/requested-batch.test.cjs'],regression:['tests/run-all.js','tests/run-shared.js']};
+
+for (const [number,name,cost] of [[48,'蛮虫の一本槍',1],[49,'蟲神の一本槍',2],[55,'幼虫の胡坐鍋',0]]) {
+  const engine = number===55?'tests/set5-pot-canonical.test.js':'tests/set5-spears-canonical.test.js';
+  module.exports['set5_'+String(number).padStart(3,'0')]={
+    name,cost,status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/'+(309+number)+'.jpg',
+    sourceProvenance:'Existing SET5 catalog and official host requirement and recovery rulings.',
+    officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/','https://mushijingi.jimdofree.com/q-a-よくある質問-1/'],
+    engine:[engine],cpu:[engine],human:['server/browser/set5-optional-equipment.cjs'],
+    online:['server/test/set5-optional-equipment.test.cjs'],serialization:[engine,'server/test/set5-optional-equipment.test.cjs']
+  };
+}
+module.exports.set5_021 = {
+  name:'オオテナガカナブン',status:'PLAYABLE',audited:false,
+  image:'https://mushijingi.com/images/card/330.jpg',sourceProvenance:'SET5 catalog and ordered attack tests',
+  engine:['tests/issue20-ordered-attacks.test.js'],cpu:['server/browser/issue20-board.cjs'],
+  human:['server/browser/issue20-board.cjs'],online:['server/browser/issue20-board.cjs'],
+  serialization:['tests/issue20-ordered-attacks.test.js']
+};
+module.exports.set5_057 = {
+  name:'腐葉の沃土', status:'PLAYABLE', rulingStatus:'PROVISIONAL', audited:false,
+  image:'https://mushijingi.com/images/card/366.jpg',
+  sourceProvenance:'The printed text does not identify a discard owner. The official play guide describes separate player zones. Apply the existing own-discard selector pending a specific ruling.',
+  officialRulings:['https://mushijingi.jimdofree.com/遊び方/','https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],
+  engine:['tests/batch-soil-boundaries.test.js'],cpu:['tests/batch-soil-boundaries.test.js'],
+  human:['tests/issue20-spell-human-paths.cjs'],online:['server/test/issue20-spells.test.cjs'],
+  serialization:['tests/batch-soil-boundaries.test.js']
+};
+for (const [id,name,number] of [['set5_058','燻煙の迎撃',367],['set5_059','稲妻の迎撃',368]]) {
+  module.exports[id]={name,status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/'+number+'.jpg',
+    sourceProvenance:'SET5 catalog and official fifth-set Q&A on interception, spell use and immature larvae.',
+    officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],
+    engine:['tests/set8-territory-retaliation.test.js'],cpu:['tests/set8-territory-retaliation.test.js'],
+    human:['server/test/issue20-spells.test.cjs'],online:['server/test/issue20-spells.test.cjs'],
+    serialization:['tests/set8-territory-retaliation.test.js']};
+}
+module.exports.set5_061={
+  name:'蠱毒の祟り',status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/370.jpg',
+  sourceProvenance:'Official fifth-set Q&A confirms accumulated unhealable damage; shared simultaneous spell resolution.',
+  officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第５弾のカードについて/'],
+  engine:['tests/issue20-spells.test.js'],cpu:['tests/issue20-spells.test.js'],human:['tests/issue20-spell-human-paths.cjs'],
+  online:['server/test/issue20-spells.test.cjs'],serialization:['tests/issue20-spells.test.js']};
+module.exports.set5_042={
+  name:'ノミバッタ',status:'PLAYABLE',audited:false,image:'https://mushijingi.com/images/card/351.jpg',
+  sourceProvenance:'SET5 catalog, SET6 official Q&A on the distinction between destruction and additional draw.',
+  officialRulings:['https://mushijingi.jimdofree.com/q-a-よくある質問-1/第６弾のカードについて/'],
+  engine:['tests/set8-territory-retaliation.test.js'],cpu:['tests/set8-territory-retaliation.test.js'],
+  human:['tests/issue20-spell-human-paths.cjs'],online:['server/test/issue20-spells.test.cjs'],serialization:['tests/set8-territory-retaliation.test.js']};
+module.exports.set5_051={name:'肉祓いの蒼玉',status:'PLAYABLE',rulingStatus:'PROVISIONAL',audited:false,
+ image:'https://mushijingi.com/images/card/360.jpg',sourceProvenance:'SET5 catalog and fifth-set Q&A on current host color. Track first positive incoming damage per host and turn; equipping a second copy does not refresh the prevention.',
+ engine:['tests/set8-territory-retaliation.test.js'],cpu:['tests/set8-territory-retaliation.test.js'],human:['server/test/issue20-spells.test.cjs'],online:['server/test/issue20-spells.test.cjs'],serialization:['server/test/issue20-spells.test.cjs']};

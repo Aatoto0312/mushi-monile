@@ -761,7 +761,7 @@
     discardInstances.forEach(function (inst) {
       var el = CardUI.renderCard(inst, ZONES.DISCARD, self.state);
       var pending = getPendingEffect(self.state);
-      if (pending && (pending.type === 'DISCARD_INSECT_SELECTION' || pending.type === 'CARD_SELECTION') && pending.playerId === playerId && pending.options.indexOf(inst.instanceId) !== -1) {
+      if (pending && (pending.type === 'DISCARD_INSECT_SELECTION' || pending.type === 'SPELL_TARGET_SELECTION' || pending.type === 'CARD_SELECTION') && pending.playerId === playerId && pending.options.indexOf(inst.instanceId) !== -1) {
         el.classList.add('legal-target');
       }
       el.addEventListener('click', function () { self.onDiscardCardTap(playerId, inst); });
@@ -823,6 +823,14 @@
 
   BattleUI.prototype.onDiscardCardTap = function (playerId, instance) {
     var pending = getPendingEffect(this.state);
+    if (instance.faceDown) return;
+    if (pending && pending.type === 'SPELL_TARGET_SELECTION') {
+      if (this.cpuMode && pending.playerId !== 'P1') return;
+      if (pending.playerId !== playerId || pending.options.indexOf(instance.instanceId) === -1) return;
+      try { global.resolveSpellTargetSelection(this.state,playerId,instance.instanceId); this.render(); }
+      catch (error) { showUserError(error); }
+      return;
+    }
     if (pending && pending.type === 'CARD_SELECTION') {
       if (this.cpuMode && pending.playerId !== 'P1') return;
       if (pending.playerId !== playerId || pending.options.indexOf(instance.instanceId) === -1) return;
@@ -1023,7 +1031,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   BattleUI.prototype._syncAttachmentPicker = function (pending) {
     var picker=document.getElementById('attachment-picker');
     var attackCostStatus=global.getPendingAttackCostStatus&&global.getPendingAttackCostStatus(this.state);
-    var active=pending&&pending.type==='CARD_SELECTION'&&((pending.candidateZones||[]).indexOf('ATTACHMENT')!==-1||['ATTACH_DISCARD_TO_ATTACKED_HOST','FREE_CARD_AFTER_ATTACK','FREE_ENHANCEMENT_TARGET','ALTERNATIVE_SUMMON_COST','SUMMON_ATTACHED_FROM_HAND','REVIVE_ATTACHED_FROM_TERRITORY'].indexOf(pending.selectionPurpose)!==-1)&&(!this.cpuMode||pending.playerId==='P1')&&(!attackCostStatus||attackCostStatus.canContinue);
+    var active=pending&&pending.type==='CARD_SELECTION'&&((pending.candidateZones||[]).indexOf('ATTACHMENT')!==-1||['ATTACH_DISCARD_TO_ATTACKED_HOST','FREE_CARD_AFTER_ATTACK','FREE_ENHANCEMENT_TARGET','ALTERNATIVE_SUMMON_COST','SUMMON_ATTACHED_FROM_HAND','REVIVE_ATTACHED_FROM_TERRITORY','DISCARD_FROM_OWN_ZONES'].indexOf(pending.selectionPurpose)!==-1)&&(!this.cpuMode||pending.playerId==='P1')&&(!attackCostStatus||attackCostStatus.canContinue);
     if(!active){if(picker){if(picker.open)picker.close();picker.innerHTML='';}return;}
     if(!picker){
       picker=document.createElement('dialog');picker.id='attachment-picker';picker.className='compact-dialog';
@@ -1035,9 +1043,10 @@ BattleUI.prototype.renderPendingEffect = function (state) {
     (pending.options||[]).forEach(function(id){
       var attachment=global.findAttachment(self.state,id),holder=attachment||global.findAnywhere(self.state,id);
       if(!holder)return;
-      var instance=holder.instance,definition=CardUI.getDef(instance),hidden=!attachment&&(instance.faceDown||holder.zone==='HAND'&&holder.playerId!==pending.playerId);
+      var instance=holder.instance,definition=CardUI.getDef(instance),hidden=!attachment&&(holder.zone==='HAND'?holder.playerId!==pending.playerId:instance.faceDown);
       var button=document.createElement('button');button.type='button';button.className='inspector-card';button.dataset.instanceId=id;
       var label=hidden?'裏向きのカード':definition&&definition.name||'カード';
+      if (pending.selectionPurpose === 'DISCARD_FROM_OWN_ZONES') label = ({HAND:'手札',FOOD:'エサ',TERRITORY:'縄張り'})[holder.zone] + '・' + label;
       if(attachment){var hostDefinition=CardUI.getDef(attachment.host);label+='（装着先：'+(attachment.host.faceDown?'裏向きの虫':hostDefinition&&hostDefinition.name||'虫')+'）';}
       button.textContent=label;var selected=(pending.selectedIds||[]).indexOf(id)!==-1;button.setAttribute('aria-pressed',String(selected));if(selected)button.classList.add('is-pending-selected');
       button.addEventListener('click',function(){if(self.state.pendingEffect!==pending)return;try{global.selectPendingCard(self.state,pending.playerId,id);self.render();var refreshed=document.querySelector('#attachment-picker [data-instance-id="'+id+'"]');if(refreshed)refreshed.focus();}catch(error){showUserError(error);}});grid.appendChild(button);
@@ -1050,7 +1059,7 @@ BattleUI.prototype.renderPendingEffect = function (state) {
   // CPU戦: P1だけが人間(P2はCPUが自動解決)。Hotseat/チュートリアル: どちらのplayerIdも人間が解決する。
   BattleUI.prototype._resolveTerritoryPickerPending = function (pending) {
     var isDraw = pending && pending.type === 'TERRITORY_DRAW_SELECTION';
-    var isCardSelection = pending && pending.type === 'CARD_SELECTION' &&
+    var isCardSelection = pending && pending.type === 'CARD_SELECTION' && pending.selectionPurpose !== 'DISCARD_FROM_OWN_ZONES' &&
       (pending.candidateZones || []).indexOf('TERRITORY') !== -1;
     if (!isDraw && !isCardSelection) {
       return null;

@@ -16,12 +16,13 @@
   //   - 対象虫が FIELD を離れたら、紐付く強化カードを所有者の DISCARD へ移動する。
 
   // 有効な statModifier の量(stat === 'AP'|'HP')を合算する。
-  function getStatModifierTotal(state, instance, stat) {
+  function getStatModifierTotal(state, instance, stat, skill) {
     var arr = instance.statModifiers || [];
     var total = 0;
     for (var i = 0; i < arr.length; i++) {
       var m = arr[i];
       if (m.stat !== stat) { continue; }
+      if (stat === 'AP' && m.growthSkill && (!skill || m.growthSkill !== skill.id)) continue;
       if (!isStatModifierActive(state, m)) { continue; }
       total += (m.amount || 0);
     }
@@ -131,7 +132,7 @@
         }) ? rule.bonus : 0);
       }
     }
-    var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP') + getContinuousStatTotal(state,instance,'AP');
+    var total = (baseAp || 0) + getStatModifierTotal(state, instance, 'AP', skill) + getContinuousStatTotal(state,instance,'AP');
     var attachments = instance.attachments || [];
     var hostDefinition=global.getCardDefinition?global.getCardDefinition(instance.cardId):null;
     var attachmentMultiplier=hostDefinition&&hostDefinition.attachmentStatMultiplier||1;

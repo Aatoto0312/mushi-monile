@@ -30,6 +30,7 @@ require(path.join(base, 'cards', 'termite-cards.js'));
 require(path.join(base, 'cards', 'batch-deck-cards.js'));
 require(path.join(base, 'cards', 'batch-enhancement-cards.js'));
 require(path.join(base, 'cards', 'batch-insect-cards.js'));
+require(path.join(base, 'cards', 'food-and-discard-traits.js'));
 require(path.join(base, 'engine', 'game-state.js'));
 require(path.join(base, 'engine', 'stat-modifier.js'));
 require(path.join(base, 'engine', 'rules.js'));

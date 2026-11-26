@@ -102,7 +102,7 @@
       card.usedSkills = [];
     }
     if (!def || !def.skills) { return; }
-    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills){return;}
+    if(card.runtimeFlags&&card.runtimeFlags.suppressKeywordSkills || global.areInsectKeywordSkillsSuppressed && global.areInsectKeywordSkillsSuppressed(state,card)){return;}
     var gitai = def.skills.find(function (s) { return s.gitai === true; });
     if (!gitai) { return; }
     // 保護が予約される「次の相手ターン」のターン番号を計算。
@@ -139,6 +139,33 @@
     return true;
   }
 
+  // Shared by target discovery and the authoritative zone transition.
+  function findDiscardRevivalBlocker(state) {
+    for (var playerId of state.playerOrder) {
+      for (var host of state.player(playerId).field) {
+        if (host.faceDown) continue;
+        var hostDefinition = global.getCardDefinition(host.cardId);
+        var blocksRevival = hostDefinition && (hostDefinition.passiveAbilities || []).some(function (ability) {
+          return (ability.effects || []).some(function (effect) {
+            return effect.type === 'BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS';
+          });
+        });
+        if (blocksRevival && !global.areInsectKeywordSkillsSuppressed(state, host)) return hostDefinition;
+        for (var attachment of host.attachments || []) {
+          var definition = global.getCardDefinition(attachment.cardId);
+          if (definition && (definition.enhancementEffects || []).some(function (effect) {
+            return effect.type === 'BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS' && effect.scope === 'BOTH_PLAYERS';
+          })) return definition;
+        }
+      }
+    }
+    return null;
+  }
+
+  function discardRevivalBlocked(state) {
+    return !!findDiscardRevivalBlocker(state);
+  }
+
   function moveCard(state, instanceId, fromZone, toZone, opts) {
     opts = opts || {};
     var holder = findAnywhere(state, instanceId);
@@ -146,19 +173,11 @@
       throw new Error('moveCard: instance not found ' + instanceId);
     }
 
-    // 幻惑の蛍袋: while attached to a face-up insect on either field,
-    // neither player may summon an insect directly from the discard pile.
-    if(fromZone===ZONES.DISCARD&&toZone===ZONES.FIELD){
-      var movingDef=global.getCardDefinition&&global.getCardDefinition(holder.instance.cardId);
-      if(movingDef&&movingDef.type==='INSECT'){
-        var summonLocked=['P1','P2'].some(function(pid){
-          return state.player(pid).field.some(function(host){
-            return !host.faceDown&&(host.attachments||[]).some(function(att){
-              var def=global.getCardDefinition&&global.getCardDefinition(att.cardId);return !!(def&&(def.enhancementEffects||[]).some(function(effect){return effect.type==='BLOCK_DISCARD_TO_FIELD_INSECT_SUMMONS'&&effect.scope==='BOTH_PLAYERS';}));
-            });
-          });
-        });
-        if(summonLocked)throw new Error('幻惑の蛍袋: 捨て札から虫を場に出せません');
+    if (fromZone === ZONES.DISCARD && toZone === ZONES.FIELD && !opts.captureFromBattle) {
+      var definition = global.getCardDefinition && global.getCardDefinition(holder.instance.cardId);
+      var blocker = definition && definition.type === 'INSECT' && findDiscardRevivalBlocker(state);
+      if (blocker) {
+        throw new Error(blocker.name + 'の効果で捨て札から虫を場に出せません');
       }
     }
     var sourcePlayerId = holder.playerId;
@@ -222,6 +241,7 @@
         delete card.runtimeFlags.spellImmunityTurn;
         delete card.runtimeFlags.ignoreWeaknessTurn;
         delete card.runtimeFlags.destroyAtEndTurn;
+        delete card.runtimeFlags.discardFaceDownAtEndTurn;
         delete card.runtimeFlags.suppressKeywordSkills;
         delete card.runtimeFlags.suppressDestructionKeywordUntilTurn;
         if(card.runtimeFlags.revealOnPlayerTurn){card.faceDown=false;delete card.runtimeFlags.revealOnPlayerTurn;}
@@ -260,8 +280,15 @@
     }
 
     toArr.push(card);
+    if (global.requestSpearHostRevalidation && (fromZone === ZONES.FIELD ||
+        (fromZone === ZONES.FOOD && global.suppliesFoodTraitAura(card)))) {
+      global.requestSpearHostRevalidation(state);
+    }
     if (fromZone !== ZONES.FIELD && toZone === ZONES.FIELD && !opts.deferEntryEffects && global.resolveFieldEntryEffects) {
       global.resolveFieldEntryEffects(state, card.instanceId);
+    }
+    if (fromZone === ZONES.HAND && toZone === ZONES.FOOD && !card.faceDown && global.resolveFoodPlacementEffect) {
+      global.resolveFoodPlacementEffect(state, card, destPlayerId);
     }
     return card;
   }
@@ -272,5 +299,6 @@
   global.findAttachment = findAttachment;
   global.batchMoveCards = batchMoveCards;
   global.isAttackTargetable = isAttackTargetable;
+  global.isDiscardRevivalBlocked = discardRevivalBlocked;
   global.moveCard = moveCard;
 })(typeof window !== 'undefined' ? window : globalThis);

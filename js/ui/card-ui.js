@@ -125,9 +125,11 @@
   }
 
   function effectiveAp(instance, state) {
-    var base = firstAttackAp((getDef(instance) || {}).skills);
+    var skills = (getDef(instance) || {}).skills || [];
+    var first = skills.find(function (s) { return s && s.timing === 'ATTACK'; });
+    var base = firstAttackAp(skills);
     if (base == null) return null;
-    return state && typeof global.getEffectiveAP === 'function' ? global.getEffectiveAP(state, instance, base) : base;
+    return state && typeof global.getEffectiveAP === 'function' ? global.getEffectiveAP(state, instance, base, first) : base;
   }
 
   // 場の虫カード1枚
@@ -289,7 +291,7 @@
 
   // 汎用レンダラ（カード種別に応じて分岐）
   function renderCard(instance, zone, state) {
-    if (instance.faceDown && (zone === ZONES.FIELD || zone === ZONES.FOOD)) return renderFaceDown(null, instance);
+    if (instance.faceDown && (zone === ZONES.FIELD || zone === ZONES.FOOD || zone === ZONES.DISCARD)) return renderFaceDown(null, instance);
     var def = getDef(instance);
     if (!def) { return renderFaceDown(null, instance); }
 
@@ -358,7 +360,7 @@
     if (def.skills) {
       def.skills.forEach(function(s) {
         var effective = s.timing === 'ATTACK' && typeof global.getEffectiveAP === 'function'
-          ? global.getEffectiveAP(state, instance, s.baseAp || 0)
+          ? global.getEffectiveAP(state, instance, s.baseAp || 0, s)
           : null;
         detail.skills.push({
           name: s.name,

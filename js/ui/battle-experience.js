@@ -37,7 +37,8 @@
             hidden.onclick=function(){inspector.close();inspecting=null;original.click();};
           }
           if(pending&&pending.selectedIds&&pending.selectedIds.indexOf(inst.instanceId)!==-1){hidden.classList.add('is-pending-selected');hidden.setAttribute('aria-pressed','true');}
-          hidden.setAttribute('aria-label','裏向きのエサ');hidden.appendChild(document.createTextNode('裏向きのエサ'));
+          var hiddenLabel=zone==='discard'?'裏向きの捨て札':'裏向きのエサ';
+          hidden.setAttribute('aria-label',hiddenLabel);hidden.appendChild(document.createTextNode(hiddenLabel));
           grid.appendChild(hidden);return;
         }
         var def=window.CardUI.getDef(inst),button=document.createElement('button');
