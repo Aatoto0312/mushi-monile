@@ -797,6 +797,19 @@
       var source = findAnywhere(state, attackContext.attackSourceInstanceId);
       if (!source || source.zone !== ZONES.FIELD) { return; }
       var sourceDefinition = getCardDefinition(source.instance.cardId);
+      if (source.playerId !== continuation.territoryPlayerId &&
+          hasPassiveEffect(state, source.instance, 'OPPONENT_DISCARD_ON_ATTACK_DRAW')) {
+        var hunger = sourceDefinition.passiveAbilities.flatMap(function (a) { return a.effects || []; })
+          .find(function (e) { return e.type === 'OPPONENT_DISCARD_ON_ATTACK_DRAW'; });
+        if (state.player(source.playerId).food.length >= hunger.minimumFood) {
+          var victim = continuation.territoryPlayerId;
+          var zones = [ZONES.HAND, ZONES.FOOD, ZONES.TERRITORY];
+          var options = zones.flatMap(function (zone) { return getPlayerZoneArray(state, victim, zone); });
+          if (options.length) createCardSelection(state, {playerId: victim, options: options.map(function (c) { return c.instanceId; }),
+            exactSelections: 1, candidateZones: zones, selectionPurpose: 'DISCARD_FROM_OWN_ZONES',
+            continuation: {type: 'DISCARD_FROM_OWN_ZONES', playerId: victim, zones: zones}});
+        }
+      }
       var attackSkill = getEffectiveAttackSkills(state,source.instance).filter(function(skill) { return skill.id === attackContext.skillId; })[0];
       (attackSkill && attackSkill.effects || []).forEach(function(effect) {
         if (effect.type === 'DRAW_ADDITIONAL_TERRITORY_ON_ATTACK_DRAW') {
@@ -1017,6 +1030,13 @@
   }
 
   // ---- セットフェイズ ----
+
+  function resolveFoodPlacementEffect(state, card, playerId) {
+    if (!hasPassiveEffect(state, card, 'EXCHANGE_FOOD_ON_PLACEMENT')) return;
+    resumeAfterSelection(state, {type: 'FIELD_ENTRY_EFFECT', playerId: playerId, sourceInstanceId: card.instanceId,
+      optional: true, effect: {type: 'SELECT_ON_ENTRY', from: ZONES.DISCARD, cardType: CardTypes.INSECT,
+        operation: 'EXCHANGE_WITH_SOURCE_FOOD'}});
+  }
 
   function setFood(state, playerId, handInstanceId) {
     assertNoPendingEffect(state);
@@ -1339,6 +1359,9 @@
       return {options:eligible.map(function(card){return card.instanceId;}).filter(function(id){return pending.options.indexOf(id)!==-1;}),atMostOneGroups:[]};
     }
     if(c.type!=='RESOLVE_ENTRY_SELECTION')return null;
+    if (c.effect.operation === 'EXCHANGE_WITH_SOURCE_FOOD' && !findInZone(state,c.playerId,ZONES.FOOD,c.sourceInstanceId)) {
+      return {options: [], atMostOneGroups: [], selectionBounds: {minSelections: 0, maxSelections: 0}};
+    }
     var cards=getEntrySelectionCandidates(state,c.playerId,c.effect).filter(function(card){return pending.options.indexOf(card.instanceId)!==-1;});
     return {options:cards.map(function(card){return card.instanceId;}),atMostOneGroups:c.effect.distinctColor?['RED','BLUE','GREEN','COLORLESS'].map(function(color){return cards.filter(function(card){return getEffectiveColor(card)===color;}).map(function(card){return card.instanceId;});}):[]};
   }
@@ -1835,6 +1858,13 @@
       if (pending.afterResolution) { pending.afterResolution.targetInstanceId = incoming.instanceId; }
       return incoming;
     }
+    if (c.type === 'DISCARD_FROM_OWN_ZONES') {
+      var chosen = findAnywhere(state, ids[0]);
+      if (!chosen || chosen.playerId !== c.playerId || !c.zones.includes(chosen.zone)) throw new Error('選んだカードの場所が変わりました');
+      if (chosen.zone === ZONES.TERRITORY) moveTerritoryWithStatAdjustment(state, c.playerId, chosen.instance, ZONES.DISCARD);
+      else moveCard(state, ids[0], chosen.zone, ZONES.DISCARD, {playerId: c.playerId});
+      return ids;
+    }
     if(c.type==='RESOLVE_ENTRY_SELECTION'){
       var legalEntries=getEntrySelectionCandidates(state,c.playerId,c.effect);
       if(ids.some(function(id){return !legalEntries.some(function(card){return card.instanceId===id;});}))throw new Error('登場時効果の対象が現在の条件を満たしません');
@@ -1854,6 +1884,19 @@
         if(c.effect.operation==='SET_FACE'){if(card.zone===ZONES.FOOD)setFoodFace(state,card,c.effect.targetFaceDown);else card.faceDown=c.effect.targetFaceDown;}
         else if(c.effect.operation==='STAT_MODIFIER')addStatModifier(state,card,{sourceInstanceId:c.sourceInstanceId,stat:c.effect.stat,amount:c.effect.amount});
         else if(c.effect.operation==='DESTROY')destroyInsect(state,id,'EFFECT',c.sourceInstanceId);
+        else if (c.effect.operation === 'DISCARD_TO_RETURN_SOURCE') {
+          moveCard(state, id, ZONES.HAND, ZONES.DISCARD, {playerId: c.playerId});
+          var destroyed = findAnywhere(state, c.sourceInstanceId);
+          if (destroyed && destroyed.zone === ZONES.DISCARD && !destroyed.instance.faceDown) {
+            moveCard(state, c.sourceInstanceId, ZONES.DISCARD, ZONES.HAND, {playerId: destroyed.playerId});
+          }
+        }
+        else if (c.effect.operation === 'EXCHANGE_WITH_SOURCE_FOOD') {
+          batchMoveCards(state, [
+            {instanceId: c.sourceInstanceId, from: ZONES.FOOD, to: ZONES.DISCARD, playerId: c.playerId},
+            {instanceId: id, from: ZONES.DISCARD, to: ZONES.FOOD, playerId: c.playerId, faceDown: false}
+          ]);
+        }
         else if(c.effect.operation==='MOVE'){
           var entryFlags=c.effect.to===ZONES.FIELD?{fieldEntryCause:c.effect.entryCause||{kind:'ABILITY',sourceInstanceId:c.sourceInstanceId,playerId:c.playerId}}:c.effect.suppressFoodCostThisTurn?{foodCostSuppressedTurn:state.turnNumber}:null;
           if(c.effect.revealNextOwnTurn){entryFlags=entryFlags||{};entryFlags.revealOnPlayerTurn={playerId:c.playerId,afterTurn:state.turnNumber};}
@@ -4792,6 +4835,11 @@
       var controllerId=sourceCard.controllerId||sourceCard.ownerId,discardPlayerId=state.opponentOf(controllerId),discardHand=state.player(discardPlayerId).hand;
       if(discardHand.length){createCardSelection(state,{playerId:discardPlayerId,options:discardHand.map(function(c){return c.instanceId;}),exactSelections:Math.min(effect.count||1,discardHand.length),candidateZones:[ZONES.HAND],selectionPurpose:'OPPONENT_HAND_DISCARD',continuation:{type:'DISCARD_SELECTED_HAND',targetPlayerId:discardPlayerId}});}
     }
+    if (effect.type === 'DISCARD_INSECT_TO_RETURN_DESTROYED_SELF') {
+      resumeAfterSelection(state, {type: 'FIELD_ENTRY_EFFECT', playerId: sourceCard.controllerId || sourceCard.ownerId,
+        sourceInstanceId: sourceCard.instanceId, optional: true, effect: {type: 'SELECT_ON_ENTRY', from: ZONES.HAND,
+          cardType: CardTypes.INSECT, operation: 'DISCARD_TO_RETURN_SOURCE'}});
+    }
     if(effect.type==='OPTIONAL_SUPPRESS_OWN_TERRITORY'){
       var choicePlayer=sourceCard.controllerId||sourceCard.ownerId;state.pendingEffect={type:'CHOICE_SELECTION',playerId:choicePlayer,controller:choicePlayer,prompt:'縄張りを引かないことを選びますか',options:[{value:'SUPPRESS',label:'引かない'},{value:'ALLOW',label:'引く'}],continuation:{type:'SUPPRESS_DESTROYED_TERRITORY',sourceInstanceId:sourceCard.instanceId,fieldEntrySerial:sourceCard.runtimeFlags&&sourceCard.runtimeFlags.fieldEntrySerial||0}};
     }
@@ -5089,6 +5137,7 @@ function endTurn(state) {
   global.getComplexSpellSelection = getComplexSpellSelection;
   global.getEnhancementTargetCandidates = getEnhancementTargetCandidates;
   global.resolveChoiceSelection = resolveChoiceSelection;
+  global.resolveFoodPlacementEffect = resolveFoodPlacementEffect;
   global.resolveFieldEntryEffects = resolveFieldEntryEffects;
   global.resolveCardSelection = resolveCardSelection;
   global.selectPendingCard = selectPendingCard;

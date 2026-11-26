@@ -19,6 +19,26 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
   if(await page.locator('#pass-overlay').isVisible()) await page.locator('#btn-pass-ok').click();
   }
   await startMatch();
+  await page.evaluate(()=>{
+    const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId,op=s.opponentOf(p);
+    function put(pid,id,z,faceDown=false){
+      const c=new CardInstance({cardId:id,instanceId:s.nextInstanceId(),ownerId:pid,controllerId:pid,zone:z,faceDown});
+      s.player(pid)[z.toLowerCase()].push(c);return c;
+    }
+    s.player(p).territory=[];s.player(p).hand=[];s.player(p).food=[];
+    const bug=put(op,'set8_032','FIELD');
+    for(let i=0;i<6;i++)put(op,'namitentou','FOOD');
+    put(p,'set6_046','TERRITORY',true);put(p,'kabutomushi','FOOD',true);
+    const drawn=put(p,'namitentou','TERRITORY',true);
+    triggerTerritoryDrawSelection(s,p,{attackSourceInstanceId:bug.instanceId});
+    resolveTerritoryDrawSelection(s,p,drawn.instanceId);ui.render();
+  });
+  const picker=page.locator('#attachment-picker');
+  await picker.getByRole('button',{name:/手札・ナミテントウ/}).waitFor({state:'visible'});
+  assert(await picker.getByRole('button',{name:/エサ・裏向き/}).isVisible());
+  assert(!await picker.innerText().then(t=>t.includes('オオミズアオ')));
+  await picker.getByRole('button',{name:/縄張り・裏向き/}).click();
+  assert(await page.evaluate(()=>{const s=MushiBattle.ui.state;return !s.pendingEffect && s.player(s.activePlayerId).discard.some(c=>c.cardId==='set6_046');}));
   const enemyRef=await page.evaluate(()=>{
     const ui=MushiBattle.ui,s=ui.state,p=s.activePlayerId,op=s.opponentOf(p);
     s.phase=Phases.MAIN_PHASE;s.turnNumber=3;s.pendingEffect=null;
@@ -90,7 +110,13 @@ for(const kind of ['chromium','webkit']) test(kind+' local human uses both spell
       resolveTerritoryDrawSelection(s,pid,spell.instanceId);
       ui.render();
     },id);
-    await page.getByRole('button',{name:'迎撃を使う',exact:true}).click();
+    const use=page.getByRole('button',{name:'迎撃を使う',exact:true});
+    await use.waitFor();
+    if (id==='set5_059') {
+      // A delayed close event from the previous choice must leave this one usable.
+      await page.locator('#compact-actions').dispatchEvent('close');
+    }
+    await use.click();
     assert.equal(await page.evaluate(()=>{
       const s=MushiBattle.ui.state;return s.player(s.opponentOf(s.activePlayerId)).field[0].currentHp;
     }),2000-damage);

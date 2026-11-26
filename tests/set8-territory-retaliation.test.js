@@ -148,4 +148,61 @@ r.test('SET7-45 repeated intrinsic growth excludes external bonuses and clears o
   }
   moveCard(s,ref,'FIELD','HAND',{playerId:'P1'});r.assertEqual(getEffectiveAP(s,host,100,skill),100);
 });
+for (const mode of ['exchange','decline','empty','hidden placement']) r.test('SET7-48 '+mode,()=>{
+  let s=h.newGame({rng:h.firstPlayerRng});s.phase=Phases.SET_PHASE;const p=s.activePlayerId,player=s.player(p);
+  player.discard=[];player.food=[];player.availableCost=0;
+  const beetle=h.addToHandRaw(s,p,getCardDefinition('set7_048'));
+  function discard(id,hidden){const c=h.addToHandRaw(s,p,getCardDefinition(id));moveCard(s,c.instanceId,'HAND','DISCARD',{playerId:p,faceDown:hidden});return c.instanceId;}
+  const hidden=discard('kabutomushi',true),spell=discard('set6_057',false);
+  const visible=mode==='empty'?null:discard('namitentou',false);
+  if(mode==='hidden placement'){moveCard(s,beetle.instanceId,'HAND','FOOD',{playerId:p,faceDown:true});r.assert(!s.pendingEffect);return;}
+  setFood(s,p,beetle.instanceId);
+  if(mode==='empty'){r.assert(!s.pendingEffect);return;}
+  r.assertEqual(s.pendingEffect.options.join(','),visible);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  if(mode==='decline')resolveCardSelection(s,p,[],true);
+  else {const cpu=new CpuAgent(p,{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));}
+  const after=s.player(p);r.assertEqual(after.food.length,1);r.assertEqual(after.food[0].instanceId,mode==='exchange'?visible:beetle.instanceId);
+  r.assert(after.discard.some(c=>c.instanceId===hidden&&c.faceDown));r.assert(after.discard.some(c=>c.instanceId===spell));
+  r.assertEqual(after.availableCost,0);r.assertEqual(gainCost(s,p),1);
+});
+for(const mode of ['return','capture','decline','spell','empty']) r.test('SET6-10 destruction before territory draw '+mode,()=>{
+  let s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const bug=h.putInsectOnField(s,'P2','set6_010'),attacker=h.putInsectOnField(s,'P1',mode==='capture'?'set2_001':'kabutomushi');
+  s.player('P2').hand=[];const paid=mode==='empty'?null:h.addToHandRaw(s,'P2',getCardDefinition('namitentou'));
+  const n=s.player('P2').territory.length;
+  const skill=mode==='capture'?{effects:[{type:'CAPTURE_ATTACK_DESTROYED_TARGET'}]}:null;
+  destroyInsect(s,bug.instanceId,mode==='spell'?'SPELL':'ATTACK',attacker.instanceId,{skill});
+  if(mode==='spell'){r.assert(!s.pendingEffect);r.assertEqual(bug.zone,'DISCARD');return;}
+  if(mode==='empty'){r.assertEqual(s.pendingEffect.type,'TERRITORY_DRAW_SELECTION');return;}
+  r.assertEqual(s.pendingEffect.options.join(','),paid.instanceId);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  if(mode==='decline')resolveCardSelection(s,'P2',[],true);
+  else {const cpu=new CpuAgent('P2',{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));}
+  r.assertEqual(findAnywhere(s,bug.instanceId).zone,mode==='capture'?'FIELD':mode==='decline'?'DISCARD':'HAND');
+  r.assertEqual(findAnywhere(s,paid.instanceId).zone,mode==='decline'?'HAND':'DISCARD');
+  r.assertEqual(s.player('P2').territory.length,n);r.assertEqual(s.pendingEffect.type,'TERRITORY_DRAW_SELECTION');
+});
+for(const mode of ['hand','food','territory','five','suppressed','effect draw']) r.test('SET8-32 '+mode,()=>{
+  let s=h.newGame({rng:h.firstPlayerRng});h.toMainPhase(s);
+  const larva=h.putInsectOnField(s,'P1','set8_032');s.player('P1').food=[];
+  for(let i=0;i<(mode==='five'?5:6);i++){
+    const food=h.addToHandRaw(s,'P1',getCardDefinition('kabutomushi'));moveCard(s,food.instanceId,'HAND','FOOD',{playerId:'P1',faceDown:i%2===0});
+  }
+  const enemy=s.player('P2');enemy.territory=[];enemy.hand=[];enemy.food=[];
+  const meal=h.addToTerritoryRaw(s,'P2',getCardDefinition('set6_046'));
+  const drawn=h.addToTerritoryRaw(s,'P2',getCardDefinition('namitentou'));
+  const fodder=h.addToHandRaw(s,'P2',getCardDefinition('kabutomushi'));moveCard(s,fodder.instanceId,'HAND','FOOD',{playerId:'P2',faceDown:true});
+  if(mode==='suppressed')s.player('P1').keywordSuppressionUntilTurn=s.turnNumber;
+  triggerTerritoryDrawSelection(s,'P2',mode==='effect draw'?{}:{attackSourceInstanceId:larva.instanceId});
+  resolveTerritoryDrawSelection(s,'P2',drawn.instanceId);
+  if(['five','suppressed','effect draw'].includes(mode)){r.assert(!s.pendingEffect);return;}
+  r.assertEqual(s.pendingEffect.playerId,'P2');r.assertEqual(s.pendingEffect.options.length,3);
+  s=Object.assign(new GameState(),JSON.parse(JSON.stringify(s)));
+  const selected={food:fodder,territory:meal,hand:drawn}[mode];
+  s.player('P2').optionalTerritoryDrawTurn=s.turnNumber;
+  if(mode==='hand'){const cpu=new CpuAgent('P2',{rng:()=>0});r.assert(cpu.executeAction(s,cpu.getPendingAction(s)));}
+  else resolveCardSelection(s,'P2',[selected.instanceId],true);
+  r.assertEqual(findAnywhere(s,selected.instanceId).zone,'DISCARD');r.assert(!s.pendingEffect);
+});
 module.exports=r;if(require.main===module)r.runAll().then(x=>{if(x.failed)process.exitCode=1;});

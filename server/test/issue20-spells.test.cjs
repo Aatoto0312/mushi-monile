@@ -55,6 +55,23 @@ runtime.createRuntime=function() {
     if(scenario==='set6_057'){
       for(let i=0;i<2;i++)state.player('P2').food.push(new r.context.CardInstance({cardId:'namitentou',zone:'FOOD',instanceId:state.nextInstanceId(),ownerId:'P2',controllerId:'P2'}));
     }
+    if (scenario==='set8_032') {
+      const source=p.hand[0],other=state.player('P2');
+      r.context.moveCard(state,source.instanceId,'HAND','FIELD',{playerId:'P1'});
+      for(let i=0;i<6;i++)p.food.push(new r.context.CardInstance({cardId:'kabutomushi',instanceId:state.nextInstanceId(),ownerId:'P1',controllerId:'P1',zone:'FOOD'}));
+      for(const id of ['namitentou','set6_046'])other.territory.push(new r.context.CardInstance({cardId:id,instanceId:state.nextInstanceId(),ownerId:'P2',controllerId:'P2',zone:'TERRITORY',faceDown:true}));
+      r.context.triggerTerritoryDrawSelection(state,'P2',{attackSourceInstanceId:source.instanceId});
+      r.context.resolveTerritoryDrawSelection(state,'P2',other.territory[0].instanceId);
+    }
+    if (scenario==='set6_010') {
+      const card=p.hand[0];r.context.moveCard(state,card.instanceId,'HAND','FIELD',{playerId:'P1'});
+      p.hand.push(new r.context.CardInstance({cardId:'tonosamabatta',instanceId:state.nextInstanceId(),ownerId:'P1',controllerId:'P1',zone:'HAND'}));
+      r.context.destroyInsect(state,card.instanceId,'ATTACK',state.player('P2').field[0].instanceId,{});
+    }
+    if (scenario==='set7_048') {
+      state.phase='SET_PHASE';p.foodSetThisTurn=0;
+      p.discard=[new r.context.CardInstance({cardId:'namitentou',instanceId:state.nextInstanceId(),ownerId:'P1',controllerId:'P1',zone:'DISCARD'})];
+    }
     if (scenario==='set7_045') {
       const card=p.hand[0];r.context.moveCard(state,card.instanceId,'HAND','FIELD',{playerId:'P1'});
       card.enteredFieldTurn=1;
@@ -69,7 +86,7 @@ runtime.createRuntime=function() {
 };
 const {createRoomService}=require('../lib/rooms.cjs');
 
-for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058','set5_061','set7_059','set5_042','set6_027','set8_026','set6_046','set8_027','set5_051','set6_057','set6_005','set8_008','set7_045']) test(id+' room cast and turn-end projection',t=>{
+for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_057','set8_058','set5_061','set7_059','set5_042','set6_027','set8_026','set6_046','set8_027','set5_051','set6_057','set6_005','set8_008','set7_045','set7_048','set6_010','set8_032']) test(id+' room cast and turn-end projection',t=>{
   scenario=id;
   const service=createRoomService({rng:()=>0});
   t.after(()=>service.close());
@@ -99,6 +116,29 @@ for(const id of ['set8_062','set8_063','set5_057','set5_058','set5_059','set8_05
     service.receive(a.session,message);
     assert.equal(a.view().room.version,previous);
     assert(a.last('ACK').duplicate);
+  }
+  if (id==='set8_032') {
+    assert.equal(w.view().battle.decision,null);assert.equal(a.view().battle.actions.length,0);
+    const seat=b.last('SESSION');service.disconnect(b.session);b=client();b.send('RESUME',{code:auth.roomCode,token:seat.token});
+    const d=b.view().battle.decision,territory=d.options.find(o=>o.zone==='TERRITORY');
+    assert(territory);assert(!territory.cardId);assert(!JSON.stringify(territory).includes('オオミズアオ'));
+    b.send('ACTION',{version:b.view().room.version,actionId:d.actionId,selectedRefs:[territory.ref]});
+    assert(w.view().battle.players.P2.discard.some(c=>c.cardId==='set6_046'));return;
+  }
+  if (id==='set6_010') {
+    assert.equal(w.view().battle.decision,null);assert.equal(b.view().battle.decision,null);
+    for(const seat of [b,w])assert(seat.view().battle.players.P1.hand.every(c=>!c.cardId));
+    service.disconnect(a.session);a=client();a.send('RESUME',{code:auth.roomCode,token:auth.token});
+    const d=a.view().battle.decision;act(d.actionId,[d.options[0].ref]);
+    assert(a.view().battle.players.P1.hand.some(c=>c.cardId===id));return;
+  }
+  if (id==='set7_048') {
+    act(a.view().battle.actions.find(x=>x.kind==='SET_FOOD').id);
+    assert.equal(w.view().battle.decision,null);assert.equal(b.view().battle.actions.length,0);
+    service.disconnect(a.session);a=client();a.send('RESUME',{code:auth.roomCode,token:auth.token});
+    const d=a.view().battle.decision;act(d.actionId,[d.options[0].ref]);
+    assert.equal(w.view().battle.players.P1.food[0].cardId,'namitentou');
+    assert(a.view().battle.players.P1.discard.some(c=>c.cardId===id));return;
   }
   if (id==='set7_045') {
     const attack=a.view().battle.actions.find(x=>x.kind==='ATTACK');assert(attack);act(attack.id);

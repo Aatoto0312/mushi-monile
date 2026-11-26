@@ -7,6 +7,9 @@
     set5_042: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',suffixes:['バッタ科','イナゴ科']},
     set6_027: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
     set8_026: {type:'SUMMON_FAMILY_FROM_DESTRUCTION_DRAW',families:['セミ科']},
+    set6_010: {type: 'DISCARD_INSECT_TO_RETURN_DESTROYED_SELF'},
+    set7_048: {type: 'EXCHANGE_FOOD_ON_PLACEMENT'},
+    set8_032: {type: 'OPPONENT_DISCARD_ON_ATTACK_DRAW', minimumFood: 6},
     set8_008: {type: 'OPTIONAL_ENEMY_AREA_DAMAGE', amount: 200},
     set6_005:{type:'OPPONENT_DRAW_TO_DESTROY_SOURCE',count:2},
     set8_027:{type:'OPTIONAL_DRAWN_TERRITORY_EFFECT',action:'REVEAL_AND_DRAW',attackOnly:true},
@@ -24,6 +27,10 @@
     }
     Object.assign(def.skills[0], {id: id + '_skill_1', timing: 'ATTACK', effects: [], additionalCost: []});
     def.passiveAbilities[0].effects = [Object.assign({}, traits[id])];
+    if (id === 'set6_010') {
+      def.passiveAbilities[0].timing = 'ON_DESTROYED';
+      def.passiveAbilities[0].condition = {type: 'DESTROYED_BY_ATTACK'};
+    }
     if (id === 'set8_008') { def.passiveAbilities[0].timing = 'ON_ENTER_FIELD'; def.passiveAbilities[0].optional = true; }
     if(id==='set6_005'){def.passiveAbilities[0].timing='ON_ENTER_FIELD';def.passiveAbilities[0].optional=false;}
     if(id==='set8_026'){

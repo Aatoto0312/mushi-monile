@@ -279,6 +279,9 @@
     if (fromZone !== ZONES.FIELD && toZone === ZONES.FIELD && !opts.deferEntryEffects && global.resolveFieldEntryEffects) {
       global.resolveFieldEntryEffects(state, card.instanceId);
     }
+    if (fromZone === ZONES.HAND && toZone === ZONES.FOOD && !card.faceDown && global.resolveFoodPlacementEffect) {
+      global.resolveFoodPlacementEffect(state, card, destPlayerId);
+    }
     return card;
   }
 
